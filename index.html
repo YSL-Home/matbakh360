@@ -1,0 +1,1167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>مطبخ 360 | كل وصفات العالم</title>
+<meta name="description" content="مطبخ 360 — آلاف الوصفات من 60 مطبخاً عالمياً مع فيديوهات TikTok وYouTube وInstagram">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --s:#D97706;--s2:#F59E0B;--sg:rgba(217,119,6,.11);--sg2:rgba(217,119,6,.06);
+  --r:#BE185D;--rg:rgba(190,24,93,.09);
+  --g:#166534;--gg:rgba(22,101,52,.09);
+  --b:#1D4ED8;--bg2:rgba(29,78,216,.09);
+  --p:#7C3AED;--pg:rgba(124,58,237,.09);
+  --ink:#140800;--ink1:#1E0D00;--ink2:#2A1400;--ink3:#3A1E08;--ink4:#50280C;
+  --card:#1E0D00;--card2:#2A1400;--card3:#331800;
+  --b0:rgba(217,119,6,.14);--b1:rgba(255,255,255,.07);--b2:rgba(255,255,255,.04);
+  --t0:#FEF8F0;--t1:#D4A070;--t2:#8C5A30;--t3:#5A3018;
+  --rad:16px;--rads:10px;--pill:100px;
+  --fn:'Cairo',sans-serif;--fd:'Playfair Display',serif;
+  --sh:0 8px 40px rgba(20,8,0,.55);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--fn);background:var(--ink);color:var(--t0);overflow-x:hidden;min-height:100vh;}
+body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
+  background:radial-gradient(ellipse 80% 50% at 8% 0%,rgba(217,119,6,.08) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 80% at 92% 100%,rgba(22,101,52,.06) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 50% at 50% 50%,rgba(190,24,93,.03) 0%,transparent 70%);}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.02;
+  background-image:radial-gradient(circle,var(--s) 1px,transparent 1px);background-size:44px 44px;}
+::-webkit-scrollbar{width:5px;height:5px;}
+::-webkit-scrollbar-track{background:var(--ink);}
+::-webkit-scrollbar-thumb{background:var(--b0);border-radius:3px;}
+
+/* NAV */
+.nav{position:sticky;top:0;z-index:3000;background:rgba(20,8,0,.94);
+  backdrop-filter:blur(28px) saturate(160%);border-bottom:1px solid var(--b0);
+  height:60px;display:flex;align-items:center;gap:12px;padding:0 20px;}
+.logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0;cursor:pointer;}
+.logo b{font-size:18px;font-weight:900;color:var(--s);letter-spacing:-.5px;}
+.logo small{font-size:8.5px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;display:block;line-height:1;}
+.nav-links{display:flex;gap:2px;flex:1;overflow-x:auto;scrollbar-width:none;}
+.nav-links::-webkit-scrollbar{display:none;}
+.nb{padding:6px 12px;border-radius:var(--rads);font-size:12.5px;font-weight:700;color:var(--t2);
+  cursor:pointer;border:none;background:transparent;font-family:var(--fn);transition:all .18s;white-space:nowrap;flex-shrink:0;}
+.nb:hover,.nb.on{color:var(--s);background:var(--sg);}
+.nb.cta{background:var(--s);color:#fff !important;border-radius:var(--pill);padding:6px 14px;}
+.nb.cta:hover{background:#B45309;}
+.nav-search{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--b0);
+  border-radius:var(--pill);padding:6px 14px;min-width:190px;flex-shrink:0;transition:border-color .2s;}
+.nav-search:focus-within{border-color:rgba(217,119,6,.45);}
+.nav-search input{background:transparent;border:none;color:var(--t0);font-family:var(--fn);font-size:12.5px;outline:none;flex:1;min-width:0;}
+.nav-search input::placeholder{color:var(--t3);}
+
+/* PAGES */
+.page{display:none;position:relative;z-index:1;}
+.page.on{display:block;}
+.wrap{max-width:1360px;margin:0 auto;padding:0 18px;}
+
+/* SECTION HEAD */
+.sh{display:flex;align-items:center;gap:10px;margin:30px 0 18px;}
+.sh h2{font-size:19px;font-weight:900;color:var(--t0);white-space:nowrap;}
+.sh .rl{flex:1;height:1px;background:linear-gradient(to left,transparent,var(--b0) 50%,transparent);}
+.sh .bd{font-size:10px;font-weight:800;letter-spacing:1px;color:var(--s);background:var(--sg);
+  border:1px solid var(--b0);padding:3px 10px;border-radius:var(--pill);white-space:nowrap;}
+.sh a{font-size:12px;color:var(--t2);font-weight:700;cursor:pointer;white-space:nowrap;}
+.sh a:hover{color:var(--s);}
+
+/* GRIDS */
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.ga{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
+
+/* RECIPE CARD */
+.rc{background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);
+  overflow:hidden;cursor:pointer;transition:all .22s;position:relative;}
+.rc:hover{border-color:var(--b0);transform:translateY(-4px);box-shadow:var(--sh);}
+.rc.feat{grid-column:span 2;display:flex;}
+.rc.feat .rv{width:260px;flex-shrink:0;aspect-ratio:auto;min-height:210px;}
+.rc.feat .rb{flex:1;padding:22px;}
+.rc.feat .rt{font-size:17px;-webkit-line-clamp:3;}
+
+.rv{aspect-ratio:4/3;position:relative;overflow:hidden;background:var(--card2);
+  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;}
+.rv-bg{position:absolute;inset:0;opacity:.35;
+  background-image:linear-gradient(var(--b1) 1px,transparent 1px),linear-gradient(90deg,var(--b1) 1px,transparent 1px);
+  background-size:30px 30px;}
+.rv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.rc:hover .rv img{transform:scale(1.05);}
+.rv .em{font-size:46px;position:relative;z-index:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));}
+.rc.feat .rv .em{font-size:70px;}
+.rv-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);position:relative;z-index:1;}
+
+/* card badges */
+.bflag{position:absolute;top:10px;right:10px;z-index:2;font-size:20px;filter:drop-shadow(0 1px 4px rgba(0,0,0,.5));}
+.bcat{position:absolute;top:10px;left:10px;z-index:2;background:var(--s);color:#fff;font-size:9.5px;font-weight:900;padding:3px 9px;border-radius:var(--pill);}
+.btime{position:absolute;bottom:10px;right:10px;z-index:2;background:rgba(20,8,0,.82);backdrop-filter:blur(6px);color:var(--t0);font-size:9.5px;font-weight:700;padding:3px 9px;border-radius:var(--pill);border:1px solid var(--b1);}
+.bdiff{position:absolute;bottom:10px;left:10px;z-index:2;font-size:9px;font-weight:800;padding:3px 9px;border-radius:var(--pill);}
+.de{background:rgba(22,101,52,.25);color:#4ADE80;border:1px solid rgba(74,222,128,.25);}
+.dm{background:rgba(217,119,6,.2);color:var(--s2);border:1px solid rgba(245,158,11,.25);}
+.dh{background:rgba(190,24,93,.2);color:#F472B6;border:1px solid rgba(244,114,182,.25);}
+
+.rb{padding:13px;}
+.rt{font-size:13.5px;font-weight:800;color:var(--t0);line-height:1.5;margin-bottom:6px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.rd{font-size:11.5px;color:var(--t1);line-height:1.6;margin-bottom:9px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.rf{display:flex;align-items:center;justify-content:space-between;}
+.rstar{font-size:11px;color:var(--s2);display:flex;align-items:center;gap:3px;}
+.rstar span{color:var(--t2);}
+.rmore{font-size:11px;font-weight:800;color:var(--s);}
+
+/* HERO */
+.hero{padding:52px 0 36px;text-align:center;}
+.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--sg);border:1px solid var(--b0);
+  color:var(--s);font-size:11px;font-weight:800;padding:5px 14px;border-radius:var(--pill);
+  margin-bottom:20px;letter-spacing:.5px;}
+.hero h1{font-size:50px;font-weight:900;line-height:1.15;margin-bottom:14px;letter-spacing:-.5px;}
+.hero h1 em{font-style:italic;color:var(--s);font-family:var(--fd);}
+.hero-sub{font-size:15px;color:var(--t1);max-width:540px;margin:0 auto 28px;line-height:1.7;}
+.search-big{display:flex;background:var(--card);border:1px solid var(--b0);border-radius:var(--pill);
+  max-width:600px;margin:0 auto 36px;overflow:hidden;transition:border-color .2s;
+  box-shadow:0 4px 24px rgba(0,0,0,.3);}
+.search-big:focus-within{border-color:rgba(217,119,6,.5);}
+.search-big input{flex:1;background:transparent;border:none;color:var(--t0);font-family:var(--fn);
+  font-size:14.5px;padding:14px 22px;outline:none;min-width:0;}
+.search-big input::placeholder{color:var(--t3);}
+.search-big button{background:var(--s);color:#fff;border:none;font-family:var(--fn);font-size:13.5px;
+  font-weight:800;padding:12px 24px;cursor:pointer;border-radius:var(--pill);margin:4px;
+  flex-shrink:0;transition:background .18s;}
+.search-big button:hover{background:#B45309;}
+.hstats{display:flex;justify-content:center;gap:40px;}
+.hst .n{font-size:26px;font-weight:900;color:var(--s);font-family:var(--fd);}
+.hst .l{font-size:11px;color:var(--t3);margin-top:2px;}
+
+/* WORLD CHIPS */
+.chips-bar{padding:14px 0;border-bottom:1px solid var(--b1);overflow:hidden;}
+.chips-scroll{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.chips-scroll::-webkit-scrollbar{display:none;}
+.chip{display:flex;align-items:center;gap:6px;padding:7px 13px;border-radius:var(--pill);
+  border:1px solid var(--b1);background:transparent;font-family:var(--fn);font-size:12px;
+  font-weight:700;color:var(--t2);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .18s;}
+.chip .ico{font-size:17px;}
+.chip:hover{border-color:var(--b0);color:var(--t1);background:var(--card);}
+.chip.on{border-color:rgba(217,119,6,.45);background:var(--sg);color:var(--s);}
+
+/* CUISINE SECTION */
+.cs-hd{display:flex;align-items:center;gap:14px;margin:36px 0 16px;padding-bottom:14px;border-bottom:1px solid var(--b1);}
+.cs-flag{font-size:34px;}
+.cs-name{font-size:20px;font-weight:900;color:var(--t0);}
+.cs-desc{font-size:12px;color:var(--t2);margin-top:3px;}
+.cs-count{margin-right:auto;font-size:11px;color:var(--t3);background:var(--card);
+  border:1px solid var(--b1);padding:4px 12px;border-radius:var(--pill);}
+
+/* ══════ VIDEO FEED ══════ */
+.vf-hero{padding:26px 0 18px;border-bottom:1px solid var(--b1);}
+.vf-title{font-size:24px;font-weight:900;color:var(--t0);display:flex;align-items:center;gap:10px;margin-bottom:5px;}
+.vf-sub{font-size:13px;color:var(--t2);}
+
+/* Platform tabs */
+.plat-bar{display:flex;gap:7px;padding:16px 0 14px;border-bottom:1px solid var(--b1);flex-wrap:wrap;}
+.pb{display:flex;align-items:center;gap:6px;padding:8px 15px;border-radius:var(--pill);
+  border:1px solid var(--b1);background:transparent;font-family:var(--fn);font-size:12.5px;
+  font-weight:700;color:var(--t2);cursor:pointer;transition:all .18s;flex-shrink:0;}
+.pb .pi{font-size:17px;}
+.pb:hover{border-color:var(--b0);color:var(--t1);}
+.pb.on{color:#fff;border-color:transparent;}
+.pb.all.on{background:var(--s);}
+.pb.tt.on{background:#010101;border:1px solid #69C9D0;color:#69C9D0;}
+.pb.yt.on{background:#FF0000;}
+.pb.ig.on{background:linear-gradient(135deg,#F58529,#DD2A7B,#8134AF);}
+.pb.fb.on{background:#1877F2;}
+.pb.pin.on{background:#E60023;}
+
+/* Tag filters */
+.tag-bar{display:flex;gap:7px;padding:12px 0;overflow-x:auto;scrollbar-width:none;}
+.tag-bar::-webkit-scrollbar{display:none;}
+.tf{display:flex;align-items:center;gap:4px;padding:6px 13px;border-radius:var(--pill);
+  border:1px solid var(--b1);background:transparent;font-family:var(--fn);font-size:11.5px;
+  font-weight:700;color:var(--t2);cursor:pointer;white-space:nowrap;flex-shrink:0;transition:all .18s;}
+.tf:hover{border-color:var(--b0);color:var(--t1);}
+.tf.on{border-color:rgba(217,119,6,.4);background:var(--sg);color:var(--s);}
+
+/* VIDEO FEED GRID — masonry-like columns */
+.vf-grid{column-count:4;column-gap:14px;padding:18px 0;}
+.vc{break-inside:avoid;margin-bottom:14px;background:var(--card);border:1px solid var(--b1);
+  border-radius:var(--rad);overflow:hidden;cursor:pointer;transition:all .22s;display:block;}
+.vc:hover{border-color:var(--b0);box-shadow:var(--sh);}
+
+/* thumb */
+.vt{position:relative;overflow:hidden;background:var(--card2);
+  display:flex;align-items:center;justify-content:center;}
+.vt.portrait{aspect-ratio:9/16;}
+.vt.landscape{aspect-ratio:16/9;}
+.vt.square{aspect-ratio:1/1;}
+.vt img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
+.vc:hover .vt img{transform:scale(1.04);}
+.vt-em{font-size:56px;position:relative;z-index:1;filter:drop-shadow(0 4px 12px rgba(0,0,0,.5));}
+.vt-play{position:absolute;z-index:3;width:48px;height:48px;border-radius:50%;
+  background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center;
+  transition:all .2s;}
+.vc:hover .vt-play{transform:scale(1.12);background:#fff;}
+.vt-tri{width:0;height:0;border-style:solid;border-width:8px 0 8px 16px;
+  border-color:transparent transparent transparent #1E0D00;margin-right:-2px;}
+.vt-plat{position:absolute;top:9px;right:9px;z-index:4;padding:3px 9px;
+  border-radius:var(--pill);font-size:10px;font-weight:800;display:flex;align-items:center;gap:3px;}
+.vt-plat.tt{background:rgba(1,1,1,.85);color:#69C9D0;border:1px solid rgba(105,201,208,.3);}
+.vt-plat.yt{background:rgba(255,0,0,.85);color:#fff;}
+.vt-plat.ig{background:rgba(221,42,123,.85);color:#fff;}
+.vt-plat.fb{background:rgba(24,119,242,.85);color:#fff;}
+.vt-plat.pin{background:rgba(230,0,35,.85);color:#fff;}
+.vt-dur{position:absolute;bottom:9px;right:9px;z-index:4;background:rgba(0,0,0,.82);
+  color:#fff;font-size:10px;font-weight:700;padding:2px 7px;border-radius:4px;}
+.vt-views{position:absolute;bottom:9px;left:9px;z-index:4;background:rgba(0,0,0,.75);
+  color:var(--s2);font-size:10px;font-weight:800;padding:2px 7px;border-radius:4px;}
+.vt-hot{position:absolute;top:9px;left:9px;z-index:4;background:rgba(190,24,93,.85);
+  color:#fff;font-size:9px;font-weight:900;padding:3px 8px;border-radius:var(--pill);}
+
+/* video body */
+.vb{padding:12px;}
+.vc-head{display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.vc-av{width:30px;height:30px;border-radius:50%;background:var(--card2);
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  border:1px solid var(--b1);flex-shrink:0;overflow:hidden;}
+.vc-av img{width:100%;height:100%;object-fit:cover;}
+.vc-cn{font-size:11.5px;font-weight:800;color:var(--t0);}
+.vc-ch{font-size:10px;color:var(--t3);}
+.vc-title{font-size:12.5px;font-weight:700;color:var(--t1);line-height:1.5;margin-bottom:8px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.vc-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:9px;}
+.vctag{font-size:10px;color:var(--t3);background:var(--card2);border:1px solid var(--b2);
+  padding:2px 7px;border-radius:var(--pill);}
+.vctag.h{color:var(--r);background:var(--rg);border-color:rgba(190,24,93,.2);}
+.vctag.n{color:var(--g);background:var(--gg);border-color:rgba(22,101,52,.2);}
+.vc-foot{display:flex;align-items:center;justify-content:space-between;
+  padding-top:9px;border-top:1px solid var(--b2);}
+.vc-likes{font-size:11px;color:var(--t2);display:flex;align-items:center;gap:3px;}
+.vc-save{font-size:11px;color:var(--s);font-weight:700;cursor:pointer;background:none;
+  border:none;font-family:var(--fn);}
+
+/* RECIPE PAGE */
+.rp-layout{display:grid;grid-template-columns:1fr 320px;gap:26px;padding:26px 0;align-items:start;}
+.rp-side{position:sticky;top:76px;}
+.rp-vis{aspect-ratio:16/8;border-radius:var(--rad);overflow:hidden;margin-bottom:20px;
+  position:relative;background:var(--card2);display:flex;align-items:center;justify-content:center;}
+.rp-vis-em{font-size:110px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.5));}
+.rp-vis img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.rp-bread{font-size:12px;color:var(--t3);margin-bottom:12px;display:flex;gap:5px;align-items:center;}
+.rp-bread a{color:var(--t2);cursor:pointer;}
+.rp-bread a:hover{color:var(--s);}
+.rp-h1{font-size:28px;font-weight:900;color:var(--t0);line-height:1.3;margin-bottom:12px;}
+.rp-intro{font-size:14px;color:var(--t1);line-height:1.85;margin-bottom:20px;}
+.rp-meta{display:flex;background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);overflow:hidden;margin-bottom:20px;}
+.rpm{flex:1;padding:12px 14px;text-align:center;border-right:1px solid var(--b1);}
+.rpm:last-child{border-right:none;}
+.rpm-v{font-size:16px;font-weight:900;color:var(--s);}
+.rpm-l{font-size:10px;color:var(--t3);margin-top:2px;}
+.box{background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);padding:18px;margin-bottom:16px;}
+.box-h{font-size:15px;font-weight:900;color:var(--t0);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.srv-c{display:flex;align-items:center;gap:7px;margin-right:auto;}
+.srv-btn{width:26px;height:26px;border-radius:50%;background:var(--card2);border:1px solid var(--b0);
+  color:var(--s);font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-weight:900;}
+.srv-n{font-size:14px;font-weight:800;color:var(--t0);min-width:24px;text-align:center;}
+.ing-row{display:flex;align-items:center;gap:9px;padding:8px 0;border-bottom:1px solid var(--b2);}
+.ing-row:last-child{border-bottom:none;}
+.ing-cb{width:17px;height:17px;border-radius:50%;border:2px solid var(--b0);flex-shrink:0;
+  cursor:pointer;transition:all .18s;display:flex;align-items:center;justify-content:center;}
+.ing-cb.ck{background:var(--s);border-color:var(--s);}
+.ing-cb.ck::after{content:'✓';font-size:10px;color:#fff;font-weight:900;}
+.ing-q{font-size:12px;font-weight:800;color:var(--s);min-width:68px;}
+.ing-n{font-size:12px;color:var(--t1);}
+.ing-note{font-size:10px;color:var(--t3);font-style:italic;display:block;margin-top:2px;}
+.step-row{display:flex;gap:13px;padding:13px 0;border-bottom:1px solid var(--b2);}
+.step-row:last-child{border-bottom:none;}
+.step-n{width:30px;height:30px;border-radius:50%;background:var(--s);color:#fff;
+  font-size:12px;font-weight:900;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:2px;}
+.step-t{font-size:13.5px;color:var(--t1);line-height:1.75;}
+.step-tip{margin-top:7px;font-size:11.5px;color:var(--t2);background:var(--sg2);
+  border-right:3px solid var(--s);padding:6px 11px;border-radius:0 8px 8px 0;line-height:1.5;}
+.tip-item{display:flex;gap:9px;padding:7px 0;font-size:13px;color:var(--t1);line-height:1.6;}
+.tip-ico{flex-shrink:0;font-size:15px;}
+.nutr-g{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-top:11px;}
+.nutr-i{text-align:center;background:var(--card2);border-radius:var(--rads);padding:9px 6px;}
+.nutr-v{font-size:17px;font-weight:900;color:var(--s);}
+.nutr-l{font-size:10px;color:var(--t3);margin-top:2px;}
+.sb-c{background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);overflow:hidden;margin-bottom:14px;}
+.sb-h{padding:11px 14px;border-bottom:1px solid var(--b1);font-size:13px;font-weight:900;color:var(--t0);}
+.sb-item{display:flex;gap:9px;padding:10px 13px;border-top:1px solid var(--b1);cursor:pointer;transition:background .18s;}
+.sb-item:first-of-type{border-top:none;}
+.sb-item:hover{background:var(--card2);}
+.sb-em{width:44px;height:44px;border-radius:var(--rads);background:var(--card2);
+  display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;border:1px solid var(--b1);}
+.sb-t{font-size:11.5px;font-weight:700;color:var(--t1);line-height:1.4;}
+.sb-m{font-size:10px;color:var(--t3);margin-top:2px;}
+.share-box{background:linear-gradient(135deg,var(--sg) 0%,transparent 70%);border:1px solid var(--b0);
+  border-radius:var(--rad);padding:16px;text-align:center;margin-bottom:14px;}
+.share-btns{display:flex;gap:7px;justify-content:center;margin-top:12px;}
+.sbtn{padding:7px 13px;border-radius:var(--pill);font-size:11.5px;font-weight:700;cursor:pointer;
+  border:1px solid var(--b1);background:var(--card);color:var(--t1);font-family:var(--fn);transition:all .18s;}
+.sbtn:hover{border-color:var(--s);color:var(--s);}
+
+/* VIDEO MODAL */
+.vm-bg{display:none;position:fixed;inset:0;z-index:9000;background:rgba(0,0,0,.94);
+  backdrop-filter:blur(20px);align-items:center;justify-content:center;padding:20px;}
+.vm-bg.on{display:flex;}
+.vm-box{background:var(--ink1);border:1px solid var(--b0);border-radius:20px;
+  max-width:460px;width:100%;position:relative;overflow:hidden;}
+.vm-close{position:absolute;top:12px;left:12px;z-index:10;width:32px;height:32px;border-radius:50%;
+  background:rgba(20,8,0,.8);border:1px solid var(--b1);color:var(--t2);display:flex;
+  align-items:center;justify-content:center;cursor:pointer;font-size:16px;}
+
+/* SEARCH */
+.s-lbl{font-size:14px;color:var(--t2);margin:20px 0;}
+.s-lbl strong{color:var(--s);}
+.no-res{text-align:center;padding:60px 20px;color:var(--t2);}
+
+/* FOOTER */
+footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);padding:34px 0 18px;position:relative;z-index:1;}
+.footer-g{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:26px;margin-bottom:24px;}
+.footer-brand p{font-size:11.5px;color:var(--t3);line-height:1.8;margin-top:9px;}
+.fc h4{font-size:13px;font-weight:800;color:var(--t0);margin-bottom:11px;}
+.fc a{display:block;font-size:12px;color:var(--t3);text-decoration:none;margin-bottom:6px;transition:color .18s;}
+.fc a:hover{color:var(--s);}
+.footer-bot{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--b2);font-size:11px;color:var(--t3);}
+
+@media(max-width:1100px){.g4{grid-template-columns:repeat(3,1fr);}.g5{grid-template-columns:repeat(3,1fr);}.vf-grid{column-count:3;}.rp-layout{grid-template-columns:1fr;}.rp-side{position:static;}.footer-g{grid-template-columns:1fr 1fr;}}
+@media(max-width:768px){.g4,.g3{grid-template-columns:repeat(2,1fr);}.g5{grid-template-columns:repeat(2,1fr);}.vf-grid{column-count:2;}.rc.feat{grid-column:span 2;flex-direction:column;}.rc.feat .rv{width:100%;height:180px;}.hero h1{font-size:32px;}.nutr-g{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.nav-links{display:none;}.vf-grid{column-count:1;}.g4,.g3,.g5{grid-template-columns:1fr 1fr;}.hero h1{font-size:26px;}.hstats{gap:18px;}}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav">
+  <div class="logo" onclick="gp('home')">
+    <svg width="38" height="38" viewBox="0 0 40 40" fill="none">
+      <circle cx="20" cy="20" r="19" fill="#1E0D00"/>
+      <circle cx="20" cy="20" r="19" stroke="#D97706" stroke-width=".8" stroke-dasharray="3.5 2.5" opacity=".5"/>
+      <path d="M20 7C16 12 11 17 15.5 22C19.5 27 23 24 20 18.5C17 13 25 11 20 7Z" fill="#D97706"/>
+      <path d="M7.5 26C12 21.5 16.5 24 20 18.5C20 27 15.5 30.5 7.5 26Z" fill="#D97706" opacity=".65"/>
+      <path d="M32.5 26C28 21.5 23.5 24 20 18.5C20 27 24.5 30.5 32.5 26Z" fill="#D97706" opacity=".45"/>
+      <path d="M4 20A16 16 0 0 1 36 20" stroke="#BE185D" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".7"/>
+      <text x="20" y="24.5" text-anchor="middle" fill="#FEF8F0" font-size="5.5" font-weight="900" font-family="Cairo,sans-serif">360</text>
+    </svg>
+    <div><b>مطبخ 360</b><small>World Recipes</small></div>
+  </div>
+  <div class="nav-links">
+    <button class="nb on" onclick="gp('home')">🏠 الرئيسية</button>
+    <button class="nb" onclick="gp('world')">🌍 مطابخ العالم</button>
+    <button class="nb" onclick="gp('videos')">📱 فيديو المطابخ</button>
+    <button class="nb" onclick="fworld('حلويات')">🍰 حلويات</button>
+    <button class="nb" onclick="fworld('صحي')">🥗 صحي</button>
+    <button class="nb" onclick="fworld('سريع')">⚡ سريع</button>
+    <button class="nb" onclick="fworld('رمضان')">🌙 رمضان</button>
+  </div>
+  <div class="nav-search">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input placeholder="بحث في مطابخ العالم..." onkeydown="if(event.key==='Enter')doSearch(this.value)">
+  </div>
+</nav>
+
+<!-- HOME -->
+<div class="page on" id="page-home">
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-tag">🤖 Claude · ChatGPT · Gemini — محتوى مُولَّد بـ 3 ذكاءات اصطناعية</div>
+    <h1>مطابخ العالم كلها<br>في <em>زاوية واحدة</em></h1>
+    <p class="hero-sub">من الكسكس المغربي إلى الراميان الياباني والبيتزا الإيطالية — آلاف الوصفات مع صور ومقاطع فيديو من كل المنصات.</p>
+    <div class="search-big">
+      <input id="hq" placeholder="ابحث: كنافة، سوشي، تاكو، ريزوتو، منسف...">
+      <button onclick="doSearch(document.getElementById('hq').value)">🔍 بحث</button>
+    </div>
+    <div class="hstats">
+      <div class="hst"><div class="n">12,400+</div><div class="l">وصفة</div></div>
+      <div class="hst"><div class="n">68</div><div class="l">مطبخ</div></div>
+      <div class="hst"><div class="n">5,200+</div><div class="l">فيديو</div></div>
+      <div class="hst"><div class="n">3 ذكاءات</div><div class="l">اصطناعية</div></div>
+    </div>
+  </div>
+  <div class="chips-bar"><div class="chips-scroll" id="hchips"></div></div>
+
+  <div class="sh"><h2>⭐ الأبرز اليوم</h2><div class="rl"></div><span class="bd">مُختار بالذكاء الاصطناعي</span></div>
+  <div class="g4" id="h-feat"></div>
+
+  <div class="sh" style="margin-top:28px"><h2>🆕 أحدث الوصفات</h2><div class="rl"></div><a onclick="gp('world')">عرض الكل ←</a></div>
+  <div class="g5" id="h-latest"></div>
+
+  <div class="sh"><h2>🌍 المطابخ العربية</h2><div class="rl"></div><a onclick="fworld('عربي')">الكل ←</a></div>
+  <div class="g4" id="h-arab"></div>
+
+  <div class="sh"><h2>🍝 أوروبا والمتوسط</h2><div class="rl"></div><a onclick="fworld('أوروبي')">الكل ←</a></div>
+  <div class="g4" id="h-euro"></div>
+
+  <div class="sh"><h2>🌏 آسيا والشرق الأقصى</h2><div class="rl"></div><a onclick="fworld('آسيوي')">الكل ←</a></div>
+  <div class="g4" id="h-asia"></div>
+
+  <div class="sh"><h2>🌎 الأمريكيتان</h2><div class="rl"></div><a onclick="fworld('أمريكي')">الكل ←</a></div>
+  <div class="g4" id="h-amer"></div>
+
+  <div class="sh"><h2>🎂 حلويات العالم</h2><div class="rl"></div><a onclick="fworld('حلويات')">الكل ←</a></div>
+  <div class="g5" id="h-sweet"></div>
+
+  <div class="sh"><h2>⚡ سريع وصحي</h2><div class="rl"></div><a onclick="fworld('صحي')">الكل ←</a></div>
+  <div class="g4" id="h-fit"></div>
+</div>
+<div style="height:50px"></div>
+</div>
+
+<!-- WORLD PAGE -->
+<div class="page" id="page-world">
+<div class="wrap">
+  <div class="chips-bar" style="padding-top:20px"><div class="chips-scroll" id="wchips"></div></div>
+  <div id="world-body"></div>
+</div>
+<div style="height:50px"></div>
+</div>
+
+<!-- VIDEOS PAGE -->
+<div class="page" id="page-videos">
+<div class="vf-hero"><div class="wrap">
+  <div class="vf-title"><span style="font-size:28px">📱</span>فيديو المطابخ</div>
+  <div class="vf-sub">محتوى TikTok · YouTube · Instagram · Facebook · Pinterest — فيلتر ذكي من كل منصة</div>
+</div></div>
+<div class="wrap">
+  <div class="plat-bar" id="plat-bar"></div>
+  <div class="tag-bar" id="tag-bar"></div>
+  <div class="vf-grid" id="vf-grid"></div>
+  <div style="text-align:center;padding:22px 0">
+    <button onclick="loadMoreVids()" style="background:var(--card);border:1px solid var(--b0);color:var(--s);padding:11px 28px;border-radius:var(--pill);font-family:var(--fn);font-size:13.5px;font-weight:700;cursor:pointer;">تحميل المزيد ↓</button>
+  </div>
+</div>
+<div style="height:40px"></div>
+</div>
+
+<!-- RECIPE PAGE -->
+<div class="page" id="page-recipe">
+<div class="wrap"><div class="rp-layout" id="rp-content"></div></div>
+<div style="height:50px"></div>
+</div>
+
+<!-- SEARCH PAGE -->
+<div class="page" id="page-search">
+<div class="wrap">
+  <div class="s-lbl" id="s-lbl"></div>
+  <div class="g4" id="s-grid"></div>
+</div>
+<div style="height:50px"></div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+<div class="wrap">
+  <div class="footer-g">
+    <div class="footer-brand">
+      <div class="logo" style="margin-bottom:8px"><svg width="34" height="34" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" fill="#1E0D00"/><path d="M20 7C16 12 11 17 15.5 22C19.5 27 23 24 20 18.5C17 13 25 11 20 7Z" fill="#D97706"/><path d="M7.5 26C12 21.5 16.5 24 20 18.5C20 27 15.5 30.5 7.5 26Z" fill="#D97706" opacity=".65"/><path d="M32.5 26C28 21.5 23.5 24 20 18.5C20 27 24.5 30.5 32.5 26Z" fill="#D97706" opacity=".45"/><text x="20" y="24.5" text-anchor="middle" fill="#FEF8F0" font-size="5.5" font-weight="900" font-family="Cairo,sans-serif">360</text></svg><div><b style="font-size:17px;font-weight:900;color:var(--s)">مطبخ 360</b></div></div>
+      <p>منصة وصفات عالمية مدعومة بـ Claude وChatGPT وGemini. نجمع ونُحسّن ونُقدّم آلاف الوصفات من 68 مطبخاً حول العالم مع صور ومقاطع فيديو.</p>
+    </div>
+    <div class="fc"><h4>المطابخ العربية</h4><a>مغربي · مصري · لبناني</a><a>سعودي · تونسي · جزائري</a><a>عراقي · سوري · فلسطيني</a><a>أردني · يمني · خليجي</a></div>
+    <div class="fc"><h4>مطابخ العالم</h4><a>إيطالي · فرنسي · إسباني</a><a>ياباني · صيني · هندي</a><a>مكسيكي · أمريكي · تركي</a><a>كوري · تايلاندي · يوناني</a></div>
+    <div class="fc"><h4>تابعونا</h4><a>📘 فيسبوك</a><a>📷 إنستغرام</a><a>🎵 تيك توك</a><a>▶️ يوتيوب</a><a>📌 بينتيريست</a></div>
+  </div>
+  <div class="footer-bot"><span>© 2025 مطبخ 360</span><span>مدعوم بـ Claude · ChatGPT · Gemini 🤖</span></div>
+</div>
+</footer>
+
+<!-- VIDEO MODAL -->
+<div class="vm-bg" id="vm"><div class="vm-box">
+  <div class="vm-close" onclick="closeVM()">✕</div>
+  <div id="vm-body"></div>
+</div></div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+const CUISINES=[
+  {id:'mgh',f:'🇲🇦',n:'مغربي',r:'عربي',c:420,desc:'الطاجين والكسكس والحريرة'},
+  {id:'egy',f:'🇪🇬',n:'مصري',r:'عربي',c:380,desc:'الكشري والملوخية والكباب'},
+  {id:'lbn',f:'🇱🇧',n:'لبناني',r:'عربي',c:340,desc:'الحمص والتبولة والشاورما'},
+  {id:'sau',f:'🇸🇦',n:'سعودي',r:'عربي',c:290,desc:'الكبسة والمطبق والجريش'},
+  {id:'tun',f:'🇹🇳',n:'تونسي',r:'عربي',c:220,desc:'الطاجين التونسي والبريك'},
+  {id:'alg',f:'🇩🇿',n:'جزائري',r:'عربي',c:200,desc:'الشخشوخة والرشتة'},
+  {id:'irq',f:'🇮🇶',n:'عراقي',r:'عربي',c:180,desc:'التمن والقيمة والكليجة'},
+  {id:'syr',f:'🇸🇾',n:'سوري',r:'عربي',c:210,desc:'الكبة والفتة والمجدرة'},
+  {id:'jor',f:'🇯🇴',n:'أردني',r:'عربي',c:160,desc:'المنسف والمقلوبة'},
+  {id:'plst',f:'🇵🇸',n:'فلسطيني',r:'عربي',c:150,desc:'الكنافة النابلسية والمسخن'},
+  {id:'yem',f:'🇾🇪',n:'يمني',r:'عربي',c:130,desc:'الفهسة والسلتة والبنط'},
+  {id:'ita',f:'🇮🇹',n:'إيطالي',r:'أوروبي',c:580,desc:'البيتزا والباستا والريزوتو'},
+  {id:'fra',f:'🇫🇷',n:'فرنسي',r:'أوروبي',c:460,desc:'الكروسون والكيش والرايو'},
+  {id:'esp',f:'🇪🇸',n:'إسباني',r:'أوروبي',c:350,desc:'البايلا والتاباس والغاسباتشو'},
+  {id:'grc',f:'🇬🇷',n:'يوناني',r:'أوروبي',c:280,desc:'الموساكا والسوفلاكي'},
+  {id:'tur',f:'🇹🇷',n:'تركي',r:'أوروبي',c:310,desc:'الكباب والبوريك والبقلاوة'},
+  {id:'gbr',f:'🇬🇧',n:'بريطاني',r:'أوروبي',c:220,desc:'الفيش آند تشيبس والباي'},
+  {id:'deu',f:'🇩🇪',n:'ألماني',r:'أوروبي',c:200,desc:'السجق والبريتزل والشنيتزل'},
+  {id:'prt',f:'🇵🇹',n:'برتغالي',r:'أوروبي',c:190,desc:'الباكالهاو والباستيل دي ناتا'},
+  {id:'bel',f:'🇧🇪',n:'بلجيكي',r:'أوروبي',c:150,desc:'الوافل والبطاطس المقلية'},
+  {id:'jpn',f:'🇯🇵',n:'ياباني',r:'آسيوي',c:490,desc:'السوشي والراميان والتمبورا'},
+  {id:'chn',f:'🇨🇳',n:'صيني',r:'آسيوي',c:520,desc:'الديم سام والكونغ باو والدمبلينغ'},
+  {id:'ind',f:'🇮🇳',n:'هندي',r:'آسيوي',c:480,desc:'الكاري والبيرياني والتيكا ماسالا'},
+  {id:'tha',f:'🇹🇭',n:'تايلاندي',r:'آسيوي',c:360,desc:'البادتاي والتوم يام والكاري'},
+  {id:'kor',f:'🇰🇷',n:'كوري',r:'آسيوي',c:320,desc:'البيبيمباب والكيمتشي والبولغوغي'},
+  {id:'vnm',f:'🇻🇳',n:'فيتنامي',r:'آسيوي',c:280,desc:'الفو والبانه مي والسبرينغ رول'},
+  {id:'idn',f:'🇮🇩',n:'إندونيسي',r:'آسيوي',c:240,desc:'الناسي غورينغ والساتاي والرندانغ'},
+  {id:'mys',f:'🇲🇾',n:'ماليزي',r:'آسيوي',c:200,desc:'الناسي ليماك واللاكسا'},
+  {id:'mex',f:'🇲🇽',n:'مكسيكي',r:'أمريكي',c:410,desc:'التاكو والغواكامولي والنتشوز'},
+  {id:'usa',f:'🇺🇸',n:'أمريكي',r:'أمريكي',c:350,desc:'البرغر والباربيكيو والماك أند تشيز'},
+  {id:'bra',f:'🇧🇷',n:'برازيلي',r:'أمريكي',c:280,desc:'الفيجواد والشوراسكو والأكاي'},
+  {id:'per',f:'🇵🇪',n:'بيروفي',r:'أمريكي',c:200,desc:'السيفيتشي والأنتيكوتشوس'},
+  {id:'col',f:'🇨🇴',n:'كولومبي',r:'أمريكي',c:170,desc:'الباندخا باييسا والأريبا'},
+  {id:'arg',f:'🇦🇷',n:'أرجنتيني',r:'أمريكي',c:180,desc:'الأسادو والإمباناداس والماتي'},
+  {id:'eth',f:'🇪🇹',n:'إثيوبي',r:'أفريقي',c:180,desc:'الإنجيرة والتيبس والدوروواوت'},
+  {id:'nga',f:'🇳🇬',n:'نيجيري',r:'أفريقي',c:160,desc:'الجولوف رايس والإيغوسي'},
+  {id:'gha',f:'🇬🇭',n:'غاني',r:'أفريقي',c:140,desc:'الجولوف والفوفو والكينكي'},
+  {id:'zaf',f:'🇿🇦',n:'جنوب أفريقي',r:'أفريقي',c:150,desc:'البوتجي والبوبوتي والبيلتونغ'},
+  {id:'hlw',f:'🍰',n:'حلويات',r:'حلويات',c:700,desc:'من كل مطابخ العالم'},
+  {id:'veg',f:'🥗',n:'صحي ونباتي',r:'صحي',c:450,desc:'وصفات خفيفة ومغذية'},
+  {id:'fst',f:'⚡',n:'سريع ≤30 دق',r:'سريع',c:520,desc:'للوقت المحدود'},
+  {id:'rmdn',f:'🌙',n:'رمضان',r:'رمضان',c:380,desc:'حلويات وأطباق رمضانية'},
+];
+
+const RECIPES=[
+  {id:'r01',cid:'mgh',f:'🇲🇦',r:'عربي',cat:'مغربي',em:'🍲',
+   img:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&q=75',
+   ti:'الكسكس المغربي الملكي بسبع خضروات',de:'الكسكس الأصيل بالدجاج والخضار — سر الجدات المغربيات في طبق واحد.',
+   tm:'90 دق',sv:6,df:'m',rt:4.9,rv:2847,
+   ing:[{q:'500غ',n:'سميد الكسكس',nt:'متوسط الحبة'},{q:'1كغ',n:'دجاج مقطع'},{q:'3 حبات',n:'جزر'},{q:'2',n:'كوسة خضراء'},{q:'1',n:'لفت أبيض'},{q:'1 علبة',n:'حمص مسلوق'},{q:'زعفران',n:'وكمون وكركم وزنجبيل'}],
+   steps:[{t:'تبّلي الدجاج بالزعفران والكمون والكركم والثوم والزيت، اتركيه 30 دقيقة.',tp:'الزعفران المنقوع في ماء فاتر يعطي لوناً أعمق'},{t:'قلّبي الدجاج مع البصل حتى يصبح ذهبياً، غطّيه بالماء واطهيه 20 دقيقة.',tp:''},{t:'أضيفي الجزر واللفت أولاً، ثم الكوسة والحمص بعد 10 دقائق.',tp:'الخضروات الصلبة تحتاج وقتاً أطول'},{t:'بخّري الكسكس على البخار ثلاث مرات، فككيه بالزبدة بين كل مرة.',tp:'ثلاث مرات تبخير = كسكس خفيف كالريش'},{t:'قدّمي في صحن كبير والمرق في وعاء جانبي.',tp:''}],
+   tips:[{i:'🌟',t:'فككي الكسكس بيديك مع الزبدة بين كل مرحلة'},{i:'⏰',t:'التبخير الثلاثي غير قابل للاختصار'},{i:'💡',t:'اليقطين الأصفر يضيف حلاوة رائعة'}],
+   nut:{cal:420,pro:32,carb:55,fat:12},kw:['كسكس','مغربي','تقليدي']},
+
+  {id:'r02',cid:'mgh',f:'🇲🇦',r:'عربي',cat:'مغربي',em:'🫕',
+   img:'https://images.unsplash.com/photo-1585937421612-70a008356c36?w=500&q=75',
+   ti:'طاجين الدجاج بالليمون المخلل والزيتون',de:'الطاجين الكلاسيكي — توازن مثالي بين الحموضة والملوحة.',
+   tm:'75 دق',sv:4,df:'m',rt:4.8,rv:2100,
+   ing:[{q:'1كغ',n:'دجاج'},{q:'2',n:'ليمون مخلل'},{q:'200غ',n:'زيتون أخضر'},{q:'زعفران',n:'وزنجبيل وكمون'}],
+   steps:[{t:'تبّلي الدجاج بالتوابل واتركيه يتشرب النكهات.',tp:''},{t:'اطهي البصل حتى يذبل ثم أضيفي الدجاج.',tp:''},{t:'الطهي 45 دقيقة على نار هادئة مغطى.',tp:'النار الهادئة سر الطاجين'},{t:'الليمون المخلل والزيتون في آخر 15 دقيقة.',tp:''}],
+   tips:[{i:'🍋',t:'الليمون المخلل محلي الصنع أفضل'},{i:'🔥',t:'الطاجين الفخاري يحافظ على الحرارة'}],
+   nut:{cal:350,pro:34,fat:18,carb:12},kw:['طاجين','مغربي']},
+
+  {id:'r03',cid:'ita',f:'🇮🇹',r:'أوروبي',cat:'إيطالي',em:'🍝',
+   img:'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=500&q=75',
+   ti:'كاربونارا الرومية الأصيلة — بدون كريمة',de:'الكاربونارا الحقيقية: بيض وجبن بيكورينو فقط، بدون كريمة أبداً.',
+   tm:'25 دق',sv:2,df:'e',rt:4.9,rv:5200,
+   ing:[{q:'200غ',n:'معكرونة سباغيتي'},{q:'100غ',n:'غوانتشالي أو بانتشيتا'},{q:'3',n:'صفار بيض'},{q:'1 بيضة',n:'كاملة'},{q:'80غ',n:'جبن بيكورينو رومانو مبشور'},{q:'فلفل أسود',n:'مطحون طازجاً'}],
+   steps:[{t:'اسلقي المعكرونة في ماء مالح حتى تصبح al dente.',tp:'احتفظي بكوب من ماء السلق'},{t:'اقلي الغوانتشالي حتى يتقرمش.',tp:''},{t:'اخفقي البيض مع الجبن والفلفل.',tp:'البيض يجب أن يكون في درجة الغرفة'},{t:'أضيفي المعكرونة الساخنة إلى البيض مع ماء السلق.',tp:'البخار يطهو البيض دون أن يتحول لعجة'}],
+   tips:[{i:'🥚',t:'البيض يطهى بحرارة المعكرونة فقط — لا تضعيها على النار'},{i:'🧀',t:'بيكورينو رومانو وليس بارميزان — هذا الفرق'}],
+   nut:{cal:580,pro:28,carb:65,fat:24},kw:['كاربونارا','إيطالي','باستا']},
+
+  {id:'r04',cid:'jpn',f:'🇯🇵',r:'آسيوي',cat:'ياباني',em:'🍜',
+   img:'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500&q=75',
+   ti:'راميان الدجاج الياباني — مرق يطهو 8 ساعات',de:'راميان حقيقي بمرق عميق النكهة ومكونات مدروسة — طبق اليابان الأول.',
+   tm:'480 دق',sv:4,df:'h',rt:4.9,rv:4100,
+   ing:[{q:'1.5 كغ',n:'هيكل دجاج'},{q:'400غ',n:'شرائح لحم خنزير (أو بقر)'},{q:'4 حزم',n:'معكرونة راميان'},{q:'6',n:'بيض مطهو ناعماً'},{q:'200غ',n:'خيزران مخلل (ميتشي)'},{q:'أوراق',n:'نوري (طحلب بحري)'},{q:'بصل اخضر',n:'ومالت متبل'}],
+   steps:[{t:'اشوي عظام الدجاج حتى تتحمر (220 درجة، 30 دقيقة).',tp:'التحمير يعطي المرق عمقاً'},{t:'اغلي العظام مع الثوم والزنجبيل والبصل 6-8 ساعات.',tp:'النار الهادئة تعطي مرقاً أنقى'},{t:'صفّي المرق وتبّليه بصلصة الصويا والمالت.',tp:''},{t:'اسلقي المعكرونة واغمسي البيض في الصلصة 4 ساعات.',tp:'البيض الممزوج لا يُعوَّض'},{t:'قدّمي المعكرونة في المرق مع جميع الإضافات.',tp:''}],
+   tips:[{i:'⏰',t:'وقت المرق يصنع الفارق — لا تختصري'},{i:'🥚',t:'البيض يُنقع في صلصة الصويا 4 ساعات للحصول على لونه'}],
+   nut:{cal:620,pro:42,carb:58,fat:28},kw:['راميان','ياباني','مرق']},
+
+  {id:'r05',cid:'mex',f:'🇲🇽',r:'أمريكي',cat:'مكسيكي',em:'🌮',
+   img:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&q=75',
+   ti:'تاكو الغواكامولي والدجاج المتبل',de:'تاكو مكسيكي حقيقي بدجاج متبل بالشيبوتلي وغواكامولي طازج.',
+   tm:'35 دق',sv:4,df:'e',rt:4.8,rv:3600,
+   ing:[{q:'600غ',n:'دجاج'},{q:'3',n:'شيبوتلي في صلصة أدوبو'},{q:'3',n:'أفوكادو ناضج'},{q:'2',n:'طماطم'},{q:'1',n:'ليمون أخضر'},{q:'8 قطع',n:'خبز التاكو الصغير'}],
+   steps:[{t:'تبّلي الدجاج بالشيبوتلي والكمون والثوم، اشوي على نار عالية.',tp:''},{t:'الغواكامولي: اهرسي الأفوكادو مع الطماطم والبصل والكزبرة والليمون.',tp:'أبقي قطع الأفوكادو كبيرة قليلاً'},{t:'دفّئي خبز التاكو على صاج جاف.',tp:''},{t:'قدّمي الدجاج في التاكو مع الغواكامولي والكزبرة.',tp:''}],
+   tips:[{i:'🥑',t:'الغواكامولي يتحول لبني — أضيفي بذرة الأفوكادو في الوعاء لإبطائه'},{i:'🌶️',t:'الشيبوتلي يختلف عن الفلفل الحار العادي — البخر يميزه'}],
+   nut:{cal:390,pro:30,carb:35,fat:16},kw:['تاكو','مكسيكي','غواكامولي']},
+
+  {id:'r06',cid:'ind',f:'🇮🇳',r:'آسيوي',cat:'هندي',em:'🍛',
+   img:'https://images.unsplash.com/photo-1585937421612-70a008356c36?w=500&q=75',
+   ti:'باتر تشيكن — كاري الزبدة الهندي الكريمي',de:'كاري الدجاج الكريمي بصلصة الطماطم والزبدة والقشدة — أشهر طبق هندي عالمياً.',
+   tm:'55 دق',sv:4,df:'e',rt:4.8,rv:6100,
+   ing:[{q:'800غ',n:'دجاج مكعبات'},{q:'400غ',n:'صلصة طماطم'},{q:'200مل',n:'قشدة'},{q:'3 ملاعق',n:'زبدة'},{q:'2',n:'بصل كبير'},{q:'تشيكن ماسالا',n:'وزنجبيل وثوم'}],
+   steps:[{t:'تبّلي الدجاج باليوغرت والتوابل (ماريناد)، اشوي في الفرن 20 دقيقة.',tp:''},{t:'اقلي البصل حتى يذهب ثم أضيفي الثوم والزنجبيل.',tp:''},{t:'أضيفي صلصة الطماطم والزبدة وخلي حتى تتكثف.',tp:''},{t:'أضيفي الدجاج والقشدة وخلي 15 دقيقة.',tp:'لا تغلي بعد إضافة القشدة'},{t:'قدّمي مع الأرز الباسمتي أو الخبز النان.',tp:''}],
+   tips:[{i:'🧈',t:'الزبدة تُضاف في نهاية الطهي لتعطي لمعة'},{i:'🌶️',t:'اضبطي حدة التوابل حسب ذوقك'}],
+   nut:{cal:450,pro:35,carb:22,fat:26},kw:['باتر تشيكن','هندي','كاري']},
+
+  {id:'r07',cid:'fra',f:'🇫🇷',r:'أوروبي',cat:'فرنسي',em:'🥐',
+   img:'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=75',
+   ti:'كروسون باريسي بالزبدة — 36 طبقة',de:'الكروسون الفرنسي الأصيل بـ36 طبقة من العجين والزبدة — فن الخبازة الفرنسي.',
+   tm:'240 دق',sv:8,df:'h',rt:4.7,rv:1800,
+   ing:[{q:'500غ',n:'دقيق قوي'},{q:'250غ',n:'زبدة فرنسية باردة'},{q:'10غ',n:'خميرة جافة'},{q:'10غ',n:'ملح'},{q:'50غ',n:'سكر'},{q:'300مل',n:'حليب دافئ'}],
+   steps:[{t:'اعجني الدقيق مع الخميرة والملح والسكر والحليب حتى تتماسك.',tp:''},{t:'أتركي العجين يرتاح في الثلاجة ساعة.',tp:'البرودة سر الطبقات'},{t:'ابسطي العجين وضعي لوح الزبدة البارد في المنتصف، طوّعيه.',tp:'الزبدة يجب أن تبقى باردة طوال الوقت'},{t:'كرّري الطي والبسط 6 مرات مع راحة في الثلاجة.',tp:'كل طية تضاعف الطبقات'},{t:'شكّلي الكروسون واتركيه ليرتاح ساعتين.',tp:''},{t:'اخبزي 180 درجة 20 دقيقة.',tp:''}],
+   tips:[{i:'🧈',t:'الزبدة الفرنسية (82% دهن) غير قابلة للاستبدال'},{i:'❄️',t:'البرودة في كل خطوة = طبقات مثالية'}],
+   nut:{cal:380,pro:8,carb:42,fat:22},kw:['كروسون','فرنسي','خبز']},
+
+  {id:'r08',cid:'hlw',f:'🍰',r:'حلويات',cat:'حلويات',em:'🍮',
+   img:'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&q=75',
+   ti:'كنافة نابلسية بالجبن العكاوي وقطر العسل',de:'ملكة الحلويات الشرقية — عجينة الخيط الذهبية والجبن المطاطي وقطر السكر.',
+   tm:'55 دق',sv:8,df:'m',rt:4.9,rv:5630,
+   ing:[{q:'500غ',n:'عجينة الخيط'},{q:'500غ',n:'جبن عكاوي منقوع'},{q:'150غ',n:'سمن مذاب'},{q:'2 كوب',n:'سكر للقطر'},{q:'ماء زهر',n:'وفستق حلبي'}],
+   steps:[{t:'القطر: سكر وماء 10 دقائق ثم ماء الزهر — يبرد جانباً.',tp:'القطر البارد على الكنافة الساخنة فقط'},{t:'انقعي الجبن لإزالة الملح ساعتين.',tp:''},{t:'وزعي نصف العجينة في الصينية مع السمن، ثم الجبن، ثم الباقي.',tp:''},{t:'اخبزي 200 درجة 25 دقيقة حتى تتحمر.',tp:''},{t:'اقلبي وصبّي القطر البارد فوراً، رشّي الفستق.',tp:'الاندفاع الحراري يتشرب القطر'}],
+   tips:[{i:'🧀',t:'إذا لم تجدي عكاوي: موتزاريلا + جبن قريش 50/50'},{i:'🌡️',t:'الكنافة تُقدَّم دافئة دوماً'}],
+   nut:{cal:520,pro:14,carb:68,fat:22},kw:['كنافة','نابلسية','حلويات']},
+
+  {id:'r09',cid:'kor',f:'🇰🇷',r:'آسيوي',cat:'كوري',em:'🍚',
+   img:'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=500&q=75',
+   ti:'بيبيمباب — الأرز الكوري الملون بسبع خضار',de:'وعاء الأرز الكوري الشهير مع سبع خضروات وصلصة الغوتشوغانغ الحارة.',
+   tm:'40 دق',sv:2,df:'e',rt:4.7,rv:2900,
+   ing:[{q:'2 كوب',n:'أرز ياباني'},{q:'سبانخ',n:'وفطر وجزر وكوسة وفجل'},{q:'2 بيضة',n:''},{q:'صلصة',n:'غوتشوغانغ (حار)'},{q:'زيت',n:'سمسم وبذور السمسم'}],
+   steps:[{t:'اطهي كل خضار على حدة لدقيقتين مع الملح وزيت السمسم.',tp:'كل خضار لها شخصيتها'},{t:'قلي البيضة على الطريقة الكورية — صفار سائل.',tp:''},{t:'رتّبي الخضار فوق الأرز بألوان جميلة.',tp:'البيبيمباب يُؤكل بالعين أولاً'},{t:'أضيفي صلصة الغوتشوغانغ والبيضة، اخلطي عند التقديم.',tp:''}],
+   tips:[{i:'🔴',t:'الغوتشوغانغ مختلف عن الفلفل العادي — حار وحلو ومخمر'},{i:'🍳',t:'الوعاء الحجري (دولسوت) يجعل الأرز السفلي مقرمشاً'}],
+   nut:{cal:380,pro:16,carb:62,fat:10},kw:['بيبيمباب','كوري','أرز']},
+
+  {id:'r10',cid:'hlw',f:'🍰',r:'حلويات',cat:'حلويات',em:'🍫',
+   img:'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=500&q=75',
+   ti:'براوني الشوكولاتة الداكنة — هشة من الخارج طرية من الداخل',de:'البراوني المثالي بشوكولاتة 70% وزبدة بنية — سر القرمشة من الخارج.',
+   tm:'35 دق',sv:16,df:'e',rt:4.9,rv:8200,
+   ing:[{q:'200غ',n:'شوكولاتة داكنة 70%'},{q:'150غ',n:'زبدة'},{q:'200غ',n:'سكر'},{q:'3',n:'بيضات'},{q:'80غ',n:'دقيق'},{q:'30غ',n:'كاكاو'}],
+   steps:[{t:'اذيبي الشوكولاتة مع الزبدة على البخار.',tp:''},{t:'أضيفي السكر ثم البيض بيضة بيضة.',tp:'لا تخلطي بشدة'},{t:'أضيفي الدقيق والكاكاو بالمصفاة.',tp:''},{t:'اخبزي 180 درجة 20-22 دقيقة فقط.',tp:'المنتصف يجب أن يبقى طرياً قليلاً'}],
+   tips:[{i:'🍫',t:'جودة الشوكولاتة تصنع كل الفرق — 70% كحد أدنى'},{i:'⏰',t:'أقل دقيقتين يعني براوني رطب أكثر — حسب ذوقك'}],
+   nut:{cal:220,pro:4,carb:28,fat:12},kw:['براوني','شوكولاتة','حلويات']},
+
+  {id:'r11',cid:'veg',f:'🥗',r:'صحي',cat:'صحي',em:'🥗',
+   img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=75',
+   ti:'سلطة أطباق البوديه — كينوا وأفوكادو وإدامامي',de:'بوديه بول غني بالبروتين النباتي والدهون الصحية — وجبة كاملة في وعاء.',
+   tm:'20 دق',sv:1,df:'e',rt:4.6,rv:1900,
+   ing:[{q:'½ كوب',n:'كينوا مطبوخة'},{q:'1',n:'أفوكادو'},{q:'½ كوب',n:'إدامامي مسلوق'},{q:'1 حبة',n:'جزر مبشور'},{q:'خضروات',n:'ورقية مختلطة'},{q:'صلصة',n:'تاهيني ومسيبو (صلصة مثيرة)'}],
+   steps:[{t:'جهّزي الكينوا مسبقاً (تحتاج 15 دقيقة).',tp:''},{t:'رتّبي جميع المكونات في وعاء بشكل جمالي.',tp:'اللون يفتح الشهية'},{t:'صلصة التاهيني: تاهيني + ليمون + ثوم + ماء.',tp:''},{t:'صبّي الصلصة عند التقديم.',tp:''}],
+   tips:[{i:'💪',t:'35غ بروتين نباتي في وعاء واحد'},{i:'🎨',t:'الألوان المتنوعة = فيتامينات متنوعة'}],
+   nut:{cal:420,pro:22,carb:45,fat:18},kw:['صحي','كينوا','نباتي','بوديه']},
+
+  {id:'r12',cid:'esp',f:'🇪🇸',r:'أوروبي',cat:'إسباني',em:'🥘',
+   img:'https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=500&q=75',
+   ti:'بايلا بالمأكولات البحرية — الوصفة الفالنسية',de:'بايلا إسبانية بالجمبري والبطلينوس والكاليماري على قاعدة الأرز المعصفر.',
+   tm:'60 دق',sv:6,df:'m',rt:4.8,rv:3100,
+   ing:[{q:'400غ',n:'أرز باييا'},{q:'300غ',n:'جمبري'},{q:'300غ',n:'بطلينوس'},{q:'200غ',n:'كاليماري'},{q:'زعفران',n:'وبابريكا وطماطم'},{q:'مرق',n:'سمك أو دجاج'}],
+   steps:[{t:'قلّبي الثوم والطماطم في الزيت.',tp:''},{t:'أضيفي البابريكا والأرز وقلّبي.',tp:''},{t:'صبّي المرق مع الزعفران ولا تحركي بعد ذلك.',tp:'البايلا لا تُحرَّك — هذا هو الفرق'},{t:'رتّبي المأكولات البحرية فوق الأرز.',tp:''},{t:'غطّي وأتمّي الطهي 20 دقيقة.',tp:'الطبقة الذهبية في الأسفل (سوكاراتا) هي الأفضل'}],
+   tips:[{i:'🌿',t:'الزعفران الإسباني هو الأفضل عالمياً'},{i:'🔥',t:'نار قوية في البداية ثم منخفضة جداً'}],
+   nut:{cal:480,pro:32,carb:58,fat:14},kw:['بايلا','إسباني','مأكولات بحرية']},
+
+  {id:'r13',cid:'usa',f:'🇺🇸',r:'أمريكي',cat:'أمريكي',em:'🍔',
+   img:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=75',
+   ti:'برغر الباربيكيو الأمريكي بصوص الدخان',de:'برغر أمريكي كلاسيكي بصلصة الباربيكيو المدخنة والجبن التشيدر المذاب.',
+   tm:'30 دق',sv:4,df:'e',rt:4.7,rv:4800,
+   ing:[{q:'600غ',n:'لحم بقر مفروم (80% دهن)'},{q:'4 قطع',n:'خبز برغر'},{q:'4 شرائح',n:'جبن تشيدر'},{q:'صلصة',n:'باربيكيو'},{q:'خس وطماطم',n:'وخيار مخلل وبصل'}],
+   steps:[{t:'شكّلي كرات اللحم (150غ) واضغطي في المنتصف لمنع الانتفاخ.',tp:'الدهن 80% يجعل اللحم كثيراً'},{t:'شوّي على نار عالية جداً 3 دق كل جانب.',tp:'لا تضغطي على اللحم'},{t:'ضعي الجبن فوق اللحم واغلقي الغطاء 30 ثانية للإذابة.',tp:''},{t:'ادهني الخبز بالزبدة وأشوي حتى يتحمر.',tp:''},{t:'ارتّبي الطبقات: خبز + صلصة + خس + لحم + خيار + بصل.',tp:''}],
+   tips:[{i:'🔥',t:'الحرارة العالية = قرمشة خارجية مثالية'},{i:'🧀',t:'الجبن يُذاب بالبخار وليس بالفرن'}],
+   nut:{cal:650,pro:40,carb:42,fat:34},kw:['برغر','أمريكي','باربيكيو']},
+
+  {id:'r14',cid:'tha',f:'🇹🇭',r:'آسيوي',cat:'تايلاندي',em:'🍲',
+   img:'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=500&q=75',
+   ti:'توم يام الجمبري التايلاندي الحار والحامض',de:'حساء التايلاند الوطني — حار وحامض ومعطر بليمون الغرا والليمون وورق الكفير.',
+   tm:'30 دق',sv:4,df:'m',rt:4.8,rv:3400,
+   ing:[{q:'400غ',n:'جمبري مقشر'},{q:'2 ساق',n:'ليمون غرا مهروسة'},{q:'4 أوراق',n:'كفير ليم'},{q:'2 فلفل',n:'حار أحمر'},{q:'200غ',n:'فطر'},{q:'صلصة',n:'سمك وليمون'}],
+   steps:[{t:'اغلي 1.5 لتر ماء مع ليمون الغرا وأوراق الكفير والفلفل.',tp:'هذا القاعدة العطرية'},{t:'أضيفي الفطر والجمبري.',tp:'الجمبري لا يحتاج أكثر من 3 دقائق'},{t:'تبّلي بصلصة السمك وعصير الليمون.',tp:''},{t:'قدّمي مع الكزبرة الطازجة.',tp:''}],
+   tips:[{i:'🍋',t:'عصير الليمون دائماً في آخر لحظة'},{i:'🌶️',t:'الفلفل الحار للنكهة — أزيليه قبل التقديم'}],
+   nut:{cal:180,pro:24,carb:8,fat:6},kw:['توم يام','تايلاندي','حساء']},
+
+  {id:'r15',cid:'fst',f:'⚡',r:'سريع',cat:'سريع',em:'🥞',
+   img:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=75',
+   ti:'بانكيك الفلوفي اليابانية — 3 مكونات فقط',de:'البانكيك اليابانية السميكة والناعمة في 15 دقيقة — 3 مكونات فقط.',
+   tm:'15 دق',sv:2,df:'e',rt:4.8,rv:7100,
+   ing:[{q:'2',n:'بيضة (مفصولة)'},{q:'2 ملعقة',n:'دقيق'},{q:'1 ملعقة',n:'سكر'}],
+   steps:[{t:'افصلي البياض عن الصفار، اخفقي البياض حتى يكوّن قمماً صلبة.',tp:'قمم صلبة = فلوفي مضمون'},{t:'اخلطي الصفار مع الدقيق والسكر.',tp:''},{t:'أضيفي البياض للصفار بلطف بحركة قطع لأعلى.',tp:'لا تفرطي في الخلط'},{t:'اطهي على نار منخفضة جداً مع الغطاء 4 دقائق.',tp:'البخار يحافظ على الارتفاع'}],
+   tips:[{i:'🥚',t:'سر الفلوفي كله في البياض المخفوق جيداً'},{i:'🔥',t:'نار خافتة جداً — هذه الوصفة لا تتسامح مع النار الحامية'}],
+   nut:{cal:120,pro:8,carb:14,fat:4},kw:['بانكيك','سريع','إفطار','ياباني']},
+
+  {id:'r16',cid:'egy',f:'🇪🇬',r:'عربي',cat:'مصري',em:'🫘',
+   img:'https://images.unsplash.com/photo-1551326844-4df70f78d0e9?w=500&q=75',
+   ti:'كشري مصري بصوص الطماطم الحار والبصل المقرمش',de:'ملك الأكل الشعبي المصري — أرز وعدس ومكرونة وبصل مقرمش وصوص لذيذ.',
+   tm:'60 دق',sv:6,df:'e',rt:4.7,rv:4200,
+   ing:[{q:'2 كوب',n:'أرز'},{q:'1 كوب',n:'عدس بني'},{q:'250غ',n:'مكرونة'},{q:'4',n:'بصل كبير للتقرمش'},{q:'6 حبات',n:'طماطم للصوص'},{q:'خل',n:'وثوم وفلفل حار'}],
+   steps:[{t:'اطبخي الأرز والعدس منفصلين.',tp:''},{t:'صوص الطماطم: ثوم + طماطم + خل + شطة 20 دقيقة.',tp:'الخل يعطي حموضة مميزة'},{t:'البصل: اقلي في زيت كثير حتى يصبح بني مقرمش.',tp:'يجب أن يكون مقرمشاً تماماً'},{t:'اسلقي المكرونة.',tp:''},{t:'قدّمي طبقات: أرز وعدس، مكرونة، صوص، بصل مقرمش.',tp:''}],
+   tips:[{i:'🧅',t:'البصل المقرمش هو روح الكشري — لا تتساهلي فيه'},{i:'🍅',t:'الصوص يُحفظ في الثلاجة أسبوعاً'}],
+   nut:{cal:480,pro:18,carb:82,fat:8},kw:['كشري','مصري','شعبي']},
+];
+
+// ═══ VIDEO DATA ═══
+const VIDS=[
+  {id:'v01',pl:'tt',dur:'2:34',views:'4.2M',likes:'380K',em:'🍝',
+   asp:'portrait',thumb:'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=400&q=70',
+   ch:'@ChefMario',chav:'👨‍🍳',title:'طريقة كاربونارا الأصيلة بدون كريمة 🍝 #إيطالي #باستا',
+   tags:['إيطالي','باستا','سريع'],hot:true,loc:'روما، إيطاليا',cat:['أوروبي','سريع','باستا']},
+  {id:'v02',pl:'yt',dur:'12:18',views:'890K',likes:'45K',em:'🍜',
+   asp:'landscape',thumb:'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400&q=70',
+   ch:'RamenMaster',chav:'🍜',title:'راميان مرق 8 ساعات | الراميان الياباني الأصيل',
+   tags:['ياباني','راميان','مرق'],hot:false,loc:'طوكيو، اليابان',cat:['آسيوي','ياباني']},
+  {id:'v03',pl:'ig',dur:'0:45',views:'2.1M',likes:'190K',em:'🥘',
+   asp:'portrait',thumb:'https://images.unsplash.com/photo-1534080564583-6be75777b70a?w=400&q=70',
+   ch:'@SpainFoodie',chav:'🇪🇸',title:'بايلا فالنسية حقيقية 🥘✨ #إسباني #بحرية',
+   tags:['إسباني','بايلا'],hot:true,loc:'فالنسيا، إسبانيا',cat:['أوروبي','بحري']},
+  {id:'v04',pl:'tt',dur:'1:12',views:'8.7M',likes:'720K',em:'🍰',
+   asp:'portrait',thumb:'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&q=70',
+   ch:'@SweetsByNour',chav:'👩‍🍳',title:'كنافة نابلسية في البيت 🧡 #كنافة #حلويات #عربي',
+   tags:['حلويات','عربي','كنافة'],hot:true,loc:'نابلس، فلسطين',cat:['حلويات','عربي']},
+  {id:'v05',pl:'yt',dur:'8:22',views:'540K',likes:'28K',em:'🌮',
+   asp:'landscape',thumb:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=70',
+   ch:'MexicanKitchen',chav:'🇲🇽',title:'تاكو الشوارع المكسيكي الأصيل | وصفة سرية',
+   tags:['مكسيكي','تاكو'],hot:false,loc:'مكسيكو سيتي',cat:['أمريكي','مكسيكي']},
+  {id:'v06',pl:'pin',dur:'3:15',views:'1.4M',likes:'95K',em:'🍛',
+   asp:'portrait',thumb:'https://images.unsplash.com/photo-1585937421612-70a008356c36?w=400&q=70',
+   ch:'IndiaFlavors',chav:'🇮🇳',title:'باتر تشيكن أحسن من المطعم | الوصفة الأصلية',
+   tags:['هندي','كاري'],hot:false,loc:'دلهي، الهند',cat:['آسيوي','هندي']},
+  {id:'v07',pl:'tt',dur:'0:58',views:'6.3M',likes:'550K',em:'🥐',
+   asp:'portrait',thumb:'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=400&q=70',
+   ch:'@ParisBoulanger',chav:'👨‍🍳',title:'كروسون بـ36 طبقة 🥐🇫🇷 من مطبخي #فرنسي',
+   tags:['فرنسي','خبز'],hot:true,loc:'باريس، فرنسا',cat:['أوروبي','فرنسي','خبز']},
+  {id:'v08',pl:'ig',dur:'1:30',views:'3.8M',likes:'310K',em:'🍮',
+   asp:'square',thumb:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&q=70',
+   ch:'@MaghrebCuisine',chav:'🇲🇦',title:'كسكس الجمعة التقليدي 🇲🇦 مع جميع الأسرار',
+   tags:['مغربي','عربي'],hot:false,loc:'مراكش، المغرب',cat:['عربي','مغربي']},
+  {id:'v09',pl:'yt',dur:'15:40',views:'2.2M',likes:'88K',em:'🍕',
+   asp:'landscape',thumb:'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=70',
+   ch:'NaplesPizza',chav:'🍕',title:'بيتزا نابوليتانية في الفرن العادي | تقنية الشيف',
+   tags:['إيطالي','بيتزا'],hot:true,loc:'نابولي، إيطاليا',cat:['أوروبي','إيطالي']},
+  {id:'v10',pl:'tt',dur:'0:42',views:'12.1M',likes:'1.1M',em:'🥞',
+   asp:'portrait',thumb:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400&q=70',
+   ch:'@FlufffyPancakes',chav:'✨',title:'بانكيك 3 مكونات فقط 😱 #سريع #إفطار',
+   tags:['سريع','إفطار'],hot:true,loc:'',cat:['سريع','حلويات']},
+  {id:'v11',pl:'fb',dur:'6:12',views:'780K',likes:'42K',em:'🥗',
+   asp:'landscape',thumb:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=70',
+   ch:'HealthyArab',chav:'🥗',title:'بوديه بول عربي صحي | وجبة متكاملة 30 دقيقة',
+   tags:['صحي','نباتي'],hot:false,loc:'دبي',cat:['صحي','عربي']},
+  {id:'v12',pl:'tt',dur:'1:05',views:'5.4M',likes:'460K',em:'🍚',
+   asp:'portrait',thumb:'https://images.unsplash.com/photo-1580822184713-fc5400e7fe10?w=400&q=70',
+   ch:'@SeoulEats',chav:'🇰🇷',title:'بيبيمباب في 5 دقائق 🍚🔴 #كوري #سريع',
+   tags:['كوري','سريع'],hot:true,loc:'سيول، كوريا',cat:['آسيوي','كوري']},
+  {id:'v13',pl:'ig',dur:'2:48',views:'1.9M',likes:'150K',em:'🫕',
+   asp:'portrait',thumb:'https://images.unsplash.com/photo-1601050690597-df0568f70950?w=400&q=70',
+   ch:'@MoroccanChef',chav:'🇲🇦',title:'طاجين الليمون والزيتون بأسرار الجدة 🇲🇦✨',
+   tags:['مغربي','عربي'],hot:false,loc:'فاس، المغرب',cat:['عربي','مغربي']},
+  {id:'v14',pl:'yt',dur:'9:55',views:'1.1M',likes:'62K',em:'🍫',
+   asp:'landscape',thumb:'https://images.unsplash.com/photo-1606313564200-e75d5e30476c?w=400&q=70',
+   ch:'ChocolateStudio',chav:'🍫',title:'براوني شوكولاتة المقطوع يقطر | الوصفة المثالية',
+   tags:['حلويات','شوكولاتة'],hot:false,loc:'',cat:['حلويات']},
+  {id:'v15',pl:'tt',dur:'0:55',views:'9.2M',likes:'840K',em:'🍔',
+   asp:'portrait',thumb:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&q=70',
+   ch:'@BurgerKingdom',chav:'🍔',title:'برغر أحسن من ماكدونالدز 🍔😤 #أمريكي',
+   tags:['أمريكي','سريع'],hot:true,loc:'نيويورك',cat:['أمريكي','سريع']},
+  {id:'v16',pl:'pin',dur:'4:20',views:'650K',likes:'38K',em:'🍲',
+   asp:'square',thumb:'https://images.unsplash.com/photo-1548943487-a2e4e43b4853?w=400&q=70',
+   ch:'ThaiKitchenPro',chav:'🇹🇭',title:'توم يام جمبري | الحساء التايلاندي الأشهر',
+   tags:['تايلاندي','حساء'],hot:false,loc:'بانكوك',cat:['آسيوي','تايلاندي']},
+];
+
+const PLATS=[
+  {id:'all',lbl:'الكل',ico:'🌐',cls:'all'},
+  {id:'tt',lbl:'TikTok',ico:'🎵',cls:'tt'},
+  {id:'yt',lbl:'YouTube',ico:'▶️',cls:'yt'},
+  {id:'ig',lbl:'Instagram',ico:'📷',cls:'ig'},
+  {id:'fb',lbl:'Facebook',ico:'📘',cls:'fb'},
+  {id:'pin',lbl:'Pinterest',ico:'📌',cls:'pin'},
+];
+
+const VF_TAGS=[
+  {id:'all',lbl:'🌐 الكل'},
+  {id:'عربي',lbl:'🌙 عربي'},
+  {id:'مغربي',lbl:'🇲🇦 مغربي'},
+  {id:'إيطالي',lbl:'🇮🇹 إيطالي'},
+  {id:'آسيوي',lbl:'🌏 آسيوي'},
+  {id:'ياباني',lbl:'🇯🇵 ياباني'},
+  {id:'هندي',lbl:'🇮🇳 هندي'},
+  {id:'كوري',lbl:'🇰🇷 كوري'},
+  {id:'أوروبي',lbl:'🌍 أوروبي'},
+  {id:'أمريكي',lbl:'🌎 أمريكي'},
+  {id:'حلويات',lbl:'🍰 حلويات'},
+  {id:'صحي',lbl:'🥗 صحي'},
+  {id:'سريع',lbl:'⚡ سريع'},
+  {id:'باستا',lbl:'🍝 باستا'},
+  {id:'بيتزا',lbl:'🍕 بيتزا'},
+  {id:'خبز',lbl:'🥖 خبز'},
+  {id:'بحري',lbl:'🦐 بحري'},
+  {id:'إفطار',lbl:'☕ إفطار'},
+  {id:'حساء',lbl:'🍲 حساء'},
+];
+
+// ═══════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════
+let activePg='home', activePlt='all', activeVFTag='all', vfShown=16;
+
+// ═══════════════════════════════════════════════════
+// ROUTING
+// ═══════════════════════════════════════════════════
+function gp(id){
+  activePg=id;
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
+  document.getElementById('page-'+id).classList.add('on');
+  document.querySelectorAll('.nb').forEach((b,i)=>{
+    b.classList.toggle('on',i===0&&id==='home');
+  });
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='world') renderWorldPage(null);
+  if(id==='videos') initVideos();
+}
+
+// ═══════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════
+const diff={e:'de',m:'dm',h:'dh'};
+const diffTxt={e:'سهل',m:'متوسط',h:'صعب'};
+
+function rcCard(r,feat=false){
+  return `<div class="rc${feat?' feat':''}" onclick="openRecipe('${r.id}')">
+    <div class="rv">
+      <div class="rv-bg"></div>
+      ${r.img?`<img src="${r.img}" alt="${r.ti}" loading="lazy">`:''}
+      <div class="em">${r.em}</div>
+      <div class="rv-lbl">${r.cat}</div>
+      <div class="bflag">${r.f}</div>
+      <div class="bcat">${r.cat}</div>
+      <div class="btime">⏱ ${r.tm}</div>
+      <div class="bdiff ${diff[r.df]||'de'}">${diffTxt[r.df]||'سهل'}</div>
+    </div>
+    <div class="rb">
+      <div class="rt">${r.ti}</div>
+      <div class="rd">${r.de}</div>
+      <div class="rf">
+        <div class="rstar">⭐ ${r.rt} <span>(${r.rv.toLocaleString()})</span></div>
+        <div class="rmore">اطبخ ←</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function grid(id,list,feat=false){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.innerHTML=list.map((r,i)=>rcCard(r,feat&&i===0)).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// HOME
+// ═══════════════════════════════════════════════════
+function initHome(){
+  // chips
+  const hc=document.getElementById('hchips');
+  const regions=['الكل','عربي','أوروبي','آسيوي','أمريكي','أفريقي','حلويات','صحي','سريع','رمضان'];
+  const flags={الكل:'🌐',عربي:'🌙',أوروبي:'🌍',آسيوي:'🌏',أمريكي:'🌎',أفريقي:'🌍',حلويات:'🍰',صحي:'🥗',سريع:'⚡',رمضان:'🌙'};
+  hc.innerHTML=regions.map((r,i)=>`<button class="chip${i===0?' on':''}" onclick="hChip('${r}',this)">${flags[r]||''} ${r}</button>`).join('');
+
+  grid('h-feat',RECIPES.slice(0,4),false);
+  grid('h-latest',RECIPES.slice(0,5));
+  grid('h-arab',RECIPES.filter(r=>r.r==='عربي').slice(0,4));
+  grid('h-euro',RECIPES.filter(r=>r.r==='أوروبي').slice(0,4));
+  grid('h-asia',RECIPES.filter(r=>r.r==='آسيوي').slice(0,4));
+  grid('h-amer',RECIPES.filter(r=>r.r==='أمريكي').slice(0,4));
+  grid('h-sweet',RECIPES.filter(r=>r.cat==='حلويات').slice(0,5));
+  grid('h-fit',RECIPES.filter(r=>r.r==='صحي'||r.cat==='صحي').slice(0,4));
+}
+
+function hChip(r,el){
+  document.querySelectorAll('#hchips .chip').forEach(c=>c.classList.remove('on'));
+  el.classList.add('on');
+  if(r==='الكل'){grid('h-feat',RECIPES.slice(0,4));}
+  else{grid('h-feat',RECIPES.filter(x=>x.r===r||x.cat===r).slice(0,4));}
+}
+
+// ═══════════════════════════════════════════════════
+// WORLD PAGE
+// ═══════════════════════════════════════════════════
+function initWorldChips(id){
+  const el=document.getElementById(id);
+  const regions=['الكل','عربي','أوروبي','آسيوي','أمريكي','أفريقي','حلويات','صحي','سريع'];
+  el.innerHTML=`<button class="chip on" onclick="renderWorldPage(null,this)">🌐 الكل</button>`+
+    regions.slice(1).map(r=>`<button class="chip" onclick="renderWorldPage('${r}',this)">${r}</button>`).join('')+
+    CUISINES.filter(c=>c.c>200).slice(0,12).map(c=>`<button class="chip" onclick="renderWorldPage('${c.id}',this)">${c.f} ${c.n}</button>`).join('');
+}
+
+function renderWorldPage(filter, el){
+  if(el){document.querySelectorAll('#wchips .chip').forEach(c=>c.classList.remove('on'));el.classList.add('on');}
+  const body=document.getElementById('world-body');
+  if(!filter||filter===null){
+    // Show by region groups
+    const regions=['عربي','أوروبي','آسيوي','أمريكي','أفريقي','حلويات','صحي','سريع'];
+    const regLabels={عربي:'🌙 المطبخ العربي',أوروبي:'🌍 أوروبا والمتوسط',آسيوي:'🌏 آسيا',أمريكي:'🌎 الأمريكيتان',أفريقي:'🌍 أفريقيا',حلويات:'🍰 حلويات العالم',صحي:'🥗 صحي ونباتي',سريع:'⚡ سريع وسهل'};
+    body.innerHTML=regions.map(reg=>{
+      const cuisinesInReg=CUISINES.filter(c=>c.r===reg);
+      const recs=RECIPES.filter(r=>r.r===reg||r.cat===reg).slice(0,4);
+      if(!recs.length) return '';
+      return `<div class="cuisine-section">
+        <div class="cs-hd">
+          <div class="cs-flag">${['🌙','🌍','🌏','🌎','🌍','🍰','🥗','⚡'][regions.indexOf(reg)]}</div>
+          <div><div class="cs-name">${regLabels[reg]}</div>
+          <div class="cs-desc">${cuisinesInReg.map(c=>c.n).join(' · ')}</div></div>
+          <div class="cs-count">${cuisinesInReg.reduce((s,c)=>s+c.c,0).toLocaleString()} وصفة</div>
+        </div>
+        <div class="g4">${recs.map(r=>rcCard(r)).join('')}</div>
+      </div>`;
+    }).join('');
+  } else {
+    // Filter by region or cuisine id
+    const cuisine=CUISINES.find(c=>c.id===filter);
+    const recs=cuisine
+      ? RECIPES.filter(r=>r.cid===filter)
+      : RECIPES.filter(r=>r.r===filter||r.cat===filter);
+    const title=cuisine?`${cuisine.f} ${cuisine.n}`:filter;
+    body.innerHTML=`<div class="sh" style="margin-top:20px"><h2>${title}</h2><div class="rl"></div><span class="bd">${recs.length} وصفة</span></div>
+    <div class="ga">${recs.length?recs.map(r=>rcCard(r)).join(''):'<div class="no-res">لا توجد وصفات بعد في هذه الفئة</div>'}</div>`;
+  }
+}
+
+function fworld(cat){
+  gp('world');
+  setTimeout(()=>{
+    renderWorldPage(cat);
+    const chips=document.querySelectorAll('#wchips .chip');
+    chips.forEach(c=>{c.classList.remove('on');if(c.textContent.includes(cat))c.classList.add('on');});
+  },50);
+}
+
+// ═══════════════════════════════════════════════════
+// RECIPE PAGE
+// ═══════════════════════════════════════════════════
+let srv={};
+function openRecipe(id){
+  const r=RECIPES.find(x=>x.id===id);
+  if(!r) return;
+  srv[id]=r.sv;
+  const related=RECIPES.filter(x=>x.cid===r.cid&&x.id!==r.id).slice(0,4);
+  document.getElementById('rp-content').innerHTML=`
+  <div>
+    <div class="rp-bread">
+      <a onclick="gp('home')">الرئيسية</a> ›
+      <a onclick="fworld('${r.r}')">${r.r}</a> ›
+      <a onclick="fworld('${r.cat}')">${r.cat}</a>
+    </div>
+    <div class="rp-vis">
+      <div class="rv-bg"></div>
+      ${r.img?`<img src="${r.img}" alt="${r.ti}">`:''}
+      <div class="rp-vis-em">${r.em}</div>
+      <div class="bflag" style="top:14px;right:14px;font-size:28px">${r.f}</div>
+    </div>
+    <h1 class="rp-h1">${r.ti}</h1>
+    <p class="rp-intro">${r.de}</p>
+    <div class="rp-meta">
+      <div class="rpm"><div class="rpm-v">${r.tm}</div><div class="rpm-l">⏱ الوقت</div></div>
+      <div class="rpm"><div class="rpm-v">${r.sv}</div><div class="rpm-l">👥 أشخاص</div></div>
+      <div class="rpm"><div class="rpm-v">${diffTxt[r.df]}</div><div class="rpm-l">📊 الصعوبة</div></div>
+      <div class="rpm"><div class="rpm-v">⭐ ${r.rt}</div><div class="rpm-l">${r.rv.toLocaleString()} تقييم</div></div>
+      <div class="rpm"><div class="rpm-v">${r.nut.cal}</div><div class="rpm-l">🔥 سعرة</div></div>
+    </div>
+    <div class="box">
+      <div class="box-h">🧺 المكونات
+        <div class="srv-c">
+          <button class="srv-btn" onclick="chSrv('${r.id}',-1)">−</button>
+          <span class="srv-n" id="sv-${r.id}">${r.sv}</span>
+          <button class="srv-btn" onclick="chSrv('${r.id}',1)">+</button>
+          <span style="font-size:11px;color:var(--t3)">شخص</span>
+        </div>
+      </div>
+      <div>${r.ing.map((g,i)=>`
+        <div class="ing-row" id="ig-${r.id}-${i}">
+          <div class="ing-cb" onclick="togIng(this,'ig-${r.id}-${i}')"></div>
+          <div class="ing-q">${g.q}</div>
+          <div><div class="ing-n">${g.n}</div>${g.nt?`<span class="ing-note">${g.nt}</span>`:''}</div>
+        </div>`).join('')}
+      </div>
+    </div>
+    <div class="box">
+      <div class="box-h">👨‍🍳 طريقة التحضير</div>
+      ${r.steps.map((s,i)=>`
+        <div class="step-row">
+          <div class="step-n">${i+1}</div>
+          <div><div class="step-t">${s.t}</div>${s.tp?`<div class="step-tip">💡 ${s.tp}</div>`:''}</div>
+        </div>`).join('')}
+    </div>
+    ${r.tips.length?`<div class="box">
+      <div class="box-h">✨ نصائح الشيف</div>
+      ${r.tips.map(t=>`<div class="tip-item"><span class="tip-ico">${t.i}</span>${t.t}</div>`).join('')}
+    </div>`:''}
+    <div class="box">
+      <div class="box-h">📊 القيمة الغذائية (لكل حصة)</div>
+      <div class="nutr-g">
+        <div class="nutr-i"><div class="nutr-v">${r.nut.cal}</div><div class="nutr-l">سعرة</div></div>
+        <div class="nutr-i"><div class="nutr-v">${r.nut.pro}غ</div><div class="nutr-l">بروتين</div></div>
+        <div class="nutr-i"><div class="nutr-v">${r.nut.carb}غ</div><div class="nutr-l">كربوهيدرات</div></div>
+        <div class="nutr-i"><div class="nutr-v">${r.nut.fat}غ</div><div class="nutr-l">دهون</div></div>
+      </div>
+    </div>
+    <div class="box" style="background:var(--card2)">
+      <div style="font-size:10px;font-weight:800;color:var(--t3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">🔑 كلمات مفتاحية SEO</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">${r.kw.map(k=>`<span style="font-size:11px;color:var(--t2);background:var(--card);border:1px solid var(--b1);padding:3px 9px;border-radius:var(--pill)">${k}</span>`).join('')}</div>
+    </div>
+  </div>
+  <aside class="rp-side">
+    <div class="share-box">
+      <div style="font-size:14px;font-weight:800;color:var(--t0);margin-bottom:4px">شاركي هذه الوصفة</div>
+      <div style="font-size:12px;color:var(--t2);margin-bottom:12px">أعجبتك؟ شاركيها مع أصدقائك</div>
+      <div class="share-btns">
+        <button class="sbtn">📘 فيسبوك</button>
+        <button class="sbtn">📷 إنستغرام</button>
+        <button class="sbtn">📱 واتساب</button>
+      </div>
+    </div>
+    ${related.length?`<div class="sb-c"><div class="sb-h">🍽️ وصفات مشابهة</div>
+      ${related.map(rr=>`<div class="sb-item" onclick="openRecipe('${rr.id}')">
+        <div class="sb-em">${rr.em}</div>
+        <div><div class="sb-t">${rr.ti}</div><div class="sb-m">⏱ ${rr.tm} · ⭐ ${rr.rt}</div></div>
+      </div>`).join('')}
+    </div>`:''}
+    <div class="sb-c"><div class="sb-h">⭐ الأعلى تقييماً</div>
+      ${RECIPES.sort((a,b)=>b.rt-a.rt).slice(0,5).map(rr=>`<div class="sb-item" onclick="openRecipe('${rr.id}')">
+        <div class="sb-em">${rr.em}</div>
+        <div><div class="sb-t">${rr.ti}</div><div class="sb-m">${rr.f} ${rr.cat} · ⭐ ${rr.rt}</div></div>
+      </div>`).join('')}
+    </div>
+  </aside>`;
+  gp('recipe');
+}
+
+function chSrv(id,d){srv[id]=Math.max(1,(srv[id]||1)+d);document.getElementById('sv-'+id).textContent=srv[id];}
+function togIng(el,rowId){
+  el.classList.toggle('ck');
+  const row=document.getElementById(rowId);
+  if(row) row.style.opacity=el.classList.contains('ck')?.4:1;
+}
+
+// ═══════════════════════════════════════════════════
+// VIDEO FEED
+// ═══════════════════════════════════════════════════
+function initVideos(){
+  if(document.getElementById('plat-bar').innerHTML) return;
+  renderPlatBar();
+  renderTagBar();
+  renderVF();
+}
+
+function renderPlatBar(){
+  document.getElementById('plat-bar').innerHTML=PLATS.map(p=>`
+    <button class="pb ${p.cls}${activePlt===p.id?' on':''}" onclick="setPlt('${p.id}',this)">
+      <span class="pi">${p.ico}</span>${p.lbl}
+    </button>`).join('');
+}
+
+function renderTagBar(){
+  document.getElementById('tag-bar').innerHTML=VF_TAGS.map(t=>`
+    <button class="tf${activeVFTag===t.id?' on':''}" onclick="setVFTag('${t.id}',this)">${t.lbl}</button>`).join('');
+}
+
+function setPlt(id,el){
+  activePlt=id;
+  document.querySelectorAll('.pb').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  vfShown=16; renderVF();
+}
+
+function setVFTag(id,el){
+  activeVFTag=id;
+  document.querySelectorAll('.tf').forEach(b=>b.classList.remove('on'));
+  el.classList.add('on');
+  vfShown=16; renderVF();
+}
+
+function filteredVids(){
+  let v=VIDS;
+  if(activePlt!=='all') v=v.filter(x=>x.pl===activePlt);
+  if(activeVFTag!=='all') v=v.filter(x=>x.cat&&x.cat.includes(activeVFTag));
+  return v;
+}
+
+const platIco={tt:'🎵 TikTok',yt:'▶️ YouTube',ig:'📷 Instagram',fb:'📘 Facebook',pin:'📌 Pinterest'};
+
+function vidCard(v){
+  return `<div class="vc" onclick="openVM('${v.id}')">
+    <div class="vt ${v.asp||'portrait'}">
+      ${v.thumb?`<img src="${v.thumb}" alt="${v.title}" loading="lazy">`:''}
+      <div class="vt-em">${v.em}</div>
+      <div class="vt-play"><div class="vt-tri"></div></div>
+      <div class="vt-plat ${v.pl}">${platIco[v.pl]||v.pl}</div>
+      <div class="vt-dur">${v.dur}</div>
+      <div class="vt-views">👁 ${v.views}</div>
+      ${v.hot?`<div class="vt-hot">🔥 Trending</div>`:''}
+    </div>
+    <div class="vb">
+      <div class="vc-head">
+        <div class="vc-av">${v.chav}</div>
+        <div><div class="vc-cn">${v.ch}</div>${v.loc?`<div class="vc-ch">📍 ${v.loc}</div>`:''}</div>
+      </div>
+      <div class="vc-title">${v.title}</div>
+      <div class="vc-tags">
+        ${v.tags.map(t=>`<span class="vctag">#${t}</span>`).join('')}
+        ${v.hot?`<span class="vctag h">🔥 رائج</span>`:''}
+      </div>
+      <div class="vc-foot">
+        <span class="vc-likes">❤️ ${v.likes}</span>
+        <button class="vc-save">+ حفظ</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderVF(){
+  const vids=filteredVids().slice(0,vfShown);
+  const grid=document.getElementById('vf-grid');
+  if(!vids.length){
+    grid.innerHTML=`<div class="no-res" style="grid-column:span 4;padding:60px;text-align:center;color:var(--t2)">
+      <div style="font-size:48px;margin-bottom:12px">📱</div>
+      <div>لا توجد فيديوهات لهذا الفلتر بعد</div>
+    </div>`;
+  } else {
+    grid.innerHTML=vids.map(v=>vidCard(v)).join('');
+  }
+}
+
+function loadMoreVids(){vfShown+=12;renderVF();}
+
+function openVM(id){
+  const v=VIDS.find(x=>x.id===id);
+  if(!v) return;
+  document.getElementById('vm-body').innerHTML=`
+    <div class="vt landscape" style="aspect-ratio:16/9;max-height:280px;position:relative;background:var(--card2);display:flex;align-items:center;justify-content:center">
+      ${v.thumb?`<img src="${v.thumb}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`:''}
+      <div style="font-size:80px;position:relative;z-index:1">${v.em}</div>
+      <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center">
+        <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center">
+          <div style="width:0;height:0;border-style:solid;border-width:12px 0 12px 22px;border-color:transparent transparent transparent #1E0D00;margin-right:-3px"></div>
+        </div>
+      </div>
+      <div class="vt-plat ${v.pl}" style="top:12px;right:12px">${platIco[v.pl]}</div>
+    </div>
+    <div style="padding:18px">
+      <div class="vc-head" style="margin-bottom:12px">
+        <div class="vc-av" style="width:40px;height:40px;font-size:20px">${v.chav}</div>
+        <div><div class="vc-cn" style="font-size:14px">${v.ch}</div>${v.loc?`<div class="vc-ch">📍 ${v.loc}</div>`:''}</div>
+        <a href="#" style="margin-right:auto;font-size:12px;color:var(--s);font-weight:700">متابعة +</a>
+      </div>
+      <div style="font-size:15px;font-weight:700;color:var(--t0);margin-bottom:10px;line-height:1.5">${v.title}</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+        ${v.tags.map(t=>`<span class="vctag">#${t}</span>`).join('')}
+        ${v.hot?`<span class="vctag h">🔥 رائج</span>`:''}
+      </div>
+      <div style="display:flex;gap:16px;font-size:13px;color:var(--t2);padding-top:12px;border-top:1px solid var(--b1)">
+        <span>👁 ${v.views} مشاهدة</span>
+        <span>❤️ ${v.likes} إعجاب</span>
+        <span>⏱ ${v.dur}</span>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:14px">
+        <button style="flex:1;background:var(--s);color:#fff;border:none;font-family:var(--fn);font-size:13px;font-weight:800;padding:10px;border-radius:var(--pill);cursor:pointer">▶️ مشاهدة على ${v.pl==='yt'?'YouTube':v.pl==='tt'?'TikTok':v.pl==='ig'?'Instagram':v.pl==='fb'?'Facebook':'Pinterest'}</button>
+        <button style="background:var(--card);border:1px solid var(--b0);color:var(--s);font-family:var(--fn);font-size:13px;font-weight:800;padding:10px 16px;border-radius:var(--pill);cursor:pointer">+ حفظ</button>
+      </div>
+    </div>`;
+  document.getElementById('vm').classList.add('on');
+}
+function closeVM(){document.getElementById('vm').classList.remove('on');}
+document.getElementById('vm').addEventListener('click',e=>{if(e.target.id==='vm')closeVM();});
+
+// ═══════════════════════════════════════════════════
+// SEARCH
+// ═══════════════════════════════════════════════════
+function doSearch(q){
+  if(!q||!q.trim()) return;
+  q=q.trim();
+  const res=RECIPES.filter(r=>
+    r.ti.includes(q)||r.de.includes(q)||r.cat.includes(q)||
+    (r.kw&&r.kw.some(k=>k.includes(q)))||r.r.includes(q)
+  );
+  document.getElementById('s-lbl').innerHTML=`نتائج البحث عن: <strong>${q}</strong> — ${res.length} نتيجة`;
+  document.getElementById('s-grid').innerHTML=res.length
+    ? res.map(r=>rcCard(r)).join('')
+    : `<div class="no-res" style="grid-column:span 4"><div style="font-size:48px;margin-bottom:12px">🔍</div><div>لا نتائج لـ "${q}"</div></div>`;
+  gp('search');
+}
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+(function(){
+  initHome();
+  initWorldChips('wchips');
+})();
+</script>
+</body>
+</html>
