@@ -330,6 +330,18 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 @media(max-width:1100px){.g4{grid-template-columns:repeat(3,1fr);}.g5{grid-template-columns:repeat(3,1fr);}.vf-grid{column-count:3;}.rp-layout{grid-template-columns:1fr;}.rp-side{position:static;}.footer-g{grid-template-columns:1fr 1fr;}}
 @media(max-width:768px){.g4,.g3{grid-template-columns:repeat(2,1fr);}.g5{grid-template-columns:repeat(2,1fr);}.vf-grid{column-count:2;}.rc.feat{grid-column:span 2;flex-direction:column;}.rc.feat .rv{width:100%;height:180px;}.hero h1{font-size:32px;}.nutr-g{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:520px){.nav-links{display:none;}.vf-grid{column-count:1;}.g4,.g3,.g5{grid-template-columns:1fr 1fr;}.hero h1{font-size:26px;}.hstats{gap:18px;}}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);z-index:9999;
+  background:var(--card3);border:1px solid var(--b0);color:var(--t0);font-family:var(--fn);
+  font-size:13px;font-weight:700;padding:11px 22px;border-radius:var(--pill);
+  box-shadow:0 8px 32px rgba(0,0,0,.5);opacity:0;transition:all .28s;pointer-events:none;white-space:nowrap;}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* FAV PAGE */
+.fav-empty{text-align:center;padding:80px 20px;}
+.fav-empty .fe-ico{font-size:64px;margin-bottom:16px;}
+.fav-empty p{font-size:14px;color:var(--t2);margin-top:8px;}
 </style>
 </head>
 <body>
@@ -356,9 +368,10 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
     <button class="nb" onclick="fworld('صحي')">🥗 صحي</button>
     <button class="nb" onclick="fworld('سريع')">⚡ سريع</button>
     <button class="nb" onclick="fworld('رمضان')">🌙 رمضان</button>
+    <button class="nb" id="nav-fav-btn" onclick="gp('fav')">❤️ محفوظاتي <span id="nav-fav-count" style="display:none;background:var(--r);color:#fff;font-size:9px;padding:1px 6px;border-radius:var(--pill);margin-right:3px"></span></button>
   </div>
-  <div class="nav-search">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+  <div class="nav-search" onclick="document.querySelector('.nav-search input').focus()">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="cursor:pointer" onclick="event.stopPropagation();doSearch(document.querySelector('.nav-search input').value)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
     <input placeholder="بحث في مطابخ العالم..." onkeydown="if(event.key==='Enter')doSearch(this.value)">
   </div>
 </nav>
@@ -467,11 +480,29 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 </div>
 </footer>
 
+<!-- FAVORITES PAGE -->
+<div class="page" id="page-fav">
+<div class="wrap">
+  <div class="sh" style="margin-top:24px"><h2>❤️ وصفاتي المحفوظة</h2><div class="rl"></div><span class="bd" id="fav-count">0 وصفة</span></div>
+  <div class="g4" id="fav-grid"></div>
+  <div id="fav-empty" class="fav-empty" style="display:none">
+    <div class="fe-ico">❤️</div>
+    <h3 style="font-size:18px;font-weight:900;color:var(--t0)">لا توجد وصفات محفوظة بعد</h3>
+    <p>انقر على ❤️ في أي وصفة لحفظها هنا</p>
+    <button onclick="gp('home')" style="margin-top:20px;background:var(--s);color:#fff;border:none;font-family:var(--fn);font-size:13px;font-weight:800;padding:10px 24px;border-radius:var(--pill);cursor:pointer">استكشف الوصفات →</button>
+  </div>
+</div>
+<div style="height:50px"></div>
+</div>
+
 <!-- VIDEO MODAL -->
 <div class="vm-bg" id="vm"><div class="vm-box">
   <div class="vm-close" onclick="closeVM()">✕</div>
   <div id="vm-body"></div>
 </div></div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
 
 <script>
 // ═══════════════════════════════════════════════════
@@ -1157,6 +1188,7 @@ function gp(id){
   window.scrollTo({top:0,behavior:'smooth'});
   if(id==='world') renderWorldPage(null);
   if(id==='videos') initVideos();
+  if(id==='fav') initFav();
 }
 
 // ═══════════════════════════════════════════════════
@@ -1358,10 +1390,11 @@ function openRecipe(id){
       <div style="font-size:14px;font-weight:800;color:var(--t0);margin-bottom:4px">شاركي هذه الوصفة</div>
       <div style="font-size:12px;color:var(--t2);margin-bottom:12px">أعجبتك؟ شاركيها مع أصدقائك</div>
       <div class="share-btns">
-        <button class="sbtn">📘 فيسبوك</button>
-        <button class="sbtn">📷 إنستغرام</button>
-        <button class="sbtn">📱 واتساب</button>
+        <button class="sbtn" onclick="shareRecipe('${r.id}','wa')">📱 واتساب</button>
+        <button class="sbtn" onclick="shareRecipe('${r.id}','fb')">📘 فيسبوك</button>
+        <button class="sbtn" onclick="shareRecipe('${r.id}','copy')">🔗 نسخ</button>
       </div>
+      <button id="fav-btn-${r.id}" onclick="toggleFav('${r.id}',this)" style="width:100%;margin-top:10px;padding:9px;border-radius:var(--pill);font-family:var(--fn);font-size:13px;font-weight:800;cursor:pointer;border:1px solid var(--b0);background:${isFav(r.id)?'var(--r)':'var(--card)'};color:${isFav(r.id)?'#fff':'var(--s)'};">${isFav(r.id)?'❤️ محفوظ':'🤍 حفظ الوصفة'}</button>
     </div>
     ${related.length?`<div class="sb-c"><div class="sb-h">🍽️ وصفات مشابهة</div>
       ${related.map(rr=>`<div class="sb-item" onclick="openRecipe('${rr.id}')">
@@ -1460,7 +1493,7 @@ function vidCard(v){
       </div>
       <div class="vc-foot">
         <span class="vc-likes">❤️ ${v.likes}</span>
-        <button class="vc-save">+ حفظ</button>
+        <button class="vc-save" onclick="event.stopPropagation();toggleFav('${v.id}',this)" style="${isFav(v.id)?'color:var(--r)':''}">${isFav(v.id)?'❤️ محفوظ':'+ حفظ'}</button>
       </div>
     </div>
   </div>`;
@@ -1539,11 +1572,92 @@ function doSearch(q){
 }
 
 // ═══════════════════════════════════════════════════
+// TOAST
+// ═══════════════════════════════════════════════════
+function showToast(msg){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.classList.add('on');
+  clearTimeout(t._to);
+  t._to=setTimeout(()=>t.classList.remove('on'),2400);
+}
+
+// ═══════════════════════════════════════════════════
+// SHARE
+// ═══════════════════════════════════════════════════
+function shareRecipe(id,plt){
+  const r=RECIPES.find(x=>x.id===id);
+  if(!r) return;
+  const text=`${r.ti}\n${r.de}`;
+  const url=window.location.href.split('?')[0];
+  if(plt==='wa'){
+    window.open(`https://wa.me/?text=${encodeURIComponent(text+'\n\n🌐 مطبخ 360')}`,'_blank');
+  } else if(plt==='fb'){
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,'_blank');
+  } else if(plt==='copy'){
+    const full=text+'\n\n🌐 مطبخ 360';
+    if(navigator.clipboard){
+      navigator.clipboard.writeText(full).then(()=>showToast('تم نسخ الوصفة! 🔗'));
+    } else {
+      const ta=document.createElement('textarea');
+      ta.value=full; document.body.appendChild(ta);
+      ta.select(); document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast('تم النسخ! 🔗');
+    }
+  }
+}
+
+// ═══════════════════════════════════════════════════
+// FAVORITES (localStorage)
+// ═══════════════════════════════════════════════════
+function getFavs(){return JSON.parse(localStorage.getItem('mw360_favs')||'[]');}
+function saveFavs(arr){localStorage.setItem('mw360_favs',JSON.stringify(arr));updateFavCount();}
+function isFav(id){return getFavs().includes(id);}
+
+function toggleFav(id,btn){
+  let favs=getFavs();
+  const idx=favs.indexOf(id);
+  if(idx>=0){
+    favs.splice(idx,1);
+    showToast('تمت الإزالة من المحفوظات');
+    if(btn){btn.textContent='🤍 حفظ';btn.style.background='var(--card)';btn.style.color='var(--s)';}
+  } else {
+    favs.push(id);
+    showToast('تم الحفظ! ❤️');
+    if(btn){btn.textContent='❤️ محفوظ';btn.style.background='var(--r)';btn.style.color='#fff';}
+  }
+  saveFavs(favs);
+}
+
+function updateFavCount(){
+  const n=getFavs().length;
+  const badge=document.getElementById('nav-fav-count');
+  if(badge){badge.textContent=n;badge.style.display=n>0?'inline':'none';}
+}
+
+function initFav(){
+  const favs=getFavs();
+  const recs=RECIPES.filter(r=>favs.includes(r.id));
+  document.getElementById('fav-count').textContent=recs.length+' وصفة';
+  const grid=document.getElementById('fav-grid');
+  const empty=document.getElementById('fav-empty');
+  if(!recs.length){
+    grid.innerHTML=''; empty.style.display='block';
+  } else {
+    empty.style.display='none';
+    grid.innerHTML=recs.map(r=>rcCard(r)).join('');
+  }
+}
+
+// ═══════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════
 (function(){
   initHome();
   initWorldChips('wchips');
+  updateFavCount();
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVM();});
 })();
 </script>
 </body>
