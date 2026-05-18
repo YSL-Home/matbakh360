@@ -4,9 +4,24 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <title>مطبخ 360 | كل وصفات العالم</title>
-<meta name="description" content="مطبخ 360 — آلاف الوصفات من 60 مطبخاً عالمياً مع فيديوهات TikTok وYouTube وInstagram">
+<meta name="description" content="مطبخ 360 — آلاف الوصفات من 68 مطبخاً عالمياً: كسكس مغربي، راميان ياباني، باستا إيطالية، تاكو مكسيكي وأكثر. وصفات مع مقاطع فيديو وطريقة التحضير خطوة بخطوة.">
+<meta name="keywords" content="وصفات طبخ, مطبخ عالمي, وصفات مغربية, وصفات مصرية, وصفات إيطالية, وصفات يابانية, طريقة الطبخ, وصفات سهلة, وصفات صحية, مطبخ 360">
+<meta name="robots" content="index, follow">
+<meta name="author" content="مطبخ 360">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="مطبخ 360">
+<meta property="og:title" id="og-title" content="مطبخ 360 | كل وصفات العالم">
+<meta property="og:description" id="og-desc" content="آلاف الوصفات من 68 مطبخاً عالمياً مع فيديوهات ووصفات خطوة بخطوة">
+<meta property="og:image" id="og-img" content="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" id="tw-title" content="مطبخ 360 | كل وصفات العالم">
+<meta name="twitter:description" id="tw-desc" content="آلاف الوصفات من 68 مطبخاً عالمياً">
+<script type="application/ld+json" id="schema-site">{"@context":"https://schema.org","@type":"WebSite","name":"مطبخ 360","url":"https://matbakh360.com","description":"منصة وصفات عالمية من 68 مطبخاً حول العالم","potentialAction":{"@type":"SearchAction","target":"https://matbakh360.com/?q={search_term_string}","query-input":"required name=search_term_string"},"inLanguage":"ar"}</script>
+<script type="application/ld+json" id="schema-recipe"></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6870790039775701" crossorigin="anonymous"></script>
 <style>
 :root{
   --s:#D4A017;--s2:#F0C040;--sg:rgba(212,160,23,.13);--sg2:rgba(212,160,23,.07);
@@ -331,6 +346,78 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 @media(max-width:768px){.g4,.g3{grid-template-columns:repeat(2,1fr);}.g5{grid-template-columns:repeat(2,1fr);}.vf-grid{column-count:2;}.rc.feat{grid-column:span 2;flex-direction:column;}.rc.feat .rv{width:100%;height:180px;}.hero h1{font-size:32px;}.nutr-g{grid-template-columns:repeat(2,1fr);}}
 @media(max-width:520px){.nav-links{display:none;}.vf-grid{column-count:1;}.g4,.g3,.g5{grid-template-columns:1fr 1fr;}.hero h1{font-size:26px;}.hstats{gap:18px;}}
 
+/* ══════ AD SLOTS ══════ */
+.ad-slot{text-align:center;padding:14px 0;min-height:90px;display:flex;align-items:center;justify-content:center;}
+.ad-slot ins{display:block;width:100%;}
+
+/* ══════ CHEF MODE ══════ */
+.cm-bg{display:none;position:fixed;inset:0;z-index:9500;background:#060E0A;
+  flex-direction:column;align-items:center;justify-content:center;padding:24px;overflow:hidden;}
+.cm-bg.on{display:flex;}
+.cm-bg::before{content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(212,160,23,.06) 0%,transparent 60%);}
+
+.cm-header{position:absolute;top:0;left:0;right:0;padding:16px 24px;
+  display:flex;align-items:center;justify-content:space-between;z-index:2;}
+.cm-title{font-size:13px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;}
+.cm-close{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
+  color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .18s;}
+.cm-close:hover{background:rgba(255,255,255,.14);color:var(--t0);}
+
+.cm-counter{font-size:11px;font-weight:800;letter-spacing:3px;color:var(--t3);text-transform:uppercase;
+  margin-bottom:18px;display:flex;align-items:center;gap:8px;}
+.cm-counter-bar{flex:1;max-width:200px;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.cm-counter-fill{height:100%;background:var(--s);border-radius:2px;transition:width .4s ease;}
+
+.cm-step-wrap{text-align:center;max-width:700px;width:100%;position:relative;z-index:2;}
+.cm-step-num{font-size:100px;font-weight:900;color:rgba(212,160,23,.08);line-height:1;
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;font-family:var(--fd);}
+.cm-step-txt{font-size:clamp(20px,3.5vw,30px);font-weight:700;color:var(--t0);line-height:1.7;
+  position:relative;z-index:1;padding:0 20px;}
+.cm-step-tip{margin-top:20px;font-size:15px;color:var(--s);background:rgba(212,160,23,.08);
+  border-right:3px solid var(--s);padding:10px 18px;border-radius:0 10px 10px 0;
+  text-align:right;position:relative;z-index:1;}
+
+.cm-timer{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:32px;position:relative;z-index:2;}
+.cm-timer-display{font-size:44px;font-weight:900;color:var(--t0);font-variant-numeric:tabular-nums;
+  letter-spacing:4px;font-family:monospace;}
+.cm-timer-display.running{color:var(--s);}
+.cm-timer-display.done{color:var(--r);animation:blink .6s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:.3;}}
+.cm-timer-btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;}
+.cm-tpreset{padding:6px 14px;border-radius:var(--pill);background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);color:var(--t2);font-size:12px;font-weight:700;
+  cursor:pointer;font-family:var(--fn);transition:all .18s;}
+.cm-tpreset:hover,.cm-tpreset.on{background:var(--sg);border-color:var(--b0);color:var(--s);}
+.cm-timer-ctrl{display:flex;gap:10px;margin-top:6px;}
+.cm-tbtn{padding:8px 20px;border-radius:var(--pill);font-family:var(--fn);font-size:13px;font-weight:800;
+  cursor:pointer;border:none;transition:all .18s;}
+.cm-tbtn.start{background:var(--s);color:#000;}
+.cm-tbtn.stop{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.1);color:var(--t2);}
+.cm-tbtn:hover{opacity:.85;}
+
+.cm-nav{display:flex;gap:16px;align-items:center;margin-top:36px;position:relative;z-index:2;}
+.cm-navbtn{width:56px;height:56px;border-radius:50%;background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.1);color:var(--t1);font-size:22px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;transition:all .22s;font-family:var(--fn);}
+.cm-navbtn:hover:not(:disabled){background:rgba(255,255,255,.12);transform:scale(1.05);}
+.cm-navbtn:disabled{opacity:.25;cursor:not-allowed;}
+.cm-navbtn.next{background:var(--s);color:#000;width:68px;height:68px;font-size:26px;}
+.cm-navbtn.next:hover{background:var(--s2);}
+.cm-done-btn{background:var(--g);color:#fff;border:none;font-family:var(--fn);font-size:15px;
+  font-weight:800;padding:14px 32px;border-radius:var(--pill);cursor:pointer;transition:all .22s;}
+.cm-done-btn:hover{opacity:.85;}
+
+.cm-ings{position:absolute;left:0;top:0;bottom:0;width:280px;background:rgba(6,14,10,.95);
+  border-left:1px solid rgba(255,255,255,.07);transform:translateX(-100%);transition:transform .3s;
+  padding:70px 18px 24px;overflow-y:auto;z-index:3;}
+.cm-ings.open{transform:translateX(0);}
+.cm-ings h3{font-size:14px;font-weight:900;color:var(--t0);margin-bottom:16px;}
+.cm-ing-toggle{position:absolute;right:-38px;top:50%;transform:translateY(-50%) rotate(90deg);
+  background:rgba(212,160,23,.15);border:1px solid var(--b0);color:var(--s);
+  padding:6px 12px;border-radius:var(--pill);font-size:11px;font-weight:800;cursor:pointer;
+  font-family:var(--fn);writing-mode:vertical-lr;white-space:nowrap;}
+
 /* TOAST */
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%) translateY(20px);z-index:9999;
   background:var(--card3);border:1px solid var(--b0);color:var(--t0);font-family:var(--fn);
@@ -399,6 +486,9 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   <div class="sh"><h2>⭐ الأبرز اليوم</h2><div class="rl"></div><span class="bd">مُختار بالذكاء الاصطناعي</span></div>
   <div class="g4" id="h-feat"></div>
 
+  <!-- AD: after hero -->
+  <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6870790039775701" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
+
   <div class="sh" style="margin-top:28px"><h2>🆕 أحدث الوصفات</h2><div class="rl"></div><a onclick="gp('world')">عرض الكل ←</a></div>
   <div class="g5" id="h-latest"></div>
 
@@ -413,6 +503,9 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 
   <div class="sh"><h2>🌎 الأمريكيتان</h2><div class="rl"></div><a onclick="fworld('أمريكي')">الكل ←</a></div>
   <div class="g4" id="h-amer"></div>
+
+  <!-- AD: mid-page -->
+  <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6870790039775701" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
 
   <div class="sh"><h2>🎂 حلويات العالم</h2><div class="rl"></div><a onclick="fworld('حلويات')">الكل ←</a></div>
   <div class="g5" id="h-sweet"></div>
@@ -493,6 +586,55 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   </div>
 </div>
 <div style="height:50px"></div>
+</div>
+
+<!-- CHEF MODE -->
+<div class="cm-bg" id="cm">
+  <div class="cm-ings" id="cm-ings">
+    <button class="cm-ing-toggle" onclick="toggleCMIngs()">المكونات</button>
+    <h3>🧺 المكونات</h3>
+    <div id="cm-ings-list"></div>
+  </div>
+  <div class="cm-header">
+    <div class="cm-title" id="cm-recipe-name"></div>
+    <div style="display:flex;gap:10px;align-items:center">
+      <button onclick="toggleCMIngs()" style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:var(--t2);padding:6px 14px;border-radius:var(--pill);font-family:var(--fn);font-size:12px;font-weight:700;cursor:pointer">🧺 المكونات</button>
+      <div class="cm-close" onclick="closeChef()">✕</div>
+    </div>
+  </div>
+  <div class="cm-counter">
+    <span id="cm-step-lbl">الخطوة 1 من 5</span>
+    <div class="cm-counter-bar"><div class="cm-counter-fill" id="cm-bar"></div></div>
+  </div>
+  <div class="cm-step-wrap">
+    <div class="cm-step-num" id="cm-bg-num">1</div>
+    <div class="cm-step-txt" id="cm-step-txt"></div>
+    <div class="cm-step-tip" id="cm-step-tip" style="display:none"></div>
+  </div>
+  <div class="cm-timer">
+    <div class="cm-timer-display" id="cm-timer-display">00:00</div>
+    <div class="cm-timer-btns">
+      <button class="cm-tpreset" onclick="setTimer(120)">2 دق</button>
+      <button class="cm-tpreset" onclick="setTimer(300)">5 دق</button>
+      <button class="cm-tpreset" onclick="setTimer(600)">10 دق</button>
+      <button class="cm-tpreset" onclick="setTimer(900)">15 دق</button>
+      <button class="cm-tpreset" onclick="setTimer(1800)">30 دق</button>
+    </div>
+    <div class="cm-timer-ctrl">
+      <button class="cm-tbtn start" id="cm-timer-start" onclick="toggleTimer()">▶ ابدأ</button>
+      <button class="cm-tbtn stop" onclick="resetTimer()">↺ إعادة</button>
+    </div>
+  </div>
+  <div class="cm-nav">
+    <button class="cm-navbtn" id="cm-prev" onclick="cmNav(-1)">→</button>
+    <button class="cm-navbtn next" id="cm-next" onclick="cmNav(1)">←</button>
+  </div>
+  <div id="cm-finish" style="display:none;text-align:center;position:relative;z-index:2">
+    <div style="font-size:64px;margin-bottom:16px">🎉</div>
+    <div style="font-size:24px;font-weight:900;color:var(--t0);margin-bottom:8px">مبروك! الوجبة جاهزة</div>
+    <div style="font-size:14px;color:var(--t2);margin-bottom:24px">أحسنت الطبخ — استمتع بوجبتك</div>
+    <button class="cm-done-btn" onclick="closeChef()">✓ تم</button>
+  </div>
 </div>
 
 <!-- VIDEO MODAL -->
@@ -1318,6 +1460,7 @@ let srv={};
 function openRecipe(id){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
+  updateSEO(r);
   srv[id]=r.sv;
   const related=RECIPES.filter(x=>x.cid===r.cid&&x.id!==r.id).slice(0,4);
   document.getElementById('rp-content').innerHTML=`
@@ -1395,6 +1538,7 @@ function openRecipe(id){
         <button class="sbtn" onclick="shareRecipe('${r.id}','copy')">🔗 نسخ</button>
       </div>
       <button id="fav-btn-${r.id}" onclick="toggleFav('${r.id}',this)" style="width:100%;margin-top:10px;padding:9px;border-radius:var(--pill);font-family:var(--fn);font-size:13px;font-weight:800;cursor:pointer;border:1px solid var(--b0);background:${isFav(r.id)?'var(--r)':'var(--card)'};color:${isFav(r.id)?'#fff':'var(--s)'};">${isFav(r.id)?'❤️ محفوظ':'🤍 حفظ الوصفة'}</button>
+      <button onclick="openChef('${r.id}')" style="width:100%;margin-top:10px;padding:12px;border-radius:var(--pill);font-family:var(--fn);font-size:14px;font-weight:900;cursor:pointer;border:none;background:linear-gradient(135deg,var(--g),#1a4a30);color:#fff;letter-spacing:.5px;box-shadow:0 4px 16px rgba(45,122,79,.3);">👨‍🍳 وضع الطاهي — ابدأ الطهي</button>
     </div>
     ${related.length?`<div class="sb-c"><div class="sb-h">🍽️ وصفات مشابهة</div>
       ${related.map(rr=>`<div class="sb-item" onclick="openRecipe('${rr.id}')">
@@ -1408,6 +1552,7 @@ function openRecipe(id){
         <div><div class="sb-t">${rr.ti}</div><div class="sb-m">${rr.f} ${rr.cat} · ⭐ ${rr.rt}</div></div>
       </div>`).join('')}
     </div>
+    <div class="ad-slot" style="margin-top:8px"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6870790039775701" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
   </aside>`;
   gp('recipe');
 }
@@ -1572,6 +1717,166 @@ function doSearch(q){
 }
 
 // ═══════════════════════════════════════════════════
+// SEO — dynamic meta + JSON-LD Recipe schema
+// ═══════════════════════════════════════════════════
+function parseDuration(str){
+  const m=parseInt(str);
+  if(isNaN(m)) return 'PT30M';
+  return m>=60?`PT${Math.floor(m/60)}H${m%60?m%60+'M':''}` :`PT${m}M`;
+}
+function updateSEO(r){
+  const title=`${r.ti} — وصفة ${r.cat} | مطبخ 360`;
+  const desc=`${r.de} ⏱ ${r.tm} · ${r.sv} أشخاص · ${diffTxt[r.df]}. ${r.nut.cal} سعرة حرارية.`;
+  document.title=title;
+  const set=(id,val)=>{const el=document.getElementById(id);if(el)el.setAttribute('content',val);};
+  set('og-title',title); set('og-desc',desc);
+  set('tw-title',title); set('tw-desc',desc);
+  if(r.img) set('og-img',r.img);
+  const schema={
+    '@context':'https://schema.org/',
+    '@type':'Recipe',
+    name:r.ti,
+    description:r.de,
+    image:r.img||'',
+    author:{'@type':'Organization',name:'مطبخ 360'},
+    datePublished:'2025-01-01',
+    recipeYield:String(r.sv),
+    prepTime:parseDuration(r.tm),
+    totalTime:parseDuration(r.tm),
+    recipeCategory:r.cat,
+    recipeCuisine:r.r,
+    keywords:r.kw.join(', '),
+    recipeIngredient:r.ing.map(i=>`${i.q} ${i.n}`),
+    recipeInstructions:r.steps.map((s,i)=>({'@type':'HowToStep',position:i+1,text:s.t,name:s.t.substring(0,50)})),
+    nutrition:{
+      '@type':'NutritionInformation',
+      calories:`${r.nut.cal} سعرة`,
+      proteinContent:`${r.nut.pro}غ`,
+      carbohydrateContent:`${r.nut.carb}غ`,
+      fatContent:`${r.nut.fat}غ`
+    },
+    aggregateRating:{'@type':'AggregateRating',ratingValue:String(r.rt),reviewCount:String(r.rv),bestRating:'5'}
+  };
+  const el=document.getElementById('schema-recipe');
+  if(el) el.textContent=JSON.stringify(schema);
+}
+
+// ═══════════════════════════════════════════════════
+// CHEF MODE
+// ═══════════════════════════════════════════════════
+let _cm={id:null,steps:[],cur:0,timer:0,timerMax:0,running:false,interval:null,wakeLock:null};
+
+function openChef(id){
+  const r=RECIPES.find(x=>x.id===id);
+  if(!r) return;
+  _cm.id=id; _cm.steps=r.steps; _cm.cur=0;
+  resetTimer();
+  document.getElementById('cm-recipe-name').textContent=r.ti;
+  document.getElementById('cm-ings-list').innerHTML=r.ing.map((g,i)=>`
+    <div class="ing-row" id="cmig-${i}" style="border-color:rgba(255,255,255,.07)">
+      <div class="ing-cb" onclick="togIng(this,'cmig-${i}')"></div>
+      <div class="ing-q" style="min-width:60px">${g.q}</div>
+      <div class="ing-n" style="font-size:12px;color:var(--t1)">${g.n}</div>
+    </div>`).join('');
+  renderCMStep();
+  document.getElementById('cm').classList.add('on');
+  document.body.style.overflow='hidden';
+  if(navigator.wakeLock){
+    navigator.wakeLock.request('screen').then(wl=>{_cm.wakeLock=wl;}).catch(()=>{});
+  }
+}
+
+function closeChef(){
+  document.getElementById('cm').classList.remove('on');
+  document.getElementById('cm-ings').classList.remove('open');
+  document.body.style.overflow='';
+  clearInterval(_cm.interval); _cm.running=false;
+  if(_cm.wakeLock){_cm.wakeLock.release();_cm.wakeLock=null;}
+}
+
+function renderCMStep(){
+  const steps=_cm.steps, cur=_cm.cur, total=steps.length;
+  const finished=cur>=total;
+  document.getElementById('cm-step-lbl').textContent=finished?'اكتمل!': `الخطوة ${cur+1} من ${total}`;
+  document.getElementById('cm-bar').style.width=`${Math.min(100,((cur+(finished?1:0))/total)*100)}%`;
+  document.getElementById('cm-bg-num').textContent=finished?'✓':cur+1;
+  document.querySelector('.cm-step-wrap').style.display=finished?'none':'block';
+  document.querySelector('.cm-timer').style.display=finished?'none':'flex';
+  document.querySelector('.cm-nav').style.display=finished?'none':'flex';
+  document.getElementById('cm-finish').style.display=finished?'block':'none';
+  if(!finished){
+    const s=steps[cur];
+    document.getElementById('cm-step-txt').textContent=s.t;
+    const tipEl=document.getElementById('cm-step-tip');
+    if(s.tp){tipEl.textContent='💡 '+s.tp;tipEl.style.display='block';}
+    else{tipEl.style.display='none';}
+    document.getElementById('cm-prev').disabled=cur===0;
+    document.getElementById('cm-next').className=cur===total-1?'cm-navbtn next done':'cm-navbtn next';
+    document.getElementById('cm-next').textContent=cur===total-1?'✓':'←';
+  }
+  resetTimer();
+}
+
+function cmNav(dir){
+  clearInterval(_cm.interval);_cm.running=false;
+  _cm.cur=Math.min(_cm.steps.length,Math.max(0,_cm.cur+dir));
+  renderCMStep();
+}
+
+function toggleCMIngs(){document.getElementById('cm-ings').classList.toggle('open');}
+
+// ── Timer ──
+function setTimer(sec){
+  _cm.timerMax=sec;_cm.timer=sec;
+  clearInterval(_cm.interval);_cm.running=false;
+  document.getElementById('cm-timer-start').textContent='▶ ابدأ';
+  const d=document.getElementById('cm-timer-display');
+  d.className='cm-timer-display';
+  d.textContent=fmt(sec);
+  document.querySelectorAll('.cm-tpreset').forEach(b=>{b.classList.toggle('on',parseInt(b.getAttribute('onclick').match(/\d+/)[0])===sec);});
+}
+function fmt(s){return`${String(Math.floor(s/60)).padStart(2,'0')}:${String(s%60).padStart(2,'0')}`;}
+function toggleTimer(){
+  if(!_cm.timerMax){setTimer(300);}
+  if(_cm.running){clearInterval(_cm.interval);_cm.running=false;document.getElementById('cm-timer-start').textContent='▶ ابدأ';}
+  else{
+    _cm.running=true;document.getElementById('cm-timer-start').textContent='⏸ إيقاف';
+    document.getElementById('cm-timer-display').className='cm-timer-display running';
+    _cm.interval=setInterval(()=>{
+      _cm.timer--;
+      document.getElementById('cm-timer-display').textContent=fmt(Math.max(0,_cm.timer));
+      if(_cm.timer<=0){
+        clearInterval(_cm.interval);_cm.running=false;
+        document.getElementById('cm-timer-display').className='cm-timer-display done';
+        document.getElementById('cm-timer-display').textContent='انتهى!';
+        document.getElementById('cm-timer-start').textContent='▶ ابدأ';
+        if('vibrate' in navigator) navigator.vibrate([300,100,300]);
+      }
+    },1000);
+  }
+}
+function resetTimer(){
+  clearInterval(_cm.interval);_cm.running=false;
+  _cm.timer=_cm.timerMax;
+  const d=document.getElementById('cm-timer-display');
+  if(d){d.className='cm-timer-display';d.textContent=_cm.timerMax?fmt(_cm.timerMax):'00:00';}
+  const s=document.getElementById('cm-timer-start');
+  if(s) s.textContent='▶ ابدأ';
+}
+
+// ─ keyboard navigation ─
+document.addEventListener('keydown',e=>{
+  if(!document.getElementById('cm').classList.contains('on')) return;
+  if(e.key==='ArrowLeft'||e.key==='ArrowDown') cmNav(1);
+  if(e.key==='ArrowRight'||e.key==='ArrowUp') cmNav(-1);
+});
+
+// ─ AdSense push ─
+function pushAds(){
+  try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
+}
+
+// ═══════════════════════════════════════════════════
 // TOAST
 // ═══════════════════════════════════════════════════
 function showToast(msg){
@@ -1657,7 +1962,22 @@ function initFav(){
   initHome();
   initWorldChips('wchips');
   updateFavCount();
-  document.addEventListener('keydown',e=>{if(e.key==='Escape')closeVM();});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVM();closeChef();}});
+
+  // AdSense — push all static slots
+  setTimeout(()=>{
+    document.querySelectorAll('.adsbygoogle').forEach(()=>{
+      try{(window.adsbygoogle=window.adsbygoogle||[]).push({});}catch(e){}
+    });
+  },800);
+
+  // Swipe support for Chef Mode
+  let _tx=0;
+  document.getElementById('cm').addEventListener('touchstart',e=>{_tx=e.touches[0].clientX;},{passive:true});
+  document.getElementById('cm').addEventListener('touchend',e=>{
+    const dx=e.changedTouches[0].clientX-_tx;
+    if(Math.abs(dx)>60) cmNav(dx<0?1:-1);
+  },{passive:true});
 })();
 </script>
 </body>
