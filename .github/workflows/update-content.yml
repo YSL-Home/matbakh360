@@ -152,12 +152,14 @@ Retourne UNIQUEMENT un objet JSON valide (sans markdown):
   ]
 }
 
-Génère 4 restaurants DIFFÉRENTS et 5 vidéos d'influenceurs pour ${newCity}.
-Les IDs restos: rst_${ts}_1 à rst_${ts}_4. Les IDs vids: inf_${ts}_1 à inf_${ts}_5.
-Utilise le bon emoji drapeau pour "country". Tout le texte (name, cuisine, tags, desc, title) en arabe.
+Génère 12 restaurants DIFFÉRENTS et VARIÉS et 8 vidéos d'influenceurs pour ${newCity}.
+IDs restos: rst_${ts}_1 à rst_${ts}_12. IDs vids: inf_${ts}_1 à inf_${ts}_8.
+Utilise le bon emoji drapeau pour "country". Tout le texte en arabe.
+Pour les vidéos, varie les plateformes: utilise "pl":"yt" avec ytid, "pl":"tt" avec ttid, "pl":"ig" avec igid (shortcode Instagram ex: B1234abcXYZ).
+Varie les types de restaurants, prix ($/$$/$$$/$$$$), quartiers. Adresses réelles.
 Retourne UNIQUEMENT le JSON valide.`;
 
-            const raw = await callClaude(cityPrompt, 4000);
+            const raw = await callClaude(cityPrompt, 6000);
             const data = safeJSON(raw);
             newRestos = data.restos || [];
             newInfVids = data.infVids || [];

@@ -2991,30 +2991,36 @@ function renderVF(){
 function loadMoreVids(){vfShown+=12;renderVF();}
 
 /* ── VIDEO EMBED ENGINE : iframe forcée, jamais de redirect ── */
-function buildEmbedHTML(ytid,ttid,fbid){
+function buildEmbedHTML(ytid,ttid,fbid,igid){
   if(ytid) return `<iframe src="https://www.youtube-nocookie.com/embed/${ytid}?autoplay=1&rel=0&modestbranding=1" frameborder="0" allow="autoplay;encrypted-media;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:0"></iframe>`;
   if(ttid) return `<iframe src="https://www.tiktok.com/embed/v2/${ttid}?autoplay=1" frameborder="0" allow="autoplay;fullscreen" allowfullscreen scrolling="no" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
+  if(igid) return `<iframe src="https://www.instagram.com/p/${igid}/embed/" frameborder="0" scrolling="no" allowtransparency="true" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
   if(fbid) return `<iframe src="https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(fbid)}&autoplay=1&show_text=0&width=460" frameborder="0" allow="autoplay;fullscreen" allowfullscreen scrolling="no" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
   return null;
 }
-function vmLoadEmbed(id,ytid,ttid,fbid){
+function vmLoadEmbed(id,ytid,ttid,fbid,igid){
   const box=document.getElementById('vm-player-'+id);
   if(!box) return;
-  const html=buildEmbedHTML(ytid,ttid,fbid);
+  const html=buildEmbedHTML(ytid,ttid,fbid,igid);
   if(html){ box.innerHTML=html; }
 }
+// vmLoadEmbed now defined above with igid support
 function openVM(id){
   const v=[...VIDS,...INF_VIDS].find(x=>x.id===id);
   if(!v) return;
-  const canEmbed=!!(v.ytid||v.ttid||v.fbid);
-  // Instagram et Pinterest ne supportent pas l'embed — on cache le player si pas d'ID
-  const showPlayer = canEmbed || (v.pl!=='ig' && v.pl!=='pin');
+  const canEmbed=!!(v.ytid||v.ttid||v.fbid||v.igid);
+  // Instagram peut s'embed via shortcode igid
+  const showPlayer = canEmbed || v.pl!=='pin';
+  // Build external link for non-embeddable content
+  const extLink = v.pl==='ig'&&v.igid ? `https://www.instagram.com/p/${v.igid}/`
+    : v.pl==='tt'&&v.ttid ? `https://www.tiktok.com/video/${v.ttid}`
+    : v.pl==='yt'&&v.ytid ? `https://youtu.be/${v.ytid}` : null;
   document.getElementById('vm-body').innerHTML=`
     <div id="vm-player-${id}" style="aspect-ratio:${v.asp==='portrait'?'9/16':'16/9'};max-height:${v.asp==='portrait'?'420':'280'}px;position:relative;background:#111;overflow:hidden;display:flex;align-items:center;justify-content:center">
       ${v.thumb?`<img src="${v.thumb}" alt="" id="vm-thumb-${id}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`:''}
       <div style="position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:1"></div>
       ${canEmbed?`
-        <div onclick="vmLoadEmbed('${id}','${v.ytid||''}','${v.ttid||''}','${v.fbid||''}')" id="vm-playbtn-${id}"
+        <div onclick="vmLoadEmbed('${id}','${v.ytid||''}','${v.ttid||''}','${v.fbid||''}','${v.igid||''}')" id="vm-playbtn-${id}"
           style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:12px">
           <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(0,0,0,.5)">
             <div style="width:0;height:0;border-style:solid;border-width:14px 0 14px 26px;border-color:transparent transparent transparent var(--s);margin-right:-5px"></div>
@@ -3671,6 +3677,8 @@ function renderRestoDetail(r){
   const stars='⭐'.repeat(Math.floor(r.rating))+(r.rating%1>=0.5?'✨':'');
   const relVids=INF_VIDS.filter(v=>v.restoId===r.id||(v.city===r.city&&v.restoId!==r.id)).slice(0,9);
   const mapQ=encodeURIComponent(`${r.name} ${r.cityEn||r.city}`);
+  const navUrl=`https://www.google.com/maps/dir/?api=1&destination=${mapQ}`;
+  const mapsUrl=`https://www.google.com/maps/search/${mapQ}`;
   el.innerHTML=`
     <div>
       <div class="rd-vis">
@@ -3723,9 +3731,14 @@ function renderRestoDetail(r){
           title="خريطة ${r.name}">
         </iframe>
       </div>
-      <a href="https://www.google.com/maps/search/${mapQ}" target="_blank" rel="noopener"
-         style="display:block;text-align:center;background:var(--s);color:#fff;padding:10px;border-radius:var(--rads);font-family:var(--fn);font-size:13px;font-weight:800;text-decoration:none;margin-bottom:14px">
-        🗺️ فتح في خرائط Google
+      <a href="${navUrl}" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;background:linear-gradient(135deg,#1A73E8 0%,#0d5fc4 100%);color:#fff;padding:14px 20px;border-radius:var(--rads);font-family:var(--fn);font-size:15px;font-weight:900;text-decoration:none;margin-bottom:10px;box-shadow:0 4px 16px rgba(26,115,232,.35);letter-spacing:.3px">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+        🚀 Y aller — الاتجاهات
+      </a>
+      <a href="${mapsUrl}" target="_blank" rel="noopener"
+         style="display:block;text-align:center;background:var(--sg);color:var(--t1);padding:9px;border-radius:var(--rads);font-family:var(--fn);font-size:12px;font-weight:700;text-decoration:none;margin-bottom:14px;border:1px solid var(--b1)">
+        🗺️ عرض على خريطة Google
       </a>
       <div class="rd-info-box">
         <div style="font-size:12px;font-weight:900;color:var(--t0);margin-bottom:10px">📊 ملخص التقييمات</div>
