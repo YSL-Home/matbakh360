@@ -166,7 +166,26 @@ Retourne UNIQUEMENT le JSON valide.`;
             console.log(`  ✓ ${newRestos.length} restos, ${newInfVids.length} videos`);
           } catch(e) { console.error('  ✗ City generation failed:', e.message); }
 
-          // ── 3. INJECT INTO index.html ─────────────────────────────────────
+          // ── 3. GENERATE FR+EN TRANSLATIONS for new recipes ───────────────
+          let trEntries = '';
+          if (allRecipes.length > 0) {
+            try {
+              const recipeList = allRecipes.map(r => `ID:${r.id} | AR:${r.ti} | DESC:${r.de.substring(0,80)}`).join('\n');
+              const trRaw = await callClaude(
+                `Traduis ces recettes en français ET en anglais. Retourne UNIQUEMENT un objet JSON valide:\n` +
+                `{"r_ID1":{"fr":{"ti":"titre fr","de":"desc fr courte"},"en":{"ti":"title en","de":"short desc en"}}, ...}\n` +
+                `Recettes à traduire:\n${recipeList}\n` +
+                `Titre: 3-6 mots évocateurs. Desc: 1 phrase appétissante. JSON valide uniquement.`,
+                4000
+              );
+              const trData = safeJSON(trRaw);
+              const trLines = Object.entries(trData).map(([id,v]) => `  ${id}:${JSON.stringify(v)}`).join(',\n');
+              trEntries = trLines;
+              console.log(`\n✓ Traductions générées pour ${Object.keys(trData).length} recettes`);
+            } catch(e) { console.error('✗ Traductions:', e.message); }
+          }
+
+          // ── 4. INJECT INTO index.html ─────────────────────────────────────
           if (allRecipes.length > 0) {
             const recipeEntries = allRecipes.map(r => JSON.stringify(r)).join(',\n  ');
             html = html.replace(
@@ -174,6 +193,15 @@ Retourne UNIQUEMENT le JSON valide.`;
               `\n  // ═══ AUTO ${date} — ${selected.join('+')} — ${allRecipes.length} recettes ═══\n  ${recipeEntries},\n$1`
             );
             console.log(`\n✓ ${allRecipes.length} recettes injectées`);
+          }
+
+          // Inject translations into RECIPE_TR object
+          if (trEntries) {
+            html = html.replace(
+              /^(const RECIPE_TR=\{)/m,
+              `$1\n${trEntries},`
+            );
+            console.log('✓ Traductions injectées dans RECIPE_TR');
           }
 
           if (newRestos.length > 0) {

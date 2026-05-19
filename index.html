@@ -23,6 +23,14 @@
 <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='49' fill='%23FDFAF5' stroke='%23C94A1A' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='43' fill='none' stroke='%23C94A1A' stroke-width='1.2' stroke-dasharray='4 2.5' opacity='.5'/%3E%3Cpath d='M18 62 Q14 50 18 38 Q24 30 32 36 Q24 46 24 56Z' fill='%235A7A35' opacity='.85'/%3E%3Cpath d='M82 62 Q86 50 82 38 Q76 30 68 36 Q76 46 76 56Z' fill='%235A7A35' opacity='.85'/%3E%3Ccircle cx='26' cy='68' r='5' fill='%23E86A30'/%3E%3Ccircle cx='74' cy='68' r='5' fill='%23E86A30'/%3E%3Ctext x='50' y='48' text-anchor='middle' fill='%23C94A1A' font-size='20' font-weight='900' font-family='Arial,sans-serif'%3Eمطبخ%3C/text%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%23C94A1A' font-size='24' font-weight='900' font-family='Arial,sans-serif' letter-spacing='-1'%3E360%3C/text%3E%3C/svg%3E">
 <link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#C94A1A">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="مطبخ 360">
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=El+Messiri:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 <!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6870790039775701" crossorigin="anonymous"></script>
@@ -859,7 +867,8 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
     </div>
   </div>
   <div class="wrap">
-    <div class="sh" style="margin-top:20px">
+    <div id="resto-filters-bar" style="background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);padding:14px 16px;margin:16px 0 4px;"></div>
+    <div class="sh" style="margin-top:16px">
       <h2 id="resto-section-title">🌟 أفضل المطاعم</h2>
       <div class="rl"></div>
       <span class="bd" id="resto-count"></span>
@@ -2637,7 +2646,7 @@ let activePg='home', activePlt='all', activeVFTag='all', vfShown=16;
 // ═══════════════════════════════════════════════════
 // ROUTING
 // ═══════════════════════════════════════════════════
-function gp(id){
+function gp(id,pushUrl=true){
   activePg=id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
   const pg=document.getElementById('page-'+id);
@@ -2650,7 +2659,29 @@ function gp(id){
   if(id==='videos') initVideos();
   if(id==='fav') initFav();
   if(id==='resto') initResto();
+  // Update URL for shareable deep links
+  if(pushUrl){
+    const urlMap={home:'/',world:'/cuisines',videos:'/videos',resto:'/restaurants',fav:'/favoris',search:'/recherche'};
+    const url=urlMap[id]||('/'+id);
+    history.pushState({page:id},'',url);
+  }
+  // Reset SEO to default when leaving recipe page
+  if(id!=='recipe'){
+    document.title='مطبخ 360 | كل وصفات العالم';
+    const set=(elId,val)=>{const el=document.getElementById(elId);if(el)el.setAttribute('content',val);};
+    set('og-title','مطبخ 360 | كل وصفات العالم');
+    set('og-desc','آلاف الوصفات من 68 مطبخاً عالمياً مع فيديوهات ووصفات خطوة بخطوة');
+    set('og-img','https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=1200&q=80');
+  }
 }
+
+// Handle browser back/forward
+window.addEventListener('popstate',e=>{
+  const s=e.state;
+  if(s&&s.recipe) openRecipe(s.recipe,false);
+  else if(s&&s.page) gp(s.page,false);
+  else gp('home',false);
+});
 
 // ═══════════════════════════════════════════════════
 // HELPERS
@@ -2665,7 +2696,10 @@ function rcCard(r,feat=false){
   return `<div class="rc${feat?' feat':''}" onclick="openRecipe('${r.id}')">
     <div class="rv">
       <div class="rv-bg"></div>
-      ${img?`<img src="${img}" alt="${ti}" loading="lazy" onerror="this.remove();this.parentElement.style.background='linear-gradient(135deg,var(--sg) 0%,var(--card2) 100%);'">`:''}
+      ${img?`<img src="${img}" alt="${ti}" loading="lazy"
+        srcset="${img.replace(/w=\d+/,'w=300')} 300w, ${img.replace(/w=\d+/,'w=500')} 500w, ${img.replace(/w=\d+/,'w=800')} 800w"
+        sizes="(max-width:600px) 300px, (max-width:1200px) 500px, 800px"
+        onerror="this.remove();this.parentElement.style.background='linear-gradient(135deg,var(--sg) 0%,var(--card2) 100%);'">`:''}
       <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:58px;z-index:0;opacity:${img?'0':'1'};pointer-events:none">${r.em}</div>
       <div class="bflag">${r.f}</div>
       <div class="bcat">${r.cat}</div>
@@ -2779,10 +2813,11 @@ function fworld(cat){
 // RECIPE PAGE
 // ═══════════════════════════════════════════════════
 let srv={};
-function openRecipe(id){
+function openRecipe(id,pushUrl=true){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
   updateSEO(r);
+  if(pushUrl) history.pushState({recipe:id},rTr(r,'ti'),`/recette/${id}`);
   srv[id]=r.sv;
   const related=RECIPES.filter(x=>x.cid===r.cid&&x.id!==r.id).slice(0,4);
   document.getElementById('rp-content').innerHTML=`
@@ -3063,15 +3098,27 @@ document.getElementById('vm').addEventListener('click',e=>{if(e.target.id==='vm'
 function doSearch(q){
   if(!q||!q.trim()) return;
   q=q.trim();
-  const res=RECIPES.filter(r=>
-    r.ti.includes(q)||r.de.includes(q)||r.cat.includes(q)||
-    (r.kw&&r.kw.some(k=>k.includes(q)))||r.r.includes(q)
-  );
-  document.getElementById('s-lbl').innerHTML=`نتائج البحث عن: <strong>${q}</strong> — ${res.length} نتيجة`;
+  const ql=q.toLowerCase();
+  const res=RECIPES.filter(r=>{
+    // Arabic fields
+    if(r.ti.includes(q)||r.de.includes(q)||r.cat.includes(q)||r.r.includes(q)) return true;
+    if(r.kw&&r.kw.some(k=>k.includes(q))) return true;
+    // Search in all translations (fr, en, es, pt, it)
+    const tr=RECIPE_TR[r.id];
+    if(tr){
+      for(const lang of Object.values(tr)){
+        if(lang.ti&&lang.ti.toLowerCase().includes(ql)) return true;
+        if(lang.de&&lang.de.toLowerCase().includes(ql)) return true;
+      }
+    }
+    return false;
+  });
+  history.pushState({page:'search',q},'',`/recherche?q=${encodeURIComponent(q)}`);
+  document.getElementById('s-lbl').innerHTML=`<strong>${q}</strong> — ${res.length} نتيجة / résultats`;
   document.getElementById('s-grid').innerHTML=res.length
     ? res.map(r=>rcCard(r)).join('')
-    : `<div class="no-res" style="grid-column:span 4"><div style="font-size:48px;margin-bottom:12px">🔍</div><div>لا نتائج لـ "${q}"</div></div>`;
-  gp('search');
+    : `<div class="no-res" style="grid-column:span 4"><div style="font-size:48px;margin-bottom:12px">🔍</div><div>لا نتائج لـ "${q}" — aucun résultat pour "${q}"</div></div>`;
+  gp('search',false);
 }
 
 // ═══════════════════════════════════════════════════
@@ -3589,6 +3636,8 @@ function detectCity(){
     });
 }
 
+let _restoCuisine='', _restoPrice='';
+
 function buildCityTags(){
   const bar=document.getElementById('city-tags-bar');
   if(!bar) return;
@@ -3596,6 +3645,38 @@ function buildCityTags(){
   bar.innerHTML=all.map(c=>`
     <button class="ctag${c.id===_restoCity?' on':''}" onclick="filterRestoCity('${c.id}')">${c.lbl}</button>
   `).join('');
+  // Build cuisine + price filters
+  buildRestoFilters();
+}
+
+function buildRestoFilters(){
+  const bar=document.getElementById('resto-filters-bar');
+  if(!bar) return;
+  // Collect all unique cuisines
+  const cuisines=[...new Set(RESTAURANTS.flatMap(r=>r.cusines||[r.cuisine]).filter(Boolean))].sort();
+  const prices=['$','$$','$$$','$$$$'];
+  bar.innerHTML=`
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+      <span style="font-size:11px;font-weight:800;color:var(--t3)">🍽️ المطبخ:</span>
+      <button class="ctag${!_restoCuisine?' on':''}" onclick="filterRestoCuisine('')">الكل</button>
+      ${cuisines.slice(0,12).map(c=>`<button class="ctag${_restoCuisine===c?' on':''}" onclick="filterRestoCuisine('${c.replace(/'/g,"\\'")}'">${c}</button>`).join('')}
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px">
+      <span style="font-size:11px;font-weight:800;color:var(--t3)">💰 السعر:</span>
+      <button class="ctag${!_restoPrice?' on':''}" onclick="filterRestoPrice('')">الكل</button>
+      ${prices.map(p=>`<button class="ctag${_restoPrice===p?' on':''}" onclick="filterRestoPrice('${p}')">${p}</button>`).join('')}
+    </div>`;
+}
+
+function filterRestoCuisine(c){
+  _restoCuisine=c;
+  renderRestoGrid(_restoCity);
+  buildRestoFilters();
+}
+function filterRestoPrice(p){
+  _restoPrice=p;
+  renderRestoGrid(_restoCity);
+  buildRestoFilters();
 }
 
 function filterRestoCity(city){
@@ -3624,7 +3705,9 @@ function renderRestoGrid(city){
   const grid=document.getElementById('resto-grid');
   const countEl=document.getElementById('resto-count');
   if(!grid) return;
-  const list=city?RESTAURANTS.filter(r=>r.city===city):RESTAURANTS;
+  let list=city?RESTAURANTS.filter(r=>r.city===city):RESTAURANTS;
+  if(_restoCuisine) list=list.filter(r=>(r.cusines||[]).includes(_restoCuisine)||r.cuisine===_restoCuisine);
+  if(_restoPrice)   list=list.filter(r=>r.price===_restoPrice);
   if(countEl) countEl.textContent=`${list.length} مطعم`;
   if(!list.length){
     grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--t3);font-size:14px">لا توجد مطاعم لهذه المدينة حتى الآن — جرّب مدينة أخرى</div>`;
@@ -3931,6 +4014,29 @@ function doFacebookLogin(){
     const dx=e.changedTouches[0].clientX-_tx;
     if(Math.abs(dx)>60) cmNav(dx<0?1:-1);
   },{passive:true});
+})();
+
+// ── SERVICE WORKER — cache offline + accélération ──────────────────
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg=>{ console.log('✅ SW enregistré:', reg.scope); })
+      .catch(err=>{ console.log('SW erreur:', err); });
+  });
+}
+
+// ── DEEP LINK — restaure la page depuis l'URL au chargement ────────
+(function(){
+  const p=location.pathname;
+  const m=p.match(/^\/recette\/(.+)/);
+  if(m){ const r=RECIPES.find(x=>x.id===m[1]); if(r){gp('recipe',false);openRecipe(r.id,false);} }
+  else if(p.startsWith('/cuisines')) gp('world',false);
+  else if(p.startsWith('/restaurants')) gp('resto',false);
+  else if(p.startsWith('/videos')) gp('videos',false);
+  else if(p.startsWith('/favoris')) gp('fav',false);
+  // restore search query
+  const sq=new URLSearchParams(location.search).get('q');
+  if(sq) setTimeout(()=>doSearch(sq),200);
 })();
 </script>
 </body>
