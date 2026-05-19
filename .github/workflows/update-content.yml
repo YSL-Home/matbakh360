@@ -1,4 +1,4 @@
-name: 🍽️ Update Recipes & Videos
+name: 🍽️ Update Recipes, Videos & Restaurants
 
 on:
   schedule:
@@ -23,7 +23,7 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Generate new recipes via Claude API
+      - name: Generate recipes + new restaurant city via Claude API
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
@@ -33,7 +33,7 @@ jobs:
           const API_KEY = process.env.ANTHROPIC_API_KEY;
           if (!API_KEY) { console.log('No API key — skipping generation'); process.exit(0); }
 
-          async function callClaude(prompt) {
+          async function callClaude(prompt, maxTokens = 6000) {
             const res = await fetch('https://api.anthropic.com/v1/messages', {
               method: 'POST',
               headers: {
@@ -43,104 +43,167 @@ jobs:
               },
               body: JSON.stringify({
                 model: 'claude-haiku-4-5-20251001',
-                max_tokens: 8000,
+                max_tokens: maxTokens,
                 messages: [{ role: 'user', content: prompt }],
               }),
             });
             const data = await res.json();
+            if (!data.content?.[0]?.text) throw new Error(JSON.stringify(data));
             return data.content[0].text;
           }
 
-          // Pick 3 different unusual cuisines for a richer batch
+          function safeJSON(raw) {
+            const cleaned = raw.replace(/```json\n?|\n?```/g, '').trim();
+            return JSON.parse(cleaned);
+          }
+
+          const date = new Date().toISOString().split('T')[0];
+          const ts = Date.now();
+
+          // ── 1. RECIPES: 3 unusual cuisines × 10 = 30+ recipes ──────────────
           const cuisines = [
             'Géorgien','Éthiopien','Péruvien','Mongol','Sénégalais','Bolivien',
             'Ouzbek','Philippin','Cambodgien','Laotien','Mauritanien','Paraguayen',
             'Kyrgyz','Biélorusse','Haïtien','Trinidadien','Malagasy','Tanzanien',
             'Yéménite','Omanais','Afghani','Népalais','Tibétain','Bhoutanais',
-            'Équatorien','Vénézuélien','Guatémaltèque','Hondurien','Nicaraguayen',
-            'Dominicain','Jamaïcain','Cubain','Porto-Ricain','Togolais','Béninois'
+            'Équatorien','Vénézuélien','Guatémaltèque','Hondurien','Dominicain',
+            'Jamaïcain','Cubain','Porto-Ricain','Togolais','Béninois','Réunionnais',
+            'Malgache','Comorien','Djiboutien','Érythréen','Somalien'
           ];
+          const selected = cuisines.sort(() => Math.random() - 0.5).slice(0, 3);
+          console.log(`\n🍳 RECIPES — Cuisines: ${selected.join(', ')}`);
 
-          // Shuffle and pick 3 unique cuisines for this run
-          const shuffled = cuisines.sort(() => Math.random() - 0.5);
-          const selected = shuffled.slice(0, 3);
-          const date = new Date().toISOString().split('T')[0];
-          const ts = Date.now();
-
-          console.log(`Generating recipes for: ${selected.join(', ')} — ${date}`);
-
-          let allNewRecipes = [];
-
+          let allRecipes = [];
           for (let i = 0; i < selected.length; i++) {
             const cuisine = selected[i];
-            console.log(`\n[${i+1}/3] Generating 10 ${cuisine} recipes...`);
-
-            const recipePrompt = `Tu es un expert en gastronomie mondiale. Génère 10 recettes ${cuisine} AUTHENTIQUES et VARIÉES pour le site مطبخ 360 (cuisine mondiale en arabe).
-
-Retourne UNIQUEMENT un tableau JSON valide (sans markdown, sans backticks) avec exactement ce format:
-[
-  {
-    "id": "r_${ts}_${i}_1",
-    "cid": "auto",
-    "f": "🌍",
-    "r": "آسيوي",
-    "cat": "${cuisine.toLowerCase()}",
-    "em": "🍲",
-    "img": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=75",
-    "ti": "اسم الطبق الأصيل بالعربية",
-    "de": "وصف شهي موجز بالعربية يشتهي الإنسان الأكل",
-    "tm": "45 دق",
-    "sv": 4,
-    "df": "m",
-    "rt": 4.7,
-    "rv": 1200,
-    "ing": [{"q": "200غ", "n": "مكون بالعربية"}],
-    "steps": [{"t": "الخطوة بالعربية", "tp": "نصيحة الشيف"}],
-    "tips": [{"i": "💡", "t": "نصيحة مفيدة بالعربية"}],
-    "nut": {"cal": 350, "pro": 20, "carb": 30, "fat": 15},
-    "kw": ["كلمة مفتاحية"]
-  }
-]
-
-Règles:
-- 10 recettes DIFFÉRENTES et variées (entrées, plats, desserts, boissons)
-- IDs uniques: "r_${ts}_${i}_1", "r_${ts}_${i}_2", ..., "r_${ts}_${i}_10"
-- "r" doit être: "عربي", "آسيوي", "أوروبي", "أمريكي", ou "أفريقي" selon la cuisine
-- "df" doit être: "e" (سهل), "m" (متوسط), ou "h" (صعب)
-- Tout le contenu textuel (ti, de, ing, steps, tips, kw) DOIT être en arabe
-- Chaque recette doit avoir au moins 5 ingrédients et 4 étapes
-- Retourne UNIQUEMENT le JSON valide, rien d'autre`;
-
             try {
-              const raw = await callClaude(recipePrompt);
-              const cleaned = raw.replace(/```json\n?|\n?```/g, '').trim();
-              const recipes = JSON.parse(cleaned);
-              console.log(`  ✓ Got ${recipes.length} recipes for ${cuisine}`);
-              allNewRecipes = [...allNewRecipes, ...recipes];
-            } catch(e) {
-              console.error(`  ✗ Failed for ${cuisine}:`, e.message);
-            }
-
-            // Small delay between API calls
-            if (i < selected.length - 1) await new Promise(r => setTimeout(r, 2000));
+              const raw = await callClaude(`Tu es un expert gastronomique. Génère 10 recettes ${cuisine} AUTHENTIQUES et VARIÉES.
+Retourne UNIQUEMENT un tableau JSON valide (sans markdown) avec ce format exact:
+[{"id":"r_${ts}_${i}_1","cid":"auto","f":"🌍","r":"آسيوي","cat":"${cuisine.toLowerCase()}","em":"🍲","img":"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=75","ti":"اسم الطبق بالعربية","de":"وصف شهي بالعربية","tm":"45 دق","sv":4,"df":"m","rt":4.7,"rv":1200,"ing":[{"q":"200غ","n":"مكون"}],"steps":[{"t":"خطوة","tp":"نصيحة"}],"tips":[{"i":"💡","t":"نصيحة"}],"nut":{"cal":350,"pro":20,"carb":30,"fat":15},"kw":["كلمة"]}]
+IDs: r_${ts}_${i}_1 jusqu'à r_${ts}_${i}_10. "r" = آسيوي|عربي|أوروبي|أمريكي|أفريقي selon cuisine. Tout le texte en arabe.`);
+              const recipes = safeJSON(raw);
+              allRecipes = [...allRecipes, ...recipes];
+              console.log(`  ✓ ${cuisine}: ${recipes.length} recettes`);
+            } catch(e) { console.error(`  ✗ ${cuisine}:`, e.message); }
+            if (i < 2) await new Promise(r => setTimeout(r, 1500));
           }
 
-          console.log(`\nTotal recipes generated: ${allNewRecipes.length}`);
+          // ── 2. NEW CITY: restaurants + influencer videos ──────────────────
+          const newCities = [
+            'بانكوك','سيول','مكسيكو','ليما','برشلونة','روما','فيينا','براغ','مراكش',
+            'الجزائر','طرابلس','الرياض','الكويت','مسقط','أبوظبي','الدوحة','بغداد',
+            'دمشق','عمّان','صنعاء','خرطوم','أديس أبابا','دكار','أبيدجان','لاغوس',
+            'نيروبي','دار السلام','كيب تاون','الدار البيضاء الجديد','فاس','مكناس',
+            'سنغافورة','كوالالمبور','جاكرتا','مانيلا','هوشي مينه','بانغكوك','مومباي',
+            'كراتشي','لاهور','إسلام آباد','دلهي','كابول','طشقند','ألماتي','باكو',
+            'تبليسي','يريفان','بوخارست','صوفيا','أثينا','نابولي','مرسيليا','ليون'
+          ];
 
-          // Inject all new recipes into index.html
-          if (allNewRecipes.length > 0) {
-            let html = readFileSync('index.html', 'utf8');
-            const label = selected.join('+');
-            const newEntries = allNewRecipes.map(r => JSON.stringify(r)).join(',\n  ');
+          // Find already-used cities to avoid repetition
+          let html = readFileSync('index.html', 'utf8');
+          const usedCities = (html.match(/city:'([^']+)'/g)||[]).map(m=>m.replace("city:'",'').replace("'",''));
+          const availCities = newCities.filter(c => !usedCities.includes(c));
+          const newCity = availCities[Math.floor(Math.random() * availCities.length)] || newCities[Math.floor(Math.random() * newCities.length)];
+          const newCityEn = newCity; // Will use Arabic name as fallback
+
+          console.log(`\n🏙️ NEW CITY: ${newCity}`);
+
+          let newRestos = [], newInfVids = [];
+          try {
+            const cityPrompt = `Tu es un expert gastronomique mondial. Génère des données pour la ville "${newCity}" pour le site مطبخ 360.
+
+Retourne UNIQUEMENT un objet JSON valide (sans markdown):
+{
+  "restos": [
+    {
+      "id": "rst_${ts}_1",
+      "name": "اسم المطعم بالعربية",
+      "city": "${newCity}",
+      "cityEn": "${newCity}",
+      "country": "🌍",
+      "cuisine": "نوع المطبخ",
+      "cusines": ["نوع1", "نوع2"],
+      "rating": 4.7,
+      "rv": 2500,
+      "price": "$$",
+      "address": "عنوان المطعم",
+      "img": "https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=75",
+      "tags": ["وسم1", "وسم2", "وسم3"],
+      "ig": "@handle",
+      "tt": "@handle",
+      "desc": "وصف جذاب للمطعم بالعربية",
+      "hours": "12:00 – 23:00",
+      "phone": "+XX XXX XXX XXXX",
+      "vids": ["inf_${ts}_1"]
+    }
+  ],
+  "infVids": [
+    {
+      "id": "inf_${ts}_1",
+      "city": "${newCity}",
+      "restoId": "rst_${ts}_1",
+      "ch": "@InfluencerHandle",
+      "pl": "yt",
+      "ytid": "dQw4w9WgXcQ",
+      "thumb": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=70",
+      "title": "عنوان الفيديو بالعربية",
+      "tags": ["وسم1", "وسم2"]
+    }
+  ]
+}
+
+Génère 4 restaurants DIFFÉRENTS et 5 vidéos d'influenceurs pour ${newCity}.
+Les IDs restos: rst_${ts}_1 à rst_${ts}_4. Les IDs vids: inf_${ts}_1 à inf_${ts}_5.
+Utilise le bon emoji drapeau pour "country". Tout le texte (name, cuisine, tags, desc, title) en arabe.
+Retourne UNIQUEMENT le JSON valide.`;
+
+            const raw = await callClaude(cityPrompt, 4000);
+            const data = safeJSON(raw);
+            newRestos = data.restos || [];
+            newInfVids = data.infVids || [];
+            console.log(`  ✓ ${newRestos.length} restos, ${newInfVids.length} videos`);
+          } catch(e) { console.error('  ✗ City generation failed:', e.message); }
+
+          // ── 3. INJECT INTO index.html ─────────────────────────────────────
+          if (allRecipes.length > 0) {
+            const recipeEntries = allRecipes.map(r => JSON.stringify(r)).join(',\n  ');
             html = html.replace(
               /(\s*\/\/ ═══ VIDEO DATA ═══)/,
-              `\n  // ═══ AUTO-GENERATED ${date} (${label}) — ${allNewRecipes.length} recettes ═══\n  ${newEntries},\n$1`
+              `\n  // ═══ AUTO ${date} — ${selected.join('+')} — ${allRecipes.length} recettes ═══\n  ${recipeEntries},\n$1`
             );
-            writeFileSync('index.html', html, 'utf8');
-            console.log(`✓ ${allNewRecipes.length} recipes injected into index.html`);
+            console.log(`\n✓ ${allRecipes.length} recettes injectées`);
           }
 
-          console.log('\nContent update complete!');
+          if (newRestos.length > 0) {
+            const restoEntries = newRestos.map(r => '  '+JSON.stringify(r)).join(',\n');
+            // Insert before the closing ]; of RESTAURANTS array
+            html = html.replace(
+              /(\s*\/\/ ═══ INFLUENCER VIDEOS)/,
+              `\n  // ─── ${newCity} (AUTO ${date}) ───\n${restoEntries},\n$1`
+            );
+            console.log(`✓ ${newRestos.length} restos injectés (${newCity})`);
+          }
+
+          if (newInfVids.length > 0) {
+            const vidEntries = newInfVids.map(v => '  '+JSON.stringify(v)).join(',\n');
+            // Insert at end of INF_VIDS array (before closing ];)
+            html = html.replace(
+              /(\s*\/\/ ═══════════════════════════════════════════════════\n\/\/ STATE)/,
+              `\n  // ─── ${newCity} influencers (AUTO ${date}) ───\n${vidEntries},\n$1`
+            );
+            console.log(`✓ ${newInfVids.length} vidéos injectées`);
+          }
+
+          // Add new city to CITIES array if not already there
+          if (newRestos.length > 0 && !html.includes(`'${newCity}'`)) {
+            html = html.replace(
+              `'مونتريال'\n];`,
+              `'مونتريال',\n  '${newCity}'\n];`
+            );
+          }
+
+          writeFileSync('index.html', html, 'utf8');
+          console.log('\n✅ index.html mis à jour');
           SCRIPT
           node generate.mjs
 
@@ -152,7 +215,6 @@ Règles:
           if git diff --staged --quiet; then
             echo "No changes to commit"
           else
-            COUNT=$(git diff --staged index.html | grep -c "^+" || true)
-            git commit -m "🍽️ Auto-update: nouvelles recettes $(date +'%Y-%m-%d') (~${COUNT} lignes ajoutées)"
+            git commit -m "🍽️ Auto-update $(date +'%Y-%m-%d') — nouvelles recettes + nouvelle ville"
             git push
           fi

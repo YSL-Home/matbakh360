@@ -18,8 +18,12 @@
 <meta name="twitter:description" id="tw-desc" content="آلاف الوصفات من 68 مطبخاً عالمياً">
 <script type="application/ld+json" id="schema-site">{"@context":"https://schema.org","@type":"WebSite","name":"مطبخ 360","url":"https://matbakh360.com","description":"منصة وصفات عالمية من 68 مطبخاً حول العالم","potentialAction":{"@type":"SearchAction","target":"https://matbakh360.com/?q={search_term_string}","query-input":"required name=search_term_string"},"inLanguage":"ar"}</script>
 <script type="application/ld+json" id="schema-recipe"></script>
+<!-- Favicon — logo مطبخ 360 dans l'onglet navigateur -->
+<link rel="icon" href="logo.png" type="image/png">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='49' fill='%23FDFAF5' stroke='%23C94A1A' stroke-width='4'/%3E%3Ccircle cx='50' cy='50' r='43' fill='none' stroke='%23C94A1A' stroke-width='1.2' stroke-dasharray='4 2.5' opacity='.5'/%3E%3Cpath d='M18 62 Q14 50 18 38 Q24 30 32 36 Q24 46 24 56Z' fill='%235A7A35' opacity='.85'/%3E%3Cpath d='M82 62 Q86 50 82 38 Q76 30 68 36 Q76 46 76 56Z' fill='%235A7A35' opacity='.85'/%3E%3Ccircle cx='26' cy='68' r='5' fill='%23E86A30'/%3E%3Ccircle cx='74' cy='68' r='5' fill='%23E86A30'/%3E%3Ctext x='50' y='48' text-anchor='middle' fill='%23C94A1A' font-size='20' font-weight='900' font-family='Arial,sans-serif'%3Eمطبخ%3C/text%3E%3Ctext x='50' y='70' text-anchor='middle' fill='%23C94A1A' font-size='24' font-weight='900' font-family='Arial,sans-serif' letter-spacing='-1'%3E360%3C/text%3E%3C/svg%3E">
+<link rel="apple-touch-icon" href="logo.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=El+Messiri:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 <!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6870790039775701" crossorigin="anonymous"></script>
 <style>
@@ -37,7 +41,7 @@
   --t0:#1A0D05;--t1:#3D2010;--t2:#6B4228;--t3:#9A7050;
   --nav-bg:rgba(253,250,245,.96);
   --rad:16px;--rads:10px;--pill:100px;
-  --fn:'Cairo',sans-serif;--fd:'Playfair Display',serif;
+  --fn:'Tajawal',sans-serif;--fd:'El Messiri',serif;
   --sh:0 4px 28px rgba(0,0,0,.09);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
@@ -110,8 +114,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
   background-size:30px 30px;}
 .rv img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .4s;}
 .rc:hover .rv img{transform:scale(1.05);}
-.rv .em{font-size:46px;position:relative;z-index:1;filter:drop-shadow(0 2px 8px rgba(0,0,0,.4));}
-.rc.feat .rv .em{font-size:70px;}
+/* emoji déplacé dans le corps de la carte — plus sur l'image */
+.rc-em-row{display:flex;align-items:center;gap:7px;margin-bottom:7px;}
+.rc-em-ico{font-size:22px;line-height:1;flex-shrink:0;}
+.rc-em-cat{font-size:10px;font-weight:800;color:var(--s);background:var(--sg);
+  padding:2px 8px;border-radius:var(--pill);letter-spacing:.5px;}
+.rc.feat .rc-em-ico{font-size:28px;}
 .rv-lbl{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--t3);position:relative;z-index:1;}
 
 /* card badges */
@@ -672,16 +680,41 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 <!-- NAV -->
 <nav class="nav">
   <div class="logo" onclick="gp('home')" style="gap:8px">
-    <!-- Logo fidèle — placer logo.png dans le dossier du projet pour l'afficher -->
-    <img src="logo.png" alt="مطبخ 360" width="42" height="42" style="border-radius:50%;object-fit:cover;display:block"
+    <!-- ⚠️ Placer logo.png dans le dossier matbakh360/ pour afficher le vrai logo -->
+    <img src="logo.png" alt="مطبخ 360" width="52" height="52"
+         style="object-fit:contain;display:block;flex-shrink:0"
          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-    <svg width="42" height="42" viewBox="0 0 40 40" fill="none" style="display:none;flex-shrink:0">
-      <circle cx="20" cy="20" r="19" fill="#F5EFE0" stroke="#C94A1A" stroke-width="1.2"/>
-      <circle cx="20" cy="20" r="19" stroke="#C94A1A" stroke-width=".8" stroke-dasharray="3.5 2.5" opacity=".5"/>
-      <path d="M20 7C16 12 11 17 15.5 22C19.5 27 23 24 20 18.5C17 13 25 11 20 7Z" fill="#C94A1A"/>
-      <path d="M7.5 26C12 21.5 16.5 24 20 18.5C20 27 15.5 30.5 7.5 26Z" fill="#C94A1A" opacity=".65"/>
-      <path d="M32.5 26C28 21.5 23.5 24 20 18.5C20 27 24.5 30.5 32.5 26Z" fill="#C94A1A" opacity=".45"/>
-      <text x="20" y="24.5" text-anchor="middle" fill="#C94A1A" font-size="5.5" font-weight="900" font-family="Cairo,sans-serif">360</text>
+    <!-- SVG fallback fidèle au vrai logo circulaire مطبخ 360 -->
+    <svg width="52" height="52" viewBox="0 0 100 100" fill="none" style="display:none;flex-shrink:0">
+      <circle cx="50" cy="50" r="49" fill="#FDFAF5" stroke="#C94A1A" stroke-width="3.5"/>
+      <circle cx="50" cy="50" r="43" fill="none" stroke="#C94A1A" stroke-width="1.2" stroke-dasharray="4 2.5" opacity=".5"/>
+      <!-- Wreath left -->
+      <path d="M18 62 Q14 50 18 38 Q24 30 30 35 Q22 45 22 55 Q22 60 18 62Z" fill="#5A7A35" opacity=".8"/>
+      <path d="M22 58 Q19 48 22 40 Q26 34 30 38 Q24 47 25 56Z" fill="#6B9240" opacity=".6"/>
+      <!-- Wreath right -->
+      <path d="M82 62 Q86 50 82 38 Q76 30 70 35 Q78 45 78 55 Q78 60 82 62Z" fill="#5A7A35" opacity=".8"/>
+      <path d="M78 58 Q81 48 78 40 Q74 34 70 38 Q76 47 75 56Z" fill="#6B9240" opacity=".6"/>
+      <!-- Carrot left -->
+      <path d="M26 65 Q22 72 25 76 L34 68Z" fill="#E86A30" opacity=".9"/>
+      <path d="M26 65 L32 64 L34 68 Q30 66 26 65Z" fill="#C94A1A" opacity=".7"/>
+      <!-- Carrot right -->
+      <path d="M74 65 Q78 72 75 76 L66 68Z" fill="#E86A30" opacity=".9"/>
+      <path d="M74 65 L68 64 L66 68 Q70 66 74 65Z" fill="#C94A1A" opacity=".7"/>
+      <!-- Wooden spoon -->
+      <ellipse cx="36" cy="28" rx="5" ry="7" fill="#C4956A" opacity=".85" transform="rotate(-30 36 28)"/>
+      <rect x="38" y="26" width="3" height="22" rx="1.5" fill="#B08050" opacity=".8" transform="rotate(-30 38 26)"/>
+      <!-- Whisk -->
+      <line x1="64" y1="18" x2="60" y2="38" stroke="#8B6B45" stroke-width="2" opacity=".7"/>
+      <path d="M64 18 Q68 22 66 28 M64 18 Q61 22 62 28" stroke="#8B6B45" stroke-width="1.5" fill="none" opacity=".7"/>
+      <!-- Arabic text مطبخ -->
+      <text x="50" y="46" text-anchor="middle" fill="#C94A1A" font-size="19" font-weight="900" font-family="'El Messiri','Tajawal',Arial,sans-serif">مطبخ</text>
+      <!-- 360 -->
+      <text x="50" y="68" text-anchor="middle" fill="#C94A1A" font-size="22" font-weight="900" font-family="Arial,sans-serif" letter-spacing="-1">360</text>
+      <!-- Spice dots -->
+      <circle cx="42" cy="76" r="2" fill="#E86A30" opacity=".7"/>
+      <circle cx="58" cy="76" r="2" fill="#C94A1A" opacity=".7"/>
+      <circle cx="34" cy="73" r="1.5" fill="#6B9240" opacity=".6"/>
+      <circle cx="66" cy="73" r="1.5" fill="#6B9240" opacity=".6"/>
     </svg>
     <div><b style="color:var(--s)">مطبخ 360</b><small style="font-size:8px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;display:block">World Recipes</small></div>
   </div>
@@ -2090,6 +2123,118 @@ const INF_VIDS=[
 ];
 
 // ═══════════════════════════════════════════════════
+// RECIPE TRANSLATIONS (fr + en)
+// ═══════════════════════════════════════════════════
+const RECIPE_TR={
+  r01:{fr:{ti:'Couscous Royal Marocain aux 7 Légumes',de:'Le plat national du Maroc — semoule fine avec 7 légumes et viandes mijotées dans un bouillon parfumé.'},en:{ti:'Royal Moroccan Couscous with 7 Vegetables',de:"Morocco's national dish — fine semolina with 7 vegetables and slow-cooked meats in fragrant broth."}},
+  r02:{fr:{ti:'Tajine de Poulet au Citron Confit & Olives',de:'Le tajine classique marocain — équilibre parfait entre acidité et salinité sur feu doux.'},en:{ti:'Chicken Tagine with Preserved Lemon & Olives',de:'The classic Moroccan tagine — a perfect balance of tartness and saltiness over low heat.'}},
+  r03:{fr:{ti:'Carbonara Romaine Authentique — Sans Crème',de:'La vraie carbonara : œufs et pecorino uniquement, jamais de crème. La recette de Rome.'},en:{ti:'Authentic Roman Carbonara — No Cream',de:'Real carbonara: eggs and pecorino only, never cream. The original Rome recipe.'}},
+  r04:{fr:{ti:'Ramen au Poulet — Bouillon Mijoté 8 Heures',de:'Un vrai ramen japonais avec un bouillon profond et des garnitures soigneusement choisies.'},en:{ti:'Chicken Ramen — 8-Hour Slow Broth',de:'Authentic Japanese ramen with a rich, deep broth and carefully chosen toppings.'}},
+  r05:{fr:{ti:'Tacos au Poulet Chipotle & Guacamole',de:'Tacos mexicains authentiques au chipotle fumé et guacamole frais fait maison.'},en:{ti:'Chipotle Chicken & Guacamole Tacos',de:'Authentic Mexican tacos with smoky chipotle chicken and fresh homemade guacamole.'}},
+  r06:{fr:{ti:'Butter Chicken — Curry Indien Crémeux',de:"Le curry le plus populaire au monde — sauce tomate onctueuse, beurre et crème fraîche."},en:{ti:'Butter Chicken — Creamy Indian Curry',de:"The world's most beloved curry — silky tomato sauce, butter and cream."}},
+  r07:{fr:{ti:'Croissants Français Classiques — Feuilletés',de:'Le vrai croissant parisien — 27 couches de feuilletage, beurré à souhait, doré et croustillant.'},en:{ti:'Classic French Croissants — Flaky Layers',de:'The true Parisian croissant — 27 layers of pastry, buttery, golden and crispy.'}},
+  r08:{fr:{ti:'Crème Brûlée à la Vanille de Madagascar',de:"Le dessert français le plus élégant — crème onctueuse sous une croûte caramélisée à la torche."},en:{ti:'Madagascar Vanilla Crème Brûlée',de:"France's most elegant dessert — silky cream under a torch-caramelized crust."}},
+  r09:{fr:{ti:'Bibimbap Coréen — Riz aux Légumes & Gochujang',de:'Le plat signature de la Corée — riz coloré garni de légumes sautés et sauce pimentée gochujang.'},en:{ti:'Korean Bibimbap — Vegetable Rice Bowl',de:"Korea's signature dish — colorful rice topped with sautéed vegetables and spicy gochujang sauce."}},
+  r10:{fr:{ti:'Fondant au Chocolat — Cœur Coulant Parfait',de:'Le fondant parfait — croustillant dehors, cœur coulant de chocolat noir dedans. 12 minutes au four.'},en:{ti:'Chocolate Lava Cake — Perfect Molten Center',de:'The perfect lava cake — crispy shell outside, liquid dark chocolate inside. 12 minutes to bake.'}},
+  r11:{fr:{ti:'Buddha Bowl Végétarien & Équilibré',de:'Un bol coloré et nutritif — grains, légumes grillés, légumineuses et sauce tahini maison.'},en:{ti:'Balanced Vegetarian Buddha Bowl',de:'A colorful nutritious bowl — grains, roasted vegetables, legumes and homemade tahini dressing.'}},
+  r12:{fr:{ti:'Paella Valenciana Traditionnelle au Safran',de:'La vraie paella espagnole — riz socarrat au safran, fruits de mer et bomba valencien.'},en:{ti:'Traditional Valencian Saffron Paella',de:'Authentic Spanish paella — socarrat saffron rice with seafood and Valencian bomba.'}},
+  r13:{fr:{ti:'Cheeseburger Américain Classique & Juteux',de:'Le vrai burger américain — galette juteuse, cheddar fondu, sauce maison et pain brioché.'},en:{ti:'Classic Juicy American Cheeseburger',de:'The ultimate American burger — juicy patty, melted cheddar, house sauce and brioche bun.'}},
+  r14:{fr:{ti:'Pad Thaï aux Crevettes — Le Plat National',de:"Le plat national thaïlandais — nouilles de riz sautées au tamarin, crevettes et cacahuètes grillées."},en:{ti:'Shrimp Pad Thai — Thailand\'s National Dish',de:"Thailand's national dish — rice noodles stir-fried with tamarind, shrimp and roasted peanuts."}},
+  r15:{fr:{ti:'Pancakes Américains Épais & Moelleux',de:"Les pancakes américains parfaits — épais, moelleux, servis avec du sirop d'érable et beurre."},en:{ti:'Thick & Fluffy American Pancakes',de:'Perfect American pancakes — thick, pillowy soft, served with maple syrup and butter.'}},
+  r16:{fr:{ti:'Koshari Égyptien — Street Food du Pharaon',de:"L'emblème de la cuisine de rue du Caire — lentilles, riz, pâtes et sauce tomate épicée."},en:{ti:'Egyptian Koshari — Pharaoh\'s Street Food',de:"Cairo's iconic street food — lentils, rice, pasta and spicy tomato sauce."}},
+  r23:{fr:{ti:'Msemen Marocain — Crêpes Feuilletées',de:'Les crêpes marocaines feuilletées et croustillantes, parfaites avec du miel ou huile d\'argan.'},en:{ti:'Moroccan Msemen — Flaky Layered Pancakes',de:'Flaky, crispy Moroccan pancakes, perfect with honey or argan oil.'}},
+  r24:{fr:{ti:'Moussaka Grecque Traditionnelle Gratinée',de:'La moussaka classique — couches d\'aubergines fondantes, viande mijotée et béchamel gratinée.'},en:{ti:'Traditional Greek Moussaka au Gratin',de:'Classic moussaka — layers of tender eggplant, braised meat and gratinéed béchamel.'}},
+  r25:{fr:{ti:'Pho Bò Vietnamien — Bouillon de Bœuf Étoilé',de:'Le pho authentique — bouillon longuement mijoté aux étoiles d\'anis, coriandre et cannelle.'},en:{ti:'Vietnamese Pho Bo — Star Anise Beef Soup',de:'Authentic pho — long-simmered broth with star anise, coriander and cinnamon.'}},
+  r26:{fr:{ti:'Qatayef du Ramadan — Crêpes Farcies',de:'La douceur emblématique du Ramadan — crêpes farcies à la crème ou aux noix caramélisées.'},en:{ti:'Ramadan Qatayef — Stuffed Sweet Pancakes',de:"Ramadan's iconic sweet — pancakes stuffed with cream or caramelized walnuts."}},
+  r27:{fr:{ti:'Crevettes Grillées à la Chermoula Marocaine',de:'Crevettes marinées à la chermoula — ail, coriandre, paprika et citron — grillées à la perfection.'},en:{ti:'Grilled Shrimp with Moroccan Chermoula',de:'Shrimp marinated in chermoula — garlic, cilantro, paprika and lemon — perfectly grilled.'}},
+  r28:{fr:{ti:'Brioche Maison Dorée & Filante',de:'La brioche française parfaite — dorée dehors, filante dedans, beurrée à souhait.'},en:{ti:'Golden Homemade Brioche — Soft & Buttery',de:'The perfect French brioche — golden crust outside, soft and stringy inside, perfectly buttery.'}},
+  r29:{fr:{ti:'Kabsa Saoudien — Riz aux Épices et Agneau',de:"Le plat national d'Arabie Saoudite — riz basmati parfumé aux épices et rose avec agneau tendre."},en:{ti:'Saudi Kabsa — Spiced Basmati Rice with Lamb',de:"Saudi Arabia's national dish — fragrant basmati spiced with rosewater and tender lamb."}},
+  r30:{fr:{ti:'Bol Santé aux Légumes Grillés & Quinoa',de:'Un repas léger et équilibré — légumes grillés, quinoa protéiné et sauce tahini citronnée.'},en:{ti:'Healthy Bowl with Roasted Vegetables & Quinoa',de:'A light balanced meal — roasted vegetables, protein-rich quinoa and lemon tahini dressing.'}},
+  r31:{fr:{ti:'Tzatziki Grec — Sauce Yaourt & Concombre',de:'La sauce grecque incontournable — yaourt épais, concombre frais, ail et aneth.'},en:{ti:'Greek Tzatziki — Yogurt & Cucumber Sauce',de:"Greece's essential sauce — thick yogurt, fresh cucumber, garlic and dill."}},
+  r32:{fr:{ti:'Lahmacun Turc — Pizza à la Viande Hachée',de:'La pizza turque fine et croustillante garnie de viande hachée épicée au piment et persil.'},en:{ti:'Turkish Lahmacun — Spiced Meat Flatbread',de:'Thin and crispy Turkish flatbread topped with spiced minced meat, chili and parsley.'}},
+  r33:{fr:{ti:'Dim Sum Chinois — Raviolis Vapeur Cantonais',de:'Les dumplings cantonais vapeur farcis de porc et crevettes — servis avec sauce soja et gingembre.'},en:{ti:'Cantonese Dim Sum — Steamed Dumplings',de:'Cantonese steamed dumplings filled with pork and shrimp — served with soy sauce and ginger.'}},
+  r34:{fr:{ti:'Churrasco Brésilien — BBQ au Feu de Bois',de:'Le barbecue brésilien emblématique — viandes marinées dans le chimichurri, grillées au charbon.'},en:{ti:'Brazilian Churrasco — Wood-Fire BBQ',de:"Brazil's iconic barbecue — chimichurri-marinated meats grilled over charcoal."}},
+  r35:{fr:{ti:'Empanadas Argentines au Bœuf & Olives',de:'Les chaussons argentins feuilletés farcis de bœuf épicé, olives vertes et œufs durs.'},en:{ti:'Argentine Beef & Olive Empanadas',de:'Flaky Argentine pies filled with spiced beef, green olives and hard-boiled eggs.'}},
+  r36:{fr:{ti:'Nasi Goreng Indonésien — Riz Frit Épicé',de:'Le riz frit indonésien incontournable — servi avec un œuf miroir, krupuk et sambal.'},en:{ti:'Indonesian Nasi Goreng — Spicy Fried Rice',de:"Indonesia's staple fried rice — served with fried egg, krupuk crackers and sambal."}},
+  r37:{fr:{ti:'Injera & Doro Wot Éthiopiens',de:'Le pain fermenté éthiopien servi avec un ragoût de poulet riche aux épices berbéré.'},en:{ti:'Ethiopian Injera & Doro Wot',de:'Fermented Ethiopian flatbread served with rich berbéré-spiced chicken stew.'}},
+  r38:{fr:{ti:'Bratwurst Allemand — Saucisse Grillée & Choucroute',de:'La saucisse allemande grillée servie avec choucroute fermentée et moutarde de Bavière.'},en:{ti:'German Bratwurst — Grilled Sausage & Sauerkraut',de:'Grilled German sausage served with fermented sauerkraut and Bavarian mustard.'}},
+  r39:{fr:{ti:'Jollof Rice Nigérian — Riz en Sauce Tomate',de:"Le riz le plus débattu d'Afrique — tomates fumées, piment scotch bonnet et épices secrètes."},en:{ti:'Nigerian Jollof Rice — Smoky Tomato Rice',de:"West Africa's most debated rice — smoked tomatoes, scotch bonnet and secret spices."}},
+  r40:{fr:{ti:'Pastéis de Nata — Tartelettes à la Crème Portugaises',de:'Les célèbres tartelettes de Lisbonne — crème à l\'œuf caramélisée dans une pâte feuilletée croustillante.'},en:{ti:'Portuguese Pastéis de Nata — Custard Tarts',de:"Lisbon's famous tarts — caramelized egg custard in a crispy flaky pastry shell."}},
+  r41:{fr:{ti:'Wrap Express Poulet & Légumes — 10 Minutes',de:'Un wrap rapide, sain et savoureux — idéal pour le déjeuner ou le déplacement.'},en:{ti:'Quick Chicken & Veggie Wrap — 10 Minutes',de:'A fast, healthy and flavorful wrap — perfect for lunch on the go.'}},
+  r42:{fr:{ti:'Khachapuri Géorgien — Barque au Fromage & Œuf',de:'Le pain géorgien emblématique en forme de barque, garni de fromage suluguni fondu et d\'œuf frais.'},en:{ti:'Georgian Khachapuri — Cheese & Egg Bread Boat',de:"Georgia's iconic boat-shaped bread topped with melted suluguni cheese and a fresh egg."}},
+  r43:{fr:{ti:'Injera Éthiopien — Pain Fermenté au Teff',de:'Le pain injera acidulé fait de teff fermenté — la base indispensable de toute cuisine éthiopienne.'},en:{ti:'Ethiopian Injera — Fermented Teff Flatbread',de:'Tangy injera made from fermented teff — the indispensable base of Ethiopian cuisine.'}},
+  r44:{fr:{ti:'Ceviche Péruvien — Poisson Mariné au Citron Vert',de:'Le ceviche authentique de Lima — poisson blanc frais mariné dans le leche de tigre et ají amarillo.'},en:{ti:'Peruvian Ceviche — Citrus Tiger Milk Fish',de:"Lima's authentic ceviche — fresh white fish marinated in leche de tigre and ají amarillo."}},
+  r45:{fr:{ti:'Buuz Mongols — Raviolis Vapeur à l\'Agneau',de:'Les dumplings vapeur mongols farcis de mouton épicé — le plat du Nouvel An mongol.'},en:{ti:'Mongolian Buuz — Steamed Lamb Dumplings',de:"Mongolia's traditional steamed dumplings filled with spiced lamb — a Lunar New Year staple."}},
+  r46:{fr:{ti:'Thiéboudienne Sénégalais — Riz au Poisson',de:'Le plat national du Sénégal — riz cuit dans une sauce de poisson tomate avec légumes fondants.'},en:{ti:'Senegalese Thiéboudienne — Fish & Rice',de:"Senegal's national dish — rice cooked in a fish-tomato sauce with tender vegetables."}},
+  r47:{fr:{ti:'Salteñas Boliviennes — Chaussons Juteux',de:'Les chaussons boliviens juteux farcis de bœuf épicé, pommes de terre et olives — petit-déjeuner du peuple.'},en:{ti:'Bolivian Salteñas — Juicy Spiced Pies',de:"Bolivia's juicy pastries filled with spiced beef, potatoes and olives — the people's breakfast."}},
+  r48:{fr:{ti:'Plov Ouzbek — Riz Pilaf à l\'Agneau & Carottes',de:'Le plov national d\'Ouzbékistan — riz caramélisé aux carottes dorées et agneau tendre cuit dans un kazan.'},en:{ti:'Uzbek Plov — Lamb & Carrot Rice Pilaf',de:"Uzbekistan's national dish — caramelized rice with golden carrots and tender lamb cooked in a kazan."}},
+  r49:{fr:{ti:'Adobo Philippin — Poulet Braisé au Vinaigre',de:'Le plat national des Philippines — poulet mijoté dans le vinaigre, sauce soja et feuilles de laurier.'},en:{ti:'Filipino Adobo — Vinegar-Braised Chicken',de:"Philippines' national dish — chicken braised in vinegar, soy sauce and bay leaves."}},
+  r50:{fr:{ti:'Kibbeh Nayyeh Libanais — Tartare d\'Agneau',de:'La kibbeh crue libanaise — agneau finement haché mélangé à de la semoule et épices orientales, servi frais.'},en:{ti:'Lebanese Kibbeh Nayyeh — Lamb Tartare',de:'Lebanese raw kibbeh — finely minced lamb mixed with bulgur and oriental spices, served fresh.'}},
+};
+
+function rTr(r,field){
+  if(_lang==='ar') return r[field]||'';
+  const tr=RECIPE_TR[r.id];
+  if(tr&&tr[_lang]&&tr[_lang][field]) return tr[_lang][field];
+  // Fallback: fr → en → ar
+  const fbs=['fr','en'];
+  for(const fb of fbs){
+    if(tr&&tr[fb]&&tr[fb][field]) return tr[fb][field];
+  }
+  return r[field]||'';
+}
+
+// ═══════════════════════════════════════════════════
+// RECIPE IMAGES (better food photography)
+// ═══════════════════════════════════════════════════
+const RECIPE_IMGS={
+  r01:'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=500&q=85',
+  r02:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=85',
+  r03:'https://images.unsplash.com/photo-1612874742237-6526221588e3?w=500&q=85',
+  r04:'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=500&q=85',
+  r05:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&q=85',
+  r06:'https://images.unsplash.com/photo-1568379606257-1060e8b34624?w=500&q=85',
+  r07:'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=85',
+  r08:'https://images.unsplash.com/photo-1579954115545-a3f9c4e12c40?w=500&q=85',
+  r09:'https://images.unsplash.com/photo-1580822184713-af4f1d12e3f6?w=500&q=85',
+  r10:'https://images.unsplash.com/photo-1551024709-8f23befc1338?w=500&q=85',
+  r11:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=85',
+  r12:'https://images.unsplash.com/photo-1534080564697-68d03e7f7a82?w=500&q=85',
+  r13:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=85',
+  r14:'https://images.unsplash.com/photo-1559847865-f9cde9c0c8bd?w=500&q=85',
+  r15:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=85',
+  r16:'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&q=85',
+  r23:'https://images.unsplash.com/photo-1574484284002-952d92a03a52?w=500&q=85',
+  r24:'https://images.unsplash.com/photo-1580822184713-af4f1d12e3f6?w=500&q=85',
+  r25:'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=500&q=85',
+  r26:'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&q=85',
+  r27:'https://images.unsplash.com/photo-1535140739032-48bd2df89bec?w=500&q=85',
+  r28:'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=85',
+  r29:'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=85',
+  r30:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=85',
+  r31:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=500&q=85',
+  r32:'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=500&q=85',
+  r33:'https://images.unsplash.com/photo-1606313564200-e75d5e60f63d?w=500&q=85',
+  r34:'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=85',
+  r35:'https://images.unsplash.com/photo-1619474893270-e3ee7ef9b0a6?w=500&q=85',
+  r36:'https://images.unsplash.com/photo-1562802378-063ec186a863?w=500&q=85',
+  r37:'https://images.unsplash.com/photo-1597233358879-b6d38f4b5ca7?w=500&q=85',
+  r38:'https://images.unsplash.com/photo-1432139509613-5c4255815697?w=500&q=85',
+  r39:'https://images.unsplash.com/photo-1600256697933-2d5434d26b8b?w=500&q=85',
+  r40:'https://images.unsplash.com/photo-1517093702914-e88b0a4c8c91?w=500&q=85',
+  r41:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=500&q=85',
+  r42:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=85',
+  r43:'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=500&q=85',
+  r44:'https://images.unsplash.com/photo-1535140739032-48bd2df89bec?w=500&q=85',
+  r45:'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=85',
+  r46:'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=85',
+  r47:'https://images.unsplash.com/photo-1614777735417-4ea177e5a034?w=500&q=85',
+  r48:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=500&q=85',
+  r49:'https://images.unsplash.com/photo-1562802378-063ec186a863?w=500&q=85',
+  r50:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=500&q=85',
+};
+
+// ═══════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════
 let activePg='home', activePlt='all', activeVFTag='all', vfShown=16;
@@ -2119,23 +2264,25 @@ const diff={e:'de',m:'dm',h:'dh'};
 const diffTxt={e:'سهل',m:'متوسط',h:'صعب'};
 
 function rcCard(r,feat=false){
+  const ti=rTr(r,'ti');
+  const de=rTr(r,'de');
+  const img=RECIPE_IMGS[r.id]||r.img;
   return `<div class="rc${feat?' feat':''}" onclick="openRecipe('${r.id}')">
     <div class="rv">
       <div class="rv-bg"></div>
-      ${r.img?`<img src="${r.img}" alt="${r.ti}" loading="lazy">`:''}
-      <div class="em">${r.em}</div>
-      <div class="rv-lbl">${r.cat}</div>
+      ${img?`<img src="${img}" alt="${ti}" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0" onerror="this.style.display='none'">`:'<div style="font-size:56px;position:relative;z-index:1">' + r.em + '</div>'}
       <div class="bflag">${r.f}</div>
       <div class="bcat">${r.cat}</div>
       <div class="btime">⏱ ${r.tm}</div>
       <div class="bdiff ${diff[r.df]||'de'}">${diffTxt[r.df]||'سهل'}</div>
     </div>
     <div class="rb">
-      <div class="rt">${r.ti}</div>
-      <div class="rd">${r.de}</div>
+      <div class="rc-em-row"><span class="rc-em-ico">${r.em}</span><span class="rc-em-cat">${r.cat}</span></div>
+      <div class="rt">${ti}</div>
+      <div class="rd">${de}</div>
       <div class="rf">
         <div class="rstar">⭐ ${r.rt} <span>(${r.rv.toLocaleString()})</span></div>
-        <div class="rmore">اطبخ ←</div>
+        <div class="rmore" data-i18n="cook_btn">اطبخ ←</div>
       </div>
     </div>
   </div>`;
@@ -2251,7 +2398,7 @@ function openRecipe(id){
     </div>
     <div class="rp-vis">
       <div class="rv-bg"></div>
-      ${r.img?`<img src="${r.img}" alt="${r.ti}" onerror="this.style.display='none'">`:''}
+      ${(RECIPE_IMGS[r.id]||r.img)?`<img src="${RECIPE_IMGS[r.id]||r.img}" alt="${rTr(r,'ti')}" onerror="this.style.display='none'">`:''}
       <div class="rp-vis-em">${r.em}</div>
       <div class="bflag" style="top:14px;right:14px;font-size:28px">${r.f}</div>
     </div>
@@ -2260,8 +2407,8 @@ function openRecipe(id){
         style="height:110px;min-width:160px;object-fit:cover;border-radius:var(--rads);flex-shrink:0;border:1px solid var(--b1);cursor:pointer"
         onclick="this.style.height='auto';this.style.minWidth='100%'">`).join('')}
     </div>`:''}
-    <h1 class="rp-h1">${r.ti}</h1>
-    <p class="rp-intro">${r.de}</p>
+    <h1 class="rp-h1">${rTr(r,'ti')}</h1>
+    <p class="rp-intro">${rTr(r,'de')}</p>
     <div class="rp-meta">
       <div class="rpm"><div class="rpm-v">${r.tm}</div><div class="rpm-l">⏱ الوقت</div></div>
       <div class="rpm"><div class="rpm-v">${r.sv}</div><div class="rpm-l">👥 أشخاص</div></div>
@@ -2330,13 +2477,13 @@ function openRecipe(id){
     ${related.length?`<div class="sb-c"><div class="sb-h">🍽️ وصفات مشابهة</div>
       ${related.map(rr=>`<div class="sb-item" onclick="openRecipe('${rr.id}')">
         <div class="sb-em">${rr.em}</div>
-        <div><div class="sb-t">${rr.ti}</div><div class="sb-m">⏱ ${rr.tm} · ⭐ ${rr.rt}</div></div>
+        <div><div class="sb-t">${rTr(rr,'ti')}</div><div class="sb-m">⏱ ${rr.tm} · ⭐ ${rr.rt}</div></div>
       </div>`).join('')}
     </div>`:''}
     <div class="sb-c"><div class="sb-h">⭐ الأعلى تقييماً</div>
       ${RECIPES.sort((a,b)=>b.rt-a.rt).slice(0,5).map(rr=>`<div class="sb-item" onclick="openRecipe('${rr.id}')">
         <div class="sb-em">${rr.em}</div>
-        <div><div class="sb-t">${rr.ti}</div><div class="sb-m">${rr.f} ${rr.cat} · ⭐ ${rr.rt}</div></div>
+        <div><div class="sb-t">${rTr(rr,'ti')}</div><div class="sb-m">${rr.f} ${rr.cat} · ⭐ ${rr.rt}</div></div>
       </div>`).join('')}
     </div>
     <div class="ad-slot" style="margin-top:8px"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6870790039775701" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
@@ -2655,8 +2802,8 @@ function parseDuration(str){
   return m>=60?`PT${Math.floor(m/60)}H${m%60?m%60+'M':''}` :`PT${m}M`;
 }
 function updateSEO(r){
-  const title=`${r.ti} — وصفة ${r.cat} | مطبخ 360`;
-  const desc=`${r.de} ⏱ ${r.tm} · ${r.sv} أشخاص · ${diffTxt[r.df]}. ${r.nut.cal} سعرة حرارية.`;
+  const title=`${rTr(r,'ti')} — وصفة ${r.cat} | مطبخ 360`;
+  const desc=`${rTr(r,'de')} ⏱ ${r.tm} · ${r.sv} أشخاص · ${diffTxt[r.df]}. ${r.nut.cal} سعرة حرارية.`;
   document.title=title;
   const set=(id,val)=>{const el=document.getElementById(id);if(el)el.setAttribute('content',val);};
   set('og-title',title); set('og-desc',desc);
@@ -2665,8 +2812,8 @@ function updateSEO(r){
   const schema={
     '@context':'https://schema.org/',
     '@type':'Recipe',
-    name:r.ti,
-    description:r.de,
+    name:rTr(r,'ti'),
+    description:rTr(r,'de'),
     image:r.img||'',
     author:{'@type':'Organization',name:'مطبخ 360'},
     datePublished:'2025-01-01',
@@ -2701,7 +2848,7 @@ function openChef(id){
   if(!r) return;
   _cm.id=id; _cm.steps=r.steps; _cm.cur=0;
   resetTimer();
-  document.getElementById('cm-recipe-name').textContent=r.ti;
+  document.getElementById('cm-recipe-name').textContent=rTr(r,'ti');
   document.getElementById('cm-ings-list').innerHTML=r.ing.map((g,i)=>`
     <div class="ing-row" id="cmig-${i}" style="border-color:rgba(255,255,255,.07)">
       <div class="ing-cb" onclick="togIng(this,'cmig-${i}')"></div>
@@ -2823,7 +2970,7 @@ function showToast(msg){
 function shareRecipe(id,plt){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
-  const text=`${r.ti}\n${r.de}`;
+  const text=`${rTr(r,'ti')}\n${rTr(r,'de')}`;
   const url=window.location.href.split('?')[0];
   if(plt==='wa'){
     window.open(`https://wa.me/?text=${encodeURIComponent(text+'\n\n🌐 مطبخ 360')}`,'_blank');
@@ -2900,12 +3047,12 @@ function renderHeroCards(){
   if(!el||!chosen.length) return;
   el.innerHTML=chosen.map((r,i)=>`
     <div class="${i===0?'hc hc-main':'hc hc-small'}" onclick="openRecipe('${r.id}')">
-      <img class="hc-img" src="${r.img}" alt="${r.ti}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80'">
+      <img class="hc-img" src="${RECIPE_IMGS[r.id]||r.img}" alt="${rTr(r,'ti')}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80'">
       <div class="hc-overlay"></div>
       <div class="hc-flag">${r.f}</div>
       <div class="hc-body">
         <div class="hc-cat">${r.cat}</div>
-        <div class="hc-title">${r.ti}</div>
+        <div class="hc-title">${rTr(r,'ti')}</div>
         <div class="hc-meta">⏱ ${r.tm} &nbsp;·&nbsp; ⭐ ${r.rt} &nbsp;·&nbsp; ${r.sv} أشخاص</div>
       </div>
     </div>`).join('');
