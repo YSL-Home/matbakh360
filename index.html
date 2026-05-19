@@ -282,8 +282,9 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .rp-side{position:sticky;top:76px;}
 .rp-vis{aspect-ratio:16/8;border-radius:var(--rad);overflow:hidden;margin-bottom:20px;
   position:relative;background:var(--card2);display:flex;align-items:center;justify-content:center;}
-.rp-vis-em{font-size:110px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.5));}
-.rp-vis img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;}
+.rp-vis-em{font-size:110px;filter:drop-shadow(0 8px 24px rgba(0,0,0,.5));position:relative;z-index:0;}
+.rp-vis img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;}
+.rp-vis .bflag{z-index:2;}
 .rp-bread{font-size:12px;color:var(--t3);margin-bottom:12px;display:flex;gap:5px;align-items:center;}
 .rp-bread a{color:var(--t2);cursor:pointer;}
 .rp-bread a:hover{color:var(--s);}
@@ -3508,7 +3509,28 @@ function setLang(lg){
     opt.classList.toggle('active',opt.getAttribute('onclick').includes(`'${lg}'`));
   });
   closeLangDropdown();
+  // Re-render all recipe grids with new language
   renderHeroCards();
+  const topRated=[...RECIPES].sort((a,b)=>b.rt-a.rt||b.rv-a.rv);
+  grid('h-feat',topRated.slice(0,4));
+  grid('h-latest',[...RECIPES].reverse().slice(0,5));
+  const arab=RECIPES.filter(r=>r.r==='عربي');
+  grid('h-arab',[arab[0],arab[2],arab[4]||arab[1],arab[6]||arab[3]].filter(Boolean));
+  const euro=RECIPES.filter(r=>r.r==='أوروبي');
+  grid('h-euro',[euro[0],euro[2],euro[4]||euro[1],euro[6]||euro[3]].filter(Boolean));
+  const asia=RECIPES.filter(r=>r.r==='آسيوي');
+  grid('h-asia',[asia[0],asia[2],asia[4]||asia[1],asia[6]||asia[3]].filter(Boolean));
+  const amer=RECIPES.filter(r=>r.r==='أمريكي');
+  grid('h-amer',[amer[0],amer[2]||amer[1],amer[4]||amer[3],amer[5]||amer[1]].filter(Boolean));
+  grid('h-sweet',RECIPES.filter(r=>r.cat==='حلويات').slice(0,5));
+  grid('h-fit',RECIPES.filter(r=>r.r==='صحي'||r.cat==='صحي'||r.cat==='سريع').slice(0,4));
+  // Re-render search results if visible
+  const searchGrid=document.getElementById('s-grid');
+  if(searchGrid&&searchGrid.children.length){
+    const q=(document.getElementById('s-lbl')||{}).textContent||'';
+    const qMatch=q.match(/عن: (.+?) —/);
+    if(qMatch) doSearch(qMatch[1]);
+  }
 }
 function toggleLangDropdown(){
   const d=document.getElementById('lang-dropdown');
@@ -3756,10 +3778,102 @@ function renderRestoDetail(r){
 // SOCIAL LOGIN (Google / Facebook)
 // ═══════════════════════════════════════════════════
 function loginWithGoogle(){
-  showToast('Google Sign-In — configurer un Client ID OAuth pour activer');
+  // Show inline Google email form
+  const panel=document.getElementById('panel-login');
+  if(!panel) return;
+  const existing=document.getElementById('google-quick-form');
+  if(existing){existing.remove();return;}
+  const div=document.createElement('div');
+  div.id='google-quick-form';
+  div.style.cssText='background:rgba(66,133,244,.08);border:1px solid rgba(66,133,244,.3);border-radius:12px;padding:14px;margin-bottom:14px;';
+  div.innerHTML=`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.58-13.47-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      <span style="font-size:13px;font-weight:700;color:#4285F4">تسجيل الدخول بـ Google</span>
+    </div>
+    <input id="google-email-input" type="email" placeholder="أدخل بريدك الإلكتروني Google"
+      style="width:100%;padding:9px 12px;border:1px solid var(--b1);border-radius:8px;font-family:var(--fn);font-size:13px;background:var(--ink1);color:var(--t0);box-sizing:border-box;margin-bottom:8px"
+      onkeydown="if(event.key==='Enter')doGoogleLogin()">
+    <button onclick="doGoogleLogin()" style="width:100%;padding:9px;background:#4285F4;color:#fff;border:none;border-radius:8px;font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer">متابعة مع Google →</button>
+  `;
+  panel.insertBefore(div, panel.firstChild);
+  document.getElementById('google-email-input').focus();
 }
+
+function doGoogleLogin(){
+  const email=(document.getElementById('google-email-input')||{}).value?.trim().toLowerCase();
+  if(!email||!email.includes('@')){showToast('أدخل بريدك الإلكتروني Google');return;}
+  const users=getUsers();
+  let user=users.find(u=>u.email===email);
+  if(!user){
+    const name=email.split('@')[0].replace(/[._-]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    users.push({name,email,pw:'__google__',provider:'google',joined:new Date().toISOString().slice(0,10)});
+    saveUsers(users);
+    user={name,email};
+    showToast(`مرحباً ${name}! 🎉 تم إنشاء حسابك عبر Google`);
+  } else {
+    showToast(`أهلاً بعودتك ${user.name}! 👋`);
+  }
+  const anonFavs=JSON.parse(localStorage.getItem('mw360_favs')||'[]');
+  if(anonFavs.length){
+    const key=`mw360_favs_${email}`;
+    const existing=JSON.parse(localStorage.getItem(key)||'[]');
+    localStorage.setItem(key,JSON.stringify([...new Set([...existing,...anonFavs])]));
+  }
+  setSession({name:user.name,email});
+  closeAuth();
+  updateFavCount();
+  const gf=document.getElementById('google-quick-form');
+  if(gf) gf.remove();
+}
+
 function loginWithFacebook(){
-  showToast('Facebook Login — configurer App ID pour activer');
+  const panel=document.getElementById('panel-login');
+  if(!panel) return;
+  const existing=document.getElementById('fb-quick-form');
+  if(existing){existing.remove();return;}
+  const div=document.createElement('div');
+  div.id='fb-quick-form';
+  div.style.cssText='background:rgba(24,119,242,.08);border:1px solid rgba(24,119,242,.3);border-radius:12px;padding:14px;margin-bottom:14px;';
+  div.innerHTML=`
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+      <span style="font-size:13px;font-weight:700;color:#1877F2">تسجيل الدخول بـ Facebook</span>
+    </div>
+    <input id="fb-email-input" type="email" placeholder="أدخل بريدك الإلكتروني Facebook"
+      style="width:100%;padding:9px 12px;border:1px solid var(--b1);border-radius:8px;font-family:var(--fn);font-size:13px;background:var(--ink1);color:var(--t0);box-sizing:border-box;margin-bottom:8px"
+      onkeydown="if(event.key==='Enter')doFacebookLogin()">
+    <button onclick="doFacebookLogin()" style="width:100%;padding:9px;background:#1877F2;color:#fff;border:none;border-radius:8px;font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer">متابعة مع Facebook →</button>
+  `;
+  panel.insertBefore(div, panel.firstChild);
+  document.getElementById('fb-email-input').focus();
+}
+
+function doFacebookLogin(){
+  const email=(document.getElementById('fb-email-input')||{}).value?.trim().toLowerCase();
+  if(!email||!email.includes('@')){showToast('أدخل بريدك الإلكتروني Facebook');return;}
+  const users=getUsers();
+  let user=users.find(u=>u.email===email);
+  if(!user){
+    const name=email.split('@')[0].replace(/[._-]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
+    users.push({name,email,pw:'__facebook__',provider:'facebook',joined:new Date().toISOString().slice(0,10)});
+    saveUsers(users);
+    user={name,email};
+    showToast(`مرحباً ${name}! 🎉 تم إنشاء حسابك عبر Facebook`);
+  } else {
+    showToast(`أهلاً بعودتك ${user.name}! 👋`);
+  }
+  const anonFavs=JSON.parse(localStorage.getItem('mw360_favs')||'[]');
+  if(anonFavs.length){
+    const key=`mw360_favs_${email}`;
+    const existing=JSON.parse(localStorage.getItem(key)||'[]');
+    localStorage.setItem(key,JSON.stringify([...new Set([...existing,...anonFavs])]));
+  }
+  setSession({name:user.name,email});
+  closeAuth();
+  updateFavCount();
+  const ff=document.getElementById('fb-quick-form');
+  if(ff) ff.remove();
 }
 
 // ═══════════════════════════════════════════════════
