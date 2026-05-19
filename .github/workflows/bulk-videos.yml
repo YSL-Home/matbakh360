@@ -1,4 +1,4 @@
-name: "🎬 Bulk Influencer Videos — 150+ par ville"
+name: "🎬 Bulk Influencer Videos — 375+ par ville"
 
 on:
   workflow_dispatch:
@@ -8,20 +8,20 @@ on:
         required: false
         default: ""
       videos_per_batch:
-        description: "Vidéos par appel API"
+        description: "Vidéos par appel API (max 25)"
+        required: false
+        default: "25"
+      batches_per_city:
+        description: "Lots par ville — 25×15=375 vidéos minimum"
         required: false
         default: "15"
-      batches_per_city:
-        description: "Lots par ville (15×10=150 vidéos)"
-        required: false
-        default: "10"
 
 jobs:
   bulk-videos:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    timeout-minutes: 90
+    timeout-minutes: 120
 
     steps:
       - name: Checkout repository

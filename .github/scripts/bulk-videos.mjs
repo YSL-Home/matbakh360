@@ -3,8 +3,8 @@ import { readFileSync, writeFileSync } from 'fs';
 const API_KEY = process.env.ANTHROPIC_API_KEY;
 if (!API_KEY) { console.log('No ANTHROPIC_API_KEY — skipping'); process.exit(0); }
 
-const VIDEOS_PER_BATCH = parseInt(process.env.VIDEOS_PER_BATCH) || 15;
-const BATCHES_PER_CITY = parseInt(process.env.BATCHES_PER_CITY) || 10;
+const VIDEOS_PER_BATCH = parseInt(process.env.VIDEOS_PER_BATCH) || 25;
+const BATCHES_PER_CITY = parseInt(process.env.BATCHES_PER_CITY) || 15;
 const TARGET_CITY      = process.env.TARGET_CITY               || '';
 
 // ── 15 cities with local food influencer context ──────────────────────
@@ -84,7 +84,7 @@ const cities = TARGET_CITY
 
 if (!cities.length) { console.error('City not found:', TARGET_CITY); process.exit(1); }
 
-async function callClaude(prompt, maxTokens = 5000) {
+async function callClaude(prompt, maxTokens = 7000) {
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: {
