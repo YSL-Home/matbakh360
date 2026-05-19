@@ -1,27 +1,27 @@
-name: 🏙️ Bulk Restaurant Generator — 500+ par ville
+name: "🏙️ Bulk Restaurant Generator — 500+ par ville"
 
 on:
   workflow_dispatch:
     inputs:
       target_city:
-        description: 'Ville cible (en arabe, ex: الدار البيضاء) — laisser vide pour TOUTES les villes'
+        description: "Ville cible en arabe (ex: الدار البيضاء) — vide = TOUTES les 15 villes"
         required: false
-        default: ''
+        default: ""
       batch_size:
-        description: 'Restaurants par appel API (max 30 recommandé)'
+        description: "Restaurants par appel API (recommandé: 25)"
         required: false
-        default: '25'
+        default: "25"
       batches_per_city:
-        description: 'Nombre de lots par ville (25×8 = 200 restos)'
+        description: "Lots par ville — 20 lots x 25 = 500 restos/ville"
         required: false
-        default: '8'
+        default: "20"
 
 jobs:
   bulk-restaurants:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    timeout-minutes: 90
+    timeout-minutes: 120
 
     steps:
       - name: Checkout repository
@@ -32,189 +32,15 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
+          node-version: "20"
 
-      - name: Generate bulk restaurants
+      - name: Run bulk generation
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           TARGET_CITY: ${{ github.event.inputs.target_city }}
           BATCH_SIZE: ${{ github.event.inputs.batch_size }}
           BATCHES_PER_CITY: ${{ github.event.inputs.batches_per_city }}
-        run: |
-          cat << 'SCRIPT' > bulk_gen.mjs
-          import { readFileSync, writeFileSync } from 'fs';
-
-          const API_KEY = process.env.ANTHROPIC_API_KEY;
-          if (!API_KEY) { console.log('No API key — skipping'); process.exit(0); }
-
-          const BATCH_SIZE = parseInt(process.env.BATCH_SIZE) || 25;
-          const BATCHES_PER_CITY = parseInt(process.env.BATCHES_PER_CITY) || 8;
-          const TARGET_CITY = process.env.TARGET_CITY || '';
-
-          // All 15 cities (Arabic names)
-          const ALL_CITIES = [
-            { ar:'مراكش',    en:'Marrakech',   country:'🇲🇦', cuisine_types:['مغربي','تقليدي','حلال','فطور','شاي'] },
-            { ar:'الدار البيضاء', en:'Casablanca', country:'🇲🇦', cuisine_types:['بحري','مغربي عصري','فرنسي','إيطالي','حلال'] },
-            { ar:'دبي',      en:'Dubai',       country:'🇦🇪', cuisine_types:['عربي','هندي','آسيوي','دولي','بحري'] },
-            { ar:'باريس',    en:'Paris',       country:'🇫🇷', cuisine_types:['لبناني','مغربي','تونسي','حلال','شرقي'] },
-            { ar:'لندن',     en:'London',      country:'🇬🇧', cuisine_types:['حلال','باكستاني','هندي','عربي','تركي'] },
-            { ar:'إسطنبول',  en:'Istanbul',    country:'🇹🇷', cuisine_types:['تركي','عثماني','بحري','كباب','حلويات'] },
-            { ar:'طوكيو',    en:'Tokyo',       country:'🇯🇵', cuisine_types:['حلال ياباني','سوشي','رامن','ياكيتوري','إزاكايا'] },
-            { ar:'نيويورك',  en:'New York',    country:'🇺🇸', cuisine_types:['حلال','مصري','شامي','مغاربي','فيوجن'] },
-            { ar:'ميلان',    en:'Milan',       country:'🇮🇹', cuisine_types:['حلال إيطالي','تونسي','مغربي','بيتزا','مأكولات بحرية'] },
-            { ar:'القاهرة',  en:'Cairo',       country:'🇪🇬', cuisine_types:['مصري شعبي','كشري','فول','فطير','شاورما'] },
-            { ar:'بيروت',    en:'Beirut',      country:'🇱🇧', cuisine_types:['لبناني','مازة','بحري','شرقي','عصري'] },
-            { ar:'تونس',     en:'Tunis',       country:'🇹🇳', cuisine_types:['تونسي','حريسة','بريك','مأكولات بحرية','قهوة'] },
-            { ar:'مدريد',    en:'Madrid',      country:'🇪🇸', cuisine_types:['حلال','مغربي','تركي','شرقي','عربي أندلسي'] },
-            { ar:'أمستردام', en:'Amsterdam',   country:'🇳🇱', cuisine_types:['حلال','مغربي','تركي','شاورما','مأكولات دولية'] },
-            { ar:'مونتريال', en:'Montreal',    country:'🇨🇦', cuisine_types:['حلال','لبناني','مغربي','أفريقي','فيوجن'] },
-          ];
-
-          const cities = TARGET_CITY
-            ? ALL_CITIES.filter(c => c.ar === TARGET_CITY)
-            : ALL_CITIES;
-
-          if (!cities.length) {
-            console.error('City not found:', TARGET_CITY);
-            process.exit(1);
-          }
-
-          async function callClaude(prompt, maxTokens=6000) {
-            const res = await fetch('https://api.anthropic.com/v1/messages', {
-              method: 'POST',
-              headers: {
-                'x-api-key': API_KEY,
-                'anthropic-version': '2023-06-01',
-                'content-type': 'application/json',
-              },
-              body: JSON.stringify({
-                model: 'claude-haiku-4-5-20251001',
-                max_tokens: maxTokens,
-                messages: [{ role: 'user', content: prompt }],
-              }),
-            });
-            const data = await res.json();
-            if (!data.content?.[0]?.text) throw new Error(JSON.stringify(data));
-            return data.content[0].text;
-          }
-
-          function safeJSON(raw) {
-            const cleaned = raw.replace(/```json\n?|\n?```/g, '').trim();
-            return JSON.parse(cleaned);
-          }
-
-          function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
-
-          let html = readFileSync('index.html', 'utf8');
-          const date = new Date().toISOString().split('T')[0];
-          let totalAdded = 0;
-
-          for (const city of cities) {
-            console.log(`\n🏙️ === ${city.ar} (${city.en}) — ${BATCHES_PER_CITY} lots × ${BATCH_SIZE} ===`);
-            let cityTotal = 0;
-
-            // Find highest existing ID for this city to avoid duplicates
-            const existingIds = (html.match(/id:'rst\d+'/g)||[]).map(m=>parseInt(m.replace("id:'rst",'').replace("'",''))).filter(n=>!isNaN(n));
-            let idCounter = existingIds.length ? Math.max(...existingIds) + 1 : 100;
-
-            for (let batch = 0; batch < BATCHES_PER_CITY; batch++) {
-              const batchIds = Array.from({length: BATCH_SIZE}, (_,i) => `rst${idCounter+i}`);
-              const vidIds   = Array.from({length: Math.min(BATCH_SIZE, 5)}, (_,i) => `inf_b${Date.now()}_${i}`);
-              idCounter += BATCH_SIZE;
-
-              const priceOptions = ['$','$$','$$$','$$$$'];
-              const cuisineList = city.cuisine_types.join(', ');
-
-              const prompt = `Tu es un expert gastronomique de ${city.en}. Génère ${BATCH_SIZE} restaurants DIFFÉRENTS, RÉELS et VARIÉS à ${city.en} pour le site مطبخ 360.
-
-Retourne UNIQUEMENT un tableau JSON valide (sans markdown):
-[{
-  "id":"${batchIds[0]}",
-  "name":"اسم المطعم الحقيقي بالعربية",
-  "city":"${city.ar}",
-  "cityEn":"${city.en}",
-  "country":"${city.country}",
-  "cuisine":"النوع الرئيسي",
-  "cusines":["نوع1","نوع2","نوع3"],
-  "rating":4.5,
-  "rv":1200,
-  "price":"$$",
-  "address":"عنوان حقيقي بالعربية",
-  "img":"https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=75",
-  "tags":["وسم1","وسم2","وسم3"],
-  "ig":"@handle",
-  "tt":"@handle",
-  "desc":"وصف جذاب ومفصل للمطعم بالعربية (2-3 جملة)",
-  "hours":"12:00 – 23:00",
-  "phone":"+XX XXX XXX XXXX",
-  "vids":[]
-}]
-
-IDs: ${batchIds.slice(0,3).join(', ')} jusqu'à ${batchIds[BATCH_SIZE-1]}.
-Types de cuisine pour ${city.en}: ${cuisineList}.
-Prix parmi: ${priceOptions.join(', ')}.
-Varie les types, prix, cuisines, quartiers. Tout le texte en arabe.
-Utilise des vraies photos Unsplash de restaurants/nourriture.
-IMPORTANT: Retourne EXACTEMENT ${BATCH_SIZE} restaurants. Tableau JSON UNIQUEMENT.`;
-
-              try {
-                const raw = await callClaude(prompt, 8000);
-                const restos = safeJSON(raw);
-                if (!Array.isArray(restos) || !restos.length) throw new Error('Empty or non-array');
-
-                const entries = restos.map(r => '  '+JSON.stringify(r)).join(',\n');
-                html = html.replace(
-                  /(\s*\/\/ ═══ INFLUENCER VIDEOS)/,
-                  `\n  // ─── ${city.ar} batch${batch+1} (AUTO ${date}) ───\n${entries},\n$1`
-                );
-
-                cityTotal += restos.length;
-                totalAdded += restos.length;
-                console.log(`  ✓ Lot ${batch+1}/${BATCHES_PER_CITY}: ${restos.length} restos ajoutés (total ville: ${cityTotal})`);
-              } catch(e) {
-                console.error(`  ✗ Lot ${batch+1} FAILED:`, e.message.substring(0, 100));
-              }
-
-              // Generate influencer videos for this city (every 2 batches)
-              if (batch % 2 === 0) {
-                try {
-                  const restoSample = html.match(new RegExp(`"city":"${city.ar}"[^}]+`, 'g'))?.slice(-3)?.map(m => {
-                    const idMatch = m.match(/"id":"(rst\d+)"/);
-                    return idMatch ? idMatch[1] : null;
-                  }).filter(Boolean) || [];
-
-                  if (restoSample.length) {
-                    const vidPrompt = `Génère 5 vidéos d'influenceurs food pour ${city.en} / ${city.ar}.
-JSON array uniquement:
-[{"id":"${vidIds[0]}","city":"${city.ar}","restoId":"${restoSample[0]}","ch":"@FoodInfluencer","pl":"yt","ytid":"dQw4w9WgXcQ","thumb":"https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=70","title":"عنوان الفيديو بالعربية","tags":["أكل","${city.ar}"]}]
-IDs: ${vidIds.join(', ')}. Varie les handles, titres, thumbnails Unsplash réels. pl peut être "yt" ou "tt" ou "ig". Pour "tt" utilise ttid, pour "ig" utilise igid.`;
-                    const vraw = await callClaude(vidPrompt, 2000);
-                    const vids = safeJSON(vraw);
-                    if (Array.isArray(vids) && vids.length) {
-                      const vidEntries = vids.map(v=>'  '+JSON.stringify(v)).join(',\n');
-                      html = html.replace(
-                        /(\s*\/\/ ═══════════════════════════════════════════════════\n\/\/ STATE)/,
-                        `\n  // ─── ${city.ar} vids batch${batch+1} (AUTO ${date}) ───\n${vidEntries},\n$1`
-                      );
-                      console.log(`    + ${vids.length} vidéos`);
-                    }
-                  }
-                } catch(e) { /* video generation optional */ }
-              }
-
-              // Rate limit: wait between calls
-              if (batch < BATCHES_PER_CITY - 1) await sleep(2000);
-            }
-
-            console.log(`\n✓ ${city.ar}: ${cityTotal} restaurants ajoutés`);
-            // Wait between cities
-            if (cities.indexOf(city) < cities.length - 1) await sleep(3000);
-          }
-
-          writeFileSync('index.html', html, 'utf8');
-          console.log(`\n✅ TERMINÉ — ${totalAdded} restaurants ajoutés au total`);
-          SCRIPT
-          node bulk_gen.mjs
+        run: node .github/scripts/bulk-gen.mjs
 
       - name: Commit and push
         run: |
@@ -222,10 +48,11 @@ IDs: ${vidIds.join(', ')}. Varie les handles, titres, thumbnails Unsplash réels
           git config user.email "bot@matbakh360.com"
           git add index.html
           if git diff --staged --quiet; then
-            echo "No changes"
+            echo "No changes to commit"
           else
             CITY="${{ github.event.inputs.target_city }}"
-            LABEL="${CITY:-toutes les villes}"
-            git commit -m "🏙️ Bulk restaurants — $LABEL — $(date +'%Y-%m-%d')"
+            LABEL="${CITY:-toutes les 15 villes}"
+            TOTAL=$(( ${{ github.event.inputs.batches_per_city }} * ${{ github.event.inputs.batch_size }} ))
+            git commit -m "🏙️ Bulk: ${TOTAL} restos/ville — $LABEL — $(date +'%Y-%m-%d')"
             git push
           fi
