@@ -354,9 +354,82 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 .fc a:hover{color:var(--s);}
 .footer-bot{display:flex;align-items:center;justify-content:space-between;padding-top:16px;border-top:1px solid var(--b2);font-size:11px;color:var(--t3);}
 
-@media(max-width:1100px){.g4{grid-template-columns:repeat(3,1fr);}.g5{grid-template-columns:repeat(3,1fr);}.vf-grid{column-count:3;}.rp-layout{grid-template-columns:1fr;}.rp-side{position:static;}.footer-g{grid-template-columns:1fr 1fr;}}
-@media(max-width:768px){.g4,.g3{grid-template-columns:repeat(2,1fr);}.g5{grid-template-columns:repeat(2,1fr);}.vf-grid{column-count:2;}.rc.feat{grid-column:span 2;flex-direction:column;}.rc.feat .rv{width:100%;height:180px;}.hero h1{font-size:32px;}.nutr-g{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:520px){.nav-links{display:none;}.vf-grid{column-count:1;}.g4,.g3,.g5{grid-template-columns:1fr 1fr;}.hero h1{font-size:26px;}.hstats{gap:18px;}}
+/* ── RESPONSIVE COMPLET ── */
+@media(max-width:1200px){
+  .g4{grid-template-columns:repeat(3,1fr);}
+  .g5{grid-template-columns:repeat(3,1fr);}
+  .vf-grid{column-count:3;}
+  .rp-layout{grid-template-columns:1fr;}
+  .rp-side{position:static;}
+  .footer-g{grid-template-columns:1fr 1fr;}
+  .hero-cards{grid-template-columns:1fr 1fr;}
+  .hc-main{grid-column:span 2;}
+  .hc-main .hc-img{height:240px;}
+}
+@media(max-width:900px){
+  .g4{grid-template-columns:repeat(2,1fr);}
+  .g5{grid-template-columns:repeat(2,1fr);}
+  .g3{grid-template-columns:repeat(2,1fr);}
+  .vf-grid{column-count:2;}
+  .rc.feat{grid-column:span 2;flex-direction:column;}
+  .rc.feat .rv{width:100%;height:180px;}
+  .hero h1{font-size:36px;}
+  .nutr-g{grid-template-columns:repeat(2,1fr);}
+  .hero-cards{grid-template-columns:1fr 1fr;}
+  .hc-main{grid-column:span 2;}
+  .hc-main .hc-img{height:200px;}
+  .hc-small .hc-img{height:130px;}
+  .nav{height:56px;gap:8px;padding:0 14px;}
+  .logo b{font-size:16px;}
+  .lang-switch{display:none;}
+  .rp-meta{flex-wrap:wrap;}
+  .rpm{min-width:80px;}
+  .footer-g{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:640px){
+  .g4,.g3{grid-template-columns:repeat(2,1fr);}
+  .g5{grid-template-columns:repeat(2,1fr);}
+  .vf-grid{column-count:2;}
+  .rc.feat{grid-column:span 2;}
+  .hero h1{font-size:28px;}
+  .hero-sub{font-size:13px;}
+  .hstats{gap:20px;}
+  .hst .n{font-size:22px;}
+  .wrap{padding:0 12px;}
+  .rp-layout{gap:14px;padding:16px 0;}
+  .rp-h1{font-size:22px;}
+  .box-h{font-size:13.5px;}
+  .nutr-g{grid-template-columns:repeat(4,1fr);}
+  .share-btns{flex-wrap:wrap;}
+  .footer-g{grid-template-columns:1fr;}
+  .footer-bot{flex-direction:column;gap:8px;text-align:center;}
+  .auth-box{border-radius:18px;}
+}
+@media(max-width:480px){
+  .nav-links{display:none;}
+  .nav-search{min-width:150px;}
+  .vf-grid{column-count:1;}
+  .g4,.g3,.g5{grid-template-columns:1fr 1fr;}
+  .hero h1{font-size:24px;letter-spacing:0;}
+  .hero-cards{grid-template-columns:1fr;}
+  .hc-main{grid-column:span 1;}
+  .hc-main .hc-img{height:200px;}
+  .hstats{gap:14px;}
+  .hst .n{font-size:20px;}
+  .rc.feat{grid-column:span 2;}
+  .plat-bar{gap:5px;}
+  .pb{padding:6px 10px;font-size:11px;}
+  .cm-step-txt{font-size:clamp(17px,4vw,24px);}
+  .vm-box{border-radius:14px;}
+  .social-btns{flex-direction:column;}
+  .nutr-g{grid-template-columns:repeat(2,1fr);}
+  .rp-meta{display:grid;grid-template-columns:repeat(3,1fr);}
+}
+@media(max-width:360px){
+  .hero h1{font-size:20px;}
+  .wrap{padding:0 10px;}
+  .nav{padding:0 10px;gap:6px;}
+}
 
 /* ══════ AD SLOTS ══════ */
 .ad-slot{text-align:center;padding:14px 0;min-height:90px;display:flex;align-items:center;justify-content:center;}
@@ -484,6 +557,82 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   font-weight:800;cursor:pointer;flex-shrink:0;transition:all .18s;}
 .nav-login-btn:hover{background:var(--r);border-color:var(--r);}
 
+/* ══════ RESTAURANT SECTION ══════ */
+.resto-hero{background:linear-gradient(135deg,var(--sg) 0%,transparent 70%);
+  border-bottom:1px solid var(--b1);padding:28px 0 18px;}
+.resto-hero-title{font-size:26px;font-weight:900;color:var(--t0);display:flex;align-items:center;gap:10px;margin-bottom:6px;}
+.resto-hero-sub{font-size:13px;color:var(--t2);margin-bottom:16px;}
+.city-detect-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.city-detected{display:flex;align-items:center;gap:8px;background:var(--card);border:1px solid var(--b0);
+  border-radius:var(--pill);padding:9px 16px;font-size:13px;font-weight:800;color:var(--s);}
+.city-search-wrap{display:flex;background:var(--card);border:1px solid var(--b1);border-radius:var(--pill);
+  overflow:hidden;flex:1;max-width:340px;transition:border-color .2s;}
+.city-search-wrap:focus-within{border-color:var(--b0);}
+.city-search-wrap input{flex:1;background:transparent;border:none;font-family:var(--fn);font-size:13px;
+  color:var(--t0);padding:9px 16px;outline:none;}
+.city-search-wrap input::placeholder{color:var(--t3);}
+.city-search-wrap button{background:var(--s);color:#fff;border:none;font-family:var(--fn);
+  font-size:12px;font-weight:800;padding:9px 16px;cursor:pointer;transition:background .18s;}
+.city-search-wrap button:hover{background:var(--r);}
+.city-tags{display:flex;gap:6px;padding:12px 0 4px;overflow-x:auto;scrollbar-width:none;flex-wrap:wrap;}
+.city-tags::-webkit-scrollbar{display:none;}
+.ctag{padding:5px 13px;border-radius:var(--pill);border:1px solid var(--b1);background:var(--card2);
+  font-family:var(--fn);font-size:12px;font-weight:700;color:var(--t2);cursor:pointer;transition:all .18s;white-space:nowrap;}
+.ctag:hover,.ctag.on{border-color:var(--b0);background:var(--sg);color:var(--s);}
+
+.resto-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;padding:22px 0;}
+@media(max-width:900px){.resto-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:480px){.resto-grid{grid-template-columns:1fr;}}
+.rc-resto{background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);
+  overflow:hidden;cursor:pointer;transition:all .22s;box-shadow:var(--sh);}
+.rc-resto:hover{transform:translateY(-4px);border-color:var(--b0);box-shadow:0 10px 36px rgba(0,0,0,.14);}
+.rc-resto-img{width:100%;height:180px;object-fit:cover;display:block;transition:transform .4s;}
+.rc-resto:hover .rc-resto-img{transform:scale(1.04);}
+.rc-resto-body{padding:13px;}
+.rc-resto-name{font-size:14px;font-weight:900;color:var(--t0);margin-bottom:4px;}
+.rc-resto-meta{font-size:11.5px;color:var(--t2);display:flex;align-items:center;gap:8px;margin-bottom:8px;}
+.rc-resto-stars{color:#F59E0B;font-size:12px;}
+.rc-resto-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.rc-resto-tag{font-size:10px;background:var(--card2);color:var(--t3);border:1px solid var(--b2);
+  padding:2px 7px;border-radius:var(--pill);}
+.rc-resto-social{display:flex;gap:6px;margin-top:9px;padding-top:9px;border-top:1px solid var(--b2);}
+.rc-resto-soc{font-size:11px;color:var(--t3);display:flex;align-items:center;gap:3px;}
+
+/* RESTAURANT DETAIL */
+.rd-layout{display:grid;grid-template-columns:1fr 340px;gap:24px;padding:22px 0;align-items:start;}
+@media(max-width:900px){.rd-layout{grid-template-columns:1fr;}}
+.rd-vis{aspect-ratio:16/8;border-radius:var(--rad);overflow:hidden;margin-bottom:16px;position:relative;}
+.rd-vis img{width:100%;height:100%;object-fit:cover;}
+.rd-vis-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.6) 0%,transparent 50%);}
+.rd-vis-badge{position:absolute;bottom:14px;right:14px;background:rgba(255,255,255,.92);
+  border-radius:var(--pill);padding:6px 14px;font-size:13px;font-weight:900;color:var(--s);}
+.rd-h1{font-size:26px;font-weight:900;color:var(--t0);margin-bottom:6px;}
+.rd-rating{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+.rd-stars{font-size:16px;color:#F59E0B;}
+.rd-rvct{font-size:12.5px;color:var(--t2);}
+.rd-info-box{background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);
+  padding:16px;margin-bottom:14px;}
+.rd-info-row{display:flex;align-items:flex-start;gap:10px;padding:7px 0;
+  border-bottom:1px solid var(--b2);font-size:12.5px;color:var(--t1);}
+.rd-info-row:last-child{border-bottom:none;}
+.rd-info-ico{font-size:15px;flex-shrink:0;width:20px;text-align:center;}
+.rd-map{border-radius:var(--rad);overflow:hidden;border:1px solid var(--b1);margin-bottom:14px;}
+.rd-map iframe{display:block;width:100%;height:260px;border:none;}
+.rd-vids-section{margin-top:22px;}
+.rd-vids-title{font-size:16px;font-weight:900;color:var(--t0);margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+.inf-vid-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;}
+@media(max-width:600px){.inf-vid-grid{grid-template-columns:1fr 1fr;}}
+.inf-vid-card{border-radius:var(--rads);overflow:hidden;cursor:pointer;position:relative;
+  background:var(--card2);transition:all .2s;}
+.inf-vid-card:hover{transform:translateY(-3px);box-shadow:var(--sh);}
+.inf-vid-thumb{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;}
+.inf-vid-overlay{position:absolute;inset:0;background:rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;}
+.inf-vid-play{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.9);
+  display:flex;align-items:center;justify-content:center;}
+.inf-vid-info{padding:7px 8px;}
+.inf-vid-ch{font-size:10px;font-weight:800;color:var(--t2);}
+.inf-vid-ttl{font-size:11.5px;font-weight:700;color:var(--t0);line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 /* LANGUAGE SWITCHER */
 .lang-switch{position:relative;flex-shrink:0;}
 .lang-btn{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:var(--pill);
@@ -544,6 +693,7 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
     <button class="nb" onclick="fworld('صحي')">🥗 صحي</button>
     <button class="nb" onclick="fworld('سريع')">⚡ سريع</button>
     <button class="nb" onclick="fworld('رمضان')">🌙 رمضان</button>
+    <button class="nb" onclick="gp('resto')">🍽️ المطاعم</button>
     <button class="nb" id="nav-fav-btn" onclick="gp('fav')">❤️ <span data-i18n="nav_fav">محفوظاتي</span> <span id="nav-fav-count" style="display:none;background:var(--r);color:#fff;font-size:9px;padding:1px 6px;border-radius:var(--pill);margin-right:3px"></span></button>
   </div>
   <div class="nav-search" onclick="document.querySelector('.nav-search input').focus()">
@@ -658,6 +808,50 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   <div class="g4" id="s-grid"></div>
 </div>
 <div style="height:50px"></div>
+</div>
+
+<!-- RESTAURANT LIST PAGE -->
+<div class="page" id="page-resto">
+  <div class="resto-hero">
+    <div class="wrap">
+      <div class="resto-hero-title">🍽️ مطاعم العالم</div>
+      <div class="resto-hero-sub">اكتشف أفضل المطاعم في مدينتك أو في أي وجهة تختارها — مُصنَّفة حسب تقييمات Google والشبكات الاجتماعية.</div>
+      <div class="city-detect-bar">
+        <div class="city-detected" id="city-detected-badge">📍 <span id="city-detected-name">جارٍ التحديد...</span></div>
+        <div class="city-search-wrap">
+          <input id="city-search-input" placeholder="ابحث عن مدينة..." onkeydown="if(event.key==='Enter')searchCity(this.value)">
+          <button onclick="searchCity(document.getElementById('city-search-input').value)">بحث</button>
+        </div>
+      </div>
+      <div class="city-tags" id="city-tags-bar"></div>
+    </div>
+  </div>
+  <div class="wrap">
+    <div class="sh" style="margin-top:20px">
+      <h2 id="resto-section-title">🌟 أفضل المطاعم</h2>
+      <div class="rl"></div>
+      <span class="bd" id="resto-count"></span>
+    </div>
+    <div class="resto-grid" id="resto-grid"></div>
+    <div class="sh" style="margin-top:28px">
+      <h2>🎬 فيديوهات المؤثرين الغستروقليين</h2>
+      <div class="rl"></div>
+      <span class="bd">محتوى حصري من مؤثري الطعام</span>
+    </div>
+    <div class="inf-vid-grid" id="inf-vid-section"></div>
+  </div>
+  <div style="height:50px"></div>
+</div>
+
+<!-- RESTAURANT DETAIL PAGE -->
+<div class="page" id="page-restodtl">
+  <div class="wrap">
+    <div style="padding:16px 0 0">
+      <a onclick="gp('resto')" style="font-size:13px;color:var(--s);cursor:pointer;font-weight:700;display:inline-flex;align-items:center;gap:5px">← العودة إلى المطاعم</a>
+    </div>
+    <div class="rd-layout" id="rd-content"></div>
+  </div>
+  <div style="height:50px"></div>
 </div>
 
 <!-- FOOTER -->
@@ -1605,6 +1799,297 @@ const VF_TAGS=[
 ];
 
 // ═══════════════════════════════════════════════════
+// RESTAURANTS DATA
+// ═══════════════════════════════════════════════════
+const RESTAURANTS=[
+  // ─── MARRAKECH ───
+  {id:'rst01',name:'المائدة المراكشية',city:'مراكش',cityEn:'Marrakech',country:'🇲🇦',cuisine:'مغربي',cusines:['مغربي','تقليدي'],
+   rating:4.8,rv:3240,price:'$$',address:'درب دبachi، المدينة القديمة، مراكش',
+   img:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=600&q=75',
+   tags:['كسكس','طاجين','بريوات'],ig:'@maidamarrakchia',tt:'@maidamarrakech',
+   desc:'أقدم مطعم في المدينة القديمة — أطباق مغربية أصيلة منذ 1962 في ديكور أندلسي فاخر.',
+   hours:'12:00 – 23:00',phone:'+212 524 000 111',
+   vids:['inf01','inf02']},
+  {id:'rst02',name:'نجمة الأطلس',city:'مراكش',cityEn:'Marrakech',country:'🇲🇦',cuisine:'مغربي فيوجن',cusines:['مغربي','فيوجن'],
+   rating:4.6,rv:1890,price:'$$$',address:'حي الحبوس، مراكش',
+   img:'https://images.unsplash.com/photo-1517244683847-7456b63c5969?w=600&q=75',
+   tags:['فيوجن','مغربي','روفتوب'],ig:'@nejmatatlas',tt:'@nejmatatlas',
+   desc:'روفتوب مذهل مع إطلالة على جبال الأطلس — مطبخ مغربي عصري مُبدع.',
+   hours:'18:00 – 01:00',phone:'+212 524 000 222',
+   vids:['inf03']},
+
+  // ─── CASABLANCA ───
+  {id:'rst03',name:'المطبخ الكبير',city:'الدار البيضاء',cityEn:'Casablanca',country:'🇲🇦',cuisine:'مغربي',cusines:['مغربي','بحري'],
+   rating:4.7,rv:2650,price:'$$',address:'شارع الأمم المتحدة، الدار البيضاء',
+   img:'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=75',
+   tags:['مأكولات بحرية','مغربي','طازج'],ig:'@matbakhkbir',tt:'@matbakhkbir',
+   desc:'أشهر مطعم مأكولات بحرية في كازابلانكا — سمك مباشر من ميناء الصيد.',
+   hours:'11:00 – 23:30',phone:'+212 522 000 333',
+   vids:['inf04','inf05']},
+
+  // ─── DUBAI ───
+  {id:'rst04',name:'قصر الأكلات',city:'دبي',cityEn:'Dubai',country:'🇦🇪',cuisine:'عربي',cusines:['عربي','خليجي'],
+   rating:4.9,rv:5120,price:'$$$$',address:'برج خليفة بوليفارد، دبي',
+   img:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=600&q=75',
+   tags:['خليجي','فاخر','إطلالة'],ig:'@qasralaklat',tt:'@qasralaklat',
+   desc:'تجربة غذائية فاخرة بإطلالة مباشرة على برج خليفة — مطبخ عربي راقٍ.',
+   hours:'12:00 – 00:00',phone:'+971 4 000 4444',
+   vids:['inf06','inf07']},
+  {id:'rst05',name:'بيت الأكل الإماراتي',city:'دبي',cityEn:'Dubai',country:'🇦🇪',cuisine:'إماراتي',cusines:['إماراتي','خليجي'],
+   rating:4.6,rv:2340,price:'$$',address:'سوق مدينة جميرا، دبي',
+   img:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=75',
+   tags:['إماراتي','هريس','ملوخية'],ig:'@baitalakel',tt:'@baitalakel',
+   desc:'الأطباق التراثية الإماراتية في قلب مدينة جميرا — هريس، ملوخية، خبز رقاق.',
+   hours:'10:00 – 23:00',phone:'+971 4 000 5555',
+   vids:['inf08']},
+  {id:'rst06',name:'مطعم أبراج',city:'دبي',cityEn:'Dubai',country:'🇦🇪',cuisine:'فيوجن',cusines:['فيوجن','آسيوي'],
+   rating:4.7,rv:3870,price:'$$$',address:'نخلة جميرا، دبي',
+   img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=75',
+   tags:['روفتوب','فيوجن','نخلة'],ig:'@abraajdxb',tt:'@abraajdxb',
+   desc:'روفتوب بانورامي فوق نخلة جميرا — فيوجن آسيوي-عربي لا مثيل له.',
+   hours:'17:00 – 02:00',phone:'+971 4 000 6666',
+   vids:['inf09']},
+
+  // ─── PARIS ───
+  {id:'rst07',name:'زيتونة باريس',city:'باريس',cityEn:'Paris',country:'🇫🇷',cuisine:'مغاربي',cusines:['مغربي','تونسي','جزائري'],
+   rating:4.5,rv:1780,price:'$$',address:'rue Saint-Paul, Paris 4ème',
+   img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=75',
+   tags:['كسكس','مشويات','مغاربي'],ig:'@zeitouneparis',tt:'@zeitouneparis',
+   desc:'أفضل كسكس في باريس — مطعم مغاربي أصيل في قلب مارير.',
+   hours:'12:00 – 23:00',phone:'+33 1 40 00 11 22',
+   vids:['inf10','inf11']},
+  {id:'rst08',name:'لبنان كافيه',city:'باريس',cityEn:'Paris',country:'🇫🇷',cuisine:'لبناني',cusines:['لبناني','مشرقي'],
+   rating:4.4,rv:1230,price:'$$',address:'rue du Faubourg Saint-Antoine, Paris',
+   img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600&q=75',
+   tags:['حمص','فتوش','مشاوي'],ig:'@libanparis',tt:'@libanparis',
+   desc:'مطعم لبناني عائلي بنكهة بيروتية أصيلة في قلب باريس.',
+   hours:'11:30 – 22:30',phone:'+33 1 40 00 33 44',
+   vids:['inf12']},
+
+  // ─── LONDON ───
+  {id:'rst09',name:'مطبخ بيروت لندن',city:'لندن',cityEn:'London',country:'🇬🇧',cuisine:'لبناني',cusines:['لبناني','مشرقي'],
+   rating:4.7,rv:2980,price:'$$$',address:'Edgware Road, London W2',
+   img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=600&q=75',
+   tags:['لبناني','كيبة','حمص'],ig:'@beirutkitchenlondon',tt:'@beirutkitchenlondon',
+   desc:'أيقونة الطعام العربي في لندن — على Edgware Road منذ 1988.',
+   hours:'12:00 – 00:00',phone:'+44 20 7000 1234',
+   vids:['inf13','inf14']},
+  {id:'rst10',name:'الحمراء لندن',city:'لندن',cityEn:'London',country:'🇬🇧',cuisine:'مغربي',cusines:['مغربي','أندلسي'],
+   rating:4.5,rv:1560,price:'$$',address:'Kensington High Street, London W8',
+   img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=75',
+   tags:['طاجين','ورقة الكرنب','مغربي'],ig:'@alhamralnd',tt:'@alhamralnd',
+   desc:'ديكور أندلسي ساحر وأطباق مغربية تنقلك إلى قلب مراكش.',
+   hours:'17:00 – 23:30',phone:'+44 20 7000 5678',
+   vids:['inf15']},
+
+  // ─── ISTANBUL ───
+  {id:'rst11',name:'مطبخ إسطنبول الأصيل',city:'إسطنبول',cityEn:'Istanbul',country:'🇹🇷',cuisine:'تركي',cusines:['تركي','عثماني'],
+   rating:4.8,rv:4320,price:'$$',address:'Sultanahmet Meydanı, İstanbul',
+   img:'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=600&q=75',
+   tags:['كباب','دولمة','بقلاوة'],ig:'@matbakhist',tt:'@matbakhist',
+   desc:'في قلب السلطان أحمد — أطباق عثمانية أصيلة مع إطلالة على آيا صوفيا.',
+   hours:'11:00 – 00:00',phone:'+90 212 000 1111',
+   vids:['inf16','inf17']},
+
+  // ─── TOKYO ───
+  {id:'rst12',name:'حلال رامن طوكيو',city:'طوكيو',cityEn:'Tokyo',country:'🇯🇵',cuisine:'ياباني حلال',cusines:['ياباني','حلال'],
+   rating:4.6,rv:1870,price:'$$',address:'Shinjuku-ku, Tokyo',
+   img:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=600&q=75',
+   tags:['راميان','حلال','ياباني'],ig:'@halalramntokyo',tt:'@halalramntokyo',
+   desc:'أول مطعم راميان حلال معتمد في طوكيو — لقمة يابانية بالمواصفات الحلال.',
+   hours:'11:00 – 22:00',phone:'+81 3 0000 1111',
+   vids:['inf18','inf19']},
+
+  // ─── NEW YORK ───
+  {id:'rst13',name:'ليالي بيروت نيويورك',city:'نيويورك',cityEn:'New York',country:'🇺🇸',cuisine:'لبناني',cusines:['لبناني','مشرقي'],
+   rating:4.7,rv:3560,price:'$$$',address:'Atlantic Ave, Brooklyn, New York',
+   img:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=75',
+   tags:['حمص','شاورما','لبناني'],ig:'@lialibeyroutny',tt:'@lialibeyroutny',
+   desc:'قلب المطبخ اللبناني في بروكلين — Atlantic Ave الحي العربي الأشهر.',
+   hours:'11:00 – 23:00',phone:'+1 718 000 1234',
+   vids:['inf20','inf21']},
+  {id:'rst14',name:'مطبخ القاهرة NYC',city:'نيويورك',cityEn:'New York',country:'🇺🇸',cuisine:'مصري',cusines:['مصري','عربي'],
+   rating:4.5,rv:2140,price:'$$',address:'Astoria, Queens, New York',
+   img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=75',
+   tags:['كشري','فول','مصري'],ig:'@cairokitchennyc',tt:'@cairokitchennyc',
+   desc:'نكهة مصر الأصيلة في أستوريا كويينز — فول مدمس وكشري يومي.',
+   hours:'09:00 – 22:00',phone:'+1 718 000 5678',
+   vids:['inf22']},
+
+  // ─── MILAN ───
+  {id:'rst15',name:'المغرب في ميلان',city:'ميلان',cityEn:'Milan',country:'🇮🇹',cuisine:'مغربي',cusines:['مغربي','شمال أفريقي'],
+   rating:4.4,rv:980,price:'$$',address:'Via Paolo Sarpi, Milano',
+   img:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=600&q=75',
+   tags:['طاجين','مغربي','كسكس'],ig:'@maghrebmilano',tt:'@maghrebmilano',
+   desc:'واحة مغربية في قلب ميلان الفاشون — طاجين وكسكس لا ينسى.',
+   hours:'12:00 – 22:30',phone:'+39 02 0000 1111',
+   vids:['inf23']},
+
+  // ─── CAIRO ───
+  {id:'rst16',name:'مطعم أبو السيد',city:'القاهرة',cityEn:'Cairo',country:'🇪🇬',cuisine:'مصري',cusines:['مصري','تراثي'],
+   rating:4.9,rv:8760,price:'$$',address:'شارع الحصري، المهندسين، القاهرة',
+   img:'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&q=75',
+   tags:['مصري','كلاسيك','تراث'],ig:'@abouelsayedeg',tt:'@abouelsayedeg',
+   desc:'الأسطورة المصرية — كل أطباق جدتك في مكان واحد بالقاهرة منذ 1990.',
+   hours:'12:00 – 01:00',phone:'+20 2 0000 1234',
+   vids:['inf24','inf25']},
+  {id:'rst17',name:'نيل كافيه',city:'القاهرة',cityEn:'Cairo',country:'🇪🇬',cuisine:'مصري فيوجن',cusines:['مصري','فيوجن'],
+   rating:4.6,rv:3240,price:'$$$',address:'كورنيش النيل، الجيزة، القاهرة',
+   img:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=75',
+   tags:['إطلالة نيلية','فيوجن','عصري'],ig:'@nilecafecairo',tt:'@nilecafecairo',
+   desc:'على ضفاف النيل — فيوجن مصري عصري مع أخاذ ترتيب على الماء.',
+   hours:'10:00 – 02:00',phone:'+20 2 0000 5678',
+   vids:['inf26']},
+
+  // ─── BEIRUT ───
+  {id:'rst18',name:'فيروز بيروت',city:'بيروت',cityEn:'Beirut',country:'🇱🇧',cuisine:'لبناني',cusines:['لبناني','مشرقي'],
+   rating:4.8,rv:4560,price:'$$$',address:'جميزة، بيروت',
+   img:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=600&q=75',
+   tags:['ميزة','مشاوي','لبناني'],ig:'@fairouzbeirut',tt:'@fairouzbeirut',
+   desc:'أيقونة الجميزة — أفضل ميزة لبنانية في بيروت مع موسيقى حية كل ليلة.',
+   hours:'12:00 – 02:00',phone:'+961 1 000 111',
+   vids:['inf27','inf28']},
+
+  // ─── TUNIS ───
+  {id:'rst19',name:'دار الجلد تونس',city:'تونس',cityEn:'Tunis',country:'🇹🇳',cuisine:'تونسي',cusines:['تونسي','مغاربي'],
+   rating:4.7,rv:2100,price:'$$',address:'المدينة العتيقة، تونس',
+   img:'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&q=75',
+   tags:['تونسي','برادة','كفتة'],ig:'@dareljeldtunis',tt:'@dareljeldtunis',
+   desc:'في قلب مدينة تونس العتيقة — مطبخ تونسي أصيل بمذاق طفولتك.',
+   hours:'12:00 – 22:00',phone:'+216 71 000 111',
+   vids:['inf29']},
+
+  // ─── MADRID ───
+  {id:'rst20',name:'البيت العربي مدريد',city:'مدريد',cityEn:'Madrid',country:'🇪🇸',cuisine:'مغربي',cusines:['مغربي','شرق أوسطي'],
+   rating:4.5,rv:1450,price:'$$',address:'Calle de las Huertas, Madrid',
+   img:'https://images.unsplash.com/photo-1517244683847-7456b63c5969?w=600&q=75',
+   tags:['مغربي','شاي','فندان'],ig:'@beitalamabimadrid',tt:'@beitarabimadrid',
+   desc:'مطعم عربي يعكس أمجاد الأندلس في قلب مدريد — شاي بالنعناع وحلوى تقليدية.',
+   hours:'13:00 – 23:30',phone:'+34 91 000 1234',
+   vids:['inf30']},
+
+  // ─── AMSTERDAM ───
+  {id:'rst21',name:'مطبخ بغداد أمستردام',city:'أمستردام',cityEn:'Amsterdam',country:'🇳🇱',cuisine:'عراقي',cusines:['عراقي','عربي'],
+   rating:4.6,rv:1120,price:'$$',address:'Albert Cuypstraat, Amsterdam',
+   img:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=600&q=75',
+   tags:['مسقوف','تمر','عراقي'],ig:'@baghdadkitchenam',tt:'@baghdadkitchenam',
+   desc:'أول مطعم عراقي في أمستردام — مسقوف وقوزي على الطريقة البغدادية.',
+   hours:'12:00 – 22:00',phone:'+31 20 000 1234',
+   vids:['inf31']},
+
+  // ─── MONTREAL ───
+  {id:'rst22',name:'حمص مونتريال',city:'مونتريال',cityEn:'Montreal',country:'🇨🇦',cuisine:'لبناني',cusines:['لبناني','مشرقي'],
+   rating:4.7,rv:2890,price:'$',address:'Avenue du Parc, Montreal, QC',
+   img:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=600&q=75',
+   tags:['حمص','فلافل','سندويشات'],ig:'@hummusmtl',tt:'@hummusmtl',
+   desc:'أفضل حمص في مونتريال — مطعم لبناني شعبي يعشقه الجميع منذ 2005.',
+   hours:'10:00 – 22:00',phone:'+1 514 000 1234',
+   vids:['inf32']},
+];
+
+// ═══════════════════════════════════════════════════
+// INFLUENCER VIDEOS (RESTAURANTS)
+// ═══════════════════════════════════════════════════
+const INF_VIDS=[
+  {id:'inf01',city:'مراكش',restoId:'rst01',ch:'@FoodieMaroc',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&q=70',
+   title:'أفضل طاجين في مراكش — المدينة القديمة',tags:['مغربي','طاجين']},
+  {id:'inf02',city:'مراكش',restoId:'rst01',ch:'@MaghrebFoods',pl:'tt',ttid:'7123456789',
+   thumb:'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=70',
+   title:'سر الكسكس المراكشي السبعة خضار',tags:['كسكس','مغربي']},
+  {id:'inf03',city:'مراكش',restoId:'rst02',ch:'@MarrakechEats',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1517244683847-7456b63c5969?w=400&q=70',
+   title:'روفتوب مراكش — أحلى إطلالة مع أشهى طعام',tags:['روفتوب','مغربي']},
+  {id:'inf04',city:'الدار البيضاء',restoId:'rst03',ch:'@CasaFoodTour',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=70',
+   title:'جولة المأكولات البحرية في الدار البيضاء 🦐',tags:['بحري','مغربي']},
+  {id:'inf05',city:'الدار البيضاء',restoId:'rst03',ch:'@MarocStreetFood',pl:'tt',ttid:'7987654321',
+   thumb:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=70',
+   title:'أحسن مطعم سمك في كازا — جربناه من أجلك',tags:['سمك','كازا']},
+  {id:'inf06',city:'دبي',restoId:'rst04',ch:'@DubaiEats',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=400&q=70',
+   title:'أفخم مطعم في دبي — بجانب برج خليفة 🏙️',tags:['دبي','فاخر']},
+  {id:'inf07',city:'دبي',restoId:'rst04',ch:'@GulfFoodLovers',pl:'tt',ttid:'7111111111',
+   thumb:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=70',
+   title:'تجربة عشاء لا تُنسى في دبي مول',tags:['دبي','خليجي']},
+  {id:'inf08',city:'دبي',restoId:'rst05',ch:'@EmiratiKitchen',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&q=70',
+   title:'الهريس الإماراتي الأصيل — جدتي تعلمني',tags:['إماراتي','تراثي']},
+  {id:'inf09',city:'دبي',restoId:'rst06',ch:'@PalmJumeirahFood',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=70',
+   title:'روفتوب نخلة جميرا — أحلى غروب مع أشهى طعام',tags:['دبي','روفتوب']},
+  {id:'inf10',city:'باريس',restoId:'rst07',ch:'@ParisFoodGuide',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=70',
+   title:'أفضل كسكس في باريس — اختبرنا 10 مطاعم',tags:['باريس','كسكس']},
+  {id:'inf11',city:'باريس',restoId:'rst07',ch:'@ArabFoodieParis',pl:'tt',ttid:'7222222222',
+   thumb:'https://images.unsplash.com/photo-1517244683847-7456b63c5969?w=400&q=70',
+   title:'ماذا تأكل في مارير باريس كمسلم',tags:['باريس','حلال']},
+  {id:'inf12',city:'باريس',restoId:'rst08',ch:'@LebaneseInParis',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=70',
+   title:'أفضل ميزة لبنانية في باريس 🇱🇧🇫🇷',tags:['باريس','لبناني']},
+  {id:'inf13',city:'لندن',restoId:'rst09',ch:'@LondonArabFood',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=70',
+   title:'جولة Edgware Road — شارع العرب في لندن',tags:['لندن','لبناني']},
+  {id:'inf14',city:'لندن',restoId:'rst09',ch:'@HalalLondon',pl:'tt',ttid:'7333333333',
+   thumb:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=70',
+   title:'أفضل 5 مطاعم حلال في لندن 2025',tags:['لندن','حلال']},
+  {id:'inf15',city:'لندن',restoId:'rst10',ch:'@MoroccanInLondon',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&q=70',
+   title:'المطبخ المغربي في كنسينغتون لندن 🇲🇦',tags:['لندن','مغربي']},
+  {id:'inf16',city:'إسطنبول',restoId:'rst11',ch:'@IstanbulFoodBlog',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=400&q=70',
+   title:'أفضل كباب في إسطنبول بجانب آيا صوفيا',tags:['إسطنبول','كباب']},
+  {id:'inf17',city:'إسطنبول',restoId:'rst11',ch:'@TurkishStreetFood',pl:'tt',ttid:'7444444444',
+   thumb:'https://images.unsplash.com/photo-1517244683847-7456b63c5969?w=400&q=70',
+   title:'أسواق إسطنبول — عالم من الأكل الشعبي',tags:['إسطنبول','شارع']},
+  {id:'inf18',city:'طوكيو',restoId:'rst12',ch:'@HalalTokyoGuide',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1569050467447-ce54b3bbc37d?w=400&q=70',
+   title:'دليل الأكل الحلال في طوكيو — كل شيء',tags:['طوكيو','حلال']},
+  {id:'inf19',city:'طوكيو',restoId:'rst12',ch:'@MuslimInJapan',pl:'tt',ttid:'7555555555',
+   thumb:'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=70',
+   title:'تجربتي مع الراميان الحلال في شينجوكو',tags:['طوكيو','راميان']},
+  {id:'inf20',city:'نيويورك',restoId:'rst13',ch:'@NYCArabFood',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=70',
+   title:'Brooklyn Arab Food Tour — Atlantic Ave أفضل ما فيها',tags:['نيويورك','لبناني']},
+  {id:'inf21',city:'نيويورك',restoId:'rst13',ch:'@HalalNYC',pl:'tt',ttid:'7666666666',
+   thumb:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=70',
+   title:'أفضل شاورما في نيويورك — الحقيقة',tags:['نيويورك','شاورما']},
+  {id:'inf22',city:'نيويورك',restoId:'rst14',ch:'@EgyptianFoodNYC',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1585937421612-70a008356fbe?w=400&q=70',
+   title:'كشري نيويورك — المصري في قلب أمريكا 🇪🇬',tags:['نيويورك','مصري']},
+  {id:'inf23',city:'ميلان',restoId:'rst15',ch:'@MilanFoodTour',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=70',
+   title:'الأكل المغاربي في ميلان — مفاجأة جميلة',tags:['ميلان','مغربي']},
+  {id:'inf24',city:'القاهرة',restoId:'rst16',ch:'@CairoFoodScene',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=400&q=70',
+   title:'جولة مطاعم القاهرة — أفضل 10 وجهات 2025',tags:['القاهرة','مصري']},
+  {id:'inf25',city:'القاهرة',restoId:'rst16',ch:'@EgyptEats',pl:'tt',ttid:'7777777777',
+   thumb:'https://images.unsplash.com/photo-1517244683847-7456b63c5969?w=400&q=70',
+   title:'الكلاسيكيات المصرية — محشي وكباب وكشري',tags:['القاهرة','كلاسيك']},
+  {id:'inf26',city:'القاهرة',restoId:'rst17',ch:'@NileSideDining',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=400&q=70',
+   title:'عشاء بجانب النيل — أحلى تجربة في القاهرة',tags:['القاهرة','نيل']},
+  {id:'inf27',city:'بيروت',restoId:'rst18',ch:'@BeirutFoodLovers',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400&q=70',
+   title:'جميزة بيروت — أحلى أحياء الأكل في العالم',tags:['بيروت','لبناني']},
+  {id:'inf28',city:'بيروت',restoId:'rst18',ch:'@LebaneseFoodie',pl:'tt',ttid:'7888888888',
+   thumb:'https://images.unsplash.com/photo-1544025162-d76694265947?w=400&q=70',
+   title:'الميزة اللبنانية الكاملة — مبتدئ دليل',tags:['بيروت','ميزة']},
+  {id:'inf29',city:'تونس',restoId:'rst19',ch:'@TunisFoodTour',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=400&q=70',
+   title:'المدينة العتيقة تونس — جنة الأكل الشعبي 🇹🇳',tags:['تونس','تونسي']},
+  {id:'inf30',city:'مدريد',restoId:'rst20',ch:'@MadridArabFood',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1467003909585-2f8a72700288?w=400&q=70',
+   title:'الأكل العربي في مدريد — الأندلس ما زال حياً 🕌',tags:['مدريد','عربي']},
+  {id:'inf31',city:'أمستردام',restoId:'rst21',ch:'@AmsterdamHalal',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=400&q=70',
+   title:'دليل الأكل العربي في أمستردام 🇳🇱',tags:['أمستردام','عراقي']},
+  {id:'inf32',city:'مونتريال',restoId:'rst22',ch:'@MontrealArabFood',pl:'yt',ytid:'dQw4w9WgXcQ',
+   thumb:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=400&q=70',
+   title:'أفضل حمص وفلافل في مونتريال 🇨🇦',tags:['مونتريال','لبناني']},
+];
+
+// ═══════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════
 let activePg='home', activePlt='all', activeVFTag='all', vfShown=16;
@@ -1615,7 +2100,8 @@ let activePg='home', activePlt='all', activeVFTag='all', vfShown=16;
 function gp(id){
   activePg=id;
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('on'));
-  document.getElementById('page-'+id).classList.add('on');
+  const pg=document.getElementById('page-'+id);
+  if(pg) pg.classList.add('on');
   document.querySelectorAll('.nb').forEach((b,i)=>{
     b.classList.toggle('on',i===0&&id==='home');
   });
@@ -1623,6 +2109,7 @@ function gp(id){
   if(id==='world') renderWorldPage(null);
   if(id==='videos') initVideos();
   if(id==='fav') initFav();
+  if(id==='resto') initResto();
 }
 
 // ═══════════════════════════════════════════════════
@@ -1959,58 +2446,61 @@ function renderVF(){
 
 function loadMoreVids(){vfShown+=12;renderVF();}
 
-function buildVideoEmbed(v){
-  if(v.ytid) return `<iframe src="https://www.youtube.com/embed/${v.ytid}?autoplay=1&rel=0" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
-  if(v.ttid) return `<iframe src="https://www.tiktok.com/embed/v2/${v.ttid}" frameborder="0" allow="autoplay;fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
-  if(v.fbid) return `<iframe src="https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(v.fbid)}&autoplay=1&show_text=0" frameborder="0" allow="autoplay;fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
+/* ── VIDEO EMBED ENGINE : iframe forcée, jamais de redirect ── */
+function buildEmbedHTML(ytid,ttid,fbid){
+  if(ytid) return `<iframe src="https://www.youtube-nocookie.com/embed/${ytid}?autoplay=1&rel=0&modestbranding=1" frameborder="0" allow="autoplay;encrypted-media;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none;border-radius:0"></iframe>`;
+  if(ttid) return `<iframe src="https://www.tiktok.com/embed/v2/${ttid}?autoplay=1" frameborder="0" allow="autoplay;fullscreen" allowfullscreen scrolling="no" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
+  if(fbid) return `<iframe src="https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(fbid)}&autoplay=1&show_text=0&width=460" frameborder="0" allow="autoplay;fullscreen" allowfullscreen scrolling="no" style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
   return null;
 }
-function vmPlayInline(id){
-  const v=VIDS.find(x=>x.id===id);
-  if(!v) return;
-  const embed=buildVideoEmbed(v);
-  const box=document.getElementById('vm-player');
+function vmLoadEmbed(id,ytid,ttid,fbid){
+  const box=document.getElementById('vm-player-'+id);
   if(!box) return;
-  if(embed){ box.innerHTML=embed; }
-  else {
-    const plNames={yt:'YouTube',tt:'TikTok',ig:'Instagram',fb:'Facebook',pin:'Pinterest'};
-    showToast('سيُفتح الفيديو على '+plNames[v.pl]);
-    setTimeout(()=>window.open(v.url||'#','_blank'),400);
-  }
+  const html=buildEmbedHTML(ytid,ttid,fbid);
+  if(html){ box.innerHTML=html; }
 }
 function openVM(id){
-  const v=VIDS.find(x=>x.id===id);
+  const v=[...VIDS,...INF_VIDS].find(x=>x.id===id);
   if(!v) return;
-  const hasEmbed=!!(v.ytid||v.ttid||v.fbid);
-  const plNames={yt:'YouTube',tt:'TikTok',ig:'Instagram',fb:'Facebook',pin:'Pinterest'};
+  const canEmbed=!!(v.ytid||v.ttid||v.fbid);
+  // Instagram et Pinterest ne supportent pas l'embed — on cache le player si pas d'ID
+  const showPlayer = canEmbed || (v.pl!=='ig' && v.pl!=='pin');
   document.getElementById('vm-body').innerHTML=`
-    <div id="vm-player" style="aspect-ratio:16/9;position:relative;background:#111;display:flex;align-items:center;justify-content:center;overflow:hidden;max-height:280px">
-      ${v.thumb?`<img src="${v.thumb}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .3s">`:''}
-      <div style="position:absolute;inset:0;background:rgba(0,0,0,${hasEmbed?'.35':'.2'});z-index:1"></div>
-      <div onclick="vmPlayInline('${id}')" style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:10px">
-        <div style="width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;transition:transform .18s;box-shadow:0 4px 20px rgba(0,0,0,.4)">
-          <div style="width:0;height:0;border-style:solid;border-width:13px 0 13px 24px;border-color:transparent transparent transparent #1a0d05;margin-right:-4px"></div>
-        </div>
-        <div style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.5)">${hasEmbed?'▶ شاهد مباشرة':'▶ افتح على '+plNames[v.pl]}</div>
-      </div>
-      <div class="vt-plat ${v.pl}" style="top:10px;right:10px;z-index:3">${platIco[v.pl]}</div>
+    <div id="vm-player-${id}" style="aspect-ratio:${v.asp==='portrait'?'9/16':'16/9'};max-height:${v.asp==='portrait'?'420':'280'}px;position:relative;background:#111;overflow:hidden;display:flex;align-items:center;justify-content:center">
+      ${v.thumb?`<img src="${v.thumb}" alt="" id="vm-thumb-${id}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`:''}
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,.35);z-index:1"></div>
+      ${canEmbed?`
+        <div onclick="vmLoadEmbed('${id}','${v.ytid||''}','${v.ttid||''}','${v.fbid||''}')" id="vm-playbtn-${id}"
+          style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:12px">
+          <div style="width:72px;height:72px;border-radius:50%;background:rgba(255,255,255,.94);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 24px rgba(0,0,0,.5)">
+            <div style="width:0;height:0;border-style:solid;border-width:14px 0 14px 26px;border-color:transparent transparent transparent var(--s);margin-right:-5px"></div>
+          </div>
+          <div style="font-size:13px;font-weight:900;color:#fff;letter-spacing:.5px;background:rgba(0,0,0,.4);padding:4px 14px;border-radius:var(--pill)">▶ تشغيل</div>
+        </div>`
+      :!showPlayer?`
+        <div style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+          <div style="font-size:40px">${v.pl==='ig'?'📷':'📌'}</div>
+          <div style="font-size:13px;font-weight:700;color:#fff;text-align:center;padding:0 24px;line-height:1.6">الفيديو غير متاح للتضمين<br><span style="font-size:11px;opacity:.7">المنصة لا تدعم التشغيل المباشر</span></div>
+        </div>`
+      :`
+        <div style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px">
+          <div style="font-size:32px">⏳</div>
+          <div style="font-size:13px;font-weight:700;color:#fff">الفيديو سيكون متاحاً قريباً</div>
+        </div>`}
+      <div class="vt-plat ${v.pl}" style="top:10px;right:10px;z-index:5">${platIco[v.pl]||v.pl}</div>
     </div>
-    <div style="padding:16px 18px">
-      <div class="vc-head" style="margin-bottom:10px">
-        <div class="vc-av" style="width:38px;height:38px;font-size:18px">${v.chav}</div>
-        <div><div class="vc-cn" style="font-size:13.5px">${v.ch}</div>${v.loc?`<div class="vc-ch">📍 ${v.loc}</div>`:''}</div>
+    <div style="padding:14px 16px">
+      <div class="vc-head" style="margin-bottom:9px">
+        <div class="vc-av" style="width:36px;height:36px;font-size:17px">${v.chav||'🍴'}</div>
+        <div><div class="vc-cn">${v.ch||''}</div>${v.loc?`<div class="vc-ch">📍 ${v.loc}</div>`:''}</div>
       </div>
-      <div style="font-size:14.5px;font-weight:800;color:var(--t0);margin-bottom:9px;line-height:1.5">${v.title}</div>
-      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">
-        ${v.tags.map(t=>`<span class="vctag">#${t}</span>`).join('')}
+      <div style="font-size:14px;font-weight:800;color:var(--t0);margin-bottom:8px;line-height:1.5">${v.title}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px">
+        ${(v.tags||[]).map(tt=>`<span class="vctag">#${tt}</span>`).join('')}
         ${v.hot?`<span class="vctag h">🔥 رائج</span>`:''}
       </div>
-      <div style="display:flex;gap:16px;font-size:12.5px;color:var(--t2);padding:10px 0;border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);margin-bottom:12px">
-        <span>👁 ${v.views}</span><span>❤️ ${v.likes}</span><span>⏱ ${v.dur}</span>
-      </div>
-      <div style="display:flex;gap:8px">
-        <button onclick="vmPlayInline('${id}')" style="flex:1;background:var(--s);color:#fff;border:none;font-family:var(--fn);font-size:13px;font-weight:800;padding:10px;border-radius:var(--pill);cursor:pointer">▶ ${hasEmbed?'تشغيل مباشر':'مشاهدة على '+plNames[v.pl]}</button>
-        <button onclick="toggleFav('${id}')" style="background:var(--card2);border:1px solid var(--b1);color:var(--s);font-family:var(--fn);font-size:13px;font-weight:800;padding:10px 14px;border-radius:var(--pill);cursor:pointer">+ حفظ</button>
+      <div style="display:flex;gap:14px;font-size:12px;color:var(--t2);padding:9px 0;border-top:1px solid var(--b1)">
+        ${v.views?`<span>👁 ${v.views}</span>`:''}${v.likes?`<span>❤️ ${v.likes}</span>`:''}${v.dur?`<span>⏱ ${v.dur}</span>`:''}
       </div>
     </div>`;
   document.getElementById('vm').classList.add('on');
@@ -2474,6 +2964,229 @@ function closeLangDropdown(){
 document.addEventListener('click',e=>{
   if(!e.target.closest('#lang-switch')) closeLangDropdown();
 });
+
+// ═══════════════════════════════════════════════════
+// RESTAURANT FEATURE
+// ═══════════════════════════════════════════════════
+const CITIES=[
+  'مراكش','الدار البيضاء','دبي','باريس','لندن','إسطنبول',
+  'طوكيو','نيويورك','ميلان','القاهرة','بيروت','تونس','مدريد','أمستردام','مونتريال'
+];
+
+let _restoCity='';
+
+function detectCity(){
+  const badge=document.getElementById('city-detected-name');
+  if(!badge) return;
+  fetch('https://ipapi.co/json/')
+    .then(r=>r.json())
+    .then(d=>{
+      const cityRaw=(d.city||'').toLowerCase();
+      // Map common city names to Arabic equivalents in our data
+      const cityMap={
+        'casablanca':'الدار البيضاء','marrakech':'مراكش','marrakesh':'مراكش',
+        'dubai':'دبي','paris':'باريس','london':'لندن','istanbul':'إسطنبول',
+        'tokyo':'طوكيو','new york':'نيويورك','milan':'ميلان','milano':'ميلان',
+        'cairo':'القاهرة','beirut':'بيروت','tunis':'تونس','madrid':'مدريد',
+        'amsterdam':'أمستردام','montreal':'مونتريال'
+      };
+      const matched=cityMap[cityRaw];
+      if(matched && CITIES.includes(matched)){
+        _restoCity=matched;
+        if(badge) badge.textContent=matched;
+        renderRestoGrid(matched);
+        renderCityInfVids(matched);
+      } else {
+        // Default to all if city not in our list
+        if(badge) badge.textContent='كل المدن';
+        renderRestoGrid('');
+        renderCityInfVids('');
+      }
+    })
+    .catch(()=>{
+      if(badge) badge.textContent='كل المدن';
+      renderRestoGrid('');
+      renderCityInfVids('');
+    });
+}
+
+function buildCityTags(){
+  const bar=document.getElementById('city-tags-bar');
+  if(!bar) return;
+  const all=[{id:'',lbl:'🌐 كل المدن'},...CITIES.map(c=>({id:c,lbl:c}))];
+  bar.innerHTML=all.map(c=>`
+    <button class="ctag${c.id===_restoCity?' on':''}" onclick="filterRestoCity('${c.id}')">${c.lbl}</button>
+  `).join('');
+}
+
+function filterRestoCity(city){
+  _restoCity=city;
+  document.querySelectorAll('.ctag').forEach(b=>{
+    const match=b.textContent.trim()===city||(city===''&&b.textContent.includes('كل المدن'));
+    b.classList.toggle('on',match);
+  });
+  const badge=document.getElementById('city-detected-name');
+  if(badge) badge.textContent=city||'كل المدن';
+  const title=document.getElementById('resto-section-title');
+  if(title) title.textContent=city?`🌟 مطاعم ${city}`:'🌟 أفضل المطاعم';
+  renderRestoGrid(city);
+  renderCityInfVids(city);
+}
+
+function searchCity(q){
+  if(!q||!q.trim()) return;
+  const q2=q.trim();
+  // Try to find Arabic match
+  const found=CITIES.find(c=>c.includes(q2)||q2.includes(c));
+  filterRestoCity(found||q2);
+}
+
+function renderRestoGrid(city){
+  const grid=document.getElementById('resto-grid');
+  const countEl=document.getElementById('resto-count');
+  if(!grid) return;
+  const list=city?RESTAURANTS.filter(r=>r.city===city):RESTAURANTS;
+  if(countEl) countEl.textContent=`${list.length} مطعم`;
+  if(!list.length){
+    grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--t3);font-size:14px">لا توجد مطاعم لهذه المدينة حتى الآن — جرّب مدينة أخرى</div>`;
+    return;
+  }
+  grid.innerHTML=list.map(r=>restoCard(r)).join('');
+}
+
+function restoCard(r){
+  const stars='⭐'.repeat(Math.floor(r.rating))+(r.rating%1>=0.5?'✨':'');
+  return `<div class="rc-resto" onclick="openResto('${r.id}')">
+    <div style="overflow:hidden">
+      <img class="rc-resto-img" src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=70'">
+    </div>
+    <div class="rc-resto-body">
+      <div class="rc-resto-name">${r.country} ${r.name}</div>
+      <div class="rc-resto-meta">
+        <span class="rc-resto-stars">${stars}</span>
+        <span>${r.rating} (${r.rv.toLocaleString()} تقييم)</span>
+        <span style="margin-right:auto;background:var(--sg);color:var(--s);padding:1px 7px;border-radius:var(--pill);font-size:10px;font-weight:800">${r.price}</span>
+      </div>
+      <div class="rc-resto-tags">${r.tags.map(t=>`<span class="rc-resto-tag">${t}</span>`).join('')}</div>
+      <div class="rc-resto-social">
+        ${r.ig?`<span class="rc-resto-soc">📷 ${r.ig}</span>`:''}
+        ${r.tt?`<span class="rc-resto-soc">🎵 ${r.tt}</span>`:''}
+      </div>
+    </div>
+  </div>`;
+}
+
+function renderCityInfVids(city){
+  const sec=document.getElementById('inf-vid-section');
+  if(!sec) return;
+  const list=city?INF_VIDS.filter(v=>v.city===city):INF_VIDS.slice(0,12);
+  if(!list.length){sec.innerHTML='';return;}
+  sec.innerHTML=list.slice(0,12).map(v=>`
+    <div class="inf-vid-card" onclick="openVM('${v.id}')">
+      <div style="position:relative">
+        <img class="inf-vid-thumb" src="${v.thumb}" alt="${v.title}" loading="lazy">
+        <div class="inf-vid-overlay"><div class="inf-vid-play">▶</div></div>
+      </div>
+      <div class="inf-vid-info">
+        <div class="inf-vid-ch">${v.ch} · ${v.city}</div>
+        <div class="inf-vid-ttl">${v.title}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+function initResto(){
+  buildCityTags();
+  const title=document.getElementById('resto-section-title');
+  if(title) title.textContent='🌟 أفضل المطاعم';
+  renderRestoGrid('');
+  renderCityInfVids('');
+  // Detect city asynchronously
+  detectCity();
+}
+
+function openResto(id){
+  const r=RESTAURANTS.find(x=>x.id===id);
+  if(!r) return;
+  gp('restodtl');
+  renderRestoDetail(r);
+}
+
+function renderRestoDetail(r){
+  const el=document.getElementById('rd-content');
+  if(!el) return;
+  const stars='⭐'.repeat(Math.floor(r.rating))+(r.rating%1>=0.5?'✨':'');
+  const relVids=INF_VIDS.filter(v=>v.restoId===r.id||(v.city===r.city&&v.restoId!==r.id)).slice(0,9);
+  const mapQ=encodeURIComponent(`${r.name} ${r.cityEn||r.city}`);
+  el.innerHTML=`
+    <div>
+      <div class="rd-vis">
+        <img src="${r.img}" alt="${r.name}" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=75'">
+        <div class="rd-vis-overlay"></div>
+        <div class="rd-vis-badge">${r.price} · ${r.cuisine}</div>
+      </div>
+      <h1 class="rd-h1">${r.country} ${r.name}</h1>
+      <div class="rd-rating">
+        <span class="rd-stars">${stars}</span>
+        <span style="font-size:18px;font-weight:900;color:var(--t0)">${r.rating}</span>
+        <span class="rd-rvct">(${r.rv.toLocaleString()} تقييم على Google)</span>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px">
+        ${r.cusines.map(t=>`<span class="rc-resto-tag" style="font-size:12px;padding:4px 10px">${t}</span>`).join('')}
+      </div>
+      <div class="rd-info-box">
+        <div class="rd-info-row"><span class="rd-info-ico">📍</span><span>${r.address}</span></div>
+        ${r.hours?`<div class="rd-info-row"><span class="rd-info-ico">🕐</span><span>${r.hours}</span></div>`:''}
+        ${r.phone?`<div class="rd-info-row"><span class="rd-info-ico">📞</span><span dir="ltr">${r.phone}</span></div>`:''}
+        ${r.ig?`<div class="rd-info-row"><span class="rd-info-ico">📷</span><span>${r.ig}</span></div>`:''}
+        ${r.tt?`<div class="rd-info-row"><span class="rd-info-ico">🎵</span><span>${r.tt}</span></div>`:''}
+      </div>
+      ${r.desc?`<div class="rd-info-box" style="background:var(--sg2);border-color:var(--b0)"><p style="font-size:13.5px;color:var(--t1);line-height:1.7">${r.desc}</p></div>`:''}
+      ${relVids.length?`
+      <div class="rd-vids-section">
+        <div class="rd-vids-title">🎬 فيديوهات المؤثرين <span style="font-size:12px;font-weight:600;color:var(--t3)">(${relVids.length} فيديو)</span></div>
+        <div class="inf-vid-grid">
+          ${relVids.map(v=>`
+            <div class="inf-vid-card" onclick="openVM('${v.id}')">
+              <div style="position:relative">
+                <img class="inf-vid-thumb" src="${v.thumb}" alt="${v.title}" loading="lazy">
+                <div class="inf-vid-overlay"><div class="inf-vid-play">▶</div></div>
+              </div>
+              <div class="inf-vid-info">
+                <div class="inf-vid-ch">${v.ch}</div>
+                <div class="inf-vid-ttl">${v.title}</div>
+              </div>
+            </div>
+          `).join('')}
+        </div>
+      </div>`:''}
+    </div>
+    <div>
+      <div class="rd-map">
+        <iframe
+          src="https://maps.google.com/maps?q=${mapQ}&output=embed&z=15"
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="خريطة ${r.name}">
+        </iframe>
+      </div>
+      <a href="https://www.google.com/maps/search/${mapQ}" target="_blank" rel="noopener"
+         style="display:block;text-align:center;background:var(--s);color:#fff;padding:10px;border-radius:var(--rads);font-family:var(--fn);font-size:13px;font-weight:800;text-decoration:none;margin-bottom:14px">
+        🗺️ فتح في خرائط Google
+      </a>
+      <div class="rd-info-box">
+        <div style="font-size:12px;font-weight:900;color:var(--t0);margin-bottom:10px">📊 ملخص التقييمات</div>
+        ${[['Google',r.rating,r.rv],['Instagram','👍','—'],['TikTok','❤️','—']].map(([pl,rt,rv])=>`
+          <div class="rd-info-row">
+            <span class="rd-info-ico">${pl==='Google'?'🔍':pl==='Instagram'?'📷':'🎵'}</span>
+            <span style="flex:1">${pl}</span>
+            <span style="color:var(--s);font-weight:800">${rt}${pl==='Google'?' ⭐':''}</span>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+}
 
 // ═══════════════════════════════════════════════════
 // SOCIAL LOGIN (Google / Facebook)
