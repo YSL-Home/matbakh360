@@ -1,0 +1,58 @@
+name: "🎬 Bulk Influencer Videos — 150+ par ville"
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_city:
+        description: "Ville cible en arabe (ex: الدار البيضاء) — vide = TOUTES les 15 villes"
+        required: false
+        default: ""
+      videos_per_batch:
+        description: "Vidéos par appel API"
+        required: false
+        default: "15"
+      batches_per_city:
+        description: "Lots par ville (15×10=150 vidéos)"
+        required: false
+        default: "10"
+
+jobs:
+  bulk-videos:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 90
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run bulk video generation
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TARGET_CITY: ${{ github.event.inputs.target_city }}
+          VIDEOS_PER_BATCH: ${{ github.event.inputs.videos_per_batch }}
+          BATCHES_PER_CITY: ${{ github.event.inputs.batches_per_city }}
+        run: node .github/scripts/bulk-videos.mjs
+
+      - name: Commit and push
+        run: |
+          git config user.name "Matbakh360 VideoBot"
+          git config user.email "bot@matbakh360.com"
+          git add index.html
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            CITY="${{ github.event.inputs.target_city }}"
+            LABEL="${CITY:-toutes les 15 villes}"
+            TOTAL=$(( ${{ github.event.inputs.batches_per_city }} * ${{ github.event.inputs.videos_per_batch }} ))
+            git commit -m "🎬 Bulk videos: ${TOTAL} vidéos/ville — $LABEL — $(date +'%Y-%m-%d')"
+            git push
+          fi

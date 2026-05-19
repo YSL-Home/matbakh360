@@ -129,32 +129,31 @@ for (const city of cities) {
       console.error(`  ✗ lot ${batch + 1} FAIL:`, e.message.substring(0, 100));
     }
 
-    // Generate videos every 3 batches
-    if (batch % 3 === 2) {
-      try {
-        const ts = Date.now();
-        const vidPrompt = [
-          `Génère 5 vidéos d'influenceurs food pour ${city.en} / ${city.ar}.`,
-          `Retourne UNIQUEMENT un tableau JSON de 5 objets.`,
-          `Format: id (infb_${ts}_1 à infb_${ts}_5), city "${city.ar}", restoId (rst${idCounter - BATCH_SIZE}),`,
-          `ch (@handle influenceur), pl (yt ou tt ou ig),`,
-          `ytid si pl=yt, ttid si pl=tt, igid si pl=ig,`,
-          `thumb (URL Unsplash food), title (titre en arabe), tags (2 tags en arabe).`,
-          `Varie les plateformes et handles. Tout en arabe.`,
-        ].join(' ');
+    // Generate 8 videos every batch (YouTube + TikTok + Instagram)
+    try {
+      const ts = Date.now();
+      const plList = ['yt','yt','yt','yt','tt','tt','ig','ig'];
+      const vidPrompt = [
+        `Génère 8 vidéos d'influenceurs gastronomiques pour ${city.en} / ${city.ar}.`,
+        `Retourne UNIQUEMENT un tableau JSON de 8 objets.`,
+        `Format: id (infb_${ts}_1 à infb_${ts}_8), city "${city.ar}", restoId "rst${idCounter - BATCH_SIZE}",`,
+        `ch (@handle influenceur food réaliste), pl selon liste: ${plList.join(',')},`,
+        `ytid (11 chars si yt), ttid (19 chiffres si tt), igid (11 chars alphanumériques si ig),`,
+        `thumb (URL Unsplash food photo-XXXXXXXX), title (titre accrocheur en arabe), tags (3 tags arabe).`,
+        `Varie les handles, styles (review/recette/vlog/découverte), types de plats. Tout en arabe.`,
+      ].join(' ');
 
-        const vraw = await callClaude(vidPrompt, 2000);
-        const vids = safeJSON(vraw);
-        if (Array.isArray(vids) && vids.length) {
-          const ventries = vids.map(v => '  ' + JSON.stringify(v)).join(',\n');
-          html = html.replace(
-            /(\s*\/\/ ═══════════════════════════════════════════════════\n\/\/ STATE)/,
-            `\n  // --- ${city.ar} vids lot${batch + 1} (AUTO ${date}) ---\n${ventries},\n$1`
-          );
-          console.log(`    + ${vids.length} vidéos`);
-        }
-      } catch (_) { /* videos are optional */ }
-    }
+      const vraw = await callClaude(vidPrompt, 3000);
+      const vids = safeJSON(vraw);
+      if (Array.isArray(vids) && vids.length) {
+        const ventries = vids.map(v => '  ' + JSON.stringify(v)).join(',\n');
+        html = html.replace(
+          /(\s*\/\/ ═══════════════════════════════════════════════════\n\/\/ STATE)/,
+          `\n  // --- ${city.ar} vids lot${batch + 1} (AUTO ${date}) ---\n${ventries},\n$1`
+        );
+        console.log(`    + ${vids.length} vidéos (yt/tt/ig)`);
+      }
+    } catch (_) { /* videos are optional */ }
 
     if (batch < BATCHES_PER_CITY - 1) await sleep(1500);
   }
