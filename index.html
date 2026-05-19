@@ -103,13 +103,12 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
   overflow:hidden;cursor:pointer;transition:all .22s;position:relative;
   display:flex;flex-direction:column;}
 .rc:hover{border-color:var(--b0);transform:translateY(-4px);box-shadow:var(--sh);}
-.rc.feat{grid-column:span 2;display:flex;}
-.rc.feat .rv{width:260px;flex-shrink:0;aspect-ratio:auto;min-height:210px;}
+.rc.feat{grid-column:span 2;flex-direction:row;}
+.rc.feat .rv{width:260px;flex-shrink:0;height:auto;min-height:100%;}
 .rc.feat .rb{flex:1;padding:22px;}
 .rc.feat .rt{font-size:17px;-webkit-line-clamp:3;}
 
-.rv{aspect-ratio:4/3;position:relative;overflow:hidden;background:var(--card2);
-  display:flex;align-items:center;justify-content:center;flex-direction:column;gap:5px;}
+.rv{height:220px;position:relative;overflow:hidden;background:var(--card2);flex-shrink:0;}
 .rv-bg{position:absolute;inset:0;opacity:.35;
   background-image:linear-gradient(var(--b1) 1px,transparent 1px),linear-gradient(90deg,var(--b1) 1px,transparent 1px);
   background-size:30px 30px;}
@@ -2665,7 +2664,7 @@ function rcCard(r,feat=false){
   return `<div class="rc${feat?' feat':''}" onclick="openRecipe('${r.id}')">
     <div class="rv">
       <div class="rv-bg"></div>
-      ${img?`<img src="${img}" alt="${ti}" loading="lazy" style="width:100%;height:100%;object-fit:cover;position:absolute;inset:0" onerror="this.remove();this.parentElement.style.background='linear-gradient(135deg,var(--sg) 0%,var(--card2) 100%)'">`:''}
+      ${img?`<img src="${img}" alt="${ti}" loading="lazy" onerror="this.remove();this.parentElement.style.background='linear-gradient(135deg,var(--sg) 0%,var(--card2) 100%);'">`:''}
       <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:58px;z-index:0;opacity:${img?'0':'1'};pointer-events:none">${r.em}</div>
       <div class="bflag">${r.f}</div>
       <div class="bcat">${r.cat}</div>
