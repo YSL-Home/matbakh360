@@ -1,0 +1,132 @@
+name: 🍽️ Update Recipes & Videos
+
+on:
+  schedule:
+    # Runs on the 1st and 15th of each month at 08:00 UTC
+    - cron: '0 8 1,15 * *'
+  workflow_dispatch:   # Allow manual trigger from GitHub UI
+
+jobs:
+  update-content:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Generate new recipes & videos via Claude API
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: |
+          cat << 'SCRIPT' > generate.mjs
+          import { readFileSync, writeFileSync } from 'fs';
+
+          const API_KEY = process.env.ANTHROPIC_API_KEY;
+          if (!API_KEY) { console.log('No API key — skipping generation'); process.exit(0); }
+
+          async function callClaude(prompt) {
+            const res = await fetch('https://api.anthropic.com/v1/messages', {
+              method: 'POST',
+              headers: {
+                'x-api-key': API_KEY,
+                'anthropic-version': '2023-06-01',
+                'content-type': 'application/json',
+              },
+              body: JSON.stringify({
+                model: 'claude-haiku-4-5-20251001',
+                max_tokens: 4096,
+                messages: [{ role: 'user', content: prompt }],
+              }),
+            });
+            const data = await res.json();
+            return data.content[0].text;
+          }
+
+          // Pick a random unusual cuisine for today's batch
+          const cuisines = [
+            'Géorgien','Éthiopien','Péruvien','Mongol','Sénégalais','Bolivien',
+            'Ouzbek','Philippin','Cambodgien','Laotien','Mauritanien','Paraguayen',
+            'Kyrgyz','Biélorusse','Haïtien','Trinidadien','Malagasy','Tanzanien',
+            'Yéménite','Omanais','Afghani','Népalais','Tibétain','Bhoutanais'
+          ];
+          const cuisine = cuisines[Math.floor(Math.random() * cuisines.length)];
+          const date = new Date().toISOString().split('T')[0];
+
+          console.log(`Generating ${cuisine} recipes for ${date}...`);
+
+          const recipePrompt = `Tu es un expert en gastronomie mondiale. Génère 3 nouvelles recettes ${cuisine} AUTHENTIQUES pour le site مطبخ 360 (cuisine arabe).
+
+Retourne UNIQUEMENT un tableau JSON valide (sans markdown, sans backticks) avec exactement ce format pour chaque recette:
+[
+  {
+    "id": "r_${Date.now()}_1",
+    "cid": "geo",
+    "f": "🇬🇪",
+    "r": "آسيوي",
+    "cat": "${cuisine.toLowerCase()}",
+    "em": "🍲",
+    "img": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=75",
+    "ti": "اسم الطبق بالعربية",
+    "de": "وصف موجز بالعربية",
+    "tm": "45 دق",
+    "sv": 4,
+    "df": "m",
+    "rt": 4.7,
+    "rv": 1200,
+    "ing": [{"q": "200غ", "n": "مكون بالعربية"}],
+    "steps": [{"t": "الخطوة بالعربية", "tp": "نصيحة بالعربية"}],
+    "tips": [{"i": "💡", "t": "نصيحة الشيف بالعربية"}],
+    "nut": {"cal": 350, "pro": 20, "carb": 30, "fat": 15},
+    "kw": ["كلمة مفتاحية"]
+  }
+]
+
+Important: tout le contenu textuel (ti, de, ing, steps, tips, kw) DOIT être en arabe. Retourne uniquement le JSON valide.`;
+
+          let newRecipes = [];
+          try {
+            const raw = await callClaude(recipePrompt);
+            const cleaned = raw.replace(/```json\n?|\n?```/g, '').trim();
+            newRecipes = JSON.parse(cleaned);
+            console.log(`Generated ${newRecipes.length} recipes.`);
+          } catch(e) {
+            console.error('Recipe generation failed:', e.message);
+          }
+
+          // Inject new recipes into index.html
+          if (newRecipes.length > 0) {
+            let html = readFileSync('index.html', 'utf8');
+            const newEntries = newRecipes.map(r => JSON.stringify(r)).join(',\n  ');
+            // Insert before the last ]; of RECIPES array
+            html = html.replace(
+              /(\s*\/\/ ═══ VIDEO DATA ═══)/,
+              `\n  // ═══ AUTO-GENERATED ${date} (${cuisine}) ═══\n  ${newEntries},\n$1`
+            );
+            writeFileSync('index.html', html, 'utf8');
+            console.log('Recipes injected into index.html ✓');
+          }
+
+          console.log('Content update complete!');
+          SCRIPT
+          node generate.mjs
+
+      - name: Commit and push if changed
+        run: |
+          git config user.name "Matbakh360 Bot"
+          git config user.email "bot@matbakh360.com"
+          git add index.html
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "🍽️ Auto-update: nouvelles recettes $(date +'%Y-%m-%d')"
+            git push
+          fi

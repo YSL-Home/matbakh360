@@ -24,37 +24,40 @@
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6870790039775701" crossorigin="anonymous"></script>
 <style>
 :root{
-  /* ── Palette tirée du logo مطبخ 360 ── */
-  --s:#C94A1A;--s2:#E86A30;--sg:rgba(201,74,26,.13);--sg2:rgba(201,74,26,.07);
-  --r:#A83A12;--rg:rgba(168,58,18,.10);
-  --g:#4A7A35;--gg:rgba(74,122,53,.10);
-  --b:#2A6A8A;--bg2:rgba(42,106,138,.09);
-  --p:#7C3AED;--pg:rgba(124,58,237,.09);
-  --ink:#0F1A0F;--ink1:#152212;--ink2:#1A2A18;--ink3:#20321E;--ink4:#283C24;
-  --card:#152212;--card2:#1A2A18;--card3:#20321E;
-  --b0:rgba(201,74,26,.20);--b1:rgba(255,255,255,.07);--b2:rgba(255,255,255,.04);
-  --t0:#F5EFE0;--t1:#C4A882;--t2:#8A9A80;--t3:#5A7050;
+  /* ── Palette logo مطبخ 360 — thème clair ── */
+  --s:#C94A1A;--s2:#E86A30;--sg:rgba(201,74,26,.10);--sg2:rgba(201,74,26,.05);
+  --r:#A83A12;--rg:rgba(168,58,18,.08);
+  --g:#4A7A35;--gg:rgba(74,122,53,.09);
+  --b:#2A6A8A;--bg2:rgba(42,106,138,.08);
+  --p:#7C3AED;--pg:rgba(124,58,237,.08);
+  /* fond clair / crème */
+  --ink:#FDFAF5;--ink1:#F5EFE0;--ink2:#EDE5CC;--ink3:#E3D9BC;--ink4:#D8CCAA;
+  --card:#FFFFFF;--card2:#F8F3EA;--card3:#F2EAD5;
+  --b0:rgba(201,74,26,.22);--b1:rgba(100,60,20,.10);--b2:rgba(100,60,20,.05);
+  --t0:#1A0D05;--t1:#3D2010;--t2:#6B4228;--t3:#9A7050;
+  --nav-bg:rgba(253,250,245,.96);
   --rad:16px;--rads:10px;--pill:100px;
   --fn:'Cairo',sans-serif;--fd:'Playfair Display',serif;
-  --sh:0 8px 40px rgba(8,15,8,.70);
+  --sh:0 4px 28px rgba(0,0,0,.09);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
 body{font-family:var(--fn);background:var(--ink);color:var(--t0);overflow-x:hidden;min-height:100vh;}
 body::before{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;
-  background:radial-gradient(ellipse 80% 50% at 8% 0%,rgba(201,74,26,.07) 0%,transparent 60%),
-  radial-gradient(ellipse 60% 80% at 92% 100%,rgba(74,122,53,.08) 0%,transparent 60%),
-  radial-gradient(ellipse 50% 50% at 50% 50%,rgba(168,58,18,.04) 0%,transparent 70%);}
-body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.025;
-  background-image:radial-gradient(circle,var(--s) 1px,transparent 1px);background-size:44px 44px;}
+  background:radial-gradient(ellipse 80% 50% at 8% 0%,rgba(201,74,26,.06) 0%,transparent 60%),
+  radial-gradient(ellipse 60% 80% at 92% 100%,rgba(74,122,53,.05) 0%,transparent 60%),
+  radial-gradient(ellipse 50% 50% at 50% 50%,rgba(168,58,18,.03) 0%,transparent 70%);}
+body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opacity:.04;
+  background-image:radial-gradient(circle,rgba(201,74,26,.4) 1px,transparent 1px);background-size:44px 44px;}
 ::-webkit-scrollbar{width:5px;height:5px;}
 ::-webkit-scrollbar-track{background:var(--ink);}
 ::-webkit-scrollbar-thumb{background:var(--b0);border-radius:3px;}
 
 /* NAV */
-.nav{position:sticky;top:0;z-index:3000;background:rgba(15,26,15,.96);
+.nav{position:sticky;top:0;z-index:3000;background:var(--nav-bg);
   backdrop-filter:blur(28px) saturate(160%);border-bottom:1px solid var(--b0);
-  height:60px;display:flex;align-items:center;gap:12px;padding:0 20px;}
+  height:60px;display:flex;align-items:center;gap:12px;padding:0 20px;
+  box-shadow:0 2px 20px rgba(0,0,0,.06);}
 .logo{display:flex;align-items:center;gap:9px;text-decoration:none;flex-shrink:0;cursor:pointer;}
 .logo b{font-size:18px;font-weight:900;color:var(--s);letter-spacing:-.5px;}
 .logo small{font-size:8.5px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;display:block;line-height:1;}
@@ -131,27 +134,35 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .rmore{font-size:11px;font-weight:800;color:var(--s);}
 
 /* HERO */
-.hero{padding:52px 0 36px;text-align:center;}
-.hero-tag{display:inline-flex;align-items:center;gap:6px;background:var(--sg);border:1px solid var(--b0);
-  color:var(--s);font-size:11px;font-weight:800;padding:5px 14px;border-radius:var(--pill);
-  margin-bottom:20px;letter-spacing:.5px;}
-.hero h1{font-size:50px;font-weight:900;line-height:1.15;margin-bottom:14px;letter-spacing:-.5px;}
+.hero{padding:40px 0 28px;text-align:center;}
+.hero h1{font-size:48px;font-weight:900;line-height:1.15;margin-bottom:12px;letter-spacing:-.5px;color:var(--t0);}
 .hero h1 em{font-style:italic;color:var(--s);font-family:var(--fd);}
-.hero-sub{font-size:15px;color:var(--t1);max-width:540px;margin:0 auto 28px;line-height:1.7;}
-.search-big{display:flex;background:var(--card);border:1px solid var(--b0);border-radius:var(--pill);
-  max-width:600px;margin:0 auto 36px;overflow:hidden;transition:border-color .2s;
-  box-shadow:0 4px 24px rgba(0,0,0,.3);}
-.search-big:focus-within{border-color:rgba(201,74,26,.55);}
-.search-big input{flex:1;background:transparent;border:none;color:var(--t0);font-family:var(--fn);
-  font-size:14.5px;padding:14px 22px;outline:none;min-width:0;}
-.search-big input::placeholder{color:var(--t3);}
-.search-big button{background:var(--s);color:#fff;border:none;font-family:var(--fn);font-size:13.5px;
-  font-weight:800;padding:12px 24px;cursor:pointer;border-radius:var(--pill);margin:4px;
-  flex-shrink:0;transition:background .18s;}
-.search-big button:hover{background:#B45309;}
-.hstats{display:flex;justify-content:center;gap:40px;}
+.hero-sub{font-size:15px;color:var(--t2);max-width:540px;margin:0 auto 28px;line-height:1.7;}
+.hstats{display:flex;justify-content:center;gap:40px;margin-bottom:32px;}
 .hst .n{font-size:26px;font-weight:900;color:var(--s);font-family:var(--fd);}
 .hst .l{font-size:11px;color:var(--t3);margin-top:2px;}
+
+/* HERO FEATURED CARDS */
+.hero-cards{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:14px;margin-bottom:28px;text-align:right;}
+.hc{border-radius:var(--rad);overflow:hidden;cursor:pointer;position:relative;
+  box-shadow:0 6px 32px rgba(0,0,0,.12);transition:all .24s;}
+.hc:hover{transform:translateY(-5px);box-shadow:0 12px 48px rgba(0,0,0,.16);}
+.hc-img{width:100%;object-fit:cover;display:block;transition:transform .4s;}
+.hc:hover .hc-img{transform:scale(1.04);}
+.hc-main .hc-img{height:320px;}
+.hc-small .hc-img{height:150px;}
+.hc-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.75) 0%,rgba(0,0,0,.1) 55%,transparent 100%);}
+.hc-body{position:absolute;bottom:0;left:0;right:0;padding:16px;}
+.hc-cat{display:inline-block;background:var(--s);color:#fff;font-size:9px;font-weight:900;
+  padding:3px 9px;border-radius:var(--pill);margin-bottom:6px;}
+.hc-title{font-size:15px;font-weight:900;color:#fff;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.hc-small .hc-title{font-size:13px;}
+.hc-meta{font-size:10.5px;color:rgba(255,255,255,.75);margin-top:5px;}
+.hc-flag{position:absolute;top:10px;right:10px;font-size:22px;
+  filter:drop-shadow(0 1px 4px rgba(0,0,0,.5));}
+@media(max-width:900px){.hero-cards{grid-template-columns:1fr 1fr;}.hc-main{grid-column:span 2;}}
+@media(max-width:600px){.hero-cards{grid-template-columns:1fr;}.hc-main{grid-column:span 1;}.hero h1{font-size:30px;}}
 
 /* WORLD CHIPS */
 .chips-bar{padding:14px 0;border-bottom:1px solid var(--b1);overflow:hidden;}
@@ -468,44 +479,93 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 .nav-avatar{width:32px;height:32px;border-radius:50%;background:var(--s);
   display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:900;
   color:#fff;border:2px solid rgba(201,74,26,.3);cursor:pointer;flex-shrink:0;}
-.nav-login-btn{padding:6px 16px;border-radius:var(--pill);background:var(--sg);
-  border:1px solid var(--b0);color:var(--s);font-family:var(--fn);font-size:12px;
+.nav-login-btn{padding:6px 16px;border-radius:var(--pill);background:var(--s);
+  border:1px solid var(--s);color:#fff;font-family:var(--fn);font-size:12px;
   font-weight:800;cursor:pointer;flex-shrink:0;transition:all .18s;}
-.nav-login-btn:hover{background:var(--s);color:#fff;}
+.nav-login-btn:hover{background:var(--r);border-color:var(--r);}
+
+/* LANGUAGE SWITCHER */
+.lang-switch{position:relative;flex-shrink:0;}
+.lang-btn{display:flex;align-items:center;gap:5px;padding:6px 11px;border-radius:var(--pill);
+  background:var(--card2);border:1px solid var(--b1);color:var(--t2);font-family:var(--fn);
+  font-size:12px;font-weight:700;cursor:pointer;transition:all .18s;white-space:nowrap;}
+.lang-btn:hover{border-color:var(--b0);color:var(--s);}
+.lang-dropdown{position:absolute;top:calc(100% + 6px);left:0;min-width:160px;
+  background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);
+  box-shadow:var(--sh);z-index:4000;display:none;overflow:hidden;}
+.lang-dropdown.open{display:block;}
+.lang-opt{display:flex;align-items:center;gap:8px;padding:9px 14px;font-family:var(--fn);
+  font-size:12.5px;font-weight:600;color:var(--t1);cursor:pointer;transition:background .15s;}
+.lang-opt:hover{background:var(--card2);}
+.lang-opt.active{color:var(--s);font-weight:800;background:var(--sg);}
+
+/* SOCIAL LOGIN */
+.social-divider{display:flex;align-items:center;gap:10px;margin:16px 0;padding:0 24px;}
+.social-divider span{font-size:11px;color:var(--t3);white-space:nowrap;}
+.social-divider::before,.social-divider::after{content:'';flex:1;height:1px;background:var(--b1);}
+.social-btns{display:flex;gap:9px;padding:0 24px 20px;}
+.sbtn-g,.sbtn-f{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;
+  padding:11px;border-radius:var(--rads);font-family:var(--fn);font-size:13px;font-weight:700;
+  cursor:pointer;border:none;transition:all .18s;}
+.sbtn-g{background:#fff;color:#3C4043;border:1px solid #dadce0;}
+.sbtn-g:hover{background:#f8f9fa;box-shadow:0 2px 8px rgba(0,0,0,.12);}
+.sbtn-f{background:#1877F2;color:#fff;}
+.sbtn-f:hover{background:#1565D8;}
+
+/* AUTH close */
+.auth-close{position:absolute;top:14px;left:14px;width:32px;height:32px;border-radius:50%;
+  background:var(--card2);border:1px solid var(--b1);color:var(--t2);
+  cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;}
 </style>
 </head>
 <body>
 
 <!-- NAV -->
 <nav class="nav">
-  <div class="logo" onclick="gp('home')">
-    <svg width="38" height="38" viewBox="0 0 40 40" fill="none">
-      <circle cx="20" cy="20" r="19" fill="#152212"/>
+  <div class="logo" onclick="gp('home')" style="gap:8px">
+    <!-- Logo fidèle — placer logo.png dans le dossier du projet pour l'afficher -->
+    <img src="logo.png" alt="مطبخ 360" width="42" height="42" style="border-radius:50%;object-fit:cover;display:block"
+         onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+    <svg width="42" height="42" viewBox="0 0 40 40" fill="none" style="display:none;flex-shrink:0">
+      <circle cx="20" cy="20" r="19" fill="#F5EFE0" stroke="#C94A1A" stroke-width="1.2"/>
       <circle cx="20" cy="20" r="19" stroke="#C94A1A" stroke-width=".8" stroke-dasharray="3.5 2.5" opacity=".5"/>
       <path d="M20 7C16 12 11 17 15.5 22C19.5 27 23 24 20 18.5C17 13 25 11 20 7Z" fill="#C94A1A"/>
       <path d="M7.5 26C12 21.5 16.5 24 20 18.5C20 27 15.5 30.5 7.5 26Z" fill="#C94A1A" opacity=".65"/>
       <path d="M32.5 26C28 21.5 23.5 24 20 18.5C20 27 24.5 30.5 32.5 26Z" fill="#C94A1A" opacity=".45"/>
-      <path d="M4 20A16 16 0 0 1 36 20" stroke="#E8541A" stroke-width="1.3" fill="none" stroke-linecap="round" opacity=".7"/>
-      <text x="20" y="24.5" text-anchor="middle" fill="#FEF8F0" font-size="5.5" font-weight="900" font-family="Cairo,sans-serif">360</text>
+      <text x="20" y="24.5" text-anchor="middle" fill="#C94A1A" font-size="5.5" font-weight="900" font-family="Cairo,sans-serif">360</text>
     </svg>
-    <div><b>مطبخ 360</b><small>World Recipes</small></div>
+    <div><b style="color:var(--s)">مطبخ 360</b><small style="font-size:8px;color:var(--t3);letter-spacing:2px;text-transform:uppercase;display:block">World Recipes</small></div>
   </div>
   <div class="nav-links">
-    <button class="nb on" onclick="gp('home')">🏠 الرئيسية</button>
-    <button class="nb" onclick="gp('world')">🌍 مطابخ العالم</button>
-    <button class="nb" onclick="gp('videos')">📱 فيديو المطابخ</button>
+    <button class="nb on" onclick="gp('home')" data-i18n="nav_home">🏠 الرئيسية</button>
+    <button class="nb" onclick="gp('world')" data-i18n="nav_world">🌍 مطابخ العالم</button>
+    <button class="nb" onclick="gp('videos')" data-i18n="nav_videos">📱 فيديو المطابخ</button>
     <button class="nb" onclick="fworld('حلويات')">🍰 حلويات</button>
     <button class="nb" onclick="fworld('صحي')">🥗 صحي</button>
     <button class="nb" onclick="fworld('سريع')">⚡ سريع</button>
     <button class="nb" onclick="fworld('رمضان')">🌙 رمضان</button>
-    <button class="nb" id="nav-fav-btn" onclick="gp('fav')">❤️ محفوظاتي <span id="nav-fav-count" style="display:none;background:var(--r);color:#fff;font-size:9px;padding:1px 6px;border-radius:var(--pill);margin-right:3px"></span></button>
+    <button class="nb" id="nav-fav-btn" onclick="gp('fav')">❤️ <span data-i18n="nav_fav">محفوظاتي</span> <span id="nav-fav-count" style="display:none;background:var(--r);color:#fff;font-size:9px;padding:1px 6px;border-radius:var(--pill);margin-right:3px"></span></button>
   </div>
   <div class="nav-search" onclick="document.querySelector('.nav-search input').focus()">
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="cursor:pointer" onclick="event.stopPropagation();doSearch(document.querySelector('.nav-search input').value)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    <input placeholder="بحث في مطابخ العالم..." onkeydown="if(event.key==='Enter')doSearch(this.value)">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="cursor:pointer;color:var(--t2)" onclick="event.stopPropagation();doSearch(document.querySelector('.nav-search input').value)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+    <input placeholder="بحث في مطابخ العالم..." onkeydown="if(event.key==='Enter')doSearch(this.value)" data-i18n-placeholder="search_placeholder">
+  </div>
+  <!-- Language switcher -->
+  <div class="lang-switch" id="lang-switch">
+    <button class="lang-btn" onclick="toggleLangDropdown()" id="lang-btn">🌐 AR ▾</button>
+    <div class="lang-dropdown" id="lang-dropdown">
+      <div class="lang-opt active" onclick="setLang('ar')">🇸🇦 العربية</div>
+      <div class="lang-opt" onclick="setLang('fr')">🇫🇷 Français</div>
+      <div class="lang-opt" onclick="setLang('en')">🇬🇧 English</div>
+      <div class="lang-opt" onclick="setLang('es')">🇪🇸 Español</div>
+      <div class="lang-opt" onclick="setLang('pt')">🇵🇹 Português</div>
+      <div class="lang-opt" onclick="setLang('it')">🇮🇹 Italiano</div>
+      <div class="lang-opt" onclick="setLang('zh')">🇨🇳 中文</div>
+      <div class="lang-opt" onclick="setLang('ja')">🇯🇵 日本語</div>
+    </div>
   </div>
   <div id="nav-auth-zone">
-    <button class="nav-login-btn" onclick="openAuth('login')">دخول / تسجيل</button>
+    <button class="nav-login-btn" onclick="openAuth('login')" data-i18n="nav_signin">دخول / تسجيل</button>
   </div>
 </nav>
 
@@ -513,23 +573,20 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 <div class="page on" id="page-home">
 <div class="wrap">
   <div class="hero">
-    <div class="hero-tag">🤖 Claude · ChatGPT · Gemini — محتوى مُولَّد بـ 3 ذكاءات اصطناعية</div>
-    <h1>مطابخ العالم كلها<br>في <em>زاوية واحدة</em></h1>
-    <p class="hero-sub">من الكسكس المغربي إلى الراميان الياباني والبيتزا الإيطالية — آلاف الوصفات مع صور ومقاطع فيديو من كل المنصات.</p>
-    <div class="search-big">
-      <input id="hq" placeholder="ابحث: كنافة، سوشي، تاكو، ريزوتو، منسف...">
-      <button onclick="doSearch(document.getElementById('hq').value)">🔍 بحث</button>
-    </div>
+    <h1 data-i18n="hero_title">مطابخ العالم كلها<br>في <em>زاوية واحدة</em></h1>
+    <p class="hero-sub" data-i18n="hero_sub">من الكسكس المغربي إلى الراميان الياباني والبيتزا الإيطالية — آلاف الوصفات مع صور ومقاطع فيديو.</p>
     <div class="hstats">
-      <div class="hst"><div class="n">12,400+</div><div class="l">وصفة</div></div>
-      <div class="hst"><div class="n">68</div><div class="l">مطبخ</div></div>
-      <div class="hst"><div class="n">5,200+</div><div class="l">فيديو</div></div>
-      <div class="hst"><div class="n">3 ذكاءات</div><div class="l">اصطناعية</div></div>
+      <div class="hst"><div class="n">12,400+</div><div class="l" data-i18n="stat_recipes">وصفة</div></div>
+      <div class="hst"><div class="n">80+</div><div class="l" data-i18n="stat_cuisines">مطبخ</div></div>
+      <div class="hst"><div class="n">5,200+</div><div class="l" data-i18n="stat_videos">فيديو</div></div>
+      <div class="hst"><div class="n">8</div><div class="l" data-i18n="stat_langs">لغات</div></div>
     </div>
+    <!-- Featured recipe cards — populated by JS -->
+    <div class="hero-cards" id="hero-cards"></div>
   </div>
   <div class="chips-bar"><div class="chips-scroll" id="hchips"></div></div>
 
-  <div class="sh"><h2>⭐ الأبرز اليوم</h2><div class="rl"></div><span class="bd">مُختار بالذكاء الاصطناعي</span></div>
+  <div class="sh"><h2>⭐ الأبرز اليوم</h2><div class="rl"></div><span class="bd">وصفات مختارة بعناية</span></div>
   <div class="g4" id="h-feat"></div>
 
   <!-- AD: after hero -->
@@ -609,13 +666,13 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   <div class="footer-g">
     <div class="footer-brand">
       <div class="logo" style="margin-bottom:8px"><svg width="34" height="34" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="19" fill="#152212"/><path d="M20 7C16 12 11 17 15.5 22C19.5 27 23 24 20 18.5C17 13 25 11 20 7Z" fill="#C94A1A"/><path d="M7.5 26C12 21.5 16.5 24 20 18.5C20 27 15.5 30.5 7.5 26Z" fill="#C94A1A" opacity=".65"/><path d="M32.5 26C28 21.5 23.5 24 20 18.5C20 27 24.5 30.5 32.5 26Z" fill="#C94A1A" opacity=".45"/><text x="20" y="24.5" text-anchor="middle" fill="#F5EFE0" font-size="5.5" font-weight="900" font-family="Cairo,sans-serif">360</text></svg><div><b style="font-size:17px;font-weight:900;color:var(--s)">مطبخ 360</b></div></div>
-      <p>منصة وصفات عالمية مدعومة بـ Claude وChatGPT وGemini. نجمع ونُحسّن ونُقدّم آلاف الوصفات من 68 مطبخاً حول العالم مع صور ومقاطع فيديو.</p>
+      <p>منصة وصفات عالمية تجمع آلاف الوصفات من 80+ مطبخاً حول العالم مع صور ومقاطع فيديو خطوة بخطوة.</p>
     </div>
     <div class="fc"><h4>المطابخ العربية</h4><a>مغربي · مصري · لبناني</a><a>سعودي · تونسي · جزائري</a><a>عراقي · سوري · فلسطيني</a><a>أردني · يمني · خليجي</a></div>
     <div class="fc"><h4>مطابخ العالم</h4><a>إيطالي · فرنسي · إسباني</a><a>ياباني · صيني · هندي</a><a>مكسيكي · أمريكي · تركي</a><a>كوري · تايلاندي · يوناني</a></div>
     <div class="fc"><h4>تابعونا</h4><a>📘 فيسبوك</a><a>📷 إنستغرام</a><a>🎵 تيك توك</a><a>▶️ يوتيوب</a><a>📌 بينتيريست</a></div>
   </div>
-  <div class="footer-bot"><span>© 2025 مطبخ 360</span><span>مدعوم بـ Claude · ChatGPT · Gemini 🤖</span></div>
+  <div class="footer-bot"><span>© 2025 مطبخ 360</span><span>🍽️ وصفات من كل زاوية في العالم</span></div>
 </div>
 </footer>
 
@@ -696,6 +753,21 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
       <button class="auth-tab on" id="tab-login" onclick="switchTab('login')">تسجيل الدخول</button>
       <button class="auth-tab" id="tab-register" onclick="switchTab('register')">إنشاء حساب</button>
     </div>
+
+    <!-- SOCIAL LOGIN -->
+    <div style="padding:16px 24px 0">
+      <div class="social-btns" style="padding:0;gap:9px;display:flex">
+        <button class="sbtn-g" onclick="loginWithGoogle()" style="flex:1">
+          <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.36-8.16 2.36-6.26 0-11.57-3.59-13.46-8.72l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Google
+        </button>
+        <button class="sbtn-f" onclick="loginWithFacebook()" style="flex:1">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="white"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+          Facebook
+        </button>
+      </div>
+    </div>
+    <div class="social-divider"><span>أو بالبريد الإلكتروني</span></div>
 
     <!-- LOGIN -->
     <div class="auth-body" id="panel-login">
@@ -795,6 +867,19 @@ const CUISINES=[
   {id:'rmdn',f:'🌙',n:'رمضان',r:'رمضان',c:380,desc:'حلويات وأطباق رمضانية'},
   {id:'sea',f:'🦐',n:'بحري',r:'بحري',c:240,desc:'مأكولات بحرية من كل المحيطات'},
   {id:'brd',f:'🥖',n:'خبز ومعجنات',r:'خبز',c:180,desc:'خبز تقليدي من مطابخ العالم'},
+  /* ─ destinations insolites ─ */
+  {id:'geo',f:'🇬🇪',n:'جورجي',r:'آسيوي',c:120,desc:'خاتشابوري وخينكالي وساتسيفي'},
+  {id:'mng',f:'🇲🇳',n:'منغولي',r:'آسيوي',c:80,desc:'بوزي وتسوخوغ وخورخوغ'},
+  {id:'sen',f:'🇸🇳',n:'سنغالي',r:'أفريقي',c:90,desc:'تشيبو دييان وياسا والمافي'},
+  {id:'bol',f:'🇧🇴',n:'بوليفي',r:'أمريكي',c:70,desc:'سالتينياس وسيغو والفريخولي'},
+  {id:'uzb',f:'🇺🇿',n:'أوزبكي',r:'آسيوي',c:100,desc:'بلوف ومانتي وشاشليك'},
+  {id:'phl',f:'🇵🇭',n:'فلبيني',r:'آسيوي',c:110,desc:'أدوبو وسينيغانغ والهالو هالو'},
+  {id:'khm',f:'🇰🇭',n:'كمبودي',r:'آسيوي',c:70,desc:'أموك السمك واللوك لاك'},
+  {id:'lao',f:'🇱🇦',n:'لاوسي',r:'آسيوي',c:60,desc:'أورلام وتام مك هونغ'},
+  {id:'mrt',f:'🇲🇷',n:'موريتاني',r:'عربي',c:80,desc:'تييبودييان ومفي والرز بالتمر'},
+  {id:'mdg',f:'🇲🇬',n:'مدغشقري',r:'أفريقي',c:60,desc:'روفالوها وفاكافي'},
+  {id:'pry',f:'🇵🇾',n:'باراغوياني',r:'أمريكي',c:55,desc:'سوبو دي يو وتشيبا'},
+  {id:'kgz',f:'🇰🇬',n:'قيرغيزي',r:'آسيوي',c:60,desc:'بيشبارماك وكوميس وشورو'},
 ];
 
 const RECIPES=[
@@ -1150,6 +1235,113 @@ const RECIPES=[
    steps:[{t:'اسلقي السباغيتي في ماء مالح (احتفظي بكوب ماء السلق).',tp:''},{t:'في مقلاة واسعة: سخّني الزيت على نار منخفضة وأضيفي الثوم ببطء حتى يصبح ذهبياً فقط.',tp:'الثوم يحترق في ثوان — لا تتركي المقلاة'},{t:'أضيفي الفلفل الأحمر ودقيقة واحدة.',tp:''},{t:'أضيفي المعكرونة وملعقة من ماء السلق، قلبي بقوة.',tp:'ماء السلق يصنع صلصة كريمية بدون كريمة'},{t:'أضيفي البقدونس وقدّمي فوراً.',tp:''}],
    tips:[{i:'🧄',t:'الثوم الذهبي وليس الأسود — الفرق ثوان'},{i:'💧',t:'ماء السلق الكثيف النشوي = صلصة مثالية'}],
    nut:{cal:420,pro:12,carb:64,fat:14},kw:['باستا سريعة','أجيو أوليو','إيطالي','سريع']},
+
+  // ══════════════════════════════════════════════════
+  // DESTINATIONS INSOLITES + images étapes de préparation
+  // ══════════════════════════════════════════════════
+
+  // ═══ GEORGIAN (Géorgie) ═══
+  {id:'r42',cid:'geo',f:'🇬🇪',r:'آسيوي',cat:'جورجي',em:'🥟',
+   img:'https://images.unsplash.com/photo-1565299507177-b0ac66763828?w=500&q=75',
+   imgs:['https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400&q=70','https://images.unsplash.com/photo-1574484284002-952d92456975?w=400&q=70'],
+   ti:'خاتشابوري — خبز الجبن الجورجي الفائر',
+   de:'ملكة المطبخ الجورجي — خبز يُخبز في الفرن ويُملأ بالجبن المذاب، يُقدَّم بشكل قارب مع بيضة.',
+   tm:'70 دق',sv:4,df:'m',rt:4.9,rv:1200,
+   ing:[{q:'للعجين:',n:'دقيق وخميرة وحليب وزبدة وملح وسكر'},{q:'400غ',n:'جبن سولغوني أو موتزاريلا'},{q:'200غ',n:'جبن فيتا أو فريش'},{q:'2',n:'بيضات'},{q:'زبدة',n:'للتشطيب'}],
+   steps:[{t:'اعجني الدقيق مع الخميرة والحليب الدافئ والزبدة والملح. اتركي العجين يرتاح ساعة.',tp:'العجين الجيد يتمدد بسهولة دون تمزق',img:'https://images.unsplash.com/photo-1495521821757-a1efb6729352?w=400&q=70'},{t:'اخلطي الجبنتين مع بيضة واحدة.',tp:''},{t:'شكّلي العجين على شكل قارب، احشي بالجبن.',tp:'الشكل التقليدي كالقارب هو الأصيل'},{t:'اخبزي 220 درجة 15 دقيقة. أخرجي واكسري بيضة في المنتصف.',tp:'البيضة تُضاف ساخنة — تنضج من حرارة الخبز فقط'},{t:'أضيفي قطعة زبدة وقدّمي فوراً.',tp:''}],
+   tips:[{i:'🧀',t:'مزيج الجبن يجب أن يكون مالحاً — جرّبيه قبل الحشي'},{i:'🔥',t:'الخبز يُقدَّم ساخناً جداً — هذا طبق فوري لا ينتظر'}],
+   nut:{cal:520,pro:22,carb:48,fat:28},kw:['خاتشابوري','جورجي','خبز بالجبن','قوقاز']},
+
+  // ═══ ETHIOPIAN ═══
+  {id:'r43',cid:'eth',f:'🇪🇹',r:'أفريقي',cat:'إثيوبي',em:'🫓',
+   img:'https://images.unsplash.com/photo-1567620832903-9fc6debc209f?w=500&q=75',
+   imgs:['https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=70','https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=400&q=70'],
+   ti:'إنجيرة مع دورو وعوت — قلب المطبخ الإثيوبي',
+   de:'الإنجيرة خبز تيف لاكتيكي رقيق تُوضع عليه طبقات من اليخنات والبقوليات — طعام يُؤكل باليد.',
+   tm:'1440 دق',sv:6,df:'m',rt:4.8,rv:880,
+   ing:[{q:'للإنجيرة:',n:'دقيق التيف (أو الذرة) + ماء فاتر — 3 أيام تخمير'},{q:'1 دجاجة',n:'كاملة مقطعة'},{q:'6',n:'بيضات مسلوقة'},{q:'4 بصل',n:'كبير مفروم ناعم'},{q:'بربري',n:'مزيج توابل إثيوبية حار'},{q:'2 ملعقة',n:'نيتر كيبي (زبدة إثيوبية مُتبلة)'}],
+   steps:[{t:'الإنجيرة: اخلطي دقيق التيف مع الماء واتركي في مكان دافئ 2-3 أيام للتخمير.',tp:'التخمير الطويل هو سر الطعم الحامض المميز',img:'https://images.unsplash.com/photo-1540189549336-e6e99c3679fe?w=400&q=70'},{t:'اطبخي الإنجيرة على صاج دائري كبير من جانب واحد فقط.',tp:'جانب واحد فقط — السطح العلوي يبقى مسامياً'},{t:'الدورو وعوت: اقلي البصل المفروم في النيتر كيبي حتى يُكراميل.',tp:'صبر 30-40 دقيقة من الخلط — هذا أساس الطبق'},{t:'أضيفي البربري ثم الدجاج والبيض المخروز، اطبخي ساعة.',tp:''},{t:'قدّمي الإنجيرة في طبق كبير وضعي اليخنات فوقها.',tp:'الجميع يأكل من الطبق الواحد — هذا تقليد اجتماعي'}],
+   tips:[{i:'🤝',t:'الأكل باليد من طبق واحد هو الطريقة الإثيوبية الأصيلة'},{i:'⏳',t:'دون تخمير لا توجد إنجيرة — الوقت غير قابل للتفاوض'}],
+   nut:{cal:380,pro:28,carb:42,fat:16},kw:['إنجيرة','إثيوبي','دورو وعوت','أفريقي','تيف']},
+
+  // ═══ PERUVIAN ═══
+  {id:'r44',cid:'per',f:'🇵🇪',r:'أمريكي',cat:'بيروفي',em:'🐟',
+   img:'https://images.unsplash.com/photo-1535400875871-c2e438b3f8e2?w=500&q=75',
+   imgs:['https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&q=70'],
+   ti:'سيفيتشي بيروفي — طازج من المحيط الهادئ',
+   de:'تاج المطبخ البيروفي — سمك نيء يُنضج بعصير الليمون الأخضر في 15 دقيقة فقط.',
+   tm:'20 دق',sv:4,df:'e',rt:4.9,rv:2400,
+   ing:[{q:'600غ',n:'سمك أبيض طازج جداً (بلطي أو باس)'},{q:'عصير',n:'ليمون أخضر (8-10 حبات)'},{q:'1',n:'بصل أحمر مقطع شعيرات'},{q:'1-2 فلفل',n:'أجي أمارييو (أو أي فلفل أصفر حار)'},{q:'2 ملعقة',n:'كزبرة طازجة مفرومة'},{q:'للتقديم:',n:'ذرة مسلوقة (شوكلو) وبطاطا حلوة وأوراق خس'}],
+   steps:[{t:'قطّعي السمك مكعبات 2 سم ورشّي ملحاً جيداً 5 دقائق.',tp:'الملح يبدأ التمسين الخفيف قبل الليمون',img:'https://images.unsplash.com/photo-1621506289937-a8e4df240d0b?w=400&q=70'},{t:'اغمري السمك بعصير الليمون الأخضر 10-12 دقيقة.',tp:'الليمون "يطهو" السمك كيميائياً — اللون يتغير للأبيض'},{t:'أضيفي البصل والفلفل والكزبرة وقلّبي بلطف.',tp:''},{t:'قدّمي فوراً مع الذرة والبطاطا الحلوة.',tp:'يُقدَّم طازجاً دائماً — لا يُحفظ'}],
+   tips:[{i:'🐟',t:'طازجية السمك مسألة حياة أو موت — لا تتساهلي'},{i:'🍋',t:'الليمون الأخضر البيروفي أقوى من العادي — استخدمي كمية كافية'}],
+   nut:{cal:180,pro:30,carb:8,fat:3},kw:['سيفيتشي','بيروفي','أمريكا الجنوبية','سمك نيء']},
+
+  // ═══ MONGOLIAN ═══
+  {id:'r45',cid:'mng',f:'🇲🇳',r:'آسيوي',cat:'منغولي',em:'🥟',
+   img:'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=75',
+   ti:'بوزي منغولية — زلابية البخار على الأعالي',
+   de:'البوزي زلابية البخار المنغولية — عجين رقيق يحتضن لحم الغنم المتبل بالبصل والكمون.',
+   tm:'90 دق',sv:4,df:'m',rt:4.7,rv:560,
+   ing:[{q:'للعجين:',n:'دقيق وماء ساخن وملح'},{q:'500غ',n:'لحم ضأن مفروم (أو بقر)'},{q:'2 بصل',n:'كبير مفروم'},{q:'كمون',n:'وثوم وملح وزيت سمسم'},{q:'للغمس:',n:'خل نقي وصلصة صويا وفلفل أحمر'}],
+   steps:[{t:'العجين: اخلطي الدقيق مع الماء الساخن وعجني 10 دقائق، اتركي 30 دقيقة.',tp:''},{t:'الحشوة: اخلطي اللحم مع البصل والكمون والثوم وزيت السمسم.',tp:'اللحم يجب أن يكون بارداً — يسهّل التشكيل'},{t:'ابسطي العجين وقطّعي دوائر، ضعي ملعقة حشوة وقرّصي بطريقة التعقيد التقليدية.',tp:'عدد التعقيدات الأصيل 33 تعقيدة'},{t:'اطبخي على البخار 25-30 دقيقة.',tp:''},{t:'قدّمي ساخنة مع صلصة الغمس.',tp:''}],
+   tips:[{i:'❄️',t:'الهواء البارد يجعل تشكيل البوزي أسهل'},{i:'🏔️',t:'تُستهلك تقليدياً في الشتاء القارس لإمداد الجسم بالدفء'}],
+   nut:{cal:340,pro:22,carb:36,fat:12},kw:['بوزي','منغولي','زلابية','بخار','آسيا الوسطى']},
+
+  // ═══ SENEGALESE ═══
+  {id:'r46',cid:'sen',f:'🇸🇳',r:'أفريقي',cat:'سنغالي',em:'🍛',
+   img:'https://images.unsplash.com/photo-1585937421612-70a008356c36?w=500&q=75',
+   ti:'تشيبو دييان — ملك مطبخ غرب أفريقيا',
+   de:'الطبق الوطني السنغالي — أرز أحمر بالسمك والخضار والتوابل يُطهى ببطء لساعتين.',
+   tm:'150 دق',sv:6,df:'h',rt:4.8,rv:720,
+   ing:[{q:'1 كغ',n:'سمك طازج (كيفل أو باس)'},{q:'3 أكواب',n:'أرز أحمر طويل الحبة'},{q:'رب',n:'طماطم وبصل وثوم وفلفل أخضر'},{q:'مونيه',n:'مزيج توابل سنغالية (جفينكرة وجاتو)'},{q:'قرع',n:'وجزر وملفوف وبامية'},{q:'زيت',n:'فول سوداني'}],
+   steps:[{t:'تبّلي السمك بالمونيه والثوم والملح، احشي التجاويف بالتوابل.',tp:'التتبيل من الداخل ضروري'},{t:'اقلي السمك في زيت الفول السوداني من الجانبين ثم أخرجيه.',tp:''},{t:'اقلي البصل والطماطم والفلفل الأخضر في نفس الزيت 30 دقيقة.',tp:'الصلصة الكثيفة هي روح تشيبو دييان'},{t:'أضيفي الماء والخضروات والسمك واطبخي 45 دقيقة.',tp:''},{t:'أخرجي السمك والخضار واطبخي الأرز في مرق السمك.',tp:'الأرز يشرب نكهة الصلصة كلها'}],
+   tips:[{i:'🌍',t:'جفينكرة التوابل السنغالية تصنع الفرق — ابحثي عنها في متاجر الأغذية الأفريقية'},{i:'🐟',t:'السمك الكامل يعطي أعمق نكهة من الفيليه'}],
+   nut:{cal:450,pro:34,carb:58,fat:12},kw:['تشيبو دييان','سنغالي','أفريقي','سمك وأرز']},
+
+  // ═══ BOLIVIAN ═══
+  {id:'r47',cid:'bol',f:'🇧🇴',r:'أمريكي',cat:'بوليفي',em:'🫕',
+   img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=75',
+   ti:'سالتينياس بوليفية — فطائر العصير المنفجرة',
+   de:'الفطيرة البوليفية الشهيرة — حشوة سائلة من اللحم والبازلاء تنفجر عند العضة الأولى.',
+   tm:'120 دق',sv:12,df:'h',rt:4.8,rv:430,
+   ing:[{q:'للعجين:',n:'دقيق وسكر وزبدة وبيضة وماء ومسحوق ألو فيرا (للون)'},{q:'400غ',n:'دجاج أو لحم بقر مطهو ومفتت'},{q:'1 كوب',n:'مرق دجاج جيلاتيني'},{q:'بازلاء',n:'وزيتون وبيض مسلوق'},{q:'بصل',n:'أخضر وفلفل حار أحمر'}],
+   steps:[{t:'حضّري المرق الجيلاتيني: اغلي عظام الدجاج 2 ساعة، صفّي واتركي يبرد في الثلاجة حتى يتجمد.',tp:'الجيلاتين هو سر الحشوة السائلة عند الأكل'},{t:'اخلطي اللحم مع المرق المجمد المقطع والبازلاء والزيتون والبيض.',tp:''},{t:'العجين: اخلطي المكونات مع الزبدة، اتركي 30 دقيقة.',tp:''},{t:'ابسطي ودوائر، ضعي الحشوة الباردة وأغلقي بطريقة التضفير التقليدية.',tp:'الإغلاق المحكم يحبس المرق'},{t:'اخبزي 200 درجة 25 دقيقة حتى تتحمر.',tp:''}],
+   tips:[{i:'💧',t:'السر كله في الجيلاتين الطبيعي — بدونه لا توجد سالتينياس حقيقية'},{i:'🌡️',t:'تُؤكل ساخنة دائماً — الحشوة تسيل عند العضة'}],
+   nut:{cal:290,pro:16,carb:30,fat:12},kw:['سالتينياس','بوليفي','فطيرة','أمريكا اللاتينية']},
+
+  // ═══ UZBEK ═══
+  {id:'r48',cid:'uzb',f:'🇺🇿',r:'آسيوي',cat:'أوزبكي',em:'🍚',
+   img:'https://images.unsplash.com/photo-1574484284002-952d92456975?w=500&q=75',
+   ti:'بلوف أوزبكي — أرز الملوك على الجمر',
+   de:'البلوف الأوزبكي لا يشبه أي أرز آخر في العالم — لحم ضأن وجزر وتوابل خاصة تُطهى 3 ساعات.',
+   tm:'180 دق',sv:8,df:'h',rt:4.9,rv:980,
+   ing:[{q:'1 كغ',n:'كتف ضأن بالعظم'},{q:'3 أكواب',n:'أرز ديف زيرا (أو بسمتي)'},{q:'4',n:'جزر كبير مقطع عصي طويلة'},{q:'3 بصل',n:'كبير مقطع حلقات'},{q:'رأس ثوم',n:'كامل بالقشر'},{q:'زيرا',n:'وكزبرة جافة وفلفل أسود'},{q:'زيت قطن',n:'أو دهن ضأن'}],
+   steps:[{t:'في قدر قزان سميك: سخّني الزيت حتى يكاد يدخن وأضيفي البصل.',tp:'الحرارة العالية تكرمل البصل بسرعة وتعطي اللون الذهبي'},{t:'أضيفي اللحم وحمّريه جيداً من كل الجوانب.',tp:''},{t:'أضيفي الجزر والزيرا والكزبرة والبهارات، غطّي بالماء واطبخي 40 دقيقة.',tp:'هذه الطبقة تُسمى زيرفاك — هي الروح'},{t:'أضيفي الأرز فوق اللحم (لا تخلطي)، ضعي رأس الثوم في المنتصف.',tp:'الأرز يُطهى بالبخار فوق الزيرفاك'},{t:'أتمّي على نار هادئة 30-40 دقيقة، اقلبي الطبق للتقديم.',tp:'الاقلاب يظهر اللحم والجزر في الأعلى'}],
+   tips:[{i:'🥕',t:'الجزر العصوي وليس المبشور — يظل متماسكاً'},{i:'🧄',t:'رأس الثوم كامل يُطهى في البخار ويصبح كريمياً'}],
+   nut:{cal:560,pro:36,carb:62,fat:20},kw:['بلوف','أوزبكي','آسيا الوسطى','أرز بالضأن']},
+
+  // ═══ FILIPINO ═══
+  {id:'r49',cid:'phl',f:'🇵🇭',r:'آسيوي',cat:'فلبيني',em:'🍖',
+   img:'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=500&q=75',
+   ti:'أدوبو فيلبيني — اللحم المُتبخر بالخل وصلصة الصويا',
+   de:'الطبق الوطني الفلبيني — دجاج أو لحم يُطهى في مزيج الخل وصلصة الصويا والثوم حتى يصبح لامعاً.',
+   tm:'50 دق',sv:4,df:'e',rt:4.8,rv:3100,
+   ing:[{q:'1 كغ',n:'دجاج مقطع (أو لحم بقر)'},{q:'½ كوب',n:'خل أبيض'},{q:'⅓ كوب',n:'صلصة صويا'},{q:'6 فصوص',n:'ثوم مهروس'},{q:'2',n:'ورق لار'},{q:'1 ملعقة',n:'فلفل أسود حبوب'}],
+   steps:[{t:'امزجي الخل مع الصويا والثوم والفلفل وأضيفي الدجاج، انقعي ساعة.',tp:''},{t:'في مقلاة سميكة: ضعي الدجاج مع ماء التتبيل وأغلي.',tp:''},{t:'اخفضي النار واطبخي 30 دقيقة بدون غطاء حتى يتبخر معظم السائل.',tp:'التبخير يُركّز النكهة ويُلمّع اللحم'},{t:'حين يبقى سائل قليل وزيت: قلّبي الدجاج حتى يتقرمش.',tp:''},{t:'قدّمي مع الأرز الأبيض السادة.',tp:''}],
+   tips:[{i:'🍶',t:'الخل الفلبيني (كوكو فينيغار) يختلف في النكهة — يستحق البحث'},{i:'🧄',t:'الثوم الكثير هو التوقيع الفلبيني الذي لا يتفاوض عليه'}],
+   nut:{cal:380,pro:34,carb:6,fat:22},kw:['أدوبو','فلبيني','آسيوي','دجاج بالخل']},
+
+  // ═══ LEBANESE EXTRA ═══
+  {id:'r50',cid:'lbn',f:'🇱🇧',r:'عربي',cat:'لبناني',em:'🫙',
+   img:'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=75',
+   imgs:['https://images.unsplash.com/photo-1551326844-4df70f78d0e9?w=400&q=70'],
+   ti:'كبة نيئة لبنانية على الطريقة التقليدية',
+   de:'جوهرة المطبخ اللبناني — برغل ناعم ولحم طازج يُعجنان باليد إلى قوام أملس رائع.',
+   tm:'30 دق',sv:6,df:'m',rt:4.9,rv:1800,
+   ing:[{q:'500غ',n:'لحم ضأن مبرّد طازج مفروم ناعم'},{q:'250غ',n:'برغل ناعم مُنقوع 15 دقيقة'},{q:'1',n:'بصل صغير مبشور'},{q:'ملح',n:'وفلفل أسود وقرفة ونعنع مجفف'},{q:'للتقديم:',n:'زيت زيتون وصنوبر وأوراق نعنع'}],
+   steps:[{t:'انقعي البرغل 15 دقيقة ثم عصريه جيداً.',tp:'البرغل يجب أن يكون جافاً تماماً'},{t:'امزجي اللحم البارد مع البرغل والبصل والتوابل.',tp:'الأيدي الباردة تمنع ذوبان الدهن'},{t:'اعجني باليد 10-15 دقيقة حتى تحصلي على قوام أملس متجانس.',tp:'العجن الطويل هو السر'},{t:'قدّمي في طبق منبسط، شكّلي بالملعقة وصبّي زيت الزيتون فوقاً.',tp:''},{t:'زيّني بالصنوبر المقلي وأوراق النعنع الطازجة.',tp:''}],
+   tips:[{i:'🌡️',t:'اللحم يجب أن يكون بارداً جداً — سلامة غذائية أساسية'},{i:'🫒',t:'زيت زيتون لبناني بكر هو التتويج'}],
+   nut:{cal:290,pro:24,carb:18,fat:14},kw:['كبة نيئة','لبناني','عربي','برغل']},
 ];
 
 // ═══ VIDEO DATA ═══
@@ -1572,10 +1764,15 @@ function openRecipe(id){
     </div>
     <div class="rp-vis">
       <div class="rv-bg"></div>
-      ${r.img?`<img src="${r.img}" alt="${r.ti}">`:''}
+      ${r.img?`<img src="${r.img}" alt="${r.ti}" onerror="this.style.display='none'">`:''}
       <div class="rp-vis-em">${r.em}</div>
       <div class="bflag" style="top:14px;right:14px;font-size:28px">${r.f}</div>
     </div>
+    ${r.imgs&&r.imgs.length?`<div style="display:flex;gap:8px;margin-bottom:18px;overflow-x:auto;padding-bottom:4px">
+      ${r.imgs.map((src,i)=>`<img src="${src}" alt="مرحلة التحضير ${i+1}" loading="lazy" onerror="this.style.display='none'"
+        style="height:110px;min-width:160px;object-fit:cover;border-radius:var(--rads);flex-shrink:0;border:1px solid var(--b1);cursor:pointer"
+        onclick="this.style.height='auto';this.style.minWidth='100%'">`).join('')}
+    </div>`:''}
     <h1 class="rp-h1">${r.ti}</h1>
     <p class="rp-intro">${r.de}</p>
     <div class="rp-meta">
@@ -1607,7 +1804,10 @@ function openRecipe(id){
       ${r.steps.map((s,i)=>`
         <div class="step-row">
           <div class="step-n">${i+1}</div>
-          <div><div class="step-t">${s.t}</div>${s.tp?`<div class="step-tip">💡 ${s.tp}</div>`:''}</div>
+          <div style="flex:1"><div class="step-t">${s.t}</div>
+          ${s.img?`<img src="${s.img}" alt="خطوة ${i+1}" loading="lazy" onerror="this.style.display='none'"
+            style="width:100%;max-height:180px;object-fit:cover;border-radius:var(--rads);margin-top:10px;border:1px solid var(--b1)">`:''}
+          ${s.tp?`<div class="step-tip">💡 ${s.tp}</div>`:''}</div>
         </div>`).join('')}
     </div>
     ${r.tips.length?`<div class="box">
@@ -1759,39 +1959,58 @@ function renderVF(){
 
 function loadMoreVids(){vfShown+=12;renderVF();}
 
+function buildVideoEmbed(v){
+  if(v.ytid) return `<iframe src="https://www.youtube.com/embed/${v.ytid}?autoplay=1&rel=0" frameborder="0" allow="autoplay;fullscreen;picture-in-picture" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
+  if(v.ttid) return `<iframe src="https://www.tiktok.com/embed/v2/${v.ttid}" frameborder="0" allow="autoplay;fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
+  if(v.fbid) return `<iframe src="https://www.facebook.com/plugins/video.php?href=${encodeURIComponent(v.fbid)}&autoplay=1&show_text=0" frameborder="0" allow="autoplay;fullscreen" allowfullscreen style="position:absolute;inset:0;width:100%;height:100%;border:none"></iframe>`;
+  return null;
+}
+function vmPlayInline(id){
+  const v=VIDS.find(x=>x.id===id);
+  if(!v) return;
+  const embed=buildVideoEmbed(v);
+  const box=document.getElementById('vm-player');
+  if(!box) return;
+  if(embed){ box.innerHTML=embed; }
+  else {
+    const plNames={yt:'YouTube',tt:'TikTok',ig:'Instagram',fb:'Facebook',pin:'Pinterest'};
+    showToast('سيُفتح الفيديو على '+plNames[v.pl]);
+    setTimeout(()=>window.open(v.url||'#','_blank'),400);
+  }
+}
 function openVM(id){
   const v=VIDS.find(x=>x.id===id);
   if(!v) return;
+  const hasEmbed=!!(v.ytid||v.ttid||v.fbid);
+  const plNames={yt:'YouTube',tt:'TikTok',ig:'Instagram',fb:'Facebook',pin:'Pinterest'};
   document.getElementById('vm-body').innerHTML=`
-    <div class="vt landscape" style="aspect-ratio:16/9;max-height:280px;position:relative;background:var(--card2);display:flex;align-items:center;justify-content:center">
-      ${v.thumb?`<img src="${v.thumb}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`:''}
-      <div style="font-size:80px;position:relative;z-index:1">${v.em}</div>
-      <div style="position:absolute;inset:0;z-index:2;display:flex;align-items:center;justify-content:center">
-        <div style="width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.9);display:flex;align-items:center;justify-content:center">
-          <div style="width:0;height:0;border-style:solid;border-width:12px 0 12px 22px;border-color:transparent transparent transparent #152212;margin-right:-3px"></div>
+    <div id="vm-player" style="aspect-ratio:16/9;position:relative;background:#111;display:flex;align-items:center;justify-content:center;overflow:hidden;max-height:280px">
+      ${v.thumb?`<img src="${v.thumb}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:opacity .3s">`:''}
+      <div style="position:absolute;inset:0;background:rgba(0,0,0,${hasEmbed?'.35':'.2'});z-index:1"></div>
+      <div onclick="vmPlayInline('${id}')" style="position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;gap:10px">
+        <div style="width:68px;height:68px;border-radius:50%;background:rgba(255,255,255,.92);display:flex;align-items:center;justify-content:center;transition:transform .18s;box-shadow:0 4px 20px rgba(0,0,0,.4)">
+          <div style="width:0;height:0;border-style:solid;border-width:13px 0 13px 24px;border-color:transparent transparent transparent #1a0d05;margin-right:-4px"></div>
         </div>
+        <div style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.5px;text-shadow:0 1px 4px rgba(0,0,0,.5)">${hasEmbed?'▶ شاهد مباشرة':'▶ افتح على '+plNames[v.pl]}</div>
       </div>
-      <div class="vt-plat ${v.pl}" style="top:12px;right:12px">${platIco[v.pl]}</div>
+      <div class="vt-plat ${v.pl}" style="top:10px;right:10px;z-index:3">${platIco[v.pl]}</div>
     </div>
-    <div style="padding:18px">
-      <div class="vc-head" style="margin-bottom:12px">
-        <div class="vc-av" style="width:40px;height:40px;font-size:20px">${v.chav}</div>
-        <div><div class="vc-cn" style="font-size:14px">${v.ch}</div>${v.loc?`<div class="vc-ch">📍 ${v.loc}</div>`:''}</div>
-        <a href="#" style="margin-right:auto;font-size:12px;color:var(--s);font-weight:700">متابعة +</a>
+    <div style="padding:16px 18px">
+      <div class="vc-head" style="margin-bottom:10px">
+        <div class="vc-av" style="width:38px;height:38px;font-size:18px">${v.chav}</div>
+        <div><div class="vc-cn" style="font-size:13.5px">${v.ch}</div>${v.loc?`<div class="vc-ch">📍 ${v.loc}</div>`:''}</div>
       </div>
-      <div style="font-size:15px;font-weight:700;color:var(--t0);margin-bottom:10px;line-height:1.5">${v.title}</div>
-      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px">
+      <div style="font-size:14.5px;font-weight:800;color:var(--t0);margin-bottom:9px;line-height:1.5">${v.title}</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:12px">
         ${v.tags.map(t=>`<span class="vctag">#${t}</span>`).join('')}
         ${v.hot?`<span class="vctag h">🔥 رائج</span>`:''}
       </div>
-      <div style="display:flex;gap:16px;font-size:13px;color:var(--t2);padding-top:12px;border-top:1px solid var(--b1)">
-        <span>👁 ${v.views} مشاهدة</span>
-        <span>❤️ ${v.likes} إعجاب</span>
-        <span>⏱ ${v.dur}</span>
+      <div style="display:flex;gap:16px;font-size:12.5px;color:var(--t2);padding:10px 0;border-top:1px solid var(--b1);border-bottom:1px solid var(--b1);margin-bottom:12px">
+        <span>👁 ${v.views}</span><span>❤️ ${v.likes}</span><span>⏱ ${v.dur}</span>
       </div>
-      <div style="display:flex;gap:8px;margin-top:14px">
-        <button style="flex:1;background:var(--s);color:#fff;border:none;font-family:var(--fn);font-size:13px;font-weight:800;padding:10px;border-radius:var(--pill);cursor:pointer">▶️ مشاهدة على ${v.pl==='yt'?'YouTube':v.pl==='tt'?'TikTok':v.pl==='ig'?'Instagram':v.pl==='fb'?'Facebook':'Pinterest'}</button>
-        <button style="background:var(--card);border:1px solid var(--b0);color:var(--s);font-family:var(--fn);font-size:13px;font-weight:800;padding:10px 16px;border-radius:var(--pill);cursor:pointer">+ حفظ</button>
+      <div style="display:flex;gap:8px">
+        <button onclick="vmPlayInline('${id}')" style="flex:1;background:var(--s);color:#fff;border:none;font-family:var(--fn);font-size:13px;font-weight:800;padding:10px;border-radius:var(--pill);cursor:pointer">▶ ${hasEmbed?'تشغيل مباشر':'مشاهدة على '+plNames[v.pl]}</button>
+        <button onclick="toggleFav('${id}')" style="background:var(--card2);border:1px solid var(--b1);color:var(--s);font-family:var(--fn);font-size:13px;font-weight:800;padding:10px 14px;border-radius:var(--pill);cursor:pointer">+ حفظ</button>
       </div>
     </div>`;
   document.getElementById('vm').classList.add('on');
@@ -2177,13 +2396,134 @@ function initFav(){
 }
 
 // ═══════════════════════════════════════════════════
+// SHUFFLE (Fisher-Yates)
+// ═══════════════════════════════════════════════════
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+
+// ═══════════════════════════════════════════════════
+// HERO FEATURED CARDS
+// ═══════════════════════════════════════════════════
+function renderHeroCards(){
+  const pool=RECIPES.filter(r=>r.img).slice(0,6);
+  const chosen=shuffle([...pool]).slice(0,3);
+  const el=document.getElementById('hero-cards');
+  if(!el||!chosen.length) return;
+  el.innerHTML=chosen.map((r,i)=>`
+    <div class="${i===0?'hc hc-main':'hc hc-small'}" onclick="openRecipe('${r.id}')">
+      <img class="hc-img" src="${r.img}" alt="${r.ti}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600&q=80'">
+      <div class="hc-overlay"></div>
+      <div class="hc-flag">${r.f}</div>
+      <div class="hc-body">
+        <div class="hc-cat">${r.cat}</div>
+        <div class="hc-title">${r.ti}</div>
+        <div class="hc-meta">⏱ ${r.tm} &nbsp;·&nbsp; ⭐ ${r.rt} &nbsp;·&nbsp; ${r.sv} أشخاص</div>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// MULTI-LANGUAGE (i18n)
+// ═══════════════════════════════════════════════════
+const I18N={
+  ar:{hero_title:'مطابخ العالم كلها<br>في <em>زاوية واحدة</em>',hero_sub:'من الكسكس المغربي إلى الراميان الياباني — آلاف الوصفات مع صور ومقاطع فيديو.',stat_recipes:'وصفة',stat_cuisines:'مطبخ',stat_videos:'فيديو',stat_langs:'لغات',nav_home:'🏠 الرئيسية',nav_world:'🌍 مطابخ العالم',nav_videos:'📱 فيديو المطابخ',nav_fav:'محفوظاتي',nav_signin:'دخول / تسجيل',search_placeholder:'بحث في مطابخ العالم...',dir:'rtl',lang_code:'ar'},
+  fr:{hero_title:'Les cuisines du monde<br>en <em>un seul endroit</em>',hero_sub:'Du couscous marocain au ramen japonais — des milliers de recettes avec photos et vidéos.',stat_recipes:'recettes',stat_cuisines:'cuisines',stat_videos:'vidéos',stat_langs:'langues',nav_home:'🏠 Accueil',nav_world:'🌍 Cuisines',nav_videos:'📱 Vidéos',nav_fav:'Mes favoris',nav_signin:'Connexion',search_placeholder:'Rechercher une recette...',dir:'ltr',lang_code:'fr'},
+  en:{hero_title:'World cuisines<br>in <em>one place</em>',hero_sub:'From Moroccan couscous to Japanese ramen — thousands of recipes with photos and videos.',stat_recipes:'recipes',stat_cuisines:'cuisines',stat_videos:'videos',stat_langs:'languages',nav_home:'🏠 Home',nav_world:'🌍 Cuisines',nav_videos:'📱 Videos',nav_fav:'My favorites',nav_signin:'Sign in',search_placeholder:'Search recipes...',dir:'ltr',lang_code:'en'},
+  es:{hero_title:'Las cocinas del mundo<br>en <em>un solo lugar</em>',hero_sub:'Del cuscús marroquí al ramen japonés — miles de recetas con fotos y videos.',stat_recipes:'recetas',stat_cuisines:'cocinas',stat_videos:'videos',stat_langs:'idiomas',nav_home:'🏠 Inicio',nav_world:'🌍 Cocinas',nav_videos:'📱 Videos',nav_fav:'Mis favoritos',nav_signin:'Iniciar sesión',search_placeholder:'Buscar receta...',dir:'ltr',lang_code:'es'},
+  pt:{hero_title:'As cozinhas do mundo<br>em <em>um só lugar</em>',hero_sub:'Do couscous marroquino ao ramen japonês — milhares de receitas com fotos e vídeos.',stat_recipes:'receitas',stat_cuisines:'cozinhas',stat_videos:'vídeos',stat_langs:'idiomas',nav_home:'🏠 Início',nav_world:'🌍 Cozinhas',nav_videos:'📱 Vídeos',nav_fav:'Meus favoritos',nav_signin:'Entrar',search_placeholder:'Pesquisar receita...',dir:'ltr',lang_code:'pt'},
+  it:{hero_title:'Le cucine del mondo<br>in <em>un solo posto</em>',hero_sub:'Dal couscous marocchino al ramen giapponese — migliaia di ricette con foto e video.',stat_recipes:'ricette',stat_cuisines:'cucine',stat_videos:'video',stat_langs:'lingue',nav_home:'🏠 Home',nav_world:'🌍 Cucine',nav_videos:'📱 Video',nav_fav:'I miei preferiti',nav_signin:'Accedi',search_placeholder:'Cerca ricetta...',dir:'ltr',lang_code:'it'},
+  zh:{hero_title:'世界各地的美食<br>尽在<em>一处</em>',hero_sub:'从摩洛哥古斯古斯到日本拉面——数千道配有图片和视频的食谱。',stat_recipes:'道食谱',stat_cuisines:'种美食',stat_videos:'个视频',stat_langs:'种语言',nav_home:'🏠 首页',nav_world:'🌍 各国美食',nav_videos:'📱 视频',nav_fav:'我的收藏',nav_signin:'登录',search_placeholder:'搜索食谱...',dir:'ltr',lang_code:'zh'},
+  ja:{hero_title:'世界の料理<br>すべて<em>一か所に</em>',hero_sub:'モロッコのクスクスから日本のラーメンまで — 何千ものレシピを写真・動画付きで。',stat_recipes:'レシピ',stat_cuisines:'料理',stat_videos:'動画',stat_langs:'言語',nav_home:'🏠 ホーム',nav_world:'🌍 料理',nav_videos:'📱 動画',nav_fav:'お気に入り',nav_signin:'ログイン',search_placeholder:'レシピを検索...',dir:'ltr',lang_code:'ja'},
+};
+let _lang='ar';
+function t(k){return(I18N[_lang]||I18N.ar)[k]||k;}
+function setLang(lg){
+  _lang=lg;
+  localStorage.setItem('mw360_lang',lg);
+  const d=I18N[lg]||I18N.ar;
+  document.documentElement.lang=d.lang_code;
+  document.documentElement.dir=d.dir;
+  // update data-i18n elements
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const k=el.getAttribute('data-i18n');
+    if(d[k]!==undefined) el.innerHTML=d[k];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{
+    const k=el.getAttribute('data-i18n-placeholder');
+    if(d[k]!==undefined) el.placeholder=d[k];
+  });
+  // update lang button
+  const flags={ar:'🇸🇦',fr:'🇫🇷',en:'🇬🇧',es:'🇪🇸',pt:'🇵🇹',it:'🇮🇹',zh:'🇨🇳',ja:'🇯🇵'};
+  const labels={ar:'AR',fr:'FR',en:'EN',es:'ES',pt:'PT',it:'IT',zh:'中',ja:'日'};
+  const btn=document.getElementById('lang-btn');
+  if(btn) btn.textContent=`${flags[lg]||'🌐'} ${labels[lg]||lg.toUpperCase()} ▾`;
+  // mark active option
+  document.querySelectorAll('.lang-opt').forEach(opt=>{
+    opt.classList.toggle('active',opt.getAttribute('onclick').includes(`'${lg}'`));
+  });
+  closeLangDropdown();
+  renderHeroCards();
+}
+function toggleLangDropdown(){
+  const d=document.getElementById('lang-dropdown');
+  d.classList.toggle('open');
+}
+function closeLangDropdown(){
+  const d=document.getElementById('lang-dropdown');
+  if(d) d.classList.remove('open');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#lang-switch')) closeLangDropdown();
+});
+
+// ═══════════════════════════════════════════════════
+// SOCIAL LOGIN (Google / Facebook)
+// ═══════════════════════════════════════════════════
+function loginWithGoogle(){
+  showToast('Google Sign-In — configurer un Client ID OAuth pour activer');
+}
+function loginWithFacebook(){
+  showToast('Facebook Login — configurer App ID pour activer');
+}
+
+// ═══════════════════════════════════════════════════
+// ANTI INSPECT / DEVTOOLS
+// ═══════════════════════════════════════════════════
+(function(){
+  // Block right-click
+  document.addEventListener('contextmenu',e=>e.preventDefault());
+  // Block keyboard shortcuts
+  document.addEventListener('keydown',function(e){
+    if(e.key==='F12') e.preventDefault();
+    if((e.ctrlKey||e.metaKey)&&e.shiftKey&&['I','J','C','U'].includes(e.key.toUpperCase())) e.preventDefault();
+    if((e.ctrlKey||e.metaKey)&&e.key.toUpperCase()==='U') e.preventDefault();
+  });
+  // DevTools detection via timing
+  let _dt=false;
+  setInterval(()=>{
+    const s=new Date();
+    debugger;
+    if(new Date()-s>100&&!_dt){_dt=true;document.body.innerHTML='<div style="display:flex;height:100vh;align-items:center;justify-content:center;font-family:Cairo,sans-serif;font-size:22px;color:#C94A1A;background:#FDFAF5">🚫 غير مسموح باستخدام أدوات المطور</div>';}
+  },3000);
+})();
+
+// ═══════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════
 (function(){
+  // Shuffle for freshness on each load
+  shuffle(RECIPES);
+  shuffle(VIDS);
+
+  // Restore language preference
+  const savedLang=localStorage.getItem('mw360_lang')||'ar';
+  _lang=savedLang;
+  if(savedLang!=='ar') setLang(savedLang);
+
   initHome();
   initWorldChips('wchips');
+  renderHeroCards();
   updateFavCount();
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVM();closeChef();closeAuth();}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVM();closeChef();closeAuth();closeLangDropdown();}});
   renderNavAuth();
 
   // AdSense — push all static slots
