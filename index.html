@@ -4611,7 +4611,7 @@ async function slocShowSuggestions(q){
       const data=await res.json();
       if(data.length){
         const extra=data.slice(0,5-local.length).map(p=>`
-          <div class="sloc-sug-item" onclick="slocGotoNominatim(${p.lat},${p.lon},'${(p.display_name||'').split(',')[0].replace(/'/g,'\\'')}');slocCloseSuggest()">
+          <div class="sloc-sug-item" data-lat="${p.lat}" data-lng="${p.lon}" data-name="${(p.display_name||'').split(',')[0].replace(/"/g,'&quot;')}" onclick="slocGotoNominatim(this.dataset.lat,this.dataset.lng,this.dataset.name);slocCloseSuggest()">
             🌍 <span style="font-weight:800">${(p.display_name||'').split(',')[0]}</span>
             <span style="color:var(--t3);font-size:10px;margin-right:auto">${(p.display_name||'').split(',').slice(1,3).join(', ')}</span>
           </div>`).join('');
