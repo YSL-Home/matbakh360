@@ -3999,8 +3999,14 @@ function buildCityTags(){
   if(!bar) return;
   const all=[{id:'',lbl:'🌐 كل المدن'},...CITIES.map(c=>({id:c,lbl:c}))];
   bar.innerHTML=all.map(c=>`
-    <button class="ctag${c.id===_restoCity?' on':''}" onclick="filterRestoCity('${c.id}')">${c.lbl}</button>
+    <button type="button" class="ctag${c.id===_restoCity?' on':''}" data-city="${c.id}">${c.lbl}</button>
   `).join('');
+  // Event delegation for city buttons
+  bar.onclick=function(e){
+    const btn=e.target.closest('button[data-city]');
+    if(!btn) return;
+    filterRestoCity(btn.dataset.city);
+  };
   // Build cuisine + price filters
   buildRestoFilters();
 }
@@ -4008,20 +4014,34 @@ function buildCityTags(){
 function buildRestoFilters(){
   const bar=document.getElementById('resto-filters-bar');
   if(!bar) return;
-  // Collect all unique cuisines
+  // Collect all unique cuisines — use data attributes instead of inline onclick to avoid encoding issues
   const cuisines=[...new Set(RESTAURANTS.flatMap(r=>r.cusines||[r.cuisine]).filter(Boolean))].sort();
   const prices=['$','$$','$$$','$$$$'];
   bar.innerHTML=`
-    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center" id="cuisine-filter-row">
       <span style="font-size:11px;font-weight:800;color:var(--t3)">🍽️ المطبخ:</span>
-      <button class="ctag${!_restoCuisine?' on':''}" onclick="filterRestoCuisine('')">الكل</button>
-      ${cuisines.slice(0,12).map(c=>`<button class="ctag${_restoCuisine===c?' on':''}" onclick="filterRestoCuisine('${c.replace(/'/g,"\\'")}'">${c}</button>`).join('')}
+      <button type="button" class="ctag cuisine-btn${!_restoCuisine?' on':''}" data-cuisine="">الكل</button>
+      ${cuisines.slice(0,12).map(c=>`<button type="button" class="ctag cuisine-btn${_restoCuisine===c?' on':''}" data-cuisine="${c.replace(/"/g,'&quot;')}">${c}</button>`).join('')}
     </div>
-    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px">
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px" id="price-filter-row">
       <span style="font-size:11px;font-weight:800;color:var(--t3)">💰 السعر:</span>
-      <button class="ctag${!_restoPrice?' on':''}" onclick="filterRestoPrice('')">الكل</button>
-      ${prices.map(p=>`<button class="ctag${_restoPrice===p?' on':''}" onclick="filterRestoPrice('${p}')">${p}</button>`).join('')}
+      <button type="button" class="ctag price-btn${!_restoPrice?' on':''}" data-price="">الكل</button>
+      ${prices.map(p=>`<button type="button" class="ctag price-btn${_restoPrice===p?' on':''}" data-price="${p}">${p}</button>`).join('')}
     </div>`;
+  // Event delegation — avoids inline onclick with Arabic strings in attributes
+  bar.onclick=function(e){
+    const btn=e.target.closest('button[data-cuisine],button[data-price]');
+    if(!btn) return;
+    if(btn.hasAttribute('data-cuisine')){
+      _restoCuisine=btn.dataset.cuisine;
+      bar.querySelectorAll('.cuisine-btn').forEach(b=>b.classList.toggle('on',b.dataset.cuisine===_restoCuisine));
+      renderRestoGrid(_restoCity);
+    } else {
+      _restoPrice=btn.dataset.price;
+      bar.querySelectorAll('.price-btn').forEach(b=>b.classList.toggle('on',b.dataset.price===_restoPrice));
+      renderRestoGrid(_restoCity);
+    }
+  };
 }
 
 function filterRestoCuisine(c){
@@ -4037,7 +4057,9 @@ function filterRestoPrice(p){
 
 function filterRestoCity(city){
   _restoCity=city;
-  document.querySelectorAll('.ctag').forEach(b=>{
+  // Only update city-tags-bar buttons, NOT the cuisine/price filter buttons
+  const cityBar=document.getElementById('city-tags-bar');
+  if(cityBar) cityBar.querySelectorAll('.ctag').forEach(b=>{
     const match=b.textContent.trim()===city||(city===''&&b.textContent.includes('كل المدن'));
     b.classList.toggle('on',match);
   });
@@ -4355,9 +4377,14 @@ function slocBuildChips(){
   const el=document.getElementById('sloc-chips');
   if(!el||el.innerHTML) return;
   el.innerHTML=Object.entries(CITY_COORDS).map(([ar,v])=>`
-    <button class="sloc-chip" data-city="${ar}" onclick="slocLoadCity('${ar}')">
+    <button type="button" class="sloc-chip" data-city="${ar}">
       ${v.flag} ${ar}
     </button>`).join('');
+  // Event delegation — avoids Arabic text in inline onclick attributes
+  el.onclick=function(e){
+    const btn=e.target.closest('button[data-city]');
+    if(btn) slocLoadCity(btn.dataset.city);
+  };
 }
 
 // ── Load a city: fly map + place pins + render list ──────────────────
