@@ -788,13 +788,18 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   transition:transform .2s;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));}
 .mp-wrap:hover,.mp-wrap.on{transform:scale(1.2) translateY(-4px);
   filter:drop-shadow(0 8px 20px rgba(201,74,26,.4));}
-.mp-bubble{width:44px;height:44px;border-radius:50%;display:flex;align-items:center;
+.mp-bubble{width:46px;height:46px;border-radius:50%;display:flex;align-items:center;
   justify-content:center;font-size:18px;border:3px solid #fff;
-  background:var(--ink1);transition:all .2s;position:relative;overflow:hidden;}
+  background:var(--ink1);transition:all .2s;position:relative;overflow:hidden;
+  box-shadow:0 2px 8px rgba(0,0,0,.22);}
 .mp-photo{width:100%;height:100%;object-fit:cover;border-radius:50%;display:block;
-  transition:transform .25s;}
-.mp-wrap:hover .mp-photo{transform:scale(1.12);}
-.mp-photo-fallback{font-size:20px;line-height:1;}
+  transition:transform .3s;}
+.mp-wrap:hover .mp-photo{transform:scale(1.1);}
+/* Avatar initial (fallback si pas de vrai logo) */
+.mp-avatar{width:100%;height:100%;display:flex;align-items:center;justify-content:center;
+  font-family:'Tajawal',Arial,sans-serif;font-size:19px;font-weight:900;color:#fff;
+  letter-spacing:-.5px;border-radius:50%;transition:transform .3s;}
+.mp-wrap:hover .mp-avatar{transform:scale(1.1);}
 .mp-bubble::after{content:attr(data-label);position:absolute;bottom:-22px;left:50%;
   transform:translateX(-50%);font-family:'Tajawal',sans-serif;font-size:9px;font-weight:800;
   white-space:nowrap;background:var(--ink1);border:1px solid var(--b1);
@@ -2909,7 +2914,7 @@ const RECIPE_IMGS={
   r32:'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=500&q=85',
   r33:'https://images.unsplash.com/photo-1606313564200-e75d5e60f63d?w=500&q=85',
   r34:'https://images.unsplash.com/photo-1544025162-d76694265947?w=500&q=85',
-  r35:'https://images.unsplash.com/photo-1619474893270-e3ee7ef9b0a6?w=500&q=85',
+  r35:'https://images.unsplash.com/photo-1615361200141-f45040f367be?w=500&q=85',
   r36:'https://images.unsplash.com/photo-1562802378-063ec186a863?w=500&q=85',
   r37:'https://images.unsplash.com/photo-1597233358879-b6d38f4b5ca7?w=500&q=85',
   r38:'https://images.unsplash.com/photo-1432139509613-5c4255815697?w=500&q=85',
@@ -2924,7 +2929,7 @@ const RECIPE_IMGS={
   r47:'https://images.unsplash.com/photo-1614777735417-4ea177e5a034?w=500&q=85',
   r48:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=85',
   r49:'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=500&q=85',
-  r50:'https://images.unsplash.com/photo-1544025162-d76538b2040f?w=500&q=85',
+  r50:'https://images.unsplash.com/photo-1555939594-58d7cb561ad1?w=500&q=85',
 };
 
 // ═══════════════════════════════════════════════════
@@ -4074,7 +4079,8 @@ function restoCard(r){
       <img class="rc-resto-img" src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=70'">
     </div>
     <div class="rc-resto-body">
-      <div class="rc-resto-name">${r.country} ${r.name}</div>
+      <div class="rc-resto-name">${r.country} ${r.nameAr||r.name}</div>
+      ${r.nameEn&&r.nameEn!==r.name&&_lang!=='ar'?`<div style="font-size:10px;color:var(--t3);margin-top:1px">${r.nameEn}</div>`:''}
       <div class="rc-resto-meta">
         <span class="rc-resto-stars">${stars}</span>
         <span>${r.rating} (${r.rv.toLocaleString()} ${t('rst_rev')})</span>
@@ -4140,7 +4146,8 @@ function renderRestoDetail(r){
         <div class="rd-vis-overlay"></div>
         <div class="rd-vis-badge">${r.price} · ${r.cuisine}</div>
       </div>
-      <h1 class="rd-h1">${r.country} ${r.name}</h1>
+      <h1 class="rd-h1">${r.country} ${r.nameAr||r.name}</h1>
+      ${r.nameEn&&r.nameEn!==r.name?`<div style="font-size:13px;color:var(--t3);margin-top:-10px;margin-bottom:10px;direction:ltr">${r.nameEn}</div>`:''}
       <div class="rd-rating">
         <span class="rd-stars">${stars}</span>
         <span style="font-size:18px;font-weight:900;color:var(--t0)">${r.rating}</span>
@@ -4387,6 +4394,24 @@ function slocLoadCity(cityAr, coords=null){
   setTimeout(slocRenderList, 80);
 }
 
+// ── Génère le contenu intérieur du pin (logo réel ou avatar initial) ──
+function _restoPinInner(r){
+  // 1. Logo réel (favicon du site ou logo Clearbit stocké dans r.logo)
+  if(r.logo){
+    return `<img class="mp-photo" src="${r.logo}" alt="" loading="lazy"
+      onerror="this.outerHTML=_restoAvatar('${(r.nameAr||r.name||'?')[0]}','${r.id}')">`;
+  }
+  // 2. Avatar initiale stylisé (couleur déterministe basée sur l'ID)
+  return _restoAvatar((r.nameAr||r.name||'?')[0], r.id);
+}
+function _restoAvatar(initial, id){
+  const h=[...(id||'')].reduce((a,c)=>a+c.charCodeAt(0),0);
+  const hue=h%360;
+  const sat=45+h%25;
+  const lig=32+h%18;
+  return `<div class="mp-avatar" style="background:hsl(${hue},${sat}%,${lig}%)">${initial}</div>`;
+}
+
 // ── Place/refresh map pins ───────────────────────────────────────────
 function slocPlacePins(cityCenter){
   if(!_slocMap) return;
@@ -4398,19 +4423,18 @@ function slocPlacePins(cityCenter){
   const c=CITY_COORDS[_slocCity]||{lat:cityCenter.lat,lng:cityCenter.lng};
 
   restos.forEach(r=>{
-    const pos=_rCoords(r.id,{lat:cityCenter.lat||c.lat,lng:cityCenter.lng||c.lng});
+    // Utiliser les coordonnées GPS réelles (OSM) si disponibles, sinon déterministique
+    const pos=(r.lat&&r.lng)?[r.lat,r.lng]:_rCoords(r.id,{lat:cityCenter.lat||c.lat,lng:cityCenter.lng||c.lng});
     const pc=PIN_COLORS[r.price||'$$']||'#6b7280';
-    const imgSrc=r.img||'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=100&q=60';
+    const label=(r.nameAr||r.name||'').substring(0,18);
+    const inner=_restoPinInner(r);
     const icon=L.divIcon({
       className:'',
       html:`<div class="mp-wrap" id="mp-${r.id}">
-        <div class="mp-bubble" style="border-color:${pc}" data-label="${(r.name||'').substring(0,16)}">
-          <img class="mp-photo" src="${imgSrc}" alt="" loading="lazy"
-               onerror="this.style.display='none';this.insertAdjacentHTML('afterend','<span class=mp-photo-fallback>🍽️</span>')">
-        </div>
+        <div class="mp-bubble" style="border-color:${pc}" data-label="${label}">${inner}</div>
         <div class="mp-tail" style="border-top:9px solid ${pc};border-left:6px solid transparent;border-right:6px solid transparent;margin-top:-2px"></div>
       </div>`,
-      iconSize:[44,56],iconAnchor:[22,56],popupAnchor:[0,-60],
+      iconSize:[46,58],iconAnchor:[23,58],popupAnchor:[0,-62],
     });
     const marker=L.marker(pos,{icon}).addTo(_slocMap);
     marker.bindPopup(_slocPopupHtml(r,pos),{
@@ -4423,13 +4447,16 @@ function slocPlacePins(cityCenter){
 
 // ── Popup HTML ───────────────────────────────────────────────────────
 function _slocPopupHtml(r,pos){
-  const mapQ=encodeURIComponent(`${r.name} ${r.address||''} ${r.city}`);
+  const displayName=r.nameAr||r.name;
+  const mapQ=encodeURIComponent(`${r.nameEn||r.name} ${r.address||''} ${r.cityEn||r.city}`);
   const navUrl=`https://www.google.com/maps/dir/?api=1&destination=${mapQ}`;
+  const osmBadge=r.source==='osm'?`<span style="font-size:9px;background:#16a34a;color:#fff;border-radius:4px;padding:1px 5px;margin-right:4px">✓ OSM</span>`:'';
   return `<img src="${r.img||''}" class="sloc-pop-img" onerror="this.style.display='none'" loading="lazy">
     <div class="sloc-pop-body">
-      <div class="sloc-pop-name">${r.country||''} ${r.name}</div>
+      <div class="sloc-pop-name">${osmBadge}${r.country||''} ${displayName}</div>
+      ${r.nameEn&&r.nameEn!==r.name?`<div style="font-size:10px;color:var(--t3);margin-top:-2px;margin-bottom:4px;direction:ltr">${r.nameEn}</div>`:''}
       <div class="sloc-pop-meta">
-        ⭐ ${r.rating||r.rt||'4.5'} &nbsp;·&nbsp; ${r.price||'$$'} &nbsp;·&nbsp; ${r.cuisine||''}<br>
+        ⭐ ${r.rating||'4.5'} &nbsp;·&nbsp; ${r.price||'$$'} &nbsp;·&nbsp; ${r.cuisine||''}<br>
         📍 ${(r.address||r.city||'').substring(0,50)}
       </div>
       <div class="sloc-pop-btns">

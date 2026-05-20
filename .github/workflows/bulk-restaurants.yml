@@ -1,27 +1,27 @@
-name: "🏙️ Bulk Restaurant Generator — 500+ par ville"
+name: "🏙️ Vrais Restaurants — OpenStreetMap + Claude"
 
 on:
   workflow_dispatch:
     inputs:
       target_city:
-        description: "Ville cible en arabe (ex: الدار البيضاء) — vide = TOUTES les 15 villes"
+        description: "Ville en arabe (ex: باريس) ou anglais (ex: Paris) — vide = toutes les 15 villes"
         required: false
         default: ""
-      batch_size:
-        description: "Restaurants par appel API (recommandé: 25)"
+      max_per_city:
+        description: "Nombre max de restaurants par ville (OSM peut en avoir moins)"
         required: false
-        default: "25"
-      batches_per_city:
-        description: "Lots par ville — 20 lots x 25 = 500 restos/ville"
+        default: "150"
+      radius_m:
+        description: "Rayon de recherche en mètres autour du centre-ville"
         required: false
-        default: "20"
+        default: "14000"
 
 jobs:
   bulk-restaurants:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-    timeout-minutes: 120
+    timeout-minutes: 180
 
     steps:
       - name: Checkout repository
@@ -34,17 +34,17 @@ jobs:
         with:
           node-version: "20"
 
-      - name: Run bulk generation
+      - name: Fetch real restaurants (OpenStreetMap) + enrich (Claude)
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          TARGET_CITY: ${{ github.event.inputs.target_city }}
-          BATCH_SIZE: ${{ github.event.inputs.batch_size }}
-          BATCHES_PER_CITY: ${{ github.event.inputs.batches_per_city }}
+          TARGET_CITY:  ${{ github.event.inputs.target_city }}
+          MAX_PER_CITY: ${{ github.event.inputs.max_per_city }}
+          RADIUS_M:     ${{ github.event.inputs.radius_m }}
         run: node .github/scripts/bulk-gen.mjs
 
       - name: Commit and push
         run: |
-          git config user.name "Matbakh360 BulkBot"
+          git config user.name "Matbakh360 OSMBot"
           git config user.email "bot@matbakh360.com"
           git add index.html
           if git diff --staged --quiet; then
@@ -52,7 +52,6 @@ jobs:
           else
             CITY="${{ github.event.inputs.target_city }}"
             LABEL="${CITY:-toutes les 15 villes}"
-            TOTAL=$(( ${{ github.event.inputs.batches_per_city }} * ${{ github.event.inputs.batch_size }} ))
-            git commit -m "🏙️ Bulk: ${TOTAL} restos/ville — $LABEL — $(date +'%Y-%m-%d')"
+            git commit -m "🏙️ Vrais restos OSM: $LABEL — $(date +'%Y-%m-%d')"
             git push
           fi
