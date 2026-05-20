@@ -153,13 +153,40 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .rmore{font-size:11px;font-weight:800;color:var(--s);}
 
 /* HERO */
-.hero{padding:40px 0 28px;text-align:center;}
-.hero h1{font-size:48px;font-weight:900;line-height:1.15;margin-bottom:12px;letter-spacing:-.5px;color:var(--t0);}
+.hero{padding:54px 0 36px;text-align:center;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:-60px;pointer-events:none;
+  background:
+    radial-gradient(ellipse 70% 60% at 15% 40%,rgba(201,74,26,.13) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 60% at 85% 60%,rgba(74,122,53,.09) 0%,transparent 60%),
+    radial-gradient(ellipse 40% 40% at 50% 0%,rgba(232,106,48,.07) 0%,transparent 70%);}
+.hero-badge{display:inline-flex;align-items:center;gap:7px;background:var(--sg);
+  border:1.5px solid var(--b0);border-radius:var(--pill);padding:6px 16px;
+  font-size:11px;font-weight:800;color:var(--s);letter-spacing:.8px;margin-bottom:22px;
+  box-shadow:0 2px 12px rgba(201,74,26,.1);}
+.hero h1{font-size:56px;font-weight:900;line-height:1.1;margin-bottom:14px;
+  letter-spacing:-.5px;color:var(--t0);font-family:var(--fd);}
 .hero h1 em{font-style:italic;color:var(--s);font-family:var(--fd);}
-.hero-sub{font-size:15px;color:var(--t2);max-width:540px;margin:0 auto 28px;line-height:1.7;}
-.hstats{display:flex;justify-content:center;gap:40px;margin-bottom:32px;}
-.hst .n{font-size:26px;font-weight:900;color:var(--s);font-family:var(--fd);}
-.hst .l{font-size:11px;color:var(--t3);margin-top:2px;}
+.hero h1 span.h1-muted{color:var(--t2);font-weight:700;font-size:.75em;}
+.hero-sub{font-size:14.5px;color:var(--t2);max-width:520px;margin:0 auto 26px;line-height:1.75;}
+/* Hero search bar */
+.hero-search{display:flex;align-items:center;max-width:480px;margin:0 auto 28px;
+  background:var(--card);border:1.5px solid var(--b0);border-radius:var(--pill);
+  padding:9px 9px 9px 18px;gap:8px;box-shadow:0 4px 24px rgba(0,0,0,.07);
+  transition:border-color .2s,box-shadow .2s;}
+.hero-search:focus-within{border-color:rgba(201,74,26,.45);box-shadow:0 6px 32px rgba(201,74,26,.11);}
+.hero-search input{flex:1;border:none;background:transparent;font-family:var(--fn);
+  font-size:13.5px;color:var(--t0);outline:none;min-width:0;}
+.hero-search input::placeholder{color:var(--t3);}
+.hero-search-btn{background:var(--s);color:#fff;border:none;border-radius:var(--pill);
+  padding:8px 18px;font-family:var(--fn);font-size:12.5px;font-weight:800;cursor:pointer;
+  transition:background .18s;white-space:nowrap;flex-shrink:0;}
+.hero-search-btn:hover{background:var(--r);}
+/* Stats pills */
+.hstats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.hst{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--b1);
+  border-radius:var(--pill);padding:8px 18px;box-shadow:0 2px 10px rgba(0,0,0,.05);}
+.hst .n{font-size:18px;font-weight:900;color:var(--s);font-family:var(--fd);}
+.hst .l{font-size:11.5px;color:var(--t2);font-weight:600;}
 
 /* HERO FEATURED CARDS */
 .hero-cards{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:14px;margin-bottom:28px;text-align:right;}
@@ -392,7 +419,8 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   .vf-grid{column-count:2;}
   .rc.feat{grid-column:span 2;flex-direction:column;}
   .rc.feat .rv{width:100%;height:180px;}
-  .hero h1{font-size:36px;}
+  .hero h1{font-size:40px;}
+  .hero-search{max-width:100%;}
   .nutr-g{grid-template-columns:repeat(2,1fr);}
   .hero-cards{grid-template-columns:1fr 1fr;}
   .hc-main{grid-column:span 2;}
@@ -410,10 +438,15 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   .g5{grid-template-columns:repeat(2,1fr);}
   .vf-grid{column-count:2;}
   .rc.feat{grid-column:span 2;}
-  .hero h1{font-size:28px;}
+  .hero{padding:36px 0 24px;}
+  .hero h1{font-size:30px;}
   .hero-sub{font-size:13px;}
-  .hstats{gap:20px;}
-  .hst .n{font-size:22px;}
+  .hstats{gap:8px;}
+  .hst{padding:6px 12px;}
+  .hst .n{font-size:16px;}
+  .hst .l{font-size:10.5px;}
+  .hero-badge{font-size:10px;padding:5px 13px;}
+  .hero-search{max-width:100%;}
   .wrap{padding:0 12px;}
   .rp-layout{gap:14px;padding:16px 0;}
   .rp-h1{font-size:22px;}
@@ -432,8 +465,12 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   .hero h1{font-size:24px;letter-spacing:0;}
   .hero-cards{grid-template-columns:1fr;}
   .hc-main{grid-column:span 1;min-height:200px;}
-  .hstats{gap:14px;}
-  .hst .n{font-size:20px;}
+  .hstats{gap:6px;}
+  .hst{padding:6px 11px;}
+  .hst .n{font-size:15px;}
+  .hst .l{font-size:10px;}
+  .hero-search input{font-size:12.5px;}
+  .hero-search-btn{padding:7px 13px;font-size:11.5px;}
   .rc.feat{grid-column:span 2;}
   .plat-bar{gap:5px;}
   .pb{padding:6px 10px;font-size:11px;}
@@ -935,8 +972,14 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 <div class="page on" id="page-home">
 <div class="wrap">
   <div class="hero">
-    <h1 data-i18n="hero_title">مطابخ العالم كلها<br>في <em>زاوية واحدة</em></h1>
+    <div class="hero-badge">🍽️ موسوعة الطهي العالمية</div>
+    <h1 data-i18n="hero_title">كل مطابخ العالم<br>في <em>مطبخ 360</em></h1>
     <p class="hero-sub" data-i18n="hero_sub">من الكسكس المغربي إلى الراميان الياباني والبيتزا الإيطالية — آلاف الوصفات مع صور ومقاطع فيديو.</p>
+    <div class="hero-search">
+      <span style="font-size:18px;flex-shrink:0;opacity:.6">🔍</span>
+      <input id="hero-q" type="text" placeholder="ابحث: كسكس، تاكو، راميان..." onkeydown="if(event.key==='Enter'){doSearch(this.value);this.blur()}" autocomplete="off">
+      <button class="hero-search-btn" onclick="doSearch(document.getElementById('hero-q').value)">ابحث الآن</button>
+    </div>
     <div class="hstats">
       <div class="hst"><div class="n">12,400+</div><div class="l" data-i18n="stat_recipes">وصفة</div></div>
       <div class="hst"><div class="n">80+</div><div class="l" data-i18n="stat_cuisines">مطبخ</div></div>
@@ -2893,9 +2936,9 @@ const RECIPE_IMGS={
   r05:'https://images.unsplash.com/photo-1565299585323-38d6b0865b47?w=500&q=85',
   r06:'https://images.unsplash.com/photo-1568379606257-1060e8b34624?w=500&q=85',
   r07:'https://images.unsplash.com/photo-1555507036-ab1f4038808a?w=500&q=85',
-  r08:'https://images.unsplash.com/photo-1579954115545-a3f9c4e12c40?w=500&q=85',
+  r08:'https://images.unsplash.com/photo-1564918031455-72f4e35ba7a6?w=500&q=85',
   r09:'https://images.unsplash.com/photo-1580822184713-af4f1d12e3f6?w=500&q=85',
-  r10:'https://images.unsplash.com/photo-1551024709-8f23befc1338?w=500&q=85',
+  r10:'https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=500&q=85',
   r11:'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=500&q=85',
   r12:'https://images.unsplash.com/photo-1534080564697-68d03e7f7a82?w=500&q=85',
   r13:'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=500&q=85',
@@ -2903,13 +2946,13 @@ const RECIPE_IMGS={
   r15:'https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=500&q=85',
   r16:'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&q=85',
   r23:'https://images.unsplash.com/photo-1574484284002-952d92a03a52?w=500&q=85',
-  r24:'https://images.unsplash.com/photo-1580822184713-af4f1d12e3f6?w=500&q=85',
+  r24:'https://images.unsplash.com/photo-1548940740-204726a19be3?w=500&q=85',
   r25:'https://images.unsplash.com/photo-1503764654157-72d979d9af2f?w=500&q=85',
-  r26:'https://images.unsplash.com/photo-1565958011703-44f9829ba187?w=500&q=85',
+  r26:'https://images.unsplash.com/photo-1571104508999-893933ded431?w=500&q=85',
   r27:'https://images.unsplash.com/photo-1535140739032-48bd2df89bec?w=500&q=85',
   r28:'https://images.unsplash.com/photo-1549931319-a545dcf3bc7b?w=500&q=85',
   r29:'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=85',
-  r30:'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=500&q=85',
+  r30:'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=500&q=85',
   r31:'https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=500&q=85',
   r32:'https://images.unsplash.com/photo-1572802419224-296b0aeee0d9?w=500&q=85',
   r33:'https://images.unsplash.com/photo-1606313564200-e75d5e60f63d?w=500&q=85',
@@ -2919,13 +2962,13 @@ const RECIPE_IMGS={
   r37:'https://images.unsplash.com/photo-1597233358879-b6d38f4b5ca7?w=500&q=85',
   r38:'https://images.unsplash.com/photo-1432139509613-5c4255815697?w=500&q=85',
   r39:'https://images.unsplash.com/photo-1600256697933-2d5434d26b8b?w=500&q=85',
-  r40:'https://images.unsplash.com/photo-1517093702914-e88b0a4c8c91?w=500&q=85',
+  r40:'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=500&q=85',
   r41:'https://images.unsplash.com/photo-1476224203421-9ac39bcb3327?w=500&q=85',
   r42:'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=500&q=85',
   r43:'https://images.unsplash.com/photo-1551218808-94e220e084d2?w=500&q=85',
   r44:'https://images.unsplash.com/photo-1535400875871-c2e438b3f8e2?w=500&q=85',
-  r45:'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=500&q=85',
-  r46:'https://images.unsplash.com/photo-1547592180-85f173990554?w=500&q=85',
+  r45:'https://images.unsplash.com/photo-1496116218417-1a781b1c416c?w=500&q=85',
+  r46:'https://images.unsplash.com/photo-1567982047351-76b6f93e38ee?w=500&q=85',
   r47:'https://images.unsplash.com/photo-1614777735417-4ea177e5a034?w=500&q=85',
   r48:'https://images.unsplash.com/photo-1603360946369-dc9bb6258143?w=500&q=85',
   r49:'https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=500&q=85',
