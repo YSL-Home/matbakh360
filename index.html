@@ -35,6 +35,8 @@
 <!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6870790039775701" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <style>
 :root{
   /* ── Palette logo مطبخ 360 — thème clair ── */
@@ -681,6 +683,165 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 .auth-close{position:absolute;top:14px;left:14px;width:32px;height:32px;border-radius:50%;
   background:var(--card2);border:1px solid var(--b1);color:var(--t2);
   cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:16px;}
+
+/* ═══════════════════════════════════════════════════
+   SAVEURS LOCALES — map split view
+═══════════════════════════════════════════════════ */
+.page.on#page-local{display:flex;flex-direction:column;height:calc(100vh - 60px);overflow:hidden;}
+
+/* Header */
+.sloc-hd{padding:12px 20px 10px;background:var(--ink1);border-bottom:1.5px solid var(--b1);
+  display:flex;flex-direction:column;gap:9px;flex-shrink:0;
+  box-shadow:0 2px 12px rgba(0,0,0,.05);}
+.sloc-top{display:flex;align-items:center;gap:14px;}
+.sloc-title{font-size:18px;font-weight:900;color:var(--t0);display:flex;align-items:center;gap:8px;flex-shrink:0;}
+.sloc-badge{font-size:10px;font-weight:800;background:var(--s);color:#fff;padding:3px 10px;
+  border-radius:var(--pill);white-space:nowrap;}
+.sloc-sbox{flex:1;position:relative;display:flex;align-items:center;gap:8px;
+  background:var(--card);border:1.5px solid var(--b1);border-radius:var(--pill);
+  padding:8px 16px;transition:border-color .2s;max-width:440px;}
+.sloc-sbox:focus-within{border-color:var(--s);box-shadow:0 0 0 3px var(--sg);}
+.sloc-sbox input{flex:1;border:none;background:none;font-family:var(--fn);
+  font-size:13px;color:var(--t0);outline:none;min-width:0;}
+.sloc-sbox input::placeholder{color:var(--t3);}
+.sloc-suggest{display:none;position:absolute;top:calc(100% + 6px);left:0;right:0;
+  background:var(--ink1);border:1.5px solid var(--b1);border-radius:14px;
+  z-index:800;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.18);}
+.sloc-sug-item{padding:10px 16px;cursor:pointer;font-size:13px;font-weight:700;
+  color:var(--t1);display:flex;align-items:center;gap:10px;transition:background .12s;}
+.sloc-sug-item:hover{background:var(--card2);}
+.sloc-near{display:flex;align-items:center;gap:6px;background:linear-gradient(135deg,var(--s),#E86A30);
+  color:#fff;border:none;padding:9px 18px;border-radius:var(--pill);font-family:var(--fn);
+  font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;flex-shrink:0;
+  transition:opacity .2s;box-shadow:0 3px 12px rgba(201,74,26,.3);}
+.sloc-near:hover{opacity:.88;}
+.sloc-near:disabled{opacity:.5;cursor:not-allowed;}
+
+/* City chips */
+.sloc-chips{display:flex;gap:7px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.sloc-chips::-webkit-scrollbar{display:none;}
+.sloc-chip{flex-shrink:0;display:flex;align-items:center;gap:5px;padding:5px 13px;
+  border-radius:var(--pill);border:1.5px solid var(--b1);background:var(--card);
+  font-family:var(--fn);font-size:12px;font-weight:700;color:var(--t2);
+  cursor:pointer;transition:all .18s;white-space:nowrap;}
+.sloc-chip:hover{border-color:var(--s);color:var(--s);background:var(--sg2);}
+.sloc-chip.on{background:var(--s);color:#fff;border-color:var(--s);
+  box-shadow:0 3px 12px rgba(201,74,26,.28);}
+
+/* Body: map + panel */
+.sloc-body{flex:1;display:grid;grid-template-columns:1fr 360px;overflow:hidden;}
+
+/* Map */
+.sloc-mapwrap{position:relative;overflow:hidden;}
+#sloc-map{width:100%;height:100%;z-index:1;}
+.sloc-map-overlay{position:absolute;bottom:20px;left:20px;z-index:500;
+  display:flex;flex-direction:column;gap:8px;pointer-events:none;}
+.sloc-map-pill{background:var(--ink1);border:1px solid var(--b1);border-radius:var(--pill);
+  padding:6px 14px;font-family:var(--fn);font-size:11px;font-weight:700;color:var(--t1);
+  box-shadow:0 4px 16px rgba(0,0,0,.12);pointer-events:all;cursor:pointer;
+  display:flex;align-items:center;gap:6px;transition:background .15s;}
+.sloc-map-pill:hover{background:var(--card2);}
+.sloc-pulse{width:12px;height:12px;border-radius:50%;background:var(--b);
+  box-shadow:0 0 0 0 rgba(42,106,138,.6);animation:pulse-ring 1.8s infinite;}
+@keyframes pulse-ring{0%{box-shadow:0 0 0 0 rgba(42,106,138,.6);}70%{box-shadow:0 0 0 10px rgba(42,106,138,0);}100%{box-shadow:0 0 0 0 rgba(42,106,138,0);}}
+
+/* Side panel */
+.sloc-panel{display:flex;flex-direction:column;overflow:hidden;
+  border-right:1.5px solid var(--b1);background:var(--card);}
+.sloc-panel-hd{padding:11px 14px;border-bottom:1px solid var(--b1);background:var(--ink1);
+  flex-shrink:0;display:flex;justify-content:space-between;align-items:center;gap:8px;}
+.sloc-panel-title{font-size:13px;font-weight:900;color:var(--t0);}
+.sloc-panel-count{font-size:11px;color:var(--t3);font-weight:600;}
+.sloc-filters{display:flex;gap:6px;}
+.sloc-sel{background:var(--card);border:1px solid var(--b1);border-radius:8px;
+  padding:4px 8px;font-family:var(--fn);font-size:11px;color:var(--t1);cursor:pointer;
+  transition:border-color .15s;}
+.sloc-sel:focus{outline:none;border-color:var(--s);}
+.sloc-list{flex:1;overflow-y:auto;scrollbar-width:thin;}
+
+/* Restaurant card in list */
+.sloc-rc{display:flex;gap:10px;padding:11px 13px;cursor:pointer;
+  border-bottom:1px solid var(--b2);transition:background .14s;position:relative;}
+.sloc-rc:hover{background:var(--ink1);}
+.sloc-rc.on{background:rgba(201,74,26,.07);border-right:3px solid var(--s);}
+.sloc-rc-img{width:64px;height:64px;border-radius:10px;object-fit:cover;
+  flex-shrink:0;background:var(--card2);border:1px solid var(--b2);}
+.sloc-rc-body{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;}
+.sloc-rc-name{font-size:12.5px;font-weight:800;color:var(--t0);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;}
+.sloc-rc-cuis{font-size:11px;color:var(--t3);margin-bottom:5px;}
+.sloc-rc-foot{display:flex;align-items:center;gap:6px;}
+.sloc-rc-rat{font-size:11px;font-weight:700;color:var(--t1);}
+.sloc-price-tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:var(--pill);}
+.sloc-price-tag[data-p="$"]{background:rgba(34,197,94,.12);color:#16a34a;}
+.sloc-price-tag[data-p="$$"]{background:rgba(245,158,11,.12);color:#d97706;}
+.sloc-price-tag[data-p="$$$"]{background:rgba(239,68,68,.12);color:#dc2626;}
+.sloc-price-tag[data-p="$$$$"]{background:rgba(168,85,247,.12);color:#9333ea;}
+.sloc-rc-nav{display:flex;align-items:center;justify-content:center;
+  width:30px;height:30px;border-radius:50%;background:var(--sg2);
+  flex-shrink:0;transition:background .14s;}
+.sloc-rc:hover .sloc-rc-nav{background:var(--s);}
+.sloc-rc:hover .sloc-rc-nav svg{stroke:#fff;}
+
+/* Map pin (Leaflet DivIcon) */
+.mp-wrap{display:flex;flex-direction:column;align-items:center;cursor:pointer;
+  transition:transform .2s;filter:drop-shadow(0 4px 8px rgba(0,0,0,.25));}
+.mp-wrap:hover,.mp-wrap.on{transform:scale(1.2) translateY(-4px);
+  filter:drop-shadow(0 8px 20px rgba(201,74,26,.4));}
+.mp-bubble{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;
+  justify-content:center;font-size:18px;border:3px solid #fff;
+  background:var(--ink1);transition:all .2s;position:relative;}
+.mp-bubble::after{content:attr(data-label);position:absolute;bottom:-22px;left:50%;
+  transform:translateX(-50%);font-family:'Tajawal',sans-serif;font-size:9px;font-weight:800;
+  white-space:nowrap;background:var(--ink1);border:1px solid var(--b1);
+  border-radius:var(--pill);padding:2px 6px;color:var(--t1);opacity:0;
+  transition:opacity .2s;pointer-events:none;}
+.mp-wrap:hover .mp-bubble::after{opacity:1;}
+.mp-tail{width:0;height:0;border-left:7px solid transparent;
+  border-right:7px solid transparent;margin-top:-2px;}
+.mp-wrap.on .mp-bubble{border-color:var(--s)!important;box-shadow:0 0 0 4px var(--sg);}
+
+/* Leaflet popup custom style */
+.leaflet-popup-content-wrapper{background:var(--ink1)!important;color:var(--t0)!important;
+  border-radius:18px!important;box-shadow:0 12px 48px rgba(0,0,0,.2)!important;
+  border:1.5px solid var(--b1)!important;padding:0!important;overflow:hidden!important;}
+.leaflet-popup-content{margin:0!important;width:240px!important;}
+.leaflet-popup-tip-container{display:none!important;}
+.leaflet-popup-close-button{color:var(--t2)!important;font-size:20px!important;
+  top:8px!important;left:10px!important;right:auto!important;z-index:10;}
+.sloc-pop-img{width:100%;height:120px;object-fit:cover;display:block;}
+.sloc-pop-body{padding:13px 14px;}
+.sloc-pop-name{font-size:14px;font-weight:900;color:var(--t0);margin-bottom:4px;}
+.sloc-pop-meta{font-size:11.5px;color:var(--t2);margin-bottom:10px;line-height:1.5;}
+.sloc-pop-btns{display:grid;grid-template-columns:1fr 1fr;gap:7px;}
+.sloc-pop-btn{padding:8px 10px;border:none;border-radius:10px;font-family:var(--fn);
+  font-size:11.5px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;display:block;}
+.sloc-pop-btn.nav{background:linear-gradient(135deg,var(--s),#E86A30);color:#fff;}
+.sloc-pop-btn.dtl{background:var(--card2);color:var(--t1);border:1px solid var(--b1);}
+
+/* Empty state */
+.sloc-empty{padding:50px 20px;text-align:center;color:var(--t3);}
+.sloc-empty-ico{font-size:52px;margin-bottom:14px;}
+.sloc-empty-txt{font-size:14px;font-weight:700;color:var(--t2);}
+.sloc-empty-sub{font-size:12px;margin-top:6px;}
+
+/* Loading */
+.sloc-loading{display:flex;align-items:center;justify-content:center;
+  padding:40px;gap:12px;color:var(--t2);font-size:13px;font-weight:700;}
+.sloc-spin{width:20px;height:20px;border:2px solid var(--b1);
+  border-top-color:var(--s);border-radius:50%;animation:spin .7s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* Responsive */
+@media(max-width:820px){
+  .sloc-body{grid-template-columns:1fr;grid-template-rows:42vh 1fr;}
+  .sloc-panel{border-right:none;border-top:1.5px solid var(--b1);}
+  .sloc-near span{display:none;}
+  .sloc-top{flex-wrap:wrap;}
+  .page.on#page-local{height:auto;overflow:auto;}
+  .sloc-body{height:auto;}
+  #sloc-map{min-height:42vh;}
+}
 </style>
 </head>
 <body>
@@ -735,6 +896,7 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
     <button class="nb" onclick="fworld('سريع')">⚡ سريع</button>
     <button class="nb" onclick="fworld('رمضان')">🌙 رمضان</button>
     <button class="nb" onclick="gp('resto')">🍽️ المطاعم</button>
+    <button class="nb" onclick="gp('local')" style="background:linear-gradient(135deg,var(--sg),var(--sg2));color:var(--s);border:1px solid var(--b0)">🗺️ نكهات محلية</button>
     <button class="nb" id="nav-fav-btn" onclick="gp('fav')">❤️ <span data-i18n="nav_fav">محفوظاتي</span> <span id="nav-fav-count" style="display:none;background:var(--r);color:#fff;font-size:9px;padding:1px 6px;border-radius:var(--pill);margin-right:3px"></span></button>
   </div>
   <div class="nav-search" onclick="document.querySelector('.nav-search input').focus()">
@@ -925,6 +1087,82 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   </div>
 </div>
 <div style="height:50px"></div>
+</div>
+
+<!-- SAVEURS LOCALES -->
+<div class="page" id="page-local">
+  <!-- Header -->
+  <div class="sloc-hd">
+    <div class="sloc-top">
+      <div class="sloc-title">
+        <span>🗺️</span>
+        <span>نكهات محلية</span>
+        <span class="sloc-badge" id="sloc-badge" style="display:none">0 مطعم</span>
+      </div>
+      <div class="sloc-sbox" id="sloc-sbox" style="position:relative">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;color:var(--t3)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+        <input id="sloc-inp" placeholder="ابحث عن أي مدينة في العالم…" autocomplete="off"
+          oninput="slocInput(this.value)" onkeydown="if(event.key==='Enter')slocSearch(this.value);if(event.key==='Escape')slocCloseSuggest()">
+        <button onclick="slocSearch(document.getElementById('sloc-inp').value)" style="background:none;border:none;cursor:pointer;color:var(--t3);padding:0;font-size:12px">←</button>
+        <div class="sloc-suggest" id="sloc-suggest"></div>
+      </div>
+      <button class="sloc-near" id="sloc-near-btn" onclick="slocNearMe()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>
+        <span>قريبي</span>
+      </button>
+    </div>
+    <div class="sloc-chips" id="sloc-chips"></div>
+  </div>
+
+  <!-- Body: Map + List -->
+  <div class="sloc-body">
+    <!-- Map -->
+    <div class="sloc-mapwrap">
+      <div id="sloc-map"></div>
+      <div class="sloc-map-overlay">
+        <div class="sloc-map-pill" id="sloc-bounds-pill" style="display:none" onclick="slocFilterBounds()">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+          فلتر حسب المنطقة المرئية
+        </div>
+        <div class="sloc-map-pill" id="sloc-loc-pill" style="display:none">
+          <div class="sloc-pulse"></div>
+          <span id="sloc-loc-lbl"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Restaurant list panel -->
+    <div class="sloc-panel">
+      <div class="sloc-panel-hd">
+        <div>
+          <div class="sloc-panel-title" id="sloc-panel-title">اختر مدينة</div>
+          <div class="sloc-panel-count" id="sloc-panel-count"></div>
+        </div>
+        <div class="sloc-filters">
+          <select class="sloc-sel" id="sloc-sort" onchange="slocRenderList()">
+            <option value="rt">⭐ تقييم</option>
+            <option value="rv">👥 أكثر تقييماً</option>
+            <option value="price_asc">💰 أرخص أولاً</option>
+            <option value="price_desc">💎 أغلى أولاً</option>
+          </select>
+          <select class="sloc-sel" id="sloc-fp" onchange="slocRenderList()">
+            <option value="">كل الأسعار</option>
+            <option value="$">$ رخيص</option>
+            <option value="$$">$$ متوسط</option>
+            <option value="$$$">$$$ فاخر</option>
+            <option value="$$$$">$$$$ راقٍ جداً</option>
+          </select>
+        </div>
+      </div>
+      <div class="sloc-list" id="sloc-list">
+        <div class="sloc-empty">
+          <div class="sloc-empty-ico">🗺️</div>
+          <div class="sloc-empty-txt">اختر مدينة لاستكشاف مطاعمها</div>
+          <div class="sloc-empty-sub">أو استخدم "قريبي" للكشف التلقائي</div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <!-- CHEF MODE -->
@@ -2708,7 +2946,7 @@ function gp(id,pushUrl=true){
   if(id==='resto') initResto();
   // Update URL for shareable deep links
   if(pushUrl){
-    const urlMap={home:'/',world:'/cuisines',videos:'/videos',resto:'/restaurants',fav:'/favoris',search:'/recherche'};
+    const urlMap={home:'/',world:'/cuisines',videos:'/videos',resto:'/restaurants',fav:'/favoris',search:'/recherche',local:'/saveurs-locales'};
     const url=urlMap[id]||('/'+id);
     history.pushState({page:id},'',url);
   }
@@ -4047,6 +4285,401 @@ function _doSocialFallback(id){
 }
 
 // ═══════════════════════════════════════════════════
+// SAVEURS LOCALES — carte interactive
+// ═══════════════════════════════════════════════════
+const CITY_COORDS={
+  'مراكش':         {lat:31.6295,lng:-7.9811, zoom:15,flag:'🇲🇦'},
+  'الدار البيضاء': {lat:33.5731,lng:-7.5898, zoom:14,flag:'🇲🇦'},
+  'دبي':           {lat:25.2048,lng:55.2708,  zoom:14,flag:'🇦🇪'},
+  'باريس':         {lat:48.8566,lng:2.3522,   zoom:14,flag:'🇫🇷'},
+  'لندن':          {lat:51.5074,lng:-0.1278,  zoom:14,flag:'🇬🇧'},
+  'إسطنبول':       {lat:41.0082,lng:28.9784,  zoom:14,flag:'🇹🇷'},
+  'طوكيو':         {lat:35.6762,lng:139.6503, zoom:14,flag:'🇯🇵'},
+  'نيويورك':       {lat:40.7128,lng:-74.006,  zoom:14,flag:'🇺🇸'},
+  'ميلان':         {lat:45.4654,lng:9.1859,   zoom:14,flag:'🇮🇹'},
+  'القاهرة':       {lat:30.0444,lng:31.2357,  zoom:14,flag:'🇪🇬'},
+  'بيروت':         {lat:33.8938,lng:35.5018,  zoom:15,flag:'🇱🇧'},
+  'تونس':          {lat:36.8065,lng:10.1815,  zoom:14,flag:'🇹🇳'},
+  'مدريد':         {lat:40.4168,lng:-3.7038,  zoom:14,flag:'🇪🇸'},
+  'أمستردام':      {lat:52.3676,lng:4.9041,   zoom:15,flag:'🇳🇱'},
+  'مونتريال':      {lat:45.5017,lng:-73.5673, zoom:14,flag:'🇨🇦'},
+};
+const PIN_COLORS={'$':'#22c55e','$$':'#f59e0b','$$$':'#ef4444','$$$$':'#a855f7','':'#6b7280'};
+
+let _slocMap=null,_slocMarkers={},_slocCity='',_slocRestos=[],_slocFilteredRestos=[];
+let _slocBoundsFilter=false,_slocInputTimer=null;
+
+// ── Deterministic coords per restaurant (no real geocoding needed) ───
+function _rCoords(id,c){
+  let h=5381;
+  for(let i=0;i<id.length;i++) h=(h*33^id.charCodeAt(i))>>>0;
+  const angle=(h%1000)/1000*2*Math.PI;
+  const dist=((h>>10)%900+100)/100000;
+  return[c.lat+Math.sin(angle)*dist*2.5, c.lng+Math.cos(angle)*dist*3.8];
+}
+
+// ── Init Leaflet map (lazy, called once on first gp('local')) ────────
+function slocInitMap(){
+  if(_slocMap) return;
+  if(!window.L){showToast('خطأ: مكتبة الخريطة لم تُحمَّل');return;}
+  _slocMap=L.map('sloc-map',{
+    center:[30,20],zoom:2,
+    zoomControl:false,
+    attributionControl:false,
+  });
+  // CartoDB Voyager — warm, food-friendly tiles
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',{
+    maxZoom:19,subdomains:'abcd',
+  }).addTo(_slocMap);
+  L.control.zoom({position:'bottomright'}).addTo(_slocMap);
+  L.control.attribution({position:'bottomright',prefix:'<a href="https://leafletjs.com">Leaflet</a> · © <a href="https://carto.com">CartoDB</a>'}).addTo(_slocMap);
+  // Show "filter by bounds" pill when user pans
+  _slocMap.on('moveend',()=>{
+    if(_slocCity) document.getElementById('sloc-bounds-pill').style.display='flex';
+  });
+}
+
+// ── Build city chips ─────────────────────────────────────────────────
+function slocBuildChips(){
+  const el=document.getElementById('sloc-chips');
+  if(!el||el.innerHTML) return;
+  el.innerHTML=Object.entries(CITY_COORDS).map(([ar,v])=>`
+    <button class="sloc-chip" data-city="${ar}" onclick="slocLoadCity('${ar}')">
+      ${v.flag} ${ar}
+    </button>`).join('');
+}
+
+// ── Load a city: fly map + place pins + render list ──────────────────
+function slocLoadCity(cityAr, coords=null){
+  _slocCity=cityAr;
+  _slocBoundsFilter=false;
+  document.getElementById('sloc-bounds-pill').style.display='none';
+
+  // Highlight chip
+  document.querySelectorAll('.sloc-chip').forEach(c=>{
+    c.classList.toggle('on',c.dataset.city===cityAr);
+  });
+
+  // Filter restaurants
+  _slocRestos=RESTAURANTS.filter(r=>r.city===cityAr);
+  _slocFilteredRestos=[..._slocRestos];
+
+  // Update panel header
+  const el=document.getElementById('sloc-panel-title');
+  if(el) el.textContent=(CITY_COORDS[cityAr]?.flag||'🌍')+' '+cityAr;
+  slocUpdateBadge();
+
+  // Fly map
+  const c=CITY_COORDS[cityAr];
+  const flyTo=coords||c;
+  if(flyTo&&_slocMap){
+    _slocMap.flyTo([flyTo.lat,flyTo.lng],c?.zoom||14,{duration:1.2,easeLinearity:.3});
+    setTimeout(()=>slocPlacePins(flyTo),600);
+  } else if(_slocMap){
+    slocPlacePins({lat:30,lng:15});
+  }
+
+  // Render list with slight delay for smooth transition
+  setTimeout(slocRenderList, 80);
+}
+
+// ── Place/refresh map pins ───────────────────────────────────────────
+function slocPlacePins(cityCenter){
+  if(!_slocMap) return;
+  // Clear existing markers
+  Object.values(_slocMarkers).forEach(m=>m.remove());
+  _slocMarkers={};
+
+  const restos=_slocBoundsFilter?_slocFilteredRestos:_slocRestos;
+  const c=CITY_COORDS[_slocCity]||{lat:cityCenter.lat,lng:cityCenter.lng};
+
+  restos.forEach(r=>{
+    const pos=_rCoords(r.id,{lat:cityCenter.lat||c.lat,lng:cityCenter.lng||c.lng});
+    const pc=PIN_COLORS[r.price||'$$']||'#6b7280';
+    const icon=L.divIcon({
+      className:'',
+      html:`<div class="mp-wrap" id="mp-${r.id}">
+        <div class="mp-bubble" style="border-color:${pc}" data-label="${(r.name||'').substring(0,14)}">${r.country||'🍽️'}</div>
+        <div class="mp-tail" style="border-top:9px solid ${pc};border-left:6px solid transparent;border-right:6px solid transparent;margin-top:-2px"></div>
+      </div>`,
+      iconSize:[42,52],iconAnchor:[21,52],popupAnchor:[0,-56],
+    });
+    const marker=L.marker(pos,{icon}).addTo(_slocMap);
+    marker.bindPopup(_slocPopupHtml(r,pos),{
+      maxWidth:250,closeButton:true,autoPan:true,autoPanPaddingTopLeft:[20,20],
+    });
+    marker.on('click',()=>slocHighlightCard(r.id));
+    _slocMarkers[r.id]=marker;
+  });
+}
+
+// ── Popup HTML ───────────────────────────────────────────────────────
+function _slocPopupHtml(r,pos){
+  const mapQ=encodeURIComponent(`${r.name} ${r.address||''} ${r.city}`);
+  const navUrl=`https://www.google.com/maps/dir/?api=1&destination=${mapQ}`;
+  return `<img src="${r.img||''}" class="sloc-pop-img" onerror="this.style.display='none'" loading="lazy">
+    <div class="sloc-pop-body">
+      <div class="sloc-pop-name">${r.country||''} ${r.name}</div>
+      <div class="sloc-pop-meta">
+        ⭐ ${r.rating||r.rt||'4.5'} &nbsp;·&nbsp; ${r.price||'$$'} &nbsp;·&nbsp; ${r.cuisine||''}<br>
+        📍 ${(r.address||r.city||'').substring(0,50)}
+      </div>
+      <div class="sloc-pop-btns">
+        <a href="${navUrl}" target="_blank" class="sloc-pop-btn nav">🗺️ الاتجاهات</a>
+        <button class="sloc-pop-btn dtl" onclick="slocOpenDetail('${r.id}')">عرض المزيد →</button>
+      </div>
+    </div>`;
+}
+
+// ── Render restaurant list ────────────────────────────────────────────
+function slocRenderList(){
+  const listEl=document.getElementById('sloc-list');
+  const sort=(document.getElementById('sloc-sort')||{}).value||'rt';
+  const fp=(document.getElementById('sloc-fp')||{}).value||'';
+
+  let list=[..._slocRestos];
+  if(fp) list=list.filter(r=>r.price===fp);
+
+  const priceOrd={'$':1,'$$':2,'$$$':3,'$$$$':4};
+  if(sort==='rt') list.sort((a,b)=>(b.rating||b.rt||0)-(a.rating||a.rt||0));
+  else if(sort==='rv') list.sort((a,b)=>(b.rv||0)-(a.rv||0));
+  else if(sort==='price_asc') list.sort((a,b)=>(priceOrd[a.price]||2)-(priceOrd[b.price]||2));
+  else if(sort==='price_desc') list.sort((a,b)=>(priceOrd[b.price]||2)-(priceOrd[a.price]||2));
+
+  _slocFilteredRestos=list;
+  slocUpdateBadge(list.length);
+
+  if(!list.length){
+    listEl.innerHTML=`<div class="sloc-empty">
+      <div class="sloc-empty-ico">🍽️</div>
+      <div class="sloc-empty-txt">لا توجد مطاعم${fp?' بهذا السعر':''}</div>
+      <div class="sloc-empty-sub">جرب تعديل الفلاتر</div>
+    </div>`;
+    return;
+  }
+
+  listEl.innerHTML=list.map(r=>{
+    const pc=r.price||'$$';
+    const mapQ=encodeURIComponent(`${r.name} ${r.address||''} ${r.city}`);
+    return`<div class="sloc-rc" id="sloc-rc-${r.id}" onclick="slocFlyTo('${r.id}')">
+      <img class="sloc-rc-img" src="${r.img||''}" alt="${r.name}"
+        onerror="this.style.display='none'" loading="lazy">
+      <div class="sloc-rc-body">
+        <div class="sloc-rc-name">${r.country||''} ${r.name}</div>
+        <div class="sloc-rc-cuis">${r.cuisine||''} · ${(r.address||r.city||'').substring(0,28)}</div>
+        <div class="sloc-rc-foot">
+          <span class="sloc-rc-rat">⭐ ${r.rating||r.rt||'4.5'} <span style="color:var(--t3)">(${(r.rv||0).toLocaleString()})</span></span>
+          <span class="sloc-price-tag" data-p="${pc}">${pc}</span>
+        </div>
+      </div>
+      <div class="sloc-rc-nav">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── Fly map to restaurant pin + highlight ────────────────────────────
+function slocFlyTo(id){
+  slocHighlightCard(id);
+  const marker=_slocMarkers[id];
+  if(!marker||!_slocMap) return;
+  const latlng=marker.getLatLng();
+  _slocMap.flyTo(latlng,17,{duration:.8});
+  setTimeout(()=>marker.openPopup(),900);
+  // Animate pin
+  const pinEl=document.getElementById('mp-'+id);
+  if(pinEl) pinEl.classList.add('on');
+}
+
+function slocHighlightCard(id){
+  document.querySelectorAll('.sloc-rc').forEach(c=>c.classList.remove('on'));
+  const card=document.getElementById('sloc-rc-'+id);
+  if(card){
+    card.classList.add('on');
+    card.scrollIntoView({block:'nearest',behavior:'smooth'});
+  }
+  // Reset all pins
+  Object.keys(_slocMarkers).forEach(k=>{
+    const el=document.getElementById('mp-'+k);
+    if(el) el.classList.toggle('on',k===id);
+  });
+}
+
+function slocOpenDetail(id){
+  const r=RESTAURANTS.find(x=>x.id===id);
+  if(r){gp('restodtl');renderRestoDetail(r);}
+}
+
+// ── Filter visible restaurants by map bounds ─────────────────────────
+function slocFilterBounds(){
+  if(!_slocMap) return;
+  _slocBoundsFilter=true;
+  const bounds=_slocMap.getBounds();
+  const c=CITY_COORDS[_slocCity]||{lat:30,lng:15};
+  _slocFilteredRestos=_slocRestos.filter(r=>{
+    const pos=_rCoords(r.id,c);
+    return bounds.contains(pos);
+  });
+  slocUpdateBadge(_slocFilteredRestos.length);
+  document.getElementById('sloc-bounds-pill').style.display='none';
+  // Re-render list with filtered set
+  const listEl=document.getElementById('sloc-list');
+  let list=[..._slocFilteredRestos];
+  const sort=(document.getElementById('sloc-sort')||{}).value||'rt';
+  if(sort==='rt') list.sort((a,b)=>(b.rating||b.rt||0)-(a.rating||a.rt||0));
+  if(!list.length){
+    listEl.innerHTML=`<div class="sloc-empty"><div class="sloc-empty-ico">🔍</div><div class="sloc-empty-txt">لا توجد مطاعم في هذه المنطقة</div></div>`;
+  } else {
+    _slocRestos=list; slocRenderList();
+  }
+}
+
+function slocUpdateBadge(n){
+  const count=n!==undefined?n:_slocFilteredRestos.length;
+  const badge=document.getElementById('sloc-badge');
+  const countEl=document.getElementById('sloc-panel-count');
+  if(badge){badge.textContent=count+' مطعم';badge.style.display=count?'inline':'none';}
+  if(countEl) countEl.textContent=count?`${count} مطعم في القائمة`:'';
+}
+
+// ── IP geolocation → nearest known city ──────────────────────────────
+async function slocNearMe(){
+  const btn=document.getElementById('sloc-near-btn');
+  if(btn){btn.disabled=true;btn.innerHTML='<div class="sloc-spin"></div>';}
+  try{
+    const res=await fetch('https://ipapi.co/json/');
+    const d=await res.json();
+    if(btn){btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>قريبي</span>';}
+    const userLat=d.latitude,userLng=d.longitude;
+    const userCity=d.city||'';
+    // Show location pill
+    const pill=document.getElementById('sloc-loc-pill');
+    const pillLbl=document.getElementById('sloc-loc-lbl');
+    if(pill&&pillLbl){pillLbl.textContent=`📍 ${userCity}, ${d.country_name||''}`;pill.style.display='flex';}
+    // Find nearest city in our database
+    let nearest=null,minDist=Infinity;
+    Object.entries(CITY_COORDS).forEach(([ar,c])=>{
+      const d2=Math.sqrt((c.lat-userLat)**2+(c.lng-userLng)**2);
+      if(d2<minDist){minDist=d2;nearest=ar;}
+    });
+    // Fly to user location first, then to nearest city
+    if(_slocMap){
+      _slocMap.flyTo([userLat,userLng],12,{duration:1});
+      setTimeout(()=>{
+        if(nearest){
+          showToast(`أقرب مدينة في قاعدتنا: ${nearest} 🗺️`);
+          slocLoadCity(nearest);
+        } else {
+          showToast(`موقعك: ${userCity}. لا توجد مطاعم في قاعدتنا بالقرب منك.`);
+        }
+      },1200);
+    }
+    if(nearest) document.getElementById('sloc-inp').value=nearest;
+  } catch(e){
+    if(btn){btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>قريبي</span>';}
+    showToast('تعذّر الكشف عن الموقع');
+  }
+}
+
+// ── Debounced search input → suggestions ─────────────────────────────
+function slocInput(val){
+  clearTimeout(_slocInputTimer);
+  if(val.length<2){slocCloseSuggest();return;}
+  _slocInputTimer=setTimeout(()=>slocShowSuggestions(val),300);
+}
+
+async function slocShowSuggestions(q){
+  const suggest=document.getElementById('sloc-suggest');
+  if(!suggest) return;
+  const ql=q.toLowerCase();
+  // 1. Our known cities first
+  const local=Object.entries(CITY_COORDS).filter(([ar])=>
+    ar.includes(q)||ar.toLowerCase().includes(ql)
+  ).slice(0,4);
+  let html=local.map(([ar,v])=>`
+    <div class="sloc-sug-item" onclick="slocLoadCity('${ar}');document.getElementById('sloc-inp').value='${ar}';slocCloseSuggest()">
+      ${v.flag} <span style="font-weight:800">${ar}</span>
+      <span style="color:var(--t3);font-size:10px;margin-right:auto">${RESTAURANTS.filter(r=>r.city===ar).length} مطعم</span>
+    </div>`).join('');
+  suggest.innerHTML=html||'<div class="sloc-loading"><div class="sloc-spin"></div> جارٍ البحث…</div>';
+  suggest.style.display='block';
+  // 2. Nominatim for unknown cities
+  if(local.length<4){
+    try{
+      const res=await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(q)}&format=json&limit=5&featuretype=city`,{headers:{'Accept-Language':'ar,fr'}});
+      const data=await res.json();
+      if(data.length){
+        const extra=data.slice(0,5-local.length).map(p=>`
+          <div class="sloc-sug-item" onclick="slocGotoNominatim(${p.lat},${p.lon},'${(p.display_name||'').split(',')[0].replace(/'/g,'\\'')}');slocCloseSuggest()">
+            🌍 <span style="font-weight:800">${(p.display_name||'').split(',')[0]}</span>
+            <span style="color:var(--t3);font-size:10px;margin-right:auto">${(p.display_name||'').split(',').slice(1,3).join(', ')}</span>
+          </div>`).join('');
+        suggest.innerHTML=(html||'')+extra;
+      } else if(!local.length){
+        suggest.innerHTML='<div class="sloc-sug-item" style="cursor:default;color:var(--t3)">لا توجد نتائج</div>';
+      }
+    } catch(e){}
+  }
+}
+
+// ── Fly to Nominatim result (any world city, no restaurant data) ──────
+function slocGotoNominatim(lat,lng,name){
+  if(!_slocMap) return;
+  document.getElementById('sloc-inp').value=name;
+  _slocCity=''; _slocRestos=[];
+  document.querySelectorAll('.sloc-chip').forEach(c=>c.classList.remove('on'));
+  _slocMap.flyTo([lat,lng],14,{duration:1.4});
+  document.getElementById('sloc-list').innerHTML=`<div class="sloc-empty">
+    <div class="sloc-empty-ico">🌍</div>
+    <div class="sloc-empty-txt">${name}</div>
+    <div class="sloc-empty-sub">هذه المدينة غير متوفرة في قاعدتنا بعد</div>
+  </div>`;
+  document.getElementById('sloc-panel-title').textContent=name;
+  const badge=document.getElementById('sloc-badge');
+  if(badge) badge.style.display='none';
+}
+
+function slocSearch(q){
+  slocCloseSuggest();
+  if(!q.trim()) return;
+  // Check our known cities first
+  const found=Object.keys(CITY_COORDS).find(ar=>ar.includes(q)||q.includes(ar));
+  if(found){slocLoadCity(found);document.getElementById('sloc-inp').value=found;return;}
+  // Fall back to Nominatim
+  slocShowSuggestions(q);
+}
+
+function slocCloseSuggest(){
+  const s=document.getElementById('sloc-suggest');
+  if(s) s.style.display='none';
+}
+
+// ── Update gp() to handle 'local' ────────────────────────────────────
+const _origGp=gp;
+// Patch gp to initialize map on first visit
+(function(){
+  const _gp=gp;
+  window.gp=function(id,pushUrl=true){
+    _gp(id,pushUrl);
+    if(id==='local'){
+      setTimeout(()=>{
+        slocInitMap();
+        slocBuildChips();
+        if(!_slocCity) slocNearMe(); // auto-detect on first open
+      },80);
+    }
+  };
+  // Also patch URL map
+  const urlMap={home:'/',world:'/cuisines',videos:'/videos',resto:'/restaurants',fav:'/favoris',search:'/recherche',local:'/saveurs-locales'};
+})();
+
+// Close suggest on outside click
+document.addEventListener('click',e=>{
+  if(!e.target.closest('#sloc-sbox')) slocCloseSuggest();
+});
+
+// ═══════════════════════════════════════════════════
 // ANTI INSPECT / DEVTOOLS
 // ═══════════════════════════════════════════════════
 (function(){
@@ -4121,6 +4754,7 @@ if('serviceWorker' in navigator){
   else if(p.startsWith('/restaurants')) gp('resto',false);
   else if(p.startsWith('/videos')) gp('videos',false);
   else if(p.startsWith('/favoris')) gp('fav',false);
+  else if(p.startsWith('/saveurs-locales')) gp('local',false);
   // restore search query
   const sq=new URLSearchParams(location.search).get('q');
   if(sq) setTimeout(()=>doSearch(sq),200);
