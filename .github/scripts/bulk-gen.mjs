@@ -61,6 +61,15 @@ function getLogo(tags={}){
 function sleep(ms){ return new Promise(r=>setTimeout(r,ms)); }
 
 // ── OpenStreetMap / Overpass API — données réelles ─────────────────────
+// Plusieurs miroirs pour contourner les blocages IP (notamment sur GitHub Actions)
+const OVERPASS_MIRRORS=[
+  'https://overpass-api.de/api/interpreter',
+  'https://lz4.overpass-api.de/api/interpreter',
+  'https://z.overpass-api.de/api/interpreter',
+  'https://overpass.openstreetmap.fr/api/interpreter',
+  'https://overpass.private.coffee/api/interpreter',
+];
+
 async function fetchOSMRestaurants(city, max){
   const query=`[out:json][timeout:90];
 (
@@ -70,26 +79,42 @@ async function fetchOSMRestaurants(city, max){
 );
 out ${max*2} body;`;
 
-  for(let attempt=1;attempt<=3;attempt++){
-    try{
-      const res=await fetch('https://overpass-api.de/api/interpreter',{
-        method:'POST',
-        headers:{'Content-Type':'application/x-www-form-urlencoded'},
-        body:`data=${encodeURIComponent(query)}`,
-        signal:AbortSignal.timeout(100000),
-      });
-      const data=await res.json();
-      const elements=(data.elements||[])
-        .filter(e=>e.tags?.name && e.lat && e.lon)
-        .sort((a,b)=>Object.keys(b.tags||{}).length-Object.keys(a.tags||{}).length)
-        .slice(0,max);
-      console.log(`  📍 OSM: ${elements.length} restaurants réels trouvés (${city.en})`);
-      return elements;
-    }catch(e){
-      console.error(`  ⚠️  Overpass tentative ${attempt}/3:`,e.message.substring(0,60));
-      if(attempt<3) await sleep(5000*attempt);
+  for(const mirror of OVERPASS_MIRRORS){
+    for(let attempt=1;attempt<=2;attempt++){
+      try{
+        const res=await fetch(mirror,{
+          method:'POST',
+          headers:{
+            'Content-Type':'application/x-www-form-urlencoded',
+            'User-Agent':'Matbakh360/1.0 (restaurant discovery app; contact@matbakh360.com)',
+            'Accept':'application/json, */*',
+          },
+          body:`data=${encodeURIComponent(query)}`,
+          signal:AbortSignal.timeout(120000),
+        });
+        if(!res.ok){
+          console.error(`  ⚠️  ${mirror.split('/')[2]} HTTP ${res.status}`);
+          if(attempt<2) await sleep(3000);
+          continue;
+        }
+        const text=await res.text();
+        let data;
+        try{ data=JSON.parse(text); }
+        catch(e){ console.error(`  ⚠️  JSON invalide (${mirror.split('/')[2]}): ${text.substring(0,60)}`); continue; }
+        const elements=(data.elements||[])
+          .filter(e=>e.tags?.name && e.lat && e.lon)
+          .sort((a,b)=>Object.keys(b.tags||{}).length-Object.keys(a.tags||{}).length)
+          .slice(0,max);
+        console.log(`  📍 OSM [${mirror.split('/')[2]}]: ${elements.length} restaurants (${city.en})`);
+        return elements;
+      }catch(e){
+        console.error(`  ⚠️  ${mirror.split('/')[2]} tentative ${attempt}/2:`,e.message.substring(0,60));
+        if(attempt<2) await sleep(3000);
+      }
     }
+    await sleep(2000); // pause entre miroirs
   }
+  console.error(`  ✗ Tous les miroirs Overpass ont échoué pour ${city.en}`);
   return [];
 }
 
