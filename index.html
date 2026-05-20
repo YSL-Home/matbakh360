@@ -34,6 +34,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&family=El+Messiri:wght@400;500;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap" rel="stylesheet">
 <!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6870790039775701" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <style>
 :root{
   /* ── Palette logo مطبخ 360 — thème clair ── */
@@ -1054,6 +1055,52 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 <div class="toast" id="toast"></div>
 
 <script>
+// ═══════════════════════════════════════════════════
+// SUPABASE — real OAuth (Google + Facebook) + favorites sync
+// ═══════════════════════════════════════════════════
+const _SB_URL='https://yazqcdlsgooxwmlrfuff.supabase.co';
+const _SB_KEY='sb_publishable_1SuFcveQx-cIZGoDvCmpIA_kEV0DcKr';
+let _sb=null;
+(function initSupabase(){
+  try{
+    if(window.supabase){
+      _sb=window.supabase.createClient(_SB_URL,_SB_KEY);
+      // Listen for auth state changes (handles redirect-back after OAuth)
+      _sb.auth.onAuthStateChange(async (event,session)=>{
+        if(session&&session.user){
+          const u=session.user;
+          const name=u.user_metadata?.full_name||u.user_metadata?.name||u.email.split('@')[0];
+          const email=u.email;
+          setSession({name,email,provider:u.app_metadata?.provider||'supabase',avatar:u.user_metadata?.avatar_url||''});
+          // Merge anonymous favorites into user account
+          const anonFavs=JSON.parse(localStorage.getItem('mw360_favs')||'[]');
+          if(anonFavs.length){
+            const key=`mw360_favs_${email}`;
+            const existing=JSON.parse(localStorage.getItem(key)||'[]');
+            localStorage.setItem(key,JSON.stringify([...new Set([...existing,...anonFavs])]));
+            localStorage.removeItem('mw360_favs');
+          }
+          updateFavCount();
+          // Optionally sync to Supabase favorites table
+          _syncFavsToCloud(email).catch(()=>{});
+        } else if(event==='SIGNED_OUT'){
+          clearSession();
+          updateFavCount();
+        }
+      });
+    }
+  }catch(e){console.warn('Supabase init failed:',e);}
+})();
+
+async function _syncFavsToCloud(email){
+  if(!_sb) return;
+  const key=`mw360_favs_${email}`;
+  const favs=JSON.parse(localStorage.getItem(key)||'[]');
+  if(!favs.length) return;
+  // Upsert each fav into the favorites table (best-effort)
+  await _sb.from('favorites').upsert(favs.map(id=>({user_email:email,recipe_id:id})),{onConflict:'user_email,recipe_id'});
+}
+
 // ═══════════════════════════════════════════════════
 // DATA
 // ═══════════════════════════════════════════════════
@@ -2689,6 +2736,68 @@ window.addEventListener('popstate',e=>{
 const diff={e:'de',m:'dm',h:'dh'};
 const diffTxt={e:'سهل',m:'متوسط',h:'صعب'};
 
+// ── Translation maps for recipe data fields ────────────────────────────
+const CAT_TR={
+  'حلويات':   {fr:'Desserts',     en:'Desserts',    es:'Postres',    pt:'Sobremesas',  it:'Dolci',          zh:'甜点',    ja:'デザート'},
+  'صحي':      {fr:'Sain',         en:'Healthy',     es:'Saludable',  pt:'Saudável',    it:'Sano',           zh:'健康',    ja:'ヘルシー'},
+  'سريع':     {fr:'Rapide',       en:'Quick',       es:'Rápido',     pt:'Rápido',      it:'Veloce',         zh:'快手',    ja:'クイック'},
+  'رمضان':    {fr:'Ramadan',      en:'Ramadan',     es:'Ramadán',    pt:'Ramadão',     it:'Ramadan',        zh:'斋月',    ja:'ラマダン'},
+  'بحري':     {fr:'Fruits de mer',en:'Seafood',     es:'Mariscos',   pt:'Frutos do mar',it:'Frutti di mare',zh:'海鲜',    ja:'シーフード'},
+  'خبز':      {fr:'Pain',         en:'Bread',       es:'Pan',        pt:'Pão',         it:'Pane',           zh:'面包',    ja:'パン'},
+  'مغربي':    {fr:'Marocain',     en:'Moroccan',    es:'Marroquí',   pt:'Marroquino',  it:'Marocchino',     zh:'摩洛哥',  ja:'モロッコ'},
+  'يوناني':   {fr:'Grec',         en:'Greek',       es:'Griego',     pt:'Grego',       it:'Greco',          zh:'希腊',    ja:'ギリシャ'},
+  'هندي':     {fr:'Indien',       en:'Indian',      es:'Indio',      pt:'Indiano',     it:'Indiano',        zh:'印度',    ja:'インド'},
+  'ياباني':   {fr:'Japonais',     en:'Japanese',    es:'Japonés',    pt:'Japonês',     it:'Giapponese',     zh:'日本',    ja:'日本'},
+  'صيني':     {fr:'Chinois',      en:'Chinese',     es:'Chino',      pt:'Chinês',      it:'Cinese',         zh:'中国',    ja:'中国'},
+  'تركي':     {fr:'Turc',         en:'Turkish',     es:'Turco',      pt:'Turco',       it:'Turco',          zh:'土耳其',  ja:'トルコ'},
+  'إيطالي':   {fr:'Italien',      en:'Italian',     es:'Italiano',   pt:'Italiano',    it:'Italiano',       zh:'意大利',  ja:'イタリア'},
+  'فرنسي':    {fr:'Français',     en:'French',      es:'Français',   pt:'Francês',     it:'Francese',       zh:'法国',    ja:'フランス'},
+  'لبناني':   {fr:'Libanais',     en:'Lebanese',    es:'Libanés',    pt:'Libanês',     it:'Libanese',       zh:'黎巴嫩',  ja:'レバノン'},
+  'مصري':     {fr:'Égyptien',     en:'Egyptian',    es:'Egipcio',    pt:'Egípcio',     it:'Egiziano',       zh:'埃及',    ja:'エジプト'},
+  'سعودي':    {fr:'Saoudien',     en:'Saudi',       es:'Saudí',      pt:'Saudita',     it:'Saudita',        zh:'沙特',    ja:'サウジ'},
+  'سنغالي':   {fr:'Sénégalais',   en:'Senegalese',  es:'Senegalés',  pt:'Senegalês',   it:'Senegalese',     zh:'塞内加尔',ja:'セネガル'},
+  'إثيوبي':   {fr:'Éthiopien',    en:'Ethiopian',   es:'Etíope',     pt:'Etíope',      it:'Etiope',         zh:'埃塞俄比亚',ja:'エチオピア'},
+  'نيجيري':   {fr:'Nigérian',     en:'Nigerian',    es:'Nigeriano',  pt:'Nigeriano',   it:'Nigeriano',      zh:'尼日利亚',ja:'ナイジェリア'},
+  'مكسيكي':   {fr:'Mexicain',     en:'Mexican',     es:'Mexicano',   pt:'Mexicano',    it:'Messicano',      zh:'墨西哥',  ja:'メキシコ'},
+  'برازيلي':  {fr:'Brésilien',    en:'Brazilian',   es:'Brasileño',  pt:'Brasileiro',  it:'Brasiliano',     zh:'巴西',    ja:'ブラジル'},
+  'أرجنتيني': {fr:'Argentin',     en:'Argentinian', es:'Argentino',  pt:'Argentino',   it:'Argentino',      zh:'阿根廷',  ja:'アルゼンチン'},
+  'بيروفي':   {fr:'Péruvien',     en:'Peruvian',    es:'Peruano',    pt:'Peruano',     it:'Peruviano',      zh:'秘鲁',    ja:'ペルー'},
+  'بوليفي':   {fr:'Bolivien',     en:'Bolivian',    es:'Boliviano',  pt:'Boliviano',   it:'Boliviano',      zh:'玻利维亚',ja:'ボリビア'},
+  'كوري':     {fr:'Coréen',       en:'Korean',      es:'Coreano',    pt:'Coreano',     it:'Coreano',        zh:'韩国',    ja:'韓国'},
+  'تايلاندي': {fr:'Thaïlandais',  en:'Thai',        es:'Tailandés',  pt:'Tailandês',   it:'Tailandese',     zh:'泰国',    ja:'タイ'},
+  'فيتنامي':  {fr:'Vietnamien',   en:'Vietnamese',  es:'Vietnamita', pt:'Vietnamita',  it:'Vietnamita',     zh:'越南',    ja:'ベトナム'},
+  'فلبيني':   {fr:'Philippin',    en:'Filipino',    es:'Filipino',   pt:'Filipino',    it:'Filippino',      zh:'菲律宾',  ja:'フィリピン'},
+  'إندونيسي': {fr:'Indonésien',   en:'Indonesian',  es:'Indonesio',  pt:'Indonésio',   it:'Indonesiano',    zh:'印尼',    ja:'インドネシア'},
+  'منغولي':   {fr:'Mongol',       en:'Mongolian',   es:'Mongol',     pt:'Mongol',      it:'Mongolo',        zh:'蒙古',    ja:'モンゴル'},
+  'أوزبكي':   {fr:'Ouzbek',       en:'Uzbek',       es:'Uzbeco',     pt:'Uzbeque',     it:'Uzbeco',         zh:'乌兹别克',ja:'ウズベク'},
+  'جورجي':    {fr:'Géorgien',     en:'Georgian',    es:'Georgiano',  pt:'Georgiano',   it:'Georgiano',      zh:'格鲁吉亚',ja:'ジョージア'},
+  'أمريكي':   {fr:'Américain',    en:'American',    es:'Americano',  pt:'Americano',   it:'Americano',      zh:'美国',    ja:'アメリカ'},
+  'إسباني':   {fr:'Espagnol',     en:'Spanish',     es:'Español',    pt:'Espanhol',    it:'Spagnolo',       zh:'西班牙',  ja:'スペイン'},
+  'ألماني':   {fr:'Allemand',     en:'German',      es:'Alemán',     pt:'Alemão',      it:'Tedesco',        zh:'德国',    ja:'ドイツ'},
+  'برتغالي':  {fr:'Portugais',    en:'Portuguese',  es:'Portugués',  pt:'Português',   it:'Portoghese',     zh:'葡萄牙',  ja:'ポルトガル'},
+};
+const REGION_TR={
+  'عربي':   {fr:'Arabe',       en:'Arabic',    es:'Árabe',     pt:'Árabe',      it:'Arabo',          zh:'阿拉伯', ja:'アラブ'},
+  'أوروبي': {fr:'Européen',    en:'European',  es:'Europeo',   pt:'Europeu',    it:'Europeo',        zh:'欧洲',   ja:'ヨーロッパ'},
+  'آسيوي':  {fr:'Asiatique',   en:'Asian',     es:'Asiático',  pt:'Asiático',   it:'Asiatico',       zh:'亚洲',   ja:'アジア'},
+  'أمريكي': {fr:'Américain',   en:'American',  es:'Americano', pt:'Americano',  it:'Americano',      zh:'美洲',   ja:'アメリカ'},
+  'أفريقي': {fr:'Africain',    en:'African',   es:'Africano',  pt:'Africano',   it:'Africano',       zh:'非洲',   ja:'アフリカ'},
+  'صحي':    {fr:'Sain',        en:'Healthy',   es:'Saludable', pt:'Saudável',   it:'Sano',           zh:'健康',   ja:'ヘルシー'},
+  'سريع':   {fr:'Rapide',      en:'Quick',     es:'Rápido',    pt:'Rápido',     it:'Veloce',         zh:'快手',   ja:'クイック'},
+  'حلويات': {fr:'Desserts',    en:'Desserts',  es:'Postres',   pt:'Sobremesas', it:'Dolci',          zh:'甜点',   ja:'デザート'},
+  'رمضان':  {fr:'Ramadan',     en:'Ramadan',   es:'Ramadán',   pt:'Ramadão',    it:'Ramadan',        zh:'斋月',   ja:'ラマダン'},
+  'بحري':   {fr:'Fruits de mer',en:'Seafood',  es:'Mariscos',  pt:'Frutos do mar',it:'Frutti di mare',zh:'海鲜',  ja:'シーフード'},
+  'خبز':    {fr:'Pain',        en:'Bread',     es:'Pan',       pt:'Pão',        it:'Pane',           zh:'面包',   ja:'パン'},
+};
+const DIFF_TR={
+  e:{ar:'سهل',  fr:'Facile',    en:'Easy',    es:'Fácil',   pt:'Fácil',   it:'Facile',    zh:'简单', ja:'簡単'},
+  m:{ar:'متوسط',fr:'Moyen',     en:'Medium',  es:'Medio',   pt:'Médio',   it:'Medio',     zh:'中等', ja:'普通'},
+  h:{ar:'صعب',  fr:'Difficile', en:'Hard',    es:'Difícil', pt:'Difícil', it:'Difficile', zh:'困难', ja:'難しい'},
+};
+function tCat(cat){if(_lang==='ar')return cat;return(CAT_TR[cat]||{})[_lang]||cat;}
+function tReg(reg){if(_lang==='ar')return reg;return(REGION_TR[reg]||{})[_lang]||reg;}
+function tDiff(df){const d=DIFF_TR[df]||DIFF_TR.m;return d[_lang]||d.ar;}
+
 function rcCard(r,feat=false){
   const ti=rTr(r,'ti');
   const de=rTr(r,'de');
@@ -2702,12 +2811,12 @@ function rcCard(r,feat=false){
         onerror="this.remove();this.parentElement.style.background='linear-gradient(135deg,var(--sg) 0%,var(--card2) 100%);'">`:''}
       <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:58px;z-index:0;opacity:${img?'0':'1'};pointer-events:none">${r.em}</div>
       <div class="bflag">${r.f}</div>
-      <div class="bcat">${r.cat}</div>
+      <div class="bcat">${tCat(r.cat)}</div>
       <div class="btime">⏱ ${r.tm}</div>
-      <div class="bdiff ${diff[r.df]||'de'}">${diffTxt[r.df]||'سهل'}</div>
+      <div class="bdiff ${diff[r.df]||'de'}">${tDiff(r.df)}</div>
     </div>
     <div class="rb">
-      <div class="rc-em-row"><span class="rc-em-ico">${r.em}</span><span class="rc-em-cat">${r.cat}</span></div>
+      <div class="rc-em-row"><span class="rc-em-ico">${r.em}</span><span class="rc-em-cat">${tCat(r.cat)}</span></div>
       <div class="rt">${ti}</div>
       <div class="rd">${de}</div>
       <div class="rf">
@@ -2824,8 +2933,8 @@ function openRecipe(id,pushUrl=true){
   <div>
     <div class="rp-bread">
       <a onclick="gp('home')">الرئيسية</a> ›
-      <a onclick="fworld('${r.r}')">${r.r}</a> ›
-      <a onclick="fworld('${r.cat}')">${r.cat}</a>
+      <a onclick="fworld('${r.r}')">${tReg(r.r)}</a> ›
+      <a onclick="fworld('${r.cat}')">${tCat(r.cat)}</a>
     </div>
     <div class="rp-vis">
       <div class="rv-bg"></div>
@@ -2841,11 +2950,11 @@ function openRecipe(id,pushUrl=true){
     <h1 class="rp-h1">${rTr(r,'ti')}</h1>
     <p class="rp-intro">${rTr(r,'de')}</p>
     <div class="rp-meta">
-      <div class="rpm"><div class="rpm-v">${r.tm}</div><div class="rpm-l">⏱ الوقت</div></div>
-      <div class="rpm"><div class="rpm-v">${r.sv}</div><div class="rpm-l">👥 أشخاص</div></div>
-      <div class="rpm"><div class="rpm-v">${diffTxt[r.df]}</div><div class="rpm-l">📊 الصعوبة</div></div>
-      <div class="rpm"><div class="rpm-v">⭐ ${r.rt}</div><div class="rpm-l">${r.rv.toLocaleString()} تقييم</div></div>
-      <div class="rpm"><div class="rpm-v">${r.nut.cal}</div><div class="rpm-l">🔥 سعرة</div></div>
+      <div class="rpm"><div class="rpm-v">${r.tm}</div><div class="rpm-l">${t('lbl_time')}</div></div>
+      <div class="rpm"><div class="rpm-v">${r.sv}</div><div class="rpm-l">${t('lbl_srv')}</div></div>
+      <div class="rpm"><div class="rpm-v">${tDiff(r.df)}</div><div class="rpm-l">${t('lbl_diff')}</div></div>
+      <div class="rpm"><div class="rpm-v">⭐ ${r.rt}</div><div class="rpm-l">${r.rv.toLocaleString()} ${t('lbl_rat')}</div></div>
+      <div class="rpm"><div class="rpm-v">${r.nut.cal}</div><div class="rpm-l">${t('lbl_cal')}</div></div>
     </div>
     <div class="box">
       <div class="box-h">🧺 المكونات
@@ -2914,7 +3023,7 @@ function openRecipe(id,pushUrl=true){
     <div class="sb-c"><div class="sb-h">⭐ الأعلى تقييماً</div>
       ${RECIPES.sort((a,b)=>b.rt-a.rt).slice(0,5).map(rr=>`<div class="sb-item" onclick="openRecipe('${rr.id}')">
         <div class="sb-em">${rr.em}</div>
-        <div><div class="sb-t">${rTr(rr,'ti')}</div><div class="sb-m">${rr.f} ${rr.cat} · ⭐ ${rr.rt}</div></div>
+        <div><div class="sb-t">${rTr(rr,'ti')}</div><div class="sb-m">${rr.f} ${tCat(rr.cat)} · ⭐ ${rr.rt}</div></div>
       </div>`).join('')}
     </div>
     <div class="ad-slot" style="margin-top:8px"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6870790039775701" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
@@ -3199,9 +3308,9 @@ function doLogin(){
 }
 
 function doLogout(){
-  const s=getSession();
+  if(_sb) _sb.auth.signOut().catch(()=>{});
   clearSession();
-  showToast('تم تسجيل الخروج');
+  showToast('تم تسجيل الخروج 👋');
   updateFavCount();
 }
 
@@ -3252,7 +3361,7 @@ function parseDuration(str){
 }
 function updateSEO(r){
   const title=`${rTr(r,'ti')} — وصفة ${r.cat} | مطبخ 360`;
-  const desc=`${rTr(r,'de')} ⏱ ${r.tm} · ${r.sv} أشخاص · ${diffTxt[r.df]}. ${r.nut.cal} سعرة حرارية.`;
+  const desc=`${rTr(r,'de')} ⏱ ${r.tm} · ${r.sv} أشخاص · ${tDiff(r.df)}. ${r.nut.cal} سعرة حرارية.`;
   document.title=title;
   const set=(id,val)=>{const el=document.getElementById(id);if(el)el.setAttribute('content',val);};
   set('og-title',title); set('og-desc',desc);
@@ -3520,14 +3629,14 @@ function renderHeroCards(){
 // MULTI-LANGUAGE (i18n)
 // ═══════════════════════════════════════════════════
 const I18N={
-  ar:{hero_title:'مطابخ العالم كلها<br>في <em>زاوية واحدة</em>',hero_sub:'من الكسكس المغربي إلى الراميان الياباني — آلاف الوصفات مع صور ومقاطع فيديو.',stat_recipes:'وصفة',stat_cuisines:'مطبخ',stat_videos:'فيديو',stat_langs:'لغات',nav_home:'🏠 الرئيسية',nav_world:'🌍 مطابخ العالم',nav_videos:'📱 فيديو المطابخ',nav_fav:'محفوظاتي',nav_signin:'دخول / تسجيل',search_placeholder:'بحث في مطابخ العالم...',dir:'rtl',lang_code:'ar'},
-  fr:{hero_title:'Les cuisines du monde<br>en <em>un seul endroit</em>',hero_sub:'Du couscous marocain au ramen japonais — des milliers de recettes avec photos et vidéos.',stat_recipes:'recettes',stat_cuisines:'cuisines',stat_videos:'vidéos',stat_langs:'langues',nav_home:'🏠 Accueil',nav_world:'🌍 Cuisines',nav_videos:'📱 Vidéos',nav_fav:'Mes favoris',nav_signin:'Connexion',search_placeholder:'Rechercher une recette...',dir:'ltr',lang_code:'fr'},
-  en:{hero_title:'World cuisines<br>in <em>one place</em>',hero_sub:'From Moroccan couscous to Japanese ramen — thousands of recipes with photos and videos.',stat_recipes:'recipes',stat_cuisines:'cuisines',stat_videos:'videos',stat_langs:'languages',nav_home:'🏠 Home',nav_world:'🌍 Cuisines',nav_videos:'📱 Videos',nav_fav:'My favorites',nav_signin:'Sign in',search_placeholder:'Search recipes...',dir:'ltr',lang_code:'en'},
-  es:{hero_title:'Las cocinas del mundo<br>en <em>un solo lugar</em>',hero_sub:'Del cuscús marroquí al ramen japonés — miles de recetas con fotos y videos.',stat_recipes:'recetas',stat_cuisines:'cocinas',stat_videos:'videos',stat_langs:'idiomas',nav_home:'🏠 Inicio',nav_world:'🌍 Cocinas',nav_videos:'📱 Videos',nav_fav:'Mis favoritos',nav_signin:'Iniciar sesión',search_placeholder:'Buscar receta...',dir:'ltr',lang_code:'es'},
-  pt:{hero_title:'As cozinhas do mundo<br>em <em>um só lugar</em>',hero_sub:'Do couscous marroquino ao ramen japonês — milhares de receitas com fotos e vídeos.',stat_recipes:'receitas',stat_cuisines:'cozinhas',stat_videos:'vídeos',stat_langs:'idiomas',nav_home:'🏠 Início',nav_world:'🌍 Cozinhas',nav_videos:'📱 Vídeos',nav_fav:'Meus favoritos',nav_signin:'Entrar',search_placeholder:'Pesquisar receita...',dir:'ltr',lang_code:'pt'},
-  it:{hero_title:'Le cucine del mondo<br>in <em>un solo posto</em>',hero_sub:'Dal couscous marocchino al ramen giapponese — migliaia di ricette con foto e video.',stat_recipes:'ricette',stat_cuisines:'cucine',stat_videos:'video',stat_langs:'lingue',nav_home:'🏠 Home',nav_world:'🌍 Cucine',nav_videos:'📱 Video',nav_fav:'I miei preferiti',nav_signin:'Accedi',search_placeholder:'Cerca ricetta...',dir:'ltr',lang_code:'it'},
-  zh:{hero_title:'世界各地的美食<br>尽在<em>一处</em>',hero_sub:'从摩洛哥古斯古斯到日本拉面——数千道配有图片和视频的食谱。',stat_recipes:'道食谱',stat_cuisines:'种美食',stat_videos:'个视频',stat_langs:'种语言',nav_home:'🏠 首页',nav_world:'🌍 各国美食',nav_videos:'📱 视频',nav_fav:'我的收藏',nav_signin:'登录',search_placeholder:'搜索食谱...',dir:'ltr',lang_code:'zh'},
-  ja:{hero_title:'世界の料理<br>すべて<em>一か所に</em>',hero_sub:'モロッコのクスクスから日本のラーメンまで — 何千ものレシピを写真・動画付きで。',stat_recipes:'レシピ',stat_cuisines:'料理',stat_videos:'動画',stat_langs:'言語',nav_home:'🏠 ホーム',nav_world:'🌍 料理',nav_videos:'📱 動画',nav_fav:'お気に入り',nav_signin:'ログイン',search_placeholder:'レシピを検索...',dir:'ltr',lang_code:'ja'},
+  ar:{hero_title:'مطابخ العالم كلها<br>في <em>زاوية واحدة</em>',hero_sub:'من الكسكس المغربي إلى الراميان الياباني — آلاف الوصفات مع صور ومقاطع فيديو.',stat_recipes:'وصفة',stat_cuisines:'مطبخ',stat_videos:'فيديو',stat_langs:'لغات',nav_home:'🏠 الرئيسية',nav_world:'🌍 مطابخ العالم',nav_videos:'📱 فيديو المطابخ',nav_fav:'محفوظاتي',nav_signin:'دخول / تسجيل',search_placeholder:'بحث في مطابخ العالم...',dir:'rtl',lang_code:'ar',cook_btn:'اطبخ ←',lbl_time:'⏱ الوقت',lbl_srv:'👥 أشخاص',lbl_diff:'📊 الصعوبة',lbl_rat:'تقييم',lbl_cal:'🔥 سعرة',lbl_home:'الرئيسية',lbl_ingr:'🧺 المكونات',lbl_steps:'👨‍🍳 طريقة التحضير',lbl_tips:'✨ نصائح الشيف',lbl_nutr:'📊 القيمة الغذائية (لكل حصة)',lbl_cal2:'سعرة',lbl_pro:'بروتين',lbl_carb:'كربوهيدرات',lbl_fat:'دهون',lbl_person:'شخص',lbl_share:'شاركي هذه الوصفة',lbl_related:'🍽️ وصفات مشابهة',lbl_toprated:'⭐ الأعلى تقييماً'},
+  fr:{hero_title:'Les cuisines du monde<br>en <em>un seul endroit</em>',hero_sub:'Du couscous marocain au ramen japonais — des milliers de recettes avec photos et vidéos.',stat_recipes:'recettes',stat_cuisines:'cuisines',stat_videos:'vidéos',stat_langs:'langues',nav_home:'🏠 Accueil',nav_world:'🌍 Cuisines',nav_videos:'📱 Vidéos',nav_fav:'Mes favoris',nav_signin:'Connexion',search_placeholder:'Rechercher une recette...',dir:'ltr',lang_code:'fr',cook_btn:'Cuisiner ←',lbl_time:'⏱ Temps',lbl_srv:'👥 Portions',lbl_diff:'📊 Difficulté',lbl_rat:'avis',lbl_cal:'🔥 Calories',lbl_home:'Accueil',lbl_ingr:'🧺 Ingrédients',lbl_steps:'👨‍🍳 Préparation',lbl_tips:'✨ Conseils du chef',lbl_nutr:'📊 Valeurs nutritionnelles (par portion)',lbl_cal2:'cal',lbl_pro:'Protéines',lbl_carb:'Glucides',lbl_fat:'Lipides',lbl_person:'pers.',lbl_share:'Partager cette recette',lbl_related:'🍽️ Recettes similaires',lbl_toprated:'⭐ Les mieux notées'},
+  en:{hero_title:'World cuisines<br>in <em>one place</em>',hero_sub:'From Moroccan couscous to Japanese ramen — thousands of recipes with photos and videos.',stat_recipes:'recipes',stat_cuisines:'cuisines',stat_videos:'videos',stat_langs:'languages',nav_home:'🏠 Home',nav_world:'🌍 Cuisines',nav_videos:'📱 Videos',nav_fav:'My favorites',nav_signin:'Sign in',search_placeholder:'Search recipes...',dir:'ltr',lang_code:'en',cook_btn:'Cook ←',lbl_time:'⏱ Time',lbl_srv:'👥 Servings',lbl_diff:'📊 Difficulty',lbl_rat:'reviews',lbl_cal:'🔥 Calories',lbl_home:'Home',lbl_ingr:'🧺 Ingredients',lbl_steps:'👨‍🍳 Instructions',lbl_tips:'✨ Chef\'s tips',lbl_nutr:'📊 Nutrition (per serving)',lbl_cal2:'kcal',lbl_pro:'Protein',lbl_carb:'Carbs',lbl_fat:'Fat',lbl_person:'serv.',lbl_share:'Share this recipe',lbl_related:'🍽️ Similar recipes',lbl_toprated:'⭐ Top rated'},
+  es:{hero_title:'Las cocinas del mundo<br>en <em>un solo lugar</em>',hero_sub:'Del cuscús marroquí al ramen japonés — miles de recetas con fotos y videos.',stat_recipes:'recetas',stat_cuisines:'cocinas',stat_videos:'videos',stat_langs:'idiomas',nav_home:'🏠 Inicio',nav_world:'🌍 Cocinas',nav_videos:'📱 Videos',nav_fav:'Mis favoritos',nav_signin:'Iniciar sesión',search_placeholder:'Buscar receta...',dir:'ltr',lang_code:'es',cook_btn:'Cocinar ←',lbl_time:'⏱ Tiempo',lbl_srv:'👥 Porciones',lbl_diff:'📊 Dificultad',lbl_rat:'reseñas',lbl_cal:'🔥 Calorías',lbl_home:'Inicio',lbl_ingr:'🧺 Ingredientes',lbl_steps:'👨‍🍳 Preparación',lbl_tips:'✨ Consejos del chef',lbl_nutr:'📊 Nutrición (por ración)',lbl_cal2:'kcal',lbl_pro:'Proteína',lbl_carb:'Carbos',lbl_fat:'Grasas',lbl_person:'rac.',lbl_share:'Compartir esta receta',lbl_related:'🍽️ Recetas similares',lbl_toprated:'⭐ Mejor valoradas'},
+  pt:{hero_title:'As cozinhas do mundo<br>em <em>um só lugar</em>',hero_sub:'Do couscous marroquino ao ramen japonês — milhares de receitas com fotos e vídeos.',stat_recipes:'receitas',stat_cuisines:'cozinhas',stat_videos:'vídeos',stat_langs:'idiomas',nav_home:'🏠 Início',nav_world:'🌍 Cozinhas',nav_videos:'📱 Vídeos',nav_fav:'Meus favoritos',nav_signin:'Entrar',search_placeholder:'Pesquisar receita...',dir:'ltr',lang_code:'pt',cook_btn:'Cozinhar ←',lbl_time:'⏱ Tempo',lbl_srv:'👥 Porções',lbl_diff:'📊 Dificuldade',lbl_rat:'avaliações',lbl_cal:'🔥 Calorias',lbl_home:'Início',lbl_ingr:'🧺 Ingredientes',lbl_steps:'👨‍🍳 Preparo',lbl_tips:'✨ Dicas do chef',lbl_nutr:'📊 Nutrição (por porção)',lbl_cal2:'kcal',lbl_pro:'Proteína',lbl_carb:'Carboidratos',lbl_fat:'Gorduras',lbl_person:'por.',lbl_share:'Partilhar receita',lbl_related:'🍽️ Receitas similares',lbl_toprated:'⭐ Mais bem avaliadas'},
+  it:{hero_title:'Le cucine del mondo<br>in <em>un solo posto</em>',hero_sub:'Dal couscous marocchino al ramen giapponese — migliaia di ricette con foto e video.',stat_recipes:'ricette',stat_cuisines:'cucine',stat_videos:'video',stat_langs:'lingue',nav_home:'🏠 Home',nav_world:'🌍 Cucine',nav_videos:'📱 Video',nav_fav:'I miei preferiti',nav_signin:'Accedi',search_placeholder:'Cerca ricetta...',dir:'ltr',lang_code:'it',cook_btn:'Cucina ←',lbl_time:'⏱ Tempo',lbl_srv:'👥 Porzioni',lbl_diff:'📊 Difficoltà',lbl_rat:'recensioni',lbl_cal:'🔥 Calorie',lbl_home:'Home',lbl_ingr:'🧺 Ingredienti',lbl_steps:'👨‍🍳 Preparazione',lbl_tips:'✨ Consigli dello chef',lbl_nutr:'📊 Valori nutrizionali (per porzione)',lbl_cal2:'kcal',lbl_pro:'Proteine',lbl_carb:'Carboidrati',lbl_fat:'Grassi',lbl_person:'por.',lbl_share:'Condividi questa ricetta',lbl_related:'🍽️ Ricette simili',lbl_toprated:'⭐ Più votate'},
+  zh:{hero_title:'世界各地的美食<br>尽在<em>一处</em>',hero_sub:'从摩洛哥古斯古斯到日本拉面——数千道配有图片和视频的食谱。',stat_recipes:'道食谱',stat_cuisines:'种美食',stat_videos:'个视频',stat_langs:'种语言',nav_home:'🏠 首页',nav_world:'🌍 各国美食',nav_videos:'📱 视频',nav_fav:'我的收藏',nav_signin:'登录',search_placeholder:'搜索食谱...',dir:'ltr',lang_code:'zh',cook_btn:'烹饪 ←',lbl_time:'⏱ 时间',lbl_srv:'👥 份数',lbl_diff:'📊 难度',lbl_rat:'评价',lbl_cal:'🔥 卡路里',lbl_home:'首页',lbl_ingr:'🧺 食材',lbl_steps:'👨‍🍳 做法',lbl_tips:'✨ 厨师技巧',lbl_nutr:'📊 营养成分（每份）',lbl_cal2:'千卡',lbl_pro:'蛋白质',lbl_carb:'碳水',lbl_fat:'脂肪',lbl_person:'份',lbl_share:'分享这个食谱',lbl_related:'🍽️ 相似食谱',lbl_toprated:'⭐ 评分最高'},
+  ja:{hero_title:'世界の料理<br>すべて<em>一か所に</em>',hero_sub:'モロッコのクスクスから日本のラーメンまで — 何千ものレシピを写真・動画付きで。',stat_recipes:'レシピ',stat_cuisines:'料理',stat_videos:'動画',stat_langs:'言語',nav_home:'🏠 ホーム',nav_world:'🌍 料理',nav_videos:'📱 動画',nav_fav:'お気に入り',nav_signin:'ログイン',search_placeholder:'レシピを検索...',dir:'ltr',lang_code:'ja',cook_btn:'料理する ←',lbl_time:'⏱ 時間',lbl_srv:'👥 人数',lbl_diff:'📊 難易度',lbl_rat:'レビュー',lbl_cal:'🔥 カロリー',lbl_home:'ホーム',lbl_ingr:'🧺 材料',lbl_steps:'👨‍🍳 作り方',lbl_tips:'✨ シェフのコツ',lbl_nutr:'📊 栄養成分（1人前）',lbl_cal2:'kcal',lbl_pro:'タンパク質',lbl_carb:'炭水化物',lbl_fat:'脂質',lbl_person:'人前',lbl_share:'このレシピをシェア',lbl_related:'🍽️ 似たレシピ',lbl_toprated:'⭐ 高評価'},
 };
 let _lang='ar';
 function t(k){return(I18N[_lang]||I18N.ar)[k]||k;}
@@ -3858,91 +3967,69 @@ function renderRestoDetail(r){
 }
 
 // ═══════════════════════════════════════════════════
-// SOCIAL LOGIN (Google / Facebook)
+// SOCIAL LOGIN (Google / Facebook via Supabase OAuth)
 // ═══════════════════════════════════════════════════
 function loginWithGoogle(){
-  // Show inline Google email form
-  const panel=document.getElementById('panel-login');
-  if(!panel) return;
-  const existing=document.getElementById('google-quick-form');
-  if(existing){existing.remove();return;}
-  const div=document.createElement('div');
-  div.id='google-quick-form';
-  div.style.cssText='background:rgba(66,133,244,.08);border:1px solid rgba(66,133,244,.3);border-radius:12px;padding:14px;margin-bottom:14px;';
-  div.innerHTML=`
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-      <svg width="18" height="18" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.08 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-3.58-13.47-8.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
-      <span style="font-size:13px;font-weight:700;color:#4285F4">تسجيل الدخول بـ Google</span>
-    </div>
-    <input id="google-email-input" type="email" placeholder="أدخل بريدك الإلكتروني Google"
-      style="width:100%;padding:9px 12px;border:1px solid var(--b1);border-radius:8px;font-family:var(--fn);font-size:13px;background:var(--ink1);color:var(--t0);box-sizing:border-box;margin-bottom:8px"
-      onkeydown="if(event.key==='Enter')doGoogleLogin()">
-    <button onclick="doGoogleLogin()" style="width:100%;padding:9px;background:#4285F4;color:#fff;border:none;border-radius:8px;font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer">متابعة مع Google →</button>
-  `;
-  panel.insertBefore(div, panel.firstChild);
-  document.getElementById('google-email-input').focus();
-}
-
-function doGoogleLogin(){
-  const email=(document.getElementById('google-email-input')||{}).value?.trim().toLowerCase();
-  if(!email||!email.includes('@')){showToast('أدخل بريدك الإلكتروني Google');return;}
-  const users=getUsers();
-  let user=users.find(u=>u.email===email);
-  if(!user){
-    const name=email.split('@')[0].replace(/[._-]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-    users.push({name,email,pw:'__google__',provider:'google',joined:new Date().toISOString().slice(0,10)});
-    saveUsers(users);
-    user={name,email};
-    showToast(`مرحباً ${name}! 🎉 تم إنشاء حسابك عبر Google`);
+  if(_sb){
+    closeAuth();
+    showToast('جارٍ التوجيه إلى Google… 🔄');
+    _sb.auth.signInWithOAuth({
+      provider:'google',
+      options:{redirectTo:location.origin}
+    }).then(({error})=>{
+      if(error) showToast('خطأ في تسجيل الدخول: '+error.message);
+    });
   } else {
-    showToast(`أهلاً بعودتك ${user.name}! 👋`);
+    // Fallback: simple email form
+    _showEmailLoginForm('google','#4285F4','Google','doGoogleLoginFallback');
   }
-  const anonFavs=JSON.parse(localStorage.getItem('mw360_favs')||'[]');
-  if(anonFavs.length){
-    const key=`mw360_favs_${email}`;
-    const existing=JSON.parse(localStorage.getItem(key)||'[]');
-    localStorage.setItem(key,JSON.stringify([...new Set([...existing,...anonFavs])]));
-  }
-  setSession({name:user.name,email});
-  closeAuth();
-  updateFavCount();
-  const gf=document.getElementById('google-quick-form');
-  if(gf) gf.remove();
 }
-
 function loginWithFacebook(){
-  const panel=document.getElementById('panel-login');
-  if(!panel) return;
-  const existing=document.getElementById('fb-quick-form');
-  if(existing){existing.remove();return;}
-  const div=document.createElement('div');
-  div.id='fb-quick-form';
-  div.style.cssText='background:rgba(24,119,242,.08);border:1px solid rgba(24,119,242,.3);border-radius:12px;padding:14px;margin-bottom:14px;';
-  div.innerHTML=`
-    <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-      <span style="font-size:13px;font-weight:700;color:#1877F2">تسجيل الدخول بـ Facebook</span>
-    </div>
-    <input id="fb-email-input" type="email" placeholder="أدخل بريدك الإلكتروني Facebook"
-      style="width:100%;padding:9px 12px;border:1px solid var(--b1);border-radius:8px;font-family:var(--fn);font-size:13px;background:var(--ink1);color:var(--t0);box-sizing:border-box;margin-bottom:8px"
-      onkeydown="if(event.key==='Enter')doFacebookLogin()">
-    <button onclick="doFacebookLogin()" style="width:100%;padding:9px;background:#1877F2;color:#fff;border:none;border-radius:8px;font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer">متابعة مع Facebook →</button>
-  `;
-  panel.insertBefore(div, panel.firstChild);
-  document.getElementById('fb-email-input').focus();
+  if(_sb){
+    closeAuth();
+    showToast('جارٍ التوجيه إلى Facebook… 🔄');
+    _sb.auth.signInWithOAuth({
+      provider:'facebook',
+      options:{redirectTo:location.origin}
+    }).then(({error})=>{
+      if(error) showToast('خطأ في تسجيل الدخول: '+error.message);
+    });
+  } else {
+    _showEmailLoginForm('facebook','#1877F2','Facebook','doFacebookLoginFallback');
+  }
 }
 
-function doFacebookLogin(){
-  const email=(document.getElementById('fb-email-input')||{}).value?.trim().toLowerCase();
-  if(!email||!email.includes('@')){showToast('أدخل بريدك الإلكتروني Facebook');return;}
+// Fallback inline form (used only if Supabase SDK fails to load)
+function _showEmailLoginForm(id,color,label,handler){
+  const panel=document.getElementById('panel-login');
+  if(!panel) return;
+  const existing=document.getElementById(`${id}-quick-form`);
+  if(existing){existing.remove();return;}
+  const div=document.createElement('div');
+  div.id=`${id}-quick-form`;
+  div.style.cssText=`background:${color}14;border:1px solid ${color}50;border-radius:12px;padding:14px;margin-bottom:14px;`;
+  div.innerHTML=`
+    <div style="font-size:13px;font-weight:700;color:${color};margin-bottom:10px">تسجيل الدخول بـ ${label}</div>
+    <input id="${id}-email-input" type="email" placeholder="بريدك الإلكتروني"
+      style="width:100%;padding:9px 12px;border:1px solid var(--b1);border-radius:8px;font-family:var(--fn);font-size:13px;background:var(--ink1);color:var(--t0);box-sizing:border-box;margin-bottom:8px"
+      onkeydown="if(event.key==='Enter')${handler}('${id}')">
+    <button onclick="${handler}('${id}')" style="width:100%;padding:9px;background:${color};color:#fff;border:none;border-radius:8px;font-family:var(--fn);font-size:13px;font-weight:700;cursor:pointer">متابعة مع ${label} →</button>`;
+  panel.insertBefore(div,panel.firstChild);
+  document.getElementById(`${id}-email-input`).focus();
+}
+function doGoogleLoginFallback(id='google'){_doSocialFallback(id);}
+function doFacebookLoginFallback(id='facebook'){_doSocialFallback(id);}
+function _doSocialFallback(id){
+  const email=(document.getElementById(`${id}-email-input`)||{}).value?.trim().toLowerCase();
+  if(!email||!email.includes('@')){showToast('أدخل بريدك الإلكتروني');return;}
   const users=getUsers();
   let user=users.find(u=>u.email===email);
   if(!user){
     const name=email.split('@')[0].replace(/[._-]/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-    users.push({name,email,pw:'__facebook__',provider:'facebook',joined:new Date().toISOString().slice(0,10)});
+    users.push({name,email,pw:'__'+id+'__',provider:id,joined:new Date().toISOString().slice(0,10)});
     saveUsers(users);
     user={name,email};
-    showToast(`مرحباً ${name}! 🎉 تم إنشاء حسابك عبر Facebook`);
+    showToast(`مرحباً ${name}! 🎉`);
   } else {
     showToast(`أهلاً بعودتك ${user.name}! 👋`);
   }
@@ -3951,12 +4038,12 @@ function doFacebookLogin(){
     const key=`mw360_favs_${email}`;
     const existing=JSON.parse(localStorage.getItem(key)||'[]');
     localStorage.setItem(key,JSON.stringify([...new Set([...existing,...anonFavs])]));
+    localStorage.removeItem('mw360_favs');
   }
-  setSession({name:user.name,email});
+  setSession({name:user.name,email,provider:id});
   closeAuth();
   updateFavCount();
-  const ff=document.getElementById('fb-quick-form');
-  if(ff) ff.remove();
+  document.getElementById(`${id}-quick-form`)?.remove();
 }
 
 // ═══════════════════════════════════════════════════
