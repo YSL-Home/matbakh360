@@ -106,6 +106,11 @@ out ${max*2} body;`;
           .sort((a,b)=>Object.keys(b.tags||{}).length-Object.keys(a.tags||{}).length)
           .slice(0,max);
         console.log(`  📍 OSM [${mirror.split('/')[2]}]: ${elements.length} restaurants (${city.en})`);
+        // Si 0 résultats malgré HTTP 200 → l'IP est probablement bloquée silencieusement
+        if(elements.length===0){
+          console.warn(`  ⚠️  0 résultats (IP peut-être bloquée), on essaie le prochain miroir`);
+          break; // sort du loop attempt, essaie le prochain miroir
+        }
         return elements;
       }catch(e){
         console.error(`  ⚠️  ${mirror.split('/')[2]} tentative ${attempt}/2:`,e.message.substring(0,60));
@@ -114,8 +119,70 @@ out ${max*2} body;`;
     }
     await sleep(2000); // pause entre miroirs
   }
-  console.error(`  ✗ Tous les miroirs Overpass ont échoué pour ${city.en}`);
-  return [];
+  console.error(`  ✗ Tous les miroirs Overpass ont échoué pour ${city.en} — fallback Claude`);
+  return null; // null = déclenche le fallback Claude
+}
+
+// ── Fallback Claude — génère restaurants réalistes si OSM échoue ─────
+async function generateRestaurantsClaude(city, max){
+  if(!API_KEY){ console.error('  ✗ Pas de clé API — impossible de générer via Claude'); return []; }
+  console.log(`  🤖 Génération via Claude (${max} restaurants pour ${city.en})...`);
+  const BATCH=25;
+  const allRestos=[];
+  const ts=Date.now();
+  for(let i=0;i<max;i+=BATCH){
+    const n=Math.min(BATCH,max-i);
+    try{
+      const raw=await callClaude(
+        `Génère ${n} vrais restaurants (noms réels ou très plausibles) à ${city.en} (${city.ar}).
+Pour chaque restaurant, fournis:
+- name: nom original (anglais/local)
+- nameAr: nom en arabe
+- cuisine: type de cuisine (1 mot anglais: moroccan/french/italian/japanese/arabic/lebanese/turkish/indian/chinese/thai/mexican/american/spanish/greek/seafood/vegan/etc)
+- address: vraie rue ou quartier connu de ${city.en}
+- price: $ ou $$ ou $$$
+- lat: latitude réelle dans ${city.en} (variation autour de ${city.lat})
+- lng: longitude réelle dans ${city.en} (variation autour de ${city.lng})
+- desc: description arabe appétissante 2-3 phrases
+- tags: 3 mots-clés arabes
+
+Retourne UNIQUEMENT un tableau JSON valide de ${n} objets:
+[{"name":"...","nameAr":"...","cuisine":"...","address":"...","price":"$$","lat":${city.lat},"lng":${city.lng},"desc":"...","tags":["...","...","..."]}]
+JSON uniquement, données réalistes.`,
+        8000
+      );
+      const data=safeJSON(raw);
+      data.forEach((r,idx)=>{
+        const cuisine=(r.cuisine||'').toLowerCase();
+        let photo=CUISINE_PHOTO.default;
+        for(const[k,v]of Object.entries(CUISINE_PHOTO)) if(cuisine.includes(k)){photo=v;break;}
+        const id=`rst_ai_${city.en.replace(/\s+/g,'')}_${i+idx}_${ts}`;
+        const h=[...id].reduce((a,c)=>a+c.charCodeAt(0),0);
+        allRestos.push({
+          id, name:r.name, nameAr:r.nameAr||r.name, nameEn:r.name,
+          city:city.ar, cityEn:city.en, country:city.flag,
+          cuisine:r.cuisine||'restaurant',
+          cusines:[r.cuisine||'restaurant'],
+          rating:Math.round((3.8+(h%12)/10)*10)/10,
+          rv:50+(h%4950),
+          price:r.price||'$$',
+          address:r.address||city.en,
+          img:`https://images.unsplash.com/${photo}?w=600&q=75`,
+          logo:null, tags:r.tags||[r.cuisine||'مطعم'],
+          ig:'',tt:'',website:'',
+          desc:r.desc||'',hours:'',phone:'',
+          lat:r.lat||city.lat+(Math.random()-.5)*.1,
+          lng:r.lng||city.lng+(Math.random()-.5)*.1,
+          vids:[],source:'ai',
+        });
+      });
+      console.log(`    ✓ Généré ${i+1}–${Math.min(i+BATCH,max)}/${max}`);
+    }catch(e){
+      console.error('    ✗ Génération lot:',e.message.substring(0,80));
+    }
+    if(i+BATCH<max) await sleep(1500);
+  }
+  return allRestos;
 }
 
 // ── Claude Haiku — enrichissement arabe ───────────────────────────────
@@ -216,27 +283,35 @@ const date=new Date().toISOString().split('T')[0];
 let totalAdded=0;
 
 for(const city of cities){
-  console.log(`\n═══ 🏙️  ${city.ar} (${city.en}) — OpenStreetMap ═══`);
+  console.log(`\n═══ 🏙️  ${city.ar} (${city.en}) ═══`);
 
-  // 1. Vrais restaurants OSM
+  // 1. Tentative OSM (retourne null si tous les miroirs échouent/vides)
   const osmEls=await fetchOSMRestaurants(city,MAX_PER_CITY);
-  if(!osmEls.length){
-    console.log(`  ⚠️  Aucun restaurant OSM pour ${city.en}`);
-    if(cities.indexOf(city)<cities.length-1) await sleep(3000);
-    continue;
+  let restos;
+  let source='osm';
+
+  if(osmEls===null || osmEls.length===0){
+    // 2. Fallback : génération via Claude
+    console.log(`  🔀 OSM indisponible → génération Claude (${MAX_PER_CITY} restaurants)...`);
+    restos=await generateRestaurantsClaude(city,MAX_PER_CITY);
+    source='ai';
+    if(!restos.length){
+      console.log(`  ✗ Aucun restaurant généré pour ${city.en}`);
+      if(cities.indexOf(city)<cities.length-1) await sleep(3000);
+      continue;
+    }
+  } else {
+    // 2b. OSM OK → conversion + enrichissement arabe
+    restos=osmEls.map((el,idx)=>osmToResto(el,city,idx));
+    console.log(`  🍽️  ${restos.length} restaurants OSM convertis`);
+    if(API_KEY){
+      console.log(`  🤖 Enrichissement arabe (${Math.ceil(restos.length/20)} lots)...`);
+      restos=await enrichArabic(restos,city);
+    }
   }
 
-  // 2. Conversion OSM → format site
-  let restos=osmEls.map((el,idx)=>osmToResto(el,city,idx));
-  console.log(`  🍽️  ${restos.length} restaurants convertis`);
-
-  // 3. Enrichissement descriptions arabes via Claude
-  if(API_KEY){
-    console.log(`  🤖 Enrichissement arabe (${Math.ceil(restos.length/20)} lots)...`);
-    restos=await enrichArabic(restos,city);
-  }
-
-  // 4. Injection dans index.html
+  // 3. Injection dans index.html
+  const srcLabel=source==='osm'?`OSM ${date}`:`Claude ${date}`;
   const entries=restos.map(r=>'  '+JSON.stringify(r)).join(',\n');
   if(!/\/\/ ═══ INFLUENCER VIDEOS/.test(html)){
     console.error('  ✗ Marqueur injection introuvable');
@@ -244,7 +319,7 @@ for(const city of cities){
   }
   html=html.replace(
     /(\s*\/\/ ═══ INFLUENCER VIDEOS)/,
-    `\n  // ─── ${city.ar} RÉEL (OSM ${date}) — ${restos.length} restaurants ───\n${entries},\n$1`
+    `\n  // ─── ${city.ar} (${srcLabel}) — ${restos.length} restaurants ───\n${entries},\n$1`
   );
   totalAdded+=restos.length;
   console.log(`  ✅ ${restos.length} vrais restaurants injectés (${city.ar})`);
