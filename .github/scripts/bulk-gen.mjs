@@ -313,13 +313,18 @@ for(const city of cities){
   // 3. Injection dans index.html
   const srcLabel=source==='osm'?`OSM ${date}`:`Claude ${date}`;
   const entries=restos.map(r=>'  '+JSON.stringify(r)).join(',\n');
-  if(!/\/\/ ═══ INFLUENCER VIDEOS/.test(html)){
+  // Injection DANS l'array RESTAURANTS, juste avant le séparateur INFLUENCER VIDEOS
+  // Le fichier a : ];\n\n// ═══...═══\n// INFLUENCER VIDEOS
+  const MARKER_RE=/(\];\n\n\/\/ ═+\n\/\/ INFLUENCER VIDEOS)/;
+  if(!MARKER_RE.test(html)){
     console.error('  ✗ Marqueur injection introuvable');
+    const idx=html.indexOf('INFLUENCER VIDEOS');
+    if(idx>0) console.error('  Contexte:', JSON.stringify(html.substring(idx-60,idx+20)));
     continue;
   }
   html=html.replace(
-    /(\s*\/\/ ═══ INFLUENCER VIDEOS)/,
-    `\n  // ─── ${city.ar} (${srcLabel}) — ${restos.length} restaurants ───\n${entries},\n$1`
+    MARKER_RE,
+    `,\n  // ─── ${city.ar} (${srcLabel}) — ${restos.length} restaurants ───\n${entries}\n$1`
   );
   totalAdded+=restos.length;
   console.log(`  ✅ ${restos.length} vrais restaurants injectés (${city.ar})`);
