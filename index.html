@@ -4459,50 +4459,51 @@ function rTr(r,field){
 // RECIPE IMAGES (better food photography)
 // ═══════════════════════════════════════════════════
 const RECIPE_IMGS={
-  r01:'https://images.unsplash.com/photo-1596723427394-4bc6d407dee1?w=500&q=85',  // couscous marocain
-  r02:'https://images.unsplash.com/photo-1567982047351-76b6f93e38ee?w=500&q=85',  // tagine poulet
-  r03:'https://images.unsplash.com/photo-1663721605989-3bdd2c994190?w=500&q=85',  // carbonara
-  r04:'https://images.unsplash.com/photo-1648389353336-79fb2f53f86f?w=500&q=85',  // ramen japonais
-  r05:'https://images.unsplash.com/photo-1512427691650-15fcce1dc7b1?w=500&q=85',  // tacos mexicains
+  // ── TheMealDB — images du vrai plat, vérifiées ──────────────────────
+  r01:'https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg',  // couscous marocain ✓
+  r02:'https://www.themealdb.com/images/media/meals/yuwtuu1511295751.jpg',  // tagine agneau ✓
+  r03:'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',  // carbonara ✓
+  r04:'https://www.themealdb.com/images/media/meals/ip5xtp1769779958.jpg',  // ramen ✓
+  r05:'https://www.themealdb.com/images/media/meals/uvuyxu1503067369.jpg',  // tacos ✓
   r06:'https://images.unsplash.com/photo-1603894584373-5ac82b2ae398?w=500&q=85',  // butter chicken
-  r07:'https://images.unsplash.com/photo-1548538931-b47653628cdc?w=500&q=85',     // croissant
-  r08:'https://images.unsplash.com/photo-1591602375968-7addec8a83ff?w=500&q=85',  // knafeh/kunafa
-  r09:'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=500&q=85',  // bibimbap coréen
-  r10:'https://images.unsplash.com/photo-1608732221156-40cb3ed65b9b?w=500&q=85',  // brownie chocolat
-  r11:'https://images.unsplash.com/photo-1589442305595-62647c1514f9?w=500&q=85',  // buddha bowl
-  r12:'https://images.unsplash.com/photo-1515443961218-a51367888e4b?w=500&q=85',  // paella fruits de mer
-  r13:'https://images.unsplash.com/photo-1584959370323-4bb56701e34d?w=500&q=85',  // burger
-  r14:'https://images.unsplash.com/photo-1628430043175-0e8820df47c3?w=500&q=85',  // tom yum thaï
-  r15:'https://images.unsplash.com/photo-1571245836612-09ae71811d7c?w=500&q=85',  // pancakes
-  r16:'https://images.unsplash.com/photo-1574756358916-ebdae0a5a437?w=500&q=85',  // koshari égyptien
-  r23:'https://images.unsplash.com/photo-1588027781880-2c213c365001?w=500&q=85',  // bastilla marocaine
-  r24:'https://images.unsplash.com/photo-1601303821057-435316fe166e?w=500&q=85',  // moussaka grecque
-  r25:'https://images.unsplash.com/photo-1701480253822-1842236c9a97?w=500&q=85',  // pho vietnamien
-  r26:'https://images.unsplash.com/photo-1669018558689-3c7352933545?w=500&q=85',  // qatayef ramadan
-  r27:'https://images.unsplash.com/photo-1604086031851-42eeca7e9504?w=500&q=85',  // saumon grillé
-  r28:'https://images.unsplash.com/photo-1677340913366-c41445815735?w=500&q=85',  // baguette française
-  r29:'https://images.unsplash.com/photo-1728414862776-9c96320e5762?w=500&q=85',  // kabsa saoudien
-  r30:'https://images.unsplash.com/photo-1623428187425-873f16e10554?w=500&q=85',  // quinoa avocado bowl
-  r31:'https://images.unsplash.com/photo-1677889173788-57b871df7b8a?w=500&q=85',  // aubergine au four
-  r32:'https://images.unsplash.com/photo-1730082460730-573793ec7c8f?w=500&q=85',  // doner kebab turc
-  r33:'https://images.unsplash.com/photo-1589047133523-6c254bea9a35?w=500&q=85',  // dumplings chinois
-  r34:'https://images.unsplash.com/photo-1632952836920-275bac1d5f29?w=500&q=85',  // churrasco brésilien
-  r35:'https://images.unsplash.com/photo-1742198558082-dcfb5198ccc4?w=500&q=85',  // empanadas
-  r36:'https://images.unsplash.com/photo-1707269714960-320c5d6f47b7?w=500&q=85',  // nasi goreng
-  r37:'https://images.unsplash.com/photo-1765338915553-6e02fe63ff4f?w=500&q=85',  // doro wat éthiopien
-  r38:'https://images.unsplash.com/photo-1640346060848-ad6921833885?w=500&q=85',  // schnitzel
-  r39:'https://images.unsplash.com/photo-1664993101841-036f189719b6?w=500&q=85',  // jollof rice
-  r40:'https://images.unsplash.com/photo-1687182845783-dc091d25bcc9?w=500&q=85',  // pastéis de nata
-  r41:'https://images.unsplash.com/photo-1603220026645-e0fdf221b1e8?w=500&q=85',  // pasta rapide
-  r42:'https://images.unsplash.com/photo-1659275798237-c46d251979bc?w=500&q=85',  // khachapuri géorgien
-  r43:'https://images.unsplash.com/photo-1706599760498-125a3ea32f85?w=500&q=85',  // injera éthiopien
-  r44:'https://images.unsplash.com/photo-1761314036959-42fa6eac59db?w=500&q=85',  // ceviche péruvien
-  r45:'https://images.unsplash.com/photo-1648726443433-d5a62ba13863?w=500&q=85',  // buuz mongol (dumplings)
-  r46:'https://images.unsplash.com/photo-1665332195309-9d75071138f0?w=500&q=85',  // thiéboudienne sénégalais
-  r47:'https://images.unsplash.com/photo-1769254870299-338bfd99aabd?w=500&q=85',  // salteñas boliviennes
-  r48:'https://images.unsplash.com/photo-1653982051905-d525e8482e69?w=500&q=85',  // plov ouzbek
-  r49:'https://images.unsplash.com/photo-1654155291968-9e752558a268?w=500&q=85',  // adobo philippin
-  r50:'https://images.unsplash.com/photo-1630492834324-72fd98bd5cd0?w=500&q=85',  // fattoush libanais
+  r07:'https://www.themealdb.com/images/media/meals/7mxnzz1593350801.jpg',  // croissant ✓
+  r08:'https://www.themealdb.com/images/media/meals/yh3sg71763741307.jpg',  // kunafa ✓
+  r09:'https://images.unsplash.com/photo-1590301157890-4810ed352733?w=500&q=85',  // bibimbap
+  r10:'https://www.themealdb.com/images/media/meals/yypvst1511386427.jpg',  // brownie ✓
+  r11:'https://www.themealdb.com/images/media/meals/k29viq1585565980.jpg',  // quinoa bowl ✓
+  r12:'https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg',  // paella ✓
+  r13:'https://www.themealdb.com/images/media/meals/lgmnff1763789847.jpg',  // burger ✓
+  r14:'https://www.themealdb.com/images/media/meals/l50vz41763422681.jpg',  // tom yum ✓
+  r15:'https://www.themealdb.com/images/media/meals/rwuyqx1511383174.jpg',  // pancakes ✓
+  r16:'https://www.themealdb.com/images/media/meals/4er7mj1598733193.jpg',  // koshari ✓
+  r23:'https://images.unsplash.com/photo-1603496987351-f84a3ba5ec85?w=500&q=85',  // bastilla marocaine
+  r24:'https://www.themealdb.com/images/media/meals/ctg8jd1585563097.jpg',  // moussaka grecque ✓
+  r25:'https://www.themealdb.com/images/media/meals/pbzcrx1763765096.jpg',  // pho vietnamien ✓
+  r26:'https://images.unsplash.com/photo-1597524305544-cd821476715f?w=500&q=85',  // qatayef ramadan
+  r27:'https://www.themealdb.com/images/media/meals/ikizdm1763760862.jpg',  // saumon grillé ✓
+  r28:'https://images.unsplash.com/photo-1728670212431-ac192413f4b1?w=500&q=85',  // baguette française
+  r29:'https://images.unsplash.com/photo-1603496987674-79600a000f55?w=500&q=85',  // kabsa saoudien
+  r30:'https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=500&q=85',  // quinoa avocado
+  r31:'https://images.unsplash.com/photo-1620021874347-c53a63db3e8a?w=500&q=85',  // aubergine moussaka
+  r32:'https://images.unsplash.com/photo-1778168199427-4e839943d20f?w=500&q=85',  // doner kebab
+  r33:'https://www.themealdb.com/images/media/meals/sfahy01763752319.jpg',  // dumplings chinois ✓
+  r34:'https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?w=500&q=85',  // churrasco brésilien
+  r35:'https://www.themealdb.com/images/media/meals/q99te31763075494.jpg',  // empanadas ✓
+  r36:'https://images.unsplash.com/photo-1647093953000-9065ed6f85ef?w=500&q=85',  // nasi goreng
+  r37:'https://images.unsplash.com/photo-1765338915553-6e02fe63ff4f?w=500&q=85',  // doro wat
+  r38:'https://images.unsplash.com/photo-1599921841143-819065a55cc6?w=500&q=85',  // schnitzel
+  r39:'https://images.unsplash.com/photo-1598932895748-f80f2a65c3b5?w=500&q=85',  // jollof rice
+  r40:'https://images.unsplash.com/photo-1591107576521-87091dc07797?w=500&q=85',  // pastéis de nata
+  r41:'https://www.themealdb.com/images/media/meals/wvqpwt1468339226.jpg',  // pasta ✓
+  r42:'https://images.unsplash.com/photo-1597566360895-5d93e580554e?w=500&q=85',  // khachapuri
+  r43:'https://images.unsplash.com/photo-1731703953437-36c375c2c38a?w=500&q=85',  // injera
+  r44:'https://images.unsplash.com/photo-1611262359546-64e2822b2ab5?w=500&q=85',  // ceviche
+  r45:'https://images.unsplash.com/photo-1589047133481-02b4a5327d89?w=500&q=85',  // buuz dumplings
+  r46:'https://images.unsplash.com/photo-1725393325387-07f0d4951528?w=500&q=85',  // thiéboudienne
+  r47:'https://images.unsplash.com/photo-1591538001662-0d5a25234305?w=500&q=85',  // salteñas
+  r48:'https://www.themealdb.com/images/media/meals/kos9av1699014767.jpg',  // plov ouzbek ✓
+  r49:'https://www.themealdb.com/images/media/meals/y7h0lq1683208991.jpg',  // adobo philippin ✓
+  r50:'https://www.themealdb.com/images/media/meals/gpon5u1763801180.jpg',  // hummus libanais ✓
 };
 
 // ═══════════════════════════════════════════════════
