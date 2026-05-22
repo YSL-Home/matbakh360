@@ -1,0 +1,58 @@
+name: "🍽️ Bulk Recettes — Claude Haiku × 500/région"
+
+on:
+  workflow_dispatch:
+    inputs:
+      target_region:
+        description: "Région en arabe (ex: عربي) ou anglais (ex: Arabic) — vide = toutes"
+        required: false
+        default: ""
+      count:
+        description: "Nombre de recettes par région"
+        required: false
+        default: "500"
+      batch:
+        description: "Recettes par appel Claude (max 25)"
+        required: false
+        default: "20"
+
+jobs:
+  bulk-recipes:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 360   # 6h max — les grandes régions prennent du temps
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Generate recipes via Claude Haiku
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TARGET_REGION: ${{ github.event.inputs.target_region }}
+          COUNT:         ${{ github.event.inputs.count }}
+          BATCH:         ${{ github.event.inputs.batch }}
+        run: node .github/scripts/bulk-recipes.mjs
+
+      - name: Commit and push
+        run: |
+          git config user.name "Matbakh360 RecipesBot"
+          git config user.email "bot@matbakh360.com"
+          git add index.html
+          if git diff --staged --quiet; then
+            echo "No changes to commit"
+          else
+            REGION="${{ github.event.inputs.target_region }}"
+            LABEL="${REGION:-toutes les régions}"
+            COUNT="${{ github.event.inputs.count }}"
+            git commit -m "🍽️ Recettes bulk: $LABEL × $COUNT — $(date +'%Y-%m-%d')"
+            git push
+          fi
