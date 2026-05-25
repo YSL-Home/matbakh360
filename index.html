@@ -487,6 +487,11 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   .nav{padding:0 10px;gap:6px;}
 }
 
+/* ══════ LOAD MORE ══════ */
+.load-more-btn{display:block;margin:24px auto 8px;padding:12px 36px;background:var(--acc);color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;}
+.load-more-btn:hover{opacity:.85;}
+.load-more-info{text-align:center;color:var(--t2);font-size:13px;margin-top:6px;}
+
 /* ══════ AD SLOTS ══════ */
 .ad-slot{text-align:center;padding:14px 0;min-height:90px;display:flex;align-items:center;justify-content:center;}
 .ad-slot ins{display:block;width:100%;}
@@ -2535,7 +2540,8 @@ function renderWorldPage(filter, el){
       : RECIPES.filter(r=>r.r===filter||r.cat===filter);
     const title=cuisine?`${cuisine.f} ${cuisine.n}`:filter;
     body.innerHTML=`<div class="sh" style="margin-top:20px"><h2>${title}</h2><div class="rl"></div><span class="bd">${recs.length} وصفة</span></div>
-    <div class="ga">${recs.length?recs.map(r=>rcCard(r)).join(''):'<div class="no-res">لا توجد وصفات بعد في هذه الفئة</div>'}</div>`;
+    <div class="ga" id="world-filter-grid">${recs.length?'':'<div class="no-res">لا توجد وصفات بعد في هذه الفئة</div>'}</div>`;
+    if(recs.length) _initPaged('world-'+filter, recs, 'world-filter-grid');
   }
 }
 
@@ -2850,6 +2856,43 @@ document.getElementById('vm').addEventListener('click',e=>{if(e.target.id==='vm'
 // ═══════════════════════════════════════════════════
 // SEARCH
 // ═══════════════════════════════════════════════════
+// ── Pagination "Load More" ─────────────────────────────────────────────────
+const PAGE_SIZE = 24;
+let _pgState = {}; // {key: {recs, page, gridId}}
+
+function _renderPage(key){
+  const s = _pgState[key];
+  if(!s) return;
+  const {recs, page, gridId} = s;
+  const slice = recs.slice(0, page * PAGE_SIZE);
+  const grid = document.getElementById(gridId);
+  if(!grid) return;
+  grid.innerHTML = slice.map(r => rcCard(r)).join('');
+  // Load more button
+  const btnId = `lm-${key}`;
+  const existBtn = document.getElementById(btnId);
+  if(existBtn) existBtn.remove();
+  if(slice.length < recs.length){
+    const rem = recs.length - slice.length;
+    const btn = document.createElement('div');
+    btn.innerHTML = `<button id="${btnId}" class="load-more-btn" onclick="_loadMore('${key}')">
+      تحميل المزيد ↓</button>
+      <div class="load-more-info">${slice.length} / ${recs.length} — ${rem} متبقٍ</div>`;
+    grid.after(btn);
+  }
+}
+
+function _loadMore(key){
+  if(!_pgState[key]) return;
+  _pgState[key].page++;
+  _renderPage(key);
+}
+
+function _initPaged(key, recs, gridId){
+  _pgState[key] = {recs, page:1, gridId};
+  _renderPage(key);
+}
+
 function doSearch(q){
   if(!q||!q.trim()) return;
   q=q.trim();
@@ -2870,9 +2913,12 @@ function doSearch(q){
   });
   history.pushState({page:'search',q},'',`/recherche?q=${encodeURIComponent(q)}`);
   document.getElementById('s-lbl').innerHTML=`<strong>${q}</strong> — ${res.length} نتيجة / résultats`;
-  document.getElementById('s-grid').innerHTML=res.length
-    ? res.map(r=>rcCard(r)).join('')
-    : `<div class="no-res" style="grid-column:span 4"><div style="font-size:48px;margin-bottom:12px">🔍</div><div>لا نتائج لـ "${q}" — aucun résultat pour "${q}"</div></div>`;
+  if(!res.length){
+    document.getElementById('s-grid').innerHTML=`<div class="no-res" style="grid-column:span 4"><div style="font-size:48px;margin-bottom:12px">🔍</div><div>لا نتائج لـ "${q}" — aucun résultat pour "${q}"</div></div>`;
+  } else {
+    document.getElementById('s-grid').innerHTML='';
+    _initPaged('search', res, 's-grid');
+  }
   gp('search',false);
 }
 
