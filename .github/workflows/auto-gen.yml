@@ -54,15 +54,18 @@ jobs:
           BATCH: "25"
         run: node .github/scripts/bulk-gen-v2.mjs
 
+      - name: "🗺️ Sitemap + robots.txt"
+        run: node .github/scripts/gen-sitemap.mjs
+
       - name: "📦 Commit & Push"
         run: |
           git config user.name  "Matbakh360 Bot"
           git config user.email "bot@matbakh360.com"
-          git add index.html
+          git add index.html sitemap.xml robots.txt
           if git diff --staged --quiet; then
             echo "ℹ️ Rien à committer"
           else
             DATE=$(date +'%Y-%m-%d %H:%M')
-            git commit -m "🤖 Auto-gen ${DATE} — recettes+restos+vidéos"
+            git commit -m "🤖 Auto-gen ${DATE} — recettes+restos+vidéos+sitemap"
             git push
           fi
