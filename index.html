@@ -459,20 +459,32 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   .auth-box{border-radius:18px;}
 }
 @media(max-width:480px){
+  body{padding-bottom:66px;}
   .nav-links{display:none;}
-  .nav-search{min-width:150px;}
+  .nav-search{min-width:0;flex:1;}
   .vf-grid{column-count:1;}
   .g4,.g3,.g5{grid-template-columns:1fr 1fr;}
+  .ga{grid-template-columns:1fr 1fr;}
+  .hero{padding:28px 0 18px;}
   .hero h1{font-size:24px;letter-spacing:0;}
+  .hero-sub{font-size:12.5px;margin-bottom:16px;}
+  .hero-badge{font-size:9.5px;padding:4px 12px;margin-bottom:14px;}
   .hero-cards{grid-template-columns:1fr;}
-  .hc-main{grid-column:span 1;min-height:200px;}
-  .hstats{gap:6px;}
-  .hst{padding:6px 11px;}
+  .hc-main{grid-column:span 1;min-height:180px;}
+  .hstats{gap:5px;margin-bottom:20px;}
+  .hst{padding:5px 10px;}
   .hst .n{font-size:15px;}
-  .hst .l{font-size:10px;}
-  .hero-search input{font-size:12.5px;}
-  .hero-search-btn{padding:7px 13px;font-size:11.5px;}
+  .hst .l{font-size:9.5px;}
+  .hero-search{padding:7px 7px 7px 14px;margin-bottom:16px;}
+  .hero-search input{font-size:12px;}
+  .hero-search-btn{padding:7px 12px;font-size:11px;}
   .rc.feat{grid-column:span 2;}
+  .rv{height:160px;}
+  .rb{padding:10px;}
+  .rt{font-size:12.5px;}
+  .rd{font-size:11px;-webkit-line-clamp:1;}
+  .rc-share{padding:5px 10px 8px;}
+  .rc-share-btn{width:26px;height:26px;}
   .plat-bar{gap:5px;}
   .pb{padding:6px 10px;font-size:11px;}
   .cm-step-txt{font-size:clamp(17px,4vw,24px);}
@@ -480,12 +492,45 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   .social-btns{flex-direction:column;}
   .nutr-g{grid-template-columns:repeat(2,1fr);}
   .rp-meta{display:grid;grid-template-columns:repeat(3,1fr);}
+  .rp-h1{font-size:20px;}
+  .rp-vis{aspect-ratio:16/9;}
+  .sh h2{font-size:16px;}
+  .wrap{padding:0 10px;}
+  footer{margin-bottom:0;}
+  .sloc-hd{flex-wrap:wrap;gap:8px;}
+  .sloc-title{font-size:14px;}
+  .resto-grid{grid-template-columns:1fr;}
+  .inf-vid-grid{grid-template-columns:1fr 1fr;}
+  .sbtn{padding:6px 11px;font-size:11px;}
+  .share-btns{gap:6px;}
+  .chips-scroll{gap:5px;}
+  .chip{padding:5px 11px;font-size:11px;}
 }
 @media(max-width:360px){
-  .hero h1{font-size:20px;}
-  .wrap{padding:0 10px;}
-  .nav{padding:0 10px;gap:6px;}
+  body{padding-bottom:66px;}
+  .ga,.g4,.g3,.g5{grid-template-columns:1fr;}
+  .rc.feat{grid-column:span 1;}
+  .hero h1{font-size:19px;}
+  .wrap{padding:0 8px;}
+  .nav{padding:0 8px;gap:4px;}
+  .nav-search{display:none;}
+  .rv{height:150px;}
 }
+
+/* ══════ BOTTOM NAV (mobile) ══════ */
+.mob-nav{display:none;position:fixed;bottom:0;left:0;right:0;z-index:4000;
+  background:var(--nav-bg);backdrop-filter:blur(28px) saturate(160%);
+  border-top:1px solid var(--b1);height:58px;
+  grid-template-columns:repeat(5,1fr);align-items:stretch;}
+.mob-nav a{display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:2px;cursor:pointer;color:var(--t3);font-size:9px;font-weight:700;
+  border:none;background:none;font-family:var(--fn);transition:color .15s;
+  padding:0;-webkit-tap-highlight-color:transparent;min-height:44px;}
+.mob-nav a.on,.mob-nav a:active{color:var(--s);}
+.mob-nav a svg{width:20px;height:20px;stroke:currentColor;fill:none;
+  stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.mob-nav a.on svg{stroke:var(--s);}
+@media(max-width:480px){.mob-nav{display:grid;}}
 
 /* ══════ CARD SHARE ══════ */
 .rc-share{display:flex;gap:5px;padding:6px 12px 10px;border-top:1px solid var(--b2);margin-top:4px;}
@@ -1136,6 +1181,30 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   <div class="footer-bot"><span>© 2025 مطبخ 360</span><span>🍽️ وصفات من كل زاوية في العالم</span></div>
 </div>
 </footer>
+
+<!-- MOBILE BOTTOM NAV -->
+<nav class="mob-nav" id="mob-nav">
+  <a onclick="gp('home')" id="mbn-home">
+    <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    الرئيسية
+  </a>
+  <a onclick="gp('world')" id="mbn-world">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    مطابخ
+  </a>
+  <a onclick="gp('videos')" id="mbn-videos">
+    <svg viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg>
+    فيديو
+  </a>
+  <a onclick="gp('local')" id="mbn-local">
+    <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    محلي
+  </a>
+  <a onclick="gp('fav')" id="mbn-fav">
+    <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    محفوظة
+  </a>
+</nav>
 
 <!-- FAVORITES PAGE -->
 <div class="page" id="page-fav">
@@ -2339,6 +2408,11 @@ function gp(id,pushUrl=true){
   if(pg) pg.classList.add('on');
   document.querySelectorAll('.nb').forEach((b,i)=>{
     b.classList.toggle('on',i===0&&id==='home');
+  });
+  // Sync bottom nav
+  ['home','world','videos','local','fav'].forEach(k=>{
+    const el=document.getElementById('mbn-'+k);
+    if(el) el.classList.toggle('on', id===k);
   });
   window.scrollTo({top:0,behavior:'smooth'});
   if(id==='world') renderWorldPage(null);
