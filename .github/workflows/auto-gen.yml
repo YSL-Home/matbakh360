@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 1
+          fetch-depth: 0   # historique complet pour rebase
 
       - name: "🟢 Setup Node.js 20"
         uses: actions/setup-node@v4
@@ -67,5 +67,6 @@ jobs:
           else
             DATE=$(date +'%Y-%m-%d %H:%M')
             git commit -m "🤖 Auto-gen ${DATE} — recettes+restos+vidéos+sitemap"
+            git pull --rebase origin main
             git push
           fi
