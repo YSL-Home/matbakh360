@@ -785,8 +785,8 @@ async function main() {
 
   // Stats finales
   const html = fs.readFileSync(INDEX_HTML, 'utf8');
-  const rCount = (html.match(/id:"rbulk_/g)||[]).length;
-  const restoCount = (html.match(/id:"rst_v2_/g)||[]).length;
+  const rCount = (html.match(/"id":"rbulk_/g)||[]).length;
+  const restoCount = (html.match(/"id":"rst_v2_/g)||[]).length;
   console.log(`\n📊 État index.html après injection:`);
   console.log(`   Recettes bulk: ${rCount}`);
   console.log(`   Restaurants v2: ${restoCount}`);
