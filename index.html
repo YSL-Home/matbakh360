@@ -2702,7 +2702,23 @@ function setVFTag(id,el){
 }
 
 function filteredVids(){
-  let v=VIDS;
+  // Normalise INF_VIDS (YouTube curated) au format attendu par vidCard
+  const norm=v=>({
+    ...v,
+    title:   v.titleAr||v.title||'',
+    ch:      v.channel||v.ch||'',
+    chav:    v.chav||(v.channel||v.ch||'?')[0],
+    cat:     Array.isArray(v.cat)?v.cat:(v.tags||[]),
+    tags:    Array.isArray(v.tags)?v.tags:(v.cat||[]),
+    likes:   v.likes||'',
+    loc:     v.loc||'',
+    hot:     v.hot||false,
+    asp:     v.asp||'landscape',
+    views:   v.views||'',
+    dur:     v.dur||'',
+    em:      v.em||'🍽️',
+  });
+  let v=[...VIDS,...INF_VIDS].map(norm);
   if(activePlt!=='all') v=v.filter(x=>x.pl===activePlt);
   if(activeVFTag!=='all'){
     v=v.filter(x=>{
@@ -3474,11 +3490,76 @@ function renderRestoGrid(city){
   grid.innerHTML=list.map(r=>restoCard(r)).join('');
 }
 
+// Banque d'images cuisine vérifiées TheMealDB (jamais Unsplash aléatoire)
+const CUISINE_IMG_MAP={
+  moroccan:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
+  italian: 'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',
+  japanese:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg',
+  sushi:   'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg',
+  indian:  'https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg',
+  chinese: 'https://www.themealdb.com/images/media/meals/1525872624.jpg',
+  french:  'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg',
+  mexican: 'https://www.themealdb.com/images/media/meals/ypxvwv1505333929.jpg',
+  american:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
+  burger:  'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
+  turkish: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+  kebab:   'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+  greek:   'https://www.themealdb.com/images/media/meals/v3t5971504250955.jpg',
+  spanish: 'https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg',
+  seafood: 'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg',
+  fish:    'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg',
+  pizza:   'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg',
+  pasta:   'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',
+  thai:    'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg',
+  asian:   'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg',
+  korean:  'https://www.themealdb.com/images/media/meals/mr7709j1683208057.jpg',
+  british: 'https://www.themealdb.com/images/media/meals/sywwoy1468767827.jpg',
+  arabic:  'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
+  arab:    'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
+  lebanese:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
+  egyptian:'https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg',
+  dessert: 'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg',
+  cafe:    'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg',
+  chicken: 'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg',
+  sandwich:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
+  international:'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',
+  regional:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
+  vietnamese:'https://www.themealdb.com/images/media/meals/8xvpwy1549056065.jpg',
+  persian: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+};
+// Détermine l'image cuisine (jamais la même pour "restaurant" générique)
+function _restoCardImg(r){
+  // 1. Chercher dans CUISINE_IMG_MAP par mot-clé dans la cuisine
+  const c=(r.cuisine||'').toLowerCase();
+  for(const[k,url] of Object.entries(CUISINE_IMG_MAP)){
+    if(c.includes(k)) return url;
+  }
+  // 2. Fallback basé sur le pays du restaurant (déterministe, pas aléatoire)
+  const countryFallbacks={
+    '🇲🇦':CUISINE_IMG_MAP.moroccan,'🇪🇬':CUISINE_IMG_MAP.egyptian,
+    '🇸🇦':CUISINE_IMG_MAP.arabic,'🇦🇪':CUISINE_IMG_MAP.arabic,
+    '🇱🇧':CUISINE_IMG_MAP.lebanese,'🇹🇳':CUISINE_IMG_MAP.moroccan,
+    '🇫🇷':CUISINE_IMG_MAP.french,'🇬🇧':CUISINE_IMG_MAP.british,
+    '🇮🇹':CUISINE_IMG_MAP.italian,'🇯🇵':CUISINE_IMG_MAP.japanese,
+    '🇺🇸':CUISINE_IMG_MAP.american,'🇮🇳':CUISINE_IMG_MAP.indian,
+    '🇹🇷':CUISINE_IMG_MAP.turkish,'🇰🇷':CUISINE_IMG_MAP.korean,
+  };
+  if(r.country && countryFallbacks[r.country]) return countryFallbacks[r.country];
+  // 3. Rotation parmi 8 images selon l'ID (jamais deux restos consécutifs avec la même image)
+  const imgs=Object.values(CUISINE_IMG_MAP);
+  const h=[...(r.id||'')].reduce((a,c)=>a+c.charCodeAt(0),0);
+  return imgs[h % imgs.length];
+}
+
 function restoCard(r){
   const stars='⭐'.repeat(Math.floor(r.rating))+(r.rating%1>=0.5?'✨':'');
+  const cardImg=_restoCardImg(r);
+  // Si logo Clearbit disponible : l'afficher en overlay sur l'image
+  const logoOverlay=r.logo?`<img src="${r.logo}" alt="" style="position:absolute;bottom:8px;right:8px;width:36px;height:36px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,.2)" onerror="this.style.display='none'">`:'';
   return `<div class="rc-resto" onclick="openResto('${r.id}')">
-    <div style="overflow:hidden">
-      <img class="rc-resto-img" src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.src='https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg'">
+    <div style="overflow:hidden;position:relative">
+      <img class="rc-resto-img" src="${cardImg}" alt="${r.name}" loading="lazy" onerror="this.src='https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg'">
+      ${logoOverlay}
     </div>
     <div class="rc-resto-body">
       <div class="rc-resto-name">${r.country} ${r.nameAr||r.name}</div>
