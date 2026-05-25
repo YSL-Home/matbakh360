@@ -487,6 +487,12 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   .nav{padding:0 10px;gap:6px;}
 }
 
+/* ══════ CARD SHARE ══════ */
+.rc-share{display:flex;gap:5px;padding:6px 12px 10px;border-top:1px solid var(--b2);margin-top:4px;}
+.rc-share-btn{background:var(--ink2);border:1px solid var(--b1);border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .15s,background .15s;flex-shrink:0;}
+.rc-share-btn:hover{transform:scale(1.15);background:var(--ink3);}
+.rc-share-btn svg{display:block;}
+
 /* ══════ LOAD MORE ══════ */
 .load-more-btn{display:block;margin:24px auto 8px;padding:12px 36px;background:var(--acc);color:#fff;border:none;border-radius:50px;font-size:15px;font-weight:700;cursor:pointer;transition:opacity .2s;}
 .load-more-btn:hover{opacity:.85;}
@@ -2458,6 +2464,17 @@ function rcCard(r,feat=false){
         <div class="rstar">⭐ ${r.rt} <span>(${r.rv.toLocaleString()})</span></div>
         <div class="rmore" data-i18n="cook_btn">اطبخ ←</div>
       </div>
+      <div class="rc-share" onclick="event.stopPropagation()">
+        <button class="rc-share-btn" onclick="cardShare('${r.id}','wa')" title="واتساب">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M11.99 2C6.476 2 2 6.476 2 11.99c0 1.763.46 3.419 1.266 4.858L2 22l5.334-1.397A9.935 9.935 0 0 0 11.99 22C17.524 22 22 17.524 22 11.99 22 6.476 17.524 2 11.99 2z"/></svg>
+        </button>
+        <button class="rc-share-btn" onclick="cardShare('${r.id}','fb')" title="فيسبوك">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="#1877F2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        </button>
+        <button class="rc-share-btn" onclick="cardShare('${r.id}','copy')" title="نسخ الرابط">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+        </button>
+      </div>
     </div>
   </div>`;
 }
@@ -3219,6 +3236,22 @@ function showToast(msg){
 // ═══════════════════════════════════════════════════
 // SHARE
 // ═══════════════════════════════════════════════════
+function cardShare(id,plt){
+  const r=RECIPES.find(x=>x.id===id);
+  if(!r) return;
+  const url=`https://matbakh360.com/recette/${id}`;
+  const txt=`${rTr(r,'ti')} 🍽️ ${url}`;
+  if(plt==='wa') window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
+  else if(plt==='fb') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,'_blank');
+  else if(plt==='copy'){navigator.clipboard.writeText(url).then(()=>{
+    const t=document.createElement('div');
+    t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#25D366;color:#fff;padding:8px 18px;border-radius:50px;font-size:13px;font-weight:700;z-index:9999;pointer-events:none';
+    t.textContent='✓ تم نسخ الرابط';
+    document.body.appendChild(t);
+    setTimeout(()=>t.remove(),2000);
+  });}
+}
+
 function shareRecipe(id,plt){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
