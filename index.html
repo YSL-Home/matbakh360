@@ -3614,85 +3614,227 @@ function openResto(id){
   renderRestoDetail(r);
 }
 
+// ── Génère des plats de menu suggérés selon la cuisine ────────────────────────
+const MENU_BY_CUISINE = {
+  pizza:      [{n:'بيتزا مارغريتا',img:'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg'},{n:'بيتزا بيبيروني',img:'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg'},{n:'بيتزا أربعة جبن',img:'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg'},{n:'بيتزا خضروات',img:'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg'}],
+  italian:    [{n:'باستا كاربونارا',img:'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg'},{n:'ريزوتو بالفطر',img:'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg'},{n:'لازانيا كلاسيك',img:'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg'},{n:'تيراميسو',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'}],
+  moroccan:   [{n:'كسكس بالخضروات',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'طاجين اللحم',img:'https://www.themealdb.com/images/media/meals/yuwtuu1511295751.jpg'},{n:'حريرة رمضان',img:'https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg'},{n:'بسطيلة الدجاج',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'}],
+  arabic:     [{n:'كباب مشوي',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'حمص بالطحينة',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'فتوش سلطة',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'كنافة نابلسية',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'}],
+  kebab:      [{n:'كباب حلبي',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'شاورما دجاج',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'كفتة مشوية',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'فلافل',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'}],
+  turkish:    [{n:'عثملي كباب',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'ببرق',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'بقلاوة',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'},{n:'منتي',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'}],
+  french:     [{n:'كرواسون فرنسي',img:'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg'},{n:'كيش لورين',img:'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg'},{n:'كريم بروليه',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'},{n:'سلطة نيسواز',img:'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg'}],
+  japanese:   [{n:'راميان تونكاتسو',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'},{n:'سوشي نيغيري',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'},{n:'تاكوياكي',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'},{n:'كاراغي دجاج',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'}],
+  sushi:      [{n:'نيغيري سالمون',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'},{n:'ماكي تونا',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'},{n:'كاليفورنيا رول',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'},{n:'تيمباكي',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'}],
+  indian:     [{n:'بريياني دجاج',img:'https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg'},{n:'دجاج بالزبدة',img:'https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg'},{n:'سامبوسة هندية',img:'https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg'},{n:'مانغو لاسي',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'}],
+  chinese:    [{n:'دمبلينغ بخاري',img:'https://www.themealdb.com/images/media/meals/1525872624.jpg'},{n:'كونغ باو دجاج',img:'https://www.themealdb.com/images/media/meals/1525872624.jpg'},{n:'أرز مقلي',img:'https://www.themealdb.com/images/media/meals/1525872624.jpg'},{n:'حساء ون تون',img:'https://www.themealdb.com/images/media/meals/1525872624.jpg'}],
+  burger:     [{n:'برغر كلاسيك',img:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg'},{n:'برغر دجاج مقرمش',img:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg'},{n:'برغر ثلاثي',img:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg'},{n:'بطاطس مقلية',img:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg'}],
+  chicken:    [{n:'دجاج مشوي',img:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg'},{n:'دجاج مقلي',img:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg'},{n:'دجاج بالليمون',img:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg'},{n:'صدر دجاج بالأعشاب',img:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg'}],
+  seafood:    [{n:'سمك مشوي',img:'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg'},{n:'جمبري بالثوم',img:'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg'},{n:'أخطبوط مشوي',img:'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg'},{n:'سمك بالطحين',img:'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg'}],
+  default:    [{n:'طبق اليوم',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'شوربة محلية',img:'https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg'},{n:'سلطة طازجة',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'حلوى منزلية',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'}],
+};
+
+function _restoMenuItems(r){
+  if(r.menu_highlights && r.menu_highlights.length>0){
+    // Données réelles du resto (depuis le cron enrichi)
+    return r.menu_highlights.map(h=>({n:h, img:_restoCardImg(r)}));
+  }
+  // Générer menu suggéré selon cuisine
+  const c=(r.cuisine||'').toLowerCase();
+  for(const [k,items] of Object.entries(MENU_BY_CUISINE)){
+    if(c.includes(k)) return items;
+  }
+  return MENU_BY_CUISINE.default;
+}
+
+// ── Construit les liens sociaux (réels si dispo, sinon recherche intelligente) ─
+function _restoSocialLinks(r){
+  const name = encodeURIComponent(r.nameEn||r.name);
+  const nameRaw = (r.nameEn||r.name).replace(/[^a-zA-Z0-9؀-ۿ]/g,'').toLowerCase();
+
+  // Google Reviews (toujours disponible via Maps)
+  const googleUrl = r.reviews_url || `https://www.google.com/maps/search/${name}+${encodeURIComponent(r.cityEn||r.city)}`;
+
+  // Instagram : compte officiel si r.ig défini, sinon recherche par hashtag
+  let igUrl, igLabel;
+  if(r.ig && r.ig.replace('@','').trim()){
+    const igHandle = r.ig.replace('@','').trim();
+    igUrl = `https://www.instagram.com/${igHandle}/`;
+    igLabel = `@${igHandle}`;
+  } else {
+    igUrl = `https://www.instagram.com/explore/tags/${nameRaw}/`;
+    igLabel = `#${nameRaw}`;
+  }
+
+  // TikTok : compte officiel si r.tt défini, sinon recherche
+  let ttUrl, ttLabel;
+  if(r.tt && r.tt.replace('@','').trim()){
+    const ttHandle = r.tt.replace('@','').trim();
+    ttUrl = `https://www.tiktok.com/@${ttHandle}`;
+    ttLabel = `@${ttHandle}`;
+  } else {
+    ttUrl = `https://www.tiktok.com/search?q=${name}`;
+    ttLabel = r.nameEn||r.name;
+  }
+
+  return { googleUrl, igUrl, igLabel, ttUrl, ttLabel };
+}
+
 function renderRestoDetail(r){
   const el=document.getElementById('rd-content');
   if(!el) return;
   const stars='⭐'.repeat(Math.floor(r.rating))+(r.rating%1>=0.5?'✨':'');
-  const relVids=INF_VIDS.filter(v=>v.restoId===r.id||(v.city===r.city&&v.restoId!==r.id)).slice(0,9);
+  const relVids=[...VIDS,...INF_VIDS].filter(v=>v.restoId===r.id||(v.city===r.city&&v.restoId!==r.id)).slice(0,6);
   const mapQ=encodeURIComponent(`${r.name} ${r.cityEn||r.city}`);
   const navUrl=`https://www.google.com/maps/dir/?api=1&destination=${mapQ}`;
-  const mapsUrl=`https://www.google.com/maps/search/${mapQ}`;
+  const heroImg=_restoCardImg(r);
+  const menuItems=_restoMenuItems(r);
+  const {googleUrl,igUrl,igLabel,ttUrl,ttLabel}=_restoSocialLinks(r);
+  const isMenuReal = r.menu_highlights && r.menu_highlights.length>0;
+
   el.innerHTML=`
     <div>
-      <div class="rd-vis">
-        <img src="${r.img}" alt="${r.name}" onerror="this.src='https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg'">
+      <!-- Hero image -->
+      <div class="rd-vis" style="position:relative">
+        ${r.logo?`<img src="${r.logo}" alt="" style="position:absolute;top:14px;right:14px;width:52px;height:52px;object-fit:contain;background:#fff;border-radius:12px;padding:5px;box-shadow:0 2px 12px rgba(0,0,0,.22);z-index:2" onerror="this.style.display='none'">`:'' }
+        <img src="${heroImg}" alt="${r.name}" onerror="this.src='https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg'">
         <div class="rd-vis-overlay"></div>
         <div class="rd-vis-badge">${r.price} · ${r.cuisine}</div>
       </div>
+
+      <!-- Nom + rating -->
       <h1 class="rd-h1">${r.country} ${r.nameAr||r.name}</h1>
       ${r.nameEn&&r.nameEn!==r.name?`<div style="font-size:13px;color:var(--t3);margin-top:-10px;margin-bottom:10px;direction:ltr">${r.nameEn}</div>`:''}
       <div class="rd-rating">
         <span class="rd-stars">${stars}</span>
         <span style="font-size:18px;font-weight:900;color:var(--t0)">${r.rating}</span>
-        <span class="rd-rvct">(${r.rv.toLocaleString()} ${t('rst_rev_g')})</span>
+        <span class="rd-rvct">(${r.rv.toLocaleString()} تقييم)</span>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:18px">
-        ${r.cusines.map(t=>`<span class="rc-resto-tag" style="font-size:12px;padding:4px 10px">${t}</span>`).join('')}
+        ${(r.cusines||[r.cuisine]).map(c=>`<span class="rc-resto-tag" style="font-size:12px;padding:4px 10px">${c}</span>`).join('')}
       </div>
+
+      <!-- 🔗 Réseaux sociaux cliquables -->
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:18px">
+        <a href="${googleUrl}" target="_blank" rel="noopener"
+           style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 8px;background:#fff;border:1.5px solid #e8eaed;border-radius:14px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.07);transition:transform .15s"
+           onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+          <span style="font-size:22px">⭐</span>
+          <span style="font-size:10px;font-weight:900;color:#1a73e8">Google</span>
+          <span style="font-size:9px;color:#5f6368;font-weight:700">${r.rating} · ${r.rv} تقييم</span>
+        </a>
+        <a href="${igUrl}" target="_blank" rel="noopener"
+           style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 8px;background:linear-gradient(135deg,#f9f0ff,#ffe0f0);border:1.5px solid #e1c4f7;border-radius:14px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.07);transition:transform .15s"
+           onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+          <span style="font-size:22px">📷</span>
+          <span style="font-size:10px;font-weight:900;background:linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Instagram</span>
+          <span style="font-size:9px;color:#c13584;font-weight:700;direction:ltr">${igLabel}</span>
+        </a>
+        <a href="${ttUrl}" target="_blank" rel="noopener"
+           style="display:flex;flex-direction:column;align-items:center;gap:5px;padding:12px 8px;background:linear-gradient(135deg,#f0fbff,#e8f8f8);border:1.5px solid #b8e8e8;border-radius:14px;text-decoration:none;box-shadow:0 2px 8px rgba(0,0,0,.07);transition:transform .15s"
+           onmouseover="this.style.transform='scale(1.04)'" onmouseout="this.style.transform='scale(1)'">
+          <span style="font-size:22px">🎵</span>
+          <span style="font-size:10px;font-weight:900;color:#010101">TikTok</span>
+          <span style="font-size:9px;color:#555;font-weight:700;direction:ltr">${ttLabel.substring(0,16)}</span>
+        </a>
+      </div>
+
+      <!-- 🍽️ Menu -->
+      <div style="margin-bottom:20px">
+        <div style="font-size:14px;font-weight:900;color:var(--t0);margin-bottom:12px;display:flex;align-items:center;gap:8px">
+          🍽️ ${isMenuReal?'قائمة المطعم':'أبرز الأطباق'}
+          ${isMenuReal?'':'<span style="font-size:10px;background:var(--sg);color:var(--s);padding:2px 8px;border-radius:20px;font-weight:700">مقترح</span>'}
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+          ${menuItems.map(item=>`
+            <div style="display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:10px;cursor:default">
+              <img src="${item.img}" alt="${item.n}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;flex-shrink:0"
+                onerror="this.src='https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'">
+              <div style="font-size:12.5px;font-weight:800;color:var(--t0);line-height:1.3">${item.n}</div>
+            </div>
+          `).join('')}
+        </div>
+        ${r.website?`<a href="${r.website}" target="_blank" rel="noopener"
+           style="display:block;text-align:center;margin-top:10px;padding:9px;background:var(--sg);color:var(--s);border:1px solid var(--b1);border-radius:10px;font-family:var(--fn);font-size:12px;font-weight:800;text-decoration:none">
+           🌐 عرض القائمة الكاملة على الموقع
+        </a>`:''}
+      </div>
+
+      <!-- Infos pratiques -->
       <div class="rd-info-box">
-        <div class="rd-info-row"><span class="rd-info-ico">📍</span><span>${r.address}</span></div>
+        <div class="rd-info-row"><span class="rd-info-ico">📍</span><span>${r.address||r.city}</span></div>
         ${r.hours?`<div class="rd-info-row"><span class="rd-info-ico">🕐</span><span>${r.hours}</span></div>`:''}
-        ${r.phone?`<div class="rd-info-row"><span class="rd-info-ico">📞</span><span dir="ltr">${r.phone}</span></div>`:''}
-        ${r.ig?`<div class="rd-info-row"><span class="rd-info-ico">📷</span><span>${r.ig}</span></div>`:''}
-        ${r.tt?`<div class="rd-info-row"><span class="rd-info-ico">🎵</span><span>${r.tt}</span></div>`:''}
+        ${r.phone?`<div class="rd-info-row"><span class="rd-info-ico">📞</span><a href="tel:${r.phone}" style="color:var(--s);font-weight:800;text-decoration:none" dir="ltr">${r.phone}</a></div>`:''}
+        ${r.website?`<div class="rd-info-row"><span class="rd-info-ico">🌐</span><a href="${r.website}" target="_blank" rel="noopener" style="color:var(--s);font-weight:700;word-break:break-all;text-decoration:none;font-size:11px">${r.website.replace(/^https?:\/\/(www\.)?/,'').substring(0,40)}</a></div>`:''}
       </div>
-      ${r.desc?`<div class="rd-info-box" style="background:var(--sg2);border-color:var(--b0)"><p style="font-size:13.5px;color:var(--t1);line-height:1.7">${r.desc}</p></div>`:''}
+
+      ${r.desc?`<div class="rd-info-box" style="background:var(--sg2);border-color:var(--b0)"><p style="font-size:13.5px;color:var(--t1);line-height:1.7;margin:0">${r.desc}</p></div>`:''}
+
+      <!-- Vidéos liées -->
       ${relVids.length?`
       <div class="rd-vids-section">
-        <div class="rd-vids-title">${t('rst_inf_vids')} <span style="font-size:12px;font-weight:600;color:var(--t3)">(${relVids.length})</span></div>
+        <div class="rd-vids-title">🎬 فيديوهات المطعم <span style="font-size:12px;font-weight:600;color:var(--t3)">(${relVids.length})</span></div>
         <div class="inf-vid-grid">
           ${relVids.map(v=>`
             <div class="inf-vid-card" onclick="openVM('${v.id}')">
               <div style="position:relative">
-                <img class="inf-vid-thumb" src="${v.thumb}" alt="${v.title}" loading="lazy">
+                <img class="inf-vid-thumb" src="${v.thumb}" alt="${v.title||v.titleAr||''}" loading="lazy">
                 <div class="inf-vid-overlay"><div class="inf-vid-play">▶</div></div>
               </div>
               <div class="inf-vid-info">
-                <div class="inf-vid-ch">${v.ch}</div>
-                <div class="inf-vid-ttl">${v.title}</div>
+                <div class="inf-vid-ch">${v.channel||v.ch||''}</div>
+                <div class="inf-vid-ttl">${v.titleAr||v.title||''}</div>
               </div>
             </div>
           `).join('')}
         </div>
       </div>`:''}
     </div>
+
+    <!-- Colonne droite : carte + navigation -->
     <div>
       <div class="rd-map">
         <iframe
           src="https://maps.google.com/maps?q=${mapQ}&output=embed&z=15"
-          loading="lazy"
-          referrerpolicy="no-referrer-when-downgrade"
+          loading="lazy" referrerpolicy="no-referrer-when-downgrade"
           title="خريطة ${r.name}">
         </iframe>
       </div>
       <a href="${navUrl}" target="_blank" rel="noopener"
-         style="display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;background:linear-gradient(135deg,#1A73E8 0%,#0d5fc4 100%);color:#fff;padding:14px 20px;border-radius:var(--rads);font-family:var(--fn);font-size:15px;font-weight:900;text-decoration:none;margin-bottom:10px;box-shadow:0 4px 16px rgba(26,115,232,.35);letter-spacing:.3px">
+         style="display:flex;align-items:center;justify-content:center;gap:10px;text-align:center;background:linear-gradient(135deg,#1A73E8,#0d5fc4);color:#fff;padding:14px 20px;border-radius:var(--rads);font-family:var(--fn);font-size:15px;font-weight:900;text-decoration:none;margin-bottom:10px;box-shadow:0 4px 16px rgba(26,115,232,.35)">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
-        ${t('rst_nav')}
+        الاتجاهات
       </a>
-      <a href="${mapsUrl}" target="_blank" rel="noopener"
-         style="display:block;text-align:center;background:var(--sg);color:var(--t1);padding:9px;border-radius:var(--rads);font-family:var(--fn);font-size:12px;font-weight:700;text-decoration:none;margin-bottom:14px;border:1px solid var(--b1)">
-        ${t('rst_maps')}
+      <a href="${googleUrl}" target="_blank" rel="noopener"
+         style="display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;background:#fff;color:#1a73e8;border:2px solid #1a73e8;padding:11px 20px;border-radius:var(--rads);font-family:var(--fn);font-size:13px;font-weight:900;text-decoration:none;margin-bottom:10px">
+        ⭐ قراءة التقييمات على Google
       </a>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px">
+        <a href="${igUrl}" target="_blank" rel="noopener"
+           style="display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:12px;font-family:var(--fn);font-size:12px;font-weight:900;text-decoration:none;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366);color:#fff">
+          📷 Instagram
+        </a>
+        <a href="${ttUrl}" target="_blank" rel="noopener"
+           style="display:flex;align-items:center;justify-content:center;gap:6px;padding:11px;border-radius:12px;font-family:var(--fn);font-size:12px;font-weight:900;text-decoration:none;background:#010101;color:#fff">
+          🎵 TikTok
+        </a>
+      </div>
       <div class="rd-info-box">
-        <div style="font-size:12px;font-weight:900;color:var(--t0);margin-bottom:10px">${t('rst_summary')}</div>
-        ${[['Google',r.rating,r.rv],['Instagram','👍','—'],['TikTok','❤️','—']].map(([pl,rt,rv])=>`
-          <div class="rd-info-row">
-            <span class="rd-info-ico">${pl==='Google'?'🔍':pl==='Instagram'?'📷':'🎵'}</span>
-            <span style="flex:1">${pl}</span>
-            <span style="color:var(--s);font-weight:800">${rt}${pl==='Google'?' ⭐':''}</span>
-          </div>
-        `).join('')}
+        <div style="font-size:12px;font-weight:900;color:var(--t0);margin-bottom:10px">📊 ملخص التقييمات</div>
+        <div class="rd-info-row">
+          <span class="rd-info-ico">⭐</span>
+          <span style="flex:1;font-weight:700">Google Reviews</span>
+          <span style="color:var(--s);font-weight:900">${r.rating} / 5</span>
+        </div>
+        <div class="rd-info-row">
+          <span class="rd-info-ico">📷</span>
+          <span style="flex:1;font-weight:700">Instagram</span>
+          <a href="${igUrl}" target="_blank" style="color:#c13584;font-weight:800;font-size:11px;text-decoration:none">${igLabel}</a>
+        </div>
+        <div class="rd-info-row">
+          <span class="rd-info-ico">🎵</span>
+          <span style="flex:1;font-weight:700">TikTok</span>
+          <a href="${ttUrl}" target="_blank" style="color:#010101;font-weight:800;font-size:11px;text-decoration:none">${ttLabel.substring(0,20)}</a>
+        </div>
       </div>
     </div>
   `;
