@@ -1998,9 +1998,11 @@ function togIng(el,rowId){
 // VIDEO FEED
 // ═══════════════════════════════════════════════════
 function initVideos(){
-  if(document.getElementById('plat-bar').innerHTML) return;
-  renderPlatBar();
-  renderTagBar();
+  // Toujours re-render la grille pour prendre en compte les données chargées async
+  if(!document.getElementById('plat-bar').innerHTML){
+    renderPlatBar();
+    renderTagBar();
+  }
   renderVF();
 }
 
@@ -2884,40 +2886,53 @@ function renderRestoGrid(city){
 
 // Banque d'images cuisine vérifiées TheMealDB (jamais Unsplash aléatoire)
 const CUISINE_IMG_MAP={
-  moroccan:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
-  italian: 'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',
-  japanese:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg',
-  sushi:   'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg',
-  indian:  'https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg',
-  chinese: 'https://www.themealdb.com/images/media/meals/1525872624.jpg',
-  french:  'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg',
-  mexican: 'https://www.themealdb.com/images/media/meals/ypxvwv1505333929.jpg',
-  american:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
-  burger:  'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
-  turkish: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
-  kebab:   'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
-  greek:   'https://www.themealdb.com/images/media/meals/v3t5971504250955.jpg',
-  spanish: 'https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg',
-  seafood: 'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg',
-  fish:    'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg',
-  pizza:   'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg',
-  pasta:   'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',
-  thai:    'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg',
-  asian:   'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg',
-  korean:  'https://www.themealdb.com/images/media/meals/mr7709j1683208057.jpg',
-  british: 'https://www.themealdb.com/images/media/meals/sywwoy1468767827.jpg',
-  arabic:  'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
-  arab:    'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
-  lebanese:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
-  egyptian:'https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg',
-  dessert: 'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg',
-  cafe:    'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg',
-  chicken: 'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg',
-  sandwich:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
-  international:'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',
-  regional:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg',
+  moroccan:  'https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg',  // Couscous
+  arabic:    'https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg',  // Shawarma
+  arab:      'https://www.themealdb.com/images/media/meals/kcv6hj1598733479.jpg',  // Shawarma
+  lebanese:  'https://www.themealdb.com/images/media/meals/samn201685806862.jpg',  // Hummus/lebanese
+  egyptian:  'https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg',  // Koshari
+  tunisian:  'https://www.themealdb.com/images/media/meals/8x09hy1560460923.jpg',  // Keleya
+  turkish:   'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',  // Kebab
+  kebab:     'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+  italian:   'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',  // Carbonara
+  pasta:     'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg',
+  pizza:     'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg',  // Pizza
+  french:    'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg',  // Croissant
+  spanish:   'https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg',  // Paella
+  greek:     'https://www.themealdb.com/images/media/meals/v3t5971504250955.jpg',  // Moussaka
+  japanese:  'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg',  // Sushi
+  sushi:     'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg',
+  chinese:   'https://www.themealdb.com/images/media/meals/1525872624.jpg',        // Kung pao
+  indian:    'https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg',  // Curry
+  thai:      'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg',  // Thai
   vietnamese:'https://www.themealdb.com/images/media/meals/8xvpwy1549056065.jpg',
-  persian: 'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+  korean:    'https://www.themealdb.com/images/media/meals/mr7709j1683208057.jpg', // Bibimbap
+  asian:     'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg',
+  mexican:   'https://www.themealdb.com/images/media/meals/ypxvwv1505333929.jpg',  // Tacos
+  american:  'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',  // Burger
+  burger:    'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
+  british:   'https://www.themealdb.com/images/media/meals/sywwoy1468767827.jpg',
+  seafood:   'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg',  // Seafood
+  fish:      'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg',
+  dessert:   'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg',  // Cake
+  cake:      'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg',
+  cafe:      'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg',
+  coffee:    'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg',
+  coffee_shop:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg',
+  ice_cream: 'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg',
+  chicken:   'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg',
+  sandwich:  'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
+  fast_food: 'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg',
+  persian:   'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg',
+  international:'https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg',
+  regional:  'https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg',
+  restaurant:'https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg',
+  bar:       'https://www.themealdb.com/images/media/meals/sywwoy1468767827.jpg',
+  brasserie: 'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg',
+  steakhouse:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg',
+  grill:     'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg',
+  bakery:    'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg',
+  vegan:     'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg',
 };
 // Détermine l'image cuisine (jamais la même pour "restaurant" générique)
 function _restoCardImg(r){
@@ -3571,8 +3586,8 @@ function slocRenderList(){
     const pc=r.price||'$$';
     const mapQ=encodeURIComponent(`${r.name} ${r.address||''} ${r.city}`);
     return`<div class="sloc-rc" id="sloc-rc-${r.id}" onclick="slocFlyTo('${r.id}')">
-      <img class="sloc-rc-img" src="${r.img||''}" alt="${r.name}"
-        onerror="this.style.display='none'" loading="lazy">
+      <img class="sloc-rc-img" src="${_restoCardImg(r)}" alt="${r.name}"
+        onerror="this.src='https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg'" loading="lazy">
       <div class="sloc-rc-body">
         <div class="sloc-rc-name">${r.country||''} ${r.name}</div>
         <div class="sloc-rc-cuis">${r.cuisine||''} · ${(r.address||r.city||'').substring(0,28)}</div>
