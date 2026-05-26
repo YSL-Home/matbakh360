@@ -67,6 +67,6 @@ jobs:
           else
             DATE=$(date +'%Y-%m-%d %H:%M')
             git commit -m "🤖 Auto-gen ${DATE} — recettes+restos+vidéos+sitemap"
-            git pull --rebase origin main
+            git pull --rebase -X theirs origin main
             git push
           fi
