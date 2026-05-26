@@ -2952,12 +2952,17 @@ const CUISINE_IMG_MAP={
   bakery:    'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg',
   vegan:     'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg',
 };
+// Cuisines trop génériques : on skip vers hash rotation pour avoir de la variété
+const _GENERIC_CUI=new Set(['restaurant','bar','brasserie','regional','international','cafe','coffee','coffee_shop','bakery','vegan','fast_food','sandwich']);
+
 // Détermine l'image cuisine (jamais la même pour "restaurant" générique)
 function _restoCardImg(r){
-  // 1. Chercher dans CUISINE_IMG_MAP par mot-clé dans la cuisine
+  // 1. Chercher dans CUISINE_IMG_MAP par mot-clé dans la cuisine (sauf types génériques)
   const c=(r.cuisine||'').toLowerCase();
-  for(const[k,url] of Object.entries(CUISINE_IMG_MAP)){
-    if(c.includes(k)) return url;
+  if(!_GENERIC_CUI.has(c)){
+    for(const[k,url] of Object.entries(CUISINE_IMG_MAP)){
+      if(!_GENERIC_CUI.has(k) && c.includes(k)) return url;
+    }
   }
   // 2. Fallback basé sur le pays du restaurant (déterministe, pas aléatoire)
   const countryFallbacks={
@@ -3893,6 +3898,10 @@ document.addEventListener('click',e=>{
   initWorldChips('wchips');
   renderHeroCards();
   updateFavCount();
+  // Re-render pages qui dépendent des données async (deep link avant loadData)
+  if(activePg==='videos') renderVF();
+  if(activePg==='resto'){renderRestoGrid('');renderCityInfVids('');}
+  if(activePg==='local') document.dispatchEvent(new Event('data-ready'));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVM();closeChef();closeAuth();closeLangDropdown();}});
   renderNavAuth();
 
