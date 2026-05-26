@@ -1229,7 +1229,7 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
       <div class="sloc-title">
         <span>🗺️</span>
         <span data-i18n="sloc_title">نكهات محلية</span>
-        <span class="sloc-badge" id="sloc-badge" style="display:none">0 مطعم</span>
+        <span class="sloc-badge" id="sloc-badge" style="display:none">0</span>
       </div>
       <div class="sloc-sbox" id="sloc-sbox" style="position:relative">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="flex-shrink:0;color:var(--t3)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
@@ -2034,24 +2034,22 @@ const VF_TAGS = [
 ];
 
 function initVideos(){
-  // Toujours re-render la grille pour prendre en compte les données chargées async
-  if(!document.getElementById('plat-bar').innerHTML){
-    renderPlatBar();
-    renderTagBar();
-  }
+  // Re-render bars (always, so language changes are reflected)
+  renderPlatBar();
+  renderTagBar();
   renderVF();
 }
 
 function renderPlatBar(){
   document.getElementById('plat-bar').innerHTML=PLATS.map(p=>`
     <button class="pb ${p.cls}${activePlt===p.id?' on':''}" onclick="setPlt('${p.id}',this)">
-      <span class="pi">${p.ico}</span>${p.lbl}
+      <span class="pi">${p.ico}</span>${p.id==='all'?t('all_filter'):p.lbl}
     </button>`).join('');
 }
 
 function renderTagBar(){
-  document.getElementById('tag-bar').innerHTML=VF_TAGS.map(t=>`
-    <button class="tf${activeVFTag===t.id?' on':''}" onclick="setVFTag('${t.id}',this)">${t.lbl}</button>`).join('');
+  document.getElementById('tag-bar').innerHTML=VF_TAGS.map(tg=>`
+    <button class="tf${activeVFTag===tg.id?' on':''}" onclick="setVFTag('${tg.id}',this)">${tg.id==='all'?('🌍 '+t('all_filter')):tg.lbl}</button>`).join('');
 }
 
 function setPlt(id,el){
@@ -2108,7 +2106,7 @@ function vidCard(v){
       <div class="vt-plat ${v.pl}">${platIco[v.pl]||v.pl}</div>
       <div class="vt-dur">${v.dur}</div>
       <div class="vt-views">👁 ${v.views}</div>
-      ${v.hot?`<div class="vt-hot">🔥 Trending</div>`:''}
+      ${v.hot?`<div class="vt-hot">${t('trending')}</div>`:''}
     </div>
     <div class="vb">
       <div class="vc-head">
@@ -2274,9 +2272,11 @@ function _initPaged(key, recs, gridId){
   _renderPage(key);
 }
 
-function doSearch(q){
+let _lastSearch='';
+function doSearch(q,pushHistory=true){
   if(!q||!q.trim()) return;
   q=q.trim();
+  _lastSearch=q;
   const ql=q.toLowerCase();
   const res=RECIPES.filter(r=>{
     // Arabic fields
@@ -2292,7 +2292,7 @@ function doSearch(q){
     }
     return false;
   });
-  history.pushState({page:'search',q},'',`/recherche?q=${encodeURIComponent(q)}`);
+  if(pushHistory) history.pushState({page:'search',q},'',`/recherche?q=${encodeURIComponent(q)}`);
   document.getElementById('s-lbl').innerHTML=`<strong>${q}</strong> — ${res.length} ${t('search_count')}`;
   if(!res.length){
     document.getElementById('s-grid').innerHTML=`<div class="no-res" style="grid-column:span 4"><div style="font-size:48px;margin-bottom:12px">🔍</div><div>${t('search_no_res_for')} "${q}"</div></div>`;
@@ -2399,7 +2399,7 @@ function renderNavAuth(){
         <span style="font-size:12px;font-weight:700;color:var(--t1);max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.name.split(' ')[0]}</span>
       </div>`;
   } else {
-    zone.innerHTML=`<button class="nav-login-btn" onclick="openAuth('login')">دخول / تسجيل</button>`;
+    zone.innerHTML=`<button class="nav-login-btn" onclick="openAuth('login')">${t('nav_signin')}</button>`;
   }
 }
 
@@ -2670,7 +2670,7 @@ function updateFavCount(){
 function initFav(){
   const favs=getFavs();
   const recs=RECIPES.filter(r=>favs.includes(r.id));
-  document.getElementById('fav-count').textContent=recs.length+' وصفة';
+  document.getElementById('fav-count').textContent=recs.length+' '+t('stat_recipes');
   const grid=document.getElementById('fav-grid');
   const empty=document.getElementById('fav-empty');
   if(!recs.length){
@@ -2763,17 +2763,13 @@ function setLang(lg){
   // World chips
   initWorldChips('wchips');
   // Re-render la page active avec la nouvelle langue
-  if(activePg==='videos') renderVF();
+  if(activePg==='videos'){renderPlatBar();renderTagBar();renderVF();}
   if(activePg==='resto'){buildCityTags();buildRestoFilters();renderRestoGrid('');renderCityInfVids('');}
   if(activePg==='world') renderWorldPage(null);
   if(activePg==='fav') initFav();
+  if(activePg==='local') slocRenderList();
   // Re-render search results if visible
-  const searchGrid=document.getElementById('s-grid');
-  if(searchGrid&&searchGrid.children.length){
-    const q=(document.getElementById('s-lbl')||{}).textContent||'';
-    const qMatch=q.match(/عن: (.+?) —/);
-    if(qMatch) doSearch(qMatch[1]);
-  }
+  if(activePg==='search'&&_lastSearch) doSearch(_lastSearch,false);
 }
 function toggleLangDropdown(){
   const d=document.getElementById('lang-dropdown');
@@ -3740,7 +3736,7 @@ function slocFilterBounds(){
   const sort=(document.getElementById('sloc-sort')||{}).value||'rt';
   if(sort==='rt') list.sort((a,b)=>(b.rating||b.rt||0)-(a.rating||a.rt||0));
   if(!list.length){
-    listEl.innerHTML=`<div class="sloc-empty"><div class="sloc-empty-ico">🔍</div><div class="sloc-empty-txt">لا توجد مطاعم في هذه المنطقة</div></div>`;
+    listEl.innerHTML=`<div class="sloc-empty"><div class="sloc-empty-ico">🔍</div><div class="sloc-empty-txt">${t('rst_empty')}</div></div>`;
   } else {
     _slocRestos=list; slocRenderList();
   }
@@ -3750,8 +3746,8 @@ function slocUpdateBadge(n){
   const count=n!==undefined?n:_slocFilteredRestos.length;
   const badge=document.getElementById('sloc-badge');
   const countEl=document.getElementById('sloc-panel-count');
-  if(badge){badge.textContent=count+' مطعم';badge.style.display=count?'inline':'none';}
-  if(countEl) countEl.textContent=count?`${count} مطعم في القائمة`:'';
+  if(badge){badge.textContent=count+' '+t('rst_restaurant');badge.style.display=count?'inline':'none';}
+  if(countEl) countEl.textContent=count?`${count} ${t('rst_restaurants')}`:'';
 }
 
 // ── IP geolocation → nearest known city ──────────────────────────────
@@ -3761,7 +3757,7 @@ async function slocNearMe(){
   try{
     const res=await fetch('https://ipapi.co/json/');
     const d=await res.json();
-    if(btn){btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>قريبي</span>';}
+    if(btn){btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>'+t('sloc_near')+'</span>';}
     const userLat=d.latitude,userLng=d.longitude;
     const userCity=d.city||'';
     // Show location pill
@@ -3788,7 +3784,7 @@ async function slocNearMe(){
     }
     if(nearest) document.getElementById('sloc-inp').value=nearest;
   } catch(e){
-    if(btn){btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>قريبي</span>';}
+    if(btn){btn.disabled=false;btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg><span>'+t('sloc_near')+'</span>';}
     showToast('تعذّر الكشف عن الموقع');
   }
 }
@@ -3811,7 +3807,7 @@ async function slocShowSuggestions(q){
   let html=local.map(([ar,v])=>`
     <div class="sloc-sug-item" onclick="slocLoadCity('${ar}');document.getElementById('sloc-inp').value='${ar}';slocCloseSuggest()">
       ${v.flag} <span style="font-weight:800">${ar}</span>
-      <span style="color:var(--t3);font-size:10px;margin-right:auto">${RESTAURANTS.filter(r=>r.city===ar).length} مطعم</span>
+      <span style="color:var(--t3);font-size:10px;margin-right:auto">${RESTAURANTS.filter(r=>r.city===ar).length} ${t('rst_restaurant')}</span>
     </div>`).join('');
   suggest.innerHTML=html||'<div class="sloc-loading"><div class="sloc-spin"></div> جارٍ البحث…</div>';
   suggest.style.display='block';
