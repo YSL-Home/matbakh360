@@ -12,7 +12,7 @@
 <meta property="og:site_name" content="مطبخ 360">
 <meta property="og:title" id="og-title" content="مطبخ 360 | كل وصفات العالم">
 <meta property="og:description" id="og-desc" content="آلاف الوصفات من 68 مطبخاً عالمياً مع فيديوهات ووصفات خطوة بخطوة">
-<meta property="og:image" id="og-img" content="https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg">
+<meta property="og:image" id="og-img" content="https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" id="tw-title" content="مطبخ 360 | كل وصفات العالم">
 <meta name="twitter:description" id="tw-desc" content="آلاف الوصفات من 68 مطبخاً عالمياً">
@@ -1660,7 +1660,7 @@ function gp(id,pushUrl=true){
     const set=(elId,val)=>{const el=document.getElementById(elId);if(el)el.setAttribute('content',val);};
     set('og-title','مطبخ 360 | كل وصفات العالم');
     set('og-desc','آلاف الوصفات من 68 مطبخاً عالمياً مع فيديوهات ووصفات خطوة بخطوة');
-    set('og-img','https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg');
+    set('og-img','https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg');
     const canon=document.getElementById('canonical-url');
     if(canon) canon.setAttribute('href','https://matbakh360.com/');
   }
@@ -2174,6 +2174,24 @@ function openVM(id){
       <div style="display:flex;gap:14px;font-size:12px;color:var(--t2);padding:9px 0;border-top:1px solid var(--b1)">
         ${v.views?`<span>👁 ${v.views}</span>`:''}${v.likes?`<span>❤️ ${v.likes}</span>`:''}${v.dur?`<span>⏱ ${v.dur}</span>`:''}
       </div>
+      ${(()=>{
+        // Restos liés par cuisine de la vidéo
+        const vc=_vidCuisine(v);
+        const rr=RESTAURANTS.filter(r=>{const c=(r.cuisine||'').toLowerCase();return c===vc||(r.cusines||[]).some(x=>(x||'').toLowerCase()===vc);}).sort((a,b)=>b.rating-a.rating).slice(0,4);
+        if(!rr.length) return '';
+        return `<div style="margin-top:10px;border-top:1px solid var(--b1);padding-top:10px">
+          <div style="font-size:12px;font-weight:900;color:var(--t0);margin-bottom:8px">🍽️ مطاعم بنفس المطبخ</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+            ${rr.map(r=>`<div onclick="closeVM();openResto('${r.id}')" style="display:flex;gap:8px;align-items:center;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:8px;cursor:pointer">
+              <img src="${_restoCardImg(r)}" alt="${r.name}" style="width:38px;height:38px;object-fit:cover;border-radius:7px;flex-shrink:0" onerror="this.src='https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg'">
+              <div style="min-width:0">
+                <div style="font-size:11px;font-weight:800;color:var(--t0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${r.country} ${r.nameAr||r.name}</div>
+                <div style="font-size:10px;color:var(--t3)">⭐${r.rating} · ${r.city}</div>
+              </div>
+            </div>`).join('')}
+          </div>
+        </div>`;
+      })()}
     </div>`;
   document.getElementById('vm').classList.add('on');
 }
@@ -2985,20 +3003,49 @@ function restoCard(r){
   </div>`;
 }
 
+// Infère la cuisine principale d'une vidéo depuis son titre/tags
+function _vidCuisine(v){
+  const txt=`${v.titleAr||v.title||''} ${(v.tags||[]).join(' ')}`.toLowerCase();
+  if(/مغرب|كسكس|طاجين|حريرة|بسطيل|مراكش|فاس|مكناس|تطوان/.test(txt)) return 'moroccan';
+  if(/سوشي|ياباني|راميان|ramen|sushi|japan/.test(txt)) return 'japanese';
+  if(/برغر|burger|hamburger/.test(txt)) return 'burger';
+  if(/بيتزا|pizza/.test(txt)) return 'pizza';
+  if(/شاورما|كباب|مشاوي|kebab/.test(txt)) return 'kebab';
+  if(/هندي|كاري|curry|biryani/.test(txt)) return 'indian';
+  if(/صيني|chinese/.test(txt)) return 'chinese';
+  if(/فرنسي|french|كرواسون/.test(txt)) return 'french';
+  if(/بحري|سمك|جمبري|seafood|fish/.test(txt)) return 'seafood';
+  if(/حلويات|كيك|تارت|dessert|cake/.test(txt)) return 'dessert';
+  if(/دجاج|chicken/.test(txt)) return 'chicken';
+  if(/تركي|turkish|عثمان/.test(txt)) return 'turkish';
+  if(/لبنان|lebanese|حمص/.test(txt)) return 'lebanese';
+  if(/مصر|egyptian|كشري/.test(txt)) return 'egyptian';
+  return 'arabic';
+}
+
 function renderCityInfVids(city){
   const sec=document.getElementById('inf-vid-section');
   if(!sec) return;
-  const list=city?INF_VIDS.filter(v=>v.city===city):INF_VIDS.slice(0,12);
+  let list;
+  if(city){
+    // Cuisines des restos de cette ville → filtrer les vidéos par cuisine correspondante
+    const cityRestos=RESTAURANTS.filter(r=>r.city===city||r.cityEn===city);
+    const cityCuisines=new Set(cityRestos.flatMap(r=>r.cusines||[r.cuisine]).map(c=>(c||'').toLowerCase()).filter(Boolean));
+    list=INF_VIDS.filter(v=>cityCuisines.has(_vidCuisine(v)));
+    if(!list.length) list=INF_VIDS.slice(0,12); // fallback si aucun match
+  } else {
+    list=INF_VIDS.slice(0,12);
+  }
   if(!list.length){sec.innerHTML='';return;}
   sec.innerHTML=list.slice(0,12).map(v=>`
     <div class="inf-vid-card" onclick="openVM('${v.id}')">
       <div style="position:relative">
-        <img class="inf-vid-thumb" src="${v.thumb}" alt="${v.title}" loading="lazy">
+        <img class="inf-vid-thumb" src="${v.thumb}" alt="${v.titleAr||v.title||''}" loading="lazy">
         <div class="inf-vid-overlay"><div class="inf-vid-play">▶</div></div>
       </div>
       <div class="inf-vid-info">
-        <div class="inf-vid-ch">${v.ch} · ${v.city}</div>
-        <div class="inf-vid-ttl">${v.title}</div>
+        <div class="inf-vid-ch">${v.channel||v.ch||''}</div>
+        <div class="inf-vid-ttl">${v.titleAr||v.title||''}</div>
       </div>
     </div>
   `).join('');
@@ -3025,9 +3072,9 @@ function openResto(id){
 const MENU_BY_CUISINE = {
   pizza:      [{n:'بيتزا مارغريتا',img:'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg'},{n:'بيتزا بيبيروني',img:'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg'},{n:'بيتزا أربعة جبن',img:'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg'},{n:'بيتزا خضروات',img:'https://www.themealdb.com/images/media/meals/x0lk931587671540.jpg'}],
   italian:    [{n:'باستا كاربونارا',img:'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg'},{n:'ريزوتو بالفطر',img:'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg'},{n:'لازانيا كلاسيك',img:'https://www.themealdb.com/images/media/meals/llcbn01574260722.jpg'},{n:'تيراميسو',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'}],
-  moroccan:   [{n:'كسكس بالخضروات',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'طاجين اللحم',img:'https://www.themealdb.com/images/media/meals/yuwtuu1511295751.jpg'},{n:'حريرة رمضان',img:'https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg'},{n:'بسطيلة الدجاج',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'}],
-  arabic:     [{n:'كباب مشوي',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'حمص بالطحينة',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'فتوش سلطة',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'كنافة نابلسية',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'}],
-  kebab:      [{n:'كباب حلبي',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'شاورما دجاج',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'كفتة مشوية',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'فلافل',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'}],
+  moroccan:   [{n:'كسكس بالخضروات',img:'https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg'},{n:'طاجين اللحم',img:'https://www.themealdb.com/images/media/meals/yuwtuu1511295751.jpg'},{n:'حريرة رمضان',img:'https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg'},{n:'بسطيلة الدجاج',img:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg'}],
+  arabic:     [{n:'كباب مشوي',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'حمص بالطحينة',img:'https://www.themealdb.com/images/media/meals/samn201685806862.jpg'},{n:'فتوش سلطة',img:'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg'},{n:'كنافة نابلسية',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'}],
+  kebab:      [{n:'كباب حلبي',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'شاورما دجاج',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'كفتة مشوية',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'فلافل',img:'https://www.themealdb.com/images/media/meals/samn201685806862.jpg'}],
   turkish:    [{n:'عثملي كباب',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'ببرق',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'},{n:'بقلاوة',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'},{n:'منتي',img:'https://www.themealdb.com/images/media/meals/58oia61564916529.jpg'}],
   french:     [{n:'كرواسون فرنسي',img:'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg'},{n:'كيش لورين',img:'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg'},{n:'كريم بروليه',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'},{n:'سلطة نيسواز',img:'https://www.themealdb.com/images/media/meals/gth2q71683208633.jpg'}],
   japanese:   [{n:'راميان تونكاتسو',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'},{n:'سوشي نيغيري',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'},{n:'تاكوياكي',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'},{n:'كاراغي دجاج',img:'https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg'}],
@@ -3037,7 +3084,7 @@ const MENU_BY_CUISINE = {
   burger:     [{n:'برغر كلاسيك',img:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg'},{n:'برغر دجاج مقرمش',img:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg'},{n:'برغر ثلاثي',img:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg'},{n:'بطاطس مقلية',img:'https://www.themealdb.com/images/media/meals/uuyrrx1487327597.jpg'}],
   chicken:    [{n:'دجاج مشوي',img:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg'},{n:'دجاج مقلي',img:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg'},{n:'دجاج بالليمون',img:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg'},{n:'صدر دجاج بالأعشاب',img:'https://www.themealdb.com/images/media/meals/xxpqsy1491580178.jpg'}],
   seafood:    [{n:'سمك مشوي',img:'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg'},{n:'جمبري بالثوم',img:'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg'},{n:'أخطبوط مشوي',img:'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg'},{n:'سمك بالطحين',img:'https://www.themealdb.com/images/media/meals/vvtvtr1511180578.jpg'}],
-  default:    [{n:'طبق اليوم',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'شوربة محلية',img:'https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg'},{n:'سلطة طازجة',img:'https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'},{n:'حلوى منزلية',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'}],
+  default:    [{n:'طبق اليوم',img:'https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg'},{n:'شوربة محلية',img:'https://www.themealdb.com/images/media/meals/jcr46d1614763831.jpg'},{n:'سلطة طازجة',img:'https://www.themealdb.com/images/media/meals/wai9bw1619788844.jpg'},{n:'حلوى منزلية',img:'https://www.themealdb.com/images/media/meals/adxcbq1619787919.jpg'}],
 };
 
 function _restoMenuItems(r){
@@ -3090,7 +3137,10 @@ function renderRestoDetail(r){
   const el=document.getElementById('rd-content');
   if(!el) return;
   const stars='⭐'.repeat(Math.floor(r.rating))+(r.rating%1>=0.5?'✨':'');
-  const relVids=[...VIDS,...INF_VIDS].filter(v=>v.restoId===r.id||(v.city===r.city&&v.restoId!==r.id)).slice(0,6);
+  // Vidéos liées : match par cuisine (exact first, fallback random)
+  const _rc=(r.cuisine||r.cusines?.[0]||'').toLowerCase();
+  const _exactVids=INF_VIDS.filter(v=>_vidCuisine(v)===_rc);
+  const relVids=(_exactVids.length?_exactVids:INF_VIDS).sort(()=>Math.random()-.5).slice(0,6);
   const mapQ=encodeURIComponent(`${r.name} ${r.cityEn||r.city}`);
   const navUrl=`https://www.google.com/maps/dir/?api=1&destination=${mapQ}`;
   const heroImg=_restoCardImg(r);
@@ -3155,7 +3205,7 @@ function renderRestoDetail(r){
           ${menuItems.map(item=>`
             <div style="display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:10px;cursor:default">
               <img src="${item.img}" alt="${item.n}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;flex-shrink:0"
-                onerror="this.src='https://www.themealdb.com/images/media/meals/ssrrrs1503664277.jpg'">
+                onerror="this.src='https://www.themealdb.com/images/media/meals/tkxquw1628771538.jpg'">
               <div style="font-size:12.5px;font-weight:800;color:var(--t0);line-height:1.3">${item.n}</div>
             </div>
           `).join('')}
