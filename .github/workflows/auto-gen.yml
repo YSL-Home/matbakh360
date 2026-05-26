@@ -61,7 +61,7 @@ jobs:
         run: |
           git config user.name  "Matbakh360 Bot"
           git config user.email "bot@matbakh360.com"
-          git add index.html sitemap.xml robots.txt
+          git add index.html sitemap.xml robots.txt data/recipes.json data/restos.json data/vids.json
           if git diff --staged --quiet; then
             echo "ℹ️ Rien à committer"
           else

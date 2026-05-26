@@ -728,47 +728,38 @@ function _cuisineImg(cuisine) {
   return CUISINE_FALLBACK_IMGS.moroccan;
 }
 
-// ─── INJECTION DANS INDEX.HTML ────────────────────────────────────────────────
+// ─── MERGE INTO data/*.json ───────────────────────────────────────────────────
+const DATA_DIR = path.resolve(process.cwd(), 'data');
+
+function mergeIntoJson(file, newItems) {
+  if (!newItems.length) return 0;
+  if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR);
+  const filePath = `${DATA_DIR}/${file}`;
+  const existing = fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : [];
+  const existingIds = new Set(existing.map(x => x.id));
+  const fresh = newItems.filter(x => x.id && !existingIds.has(x.id));
+  if (!fresh.length) return 0;
+  fs.writeFileSync(filePath, JSON.stringify([...existing, ...fresh]));
+  return fresh.length;
+}
+
 function injectData(recipes, restos, videos) {
-  console.log('\n💉 Injection dans index.html...');
-  let html = fs.readFileSync(INDEX_HTML, 'utf8');
+  console.log('\n💾 Merge dans data/*.json...');
 
-  // 1. Recettes
-  if (recipes.length > 0) {
-    const entries = recipes.map(r => JSON.stringify(r)).join(',\n  ');
-    const block = `RECIPES.push(\n  // ─── Run ${new Date().toISOString().split('T')[0]} — ${recipes.length} recettes (TheMealDB✓) ───\n  ${entries}\n);`;
-    html = html.replace('// ═══ BULK_RECIPES_INJECT ═══',
-      `// ═══ BULK_RECIPES_INJECT ═══\n${block}`);
-    console.log(`  ✅ ${recipes.length} recettes injectées`);
-  }
+  const rNew = mergeIntoJson('recipes.json', recipes);
+  console.log(`  ✅ recipes.json +${rNew} (${recipes.length} générées)`);
 
-  // 2. Restaurants
-  if (restos.length > 0) {
-    const entries = restos.map(r => JSON.stringify(r)).join(',\n  ');
-    const block = `RESTAURANTS.push(\n  // ─── Run ${new Date().toISOString().split('T')[0]} — ${restos.length} restos ───\n  ${entries}\n);`;
-    html = html.replace('// ═══ RESTAURANTS_INJECT ═══',
-      `// ═══ RESTAURANTS_INJECT ═══\n${block}`);
-    console.log(`  ✅ ${restos.length} restaurants injectés`);
-  }
+  const sNew = mergeIntoJson('restos.json', restos);
+  console.log(`  ✅ restos.json +${sNew} (${restos.length} générés)`);
 
-  // 3. Vidéos
-  if (videos.length > 0) {
-    const vidEntries = videos.filter(v => v.asp === 'portrait' || v.pl === 'tt').map(v => JSON.stringify(v)).join(',\n  ');
-    const infEntries = videos.filter(v => v.asp !== 'portrait' || v.pl === 'yt').map(v => JSON.stringify(v)).join(',\n  ');
+  const vNew = mergeIntoJson('vids.json', videos);
+  console.log(`  ✅ vids.json +${vNew} (${videos.length} générées)`);
 
-    if (vidEntries) {
-      html = html.replace('// ═══ VIDS_INJECT ═══',
-        `// ═══ VIDS_INJECT ═══\nVIDS.push(\n  ${vidEntries}\n);`);
-    }
-    if (infEntries) {
-      html = html.replace('// ═══ INF_VIDS_INJECT ═══',
-        `// ═══ INF_VIDS_INJECT ═══\nINF_VIDS.push(\n  ${infEntries}\n);`);
-    }
-    console.log(`  ✅ ${videos.length} vidéos injectées`);
-  }
-
-  fs.writeFileSync(INDEX_HTML, html, 'utf8');
-  console.log('  💾 index.html sauvegardé');
+  // Stats totaux
+  const rTotal = JSON.parse(fs.readFileSync(`${DATA_DIR}/recipes.json`,'utf8')).length;
+  const sTotal = JSON.parse(fs.readFileSync(`${DATA_DIR}/restos.json`,'utf8')).length;
+  const vTotal = JSON.parse(fs.readFileSync(`${DATA_DIR}/vids.json`,'utf8')).length;
+  console.log(`\n📊 Totaux: ${rTotal} recettes | ${sTotal} restos | ${vTotal} vidéos`);
 }
 
 // ─── MAIN ─────────────────────────────────────────────────────────────────────
@@ -782,14 +773,6 @@ async function main() {
   const videos  = await generateVideos();
 
   injectData(recipes, restos, videos);
-
-  // Stats finales
-  const html = fs.readFileSync(INDEX_HTML, 'utf8');
-  const rCount = (html.match(/"id":"rbulk_/g)||[]).length;
-  const restoCount = (html.match(/"id":"rst_v2_/g)||[]).length;
-  console.log(`\n📊 État index.html après injection:`);
-  console.log(`   Recettes bulk: ${rCount}`);
-  console.log(`   Restaurants v2: ${restoCount}`);
   console.log('\n✅ Génération terminée !');
 }
 
