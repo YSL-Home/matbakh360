@@ -2,8 +2,8 @@ name: "🍽️ Matbakh360 — Auto-Gen toutes les 3h"
 
 on:
   schedule:
-    # Toutes les 3 heures (UTC) — soit 03:00, 06:00, 09:00... heure Maroc
-    - cron: '0 */3 * * *'
+    # Une fois par jour à 03:00 UTC (05:00 heure Maroc)
+    - cron: '0 3 * * *'
   workflow_dispatch:
     inputs:
       recipes_count:

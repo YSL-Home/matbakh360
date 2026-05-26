@@ -63,6 +63,39 @@ const AREA_MAP = {
   Ethiopian:  { r:'أفريقي',  cat:'إثيوبي',   cid:'eth', f:'🇪🇹', em:'🫓' },
 };
 
+// ─── CATÉGORISATION AUTOMATIQUE ──────────────────────────────────────────────
+const _DESSERT = ['cake','pie','tart','pudding','dessert','cookie','biscuit','brownie',
+  'cheesecake','tiramisu','baklava','ice cream','halva','mousse','custard','crumble',
+  'soufflé','souffle','crepe','waffle','donut','muffin','macaron','fudge','truffle',
+  'caramel','meringue','pavlova','strudel','budino','pancake','french toast',
+  'pastry','profiterole','galette','cannoli','panna cotta','creme brulee','churros',
+  'tres leches','kheer','halwa','mochi','sweet','nougat','toffee','fondant',
+  'lemon drizzle','sticky toffee','bread pudding','swiss roll','eclair','madeleine',
+  'millefeuille','financier','rum baba','biscotti','opera cake'];
+const _SEAFOOD = ['fish','salmon','tuna','shrimp','prawn','cod','seafood','lobster',
+  'crab','squid','mussel','clam','anchovy','sardine','sea bass','tilapia','halibut',
+  'trout','haddock','mackerel','oyster','scallop','octopus','monkfish','pilchard',
+  'herring','snapper','sole','bass','swordfish','fideuà','bouillabaisse','ceviche',
+  'poke','sashimi','gravlax','brandade','linguine alle vongole'];
+const _BREAD  = ['bread','bun','baguette','naan','pita','brioche','croissant','focaccia',
+  'ciabatta','sourdough','tortilla','flatbread','roti','chapati','injera','msemen',
+  'bagel','pretzel','challah','cornbread','breadstick','grissini','khobz','beghrir'];
+const _HEALTHY = ['salad','bowl','quinoa','smoothie','vegan','vegetarian','detox',
+  'buddha bowl','kale','fattoush','tabbouleh','coleslaw','lentil','edamame',
+  'tofu','tempeh','spiralized','nourish bowl','grain bowl'];
+const _RAMADAN = ['harira','chebakia','sellou','briouate','briwat','bastilla','qatayef',
+  'katayef','maamoul','kahk','konafa','kunafa','ataif','haleem','harees','baghrir'];
+
+function detectCat(titleEn, ings = []) {
+  const txt = `${titleEn} ${ings.map(i=>i.n||'').join(' ')}`.toLowerCase();
+  for (const kw of _RAMADAN)  if (txt.includes(kw)) return 'رمضان';
+  for (const kw of _DESSERT)  if (txt.includes(kw)) return 'حلويات';
+  for (const kw of _SEAFOOD)  if (txt.includes(kw)) return 'بحري';
+  for (const kw of _BREAD)    if (titleEn.toLowerCase().includes(kw)) return 'خبز';
+  for (const kw of _HEALTHY)  if (txt.includes(kw)) return 'صحي';
+  return null;
+}
+
 // Villes pour les restaurants
 const CITIES = [
   { ar:'الدار البيضاء', en:'Casablanca', lat:33.5731,  lng:-7.5898 },
@@ -325,6 +358,16 @@ async function generateRecipes() {
         src_id:   meal.idMeal || null,
         youtube:  meal.strYoutube || '',
       };
+      // Catégorie spéciale si détectée (desserts, fruits de mer, etc.)
+      const specialCat = detectCat(meal.strMeal || '', recipe.ing);
+      if (specialCat) recipe.cat = specialCat;
+
+      // Quick (≤30 min) si pas déjà catégorisé spécialement
+      if (!specialCat) {
+        const mins = parseInt((recipe.tm || '').match(/(\d+)/)?.[1] || '99');
+        if (mins <= 30) recipe.cat = 'سريع';
+      }
+
       generated.push(recipe);
     });
     await sleep(1500);
