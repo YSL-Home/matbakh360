@@ -131,6 +131,30 @@ function httpGet(url, opts={}) {
 
 function sleep(ms){ return new Promise(r => setTimeout(r, ms)); }
 
+// ─── GOOGLE PLACES PHOTO (vraie photo du restaurant) ─────────────────────────
+function httpGetRedirect(url) {
+  return new Promise(resolve => {
+    const req = https.get(url, { headers:{'User-Agent':'Matbakh360-Bot/2.0'} }, res => {
+      res.resume();
+      const loc = res.headers['location'];
+      resolve((res.statusCode===301||res.statusCode===302)&&loc ? loc : null);
+    });
+    req.on('error', ()=>resolve(null));
+    req.setTimeout(8000, ()=>{ req.destroy(); resolve(null); });
+  });
+}
+async function fetchPlacePhoto(nameEn, cityEn) {
+  if (!GOOGLE_KEY) return null;
+  try {
+    const q = encodeURIComponent(`${nameEn} restaurant ${cityEn}`);
+    const data = await httpGet(`https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${q}&inputtype=textquery&fields=photos&key=${GOOGLE_KEY}`);
+    const ref = data?.candidates?.[0]?.photos?.[0]?.photo_reference;
+    if (!ref) return null;
+    const finalUrl = await httpGetRedirect(`https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${ref}&key=${GOOGLE_KEY}`);
+    return finalUrl?.includes('googleusercontent.com') ? finalUrl : null;
+  } catch { return null; }
+}
+
 // ─── WIKIPEDIA THUMBNAIL API ─────────────────────────────────────────────────
 // Retourne l'URL de l'image Wikipedia pour un nom de plat en anglais
 // Garantit une photo vérifiée dish↔image (Commons CC-BY-SA)
@@ -579,6 +603,18 @@ async function generateRestaurants() {
     const arData = await enrichRestoClaude(elements.slice(0, perCity), city);
     await sleep(1500);
 
+    // Fetch real photos in parallel (max 3 concurrent)
+    const photoResults = [];
+    for (let idx = 0; idx < elements.slice(0, perCity).length; idx += 3) {
+      const chunk = elements.slice(0, perCity).slice(idx, idx + 3);
+      const photos = await Promise.all(chunk.map(el => {
+        const name = el.tags?.name || el.tags?.['name:en'] || 'Restaurant';
+        return fetchPlacePhoto(name, city.en);
+      }));
+      photoResults.push(...photos);
+      if (idx + 3 < elements.slice(0, perCity).length) await sleep(700);
+    }
+
     elements.slice(0, perCity).forEach((el, idx) => {
       const ar = arData.find(x => x.idx === idx) || {};
       const tags = el.tags || {};
@@ -599,7 +635,7 @@ async function generateRestaurants() {
         rv: ar.rv || (30 + Math.floor(Math.random()*470)),
         price: ar.price || '$$',
         address: [tags['addr:housenumber'], tags['addr:street']].filter(Boolean).join(' ') || city.ar,
-        img: _cuisineImg(tags.cuisine || ''),
+        img: photoResults[idx] || _cuisineImg(tags.cuisine || ''),
         // ✅ Logo réel via Clearbit (affiché dans le pin carte)
         logo: domain ? `https://logo.clearbit.com/${domain}` : '',
         tags: ar.tags || [tags.cuisine||'restaurant'],
@@ -643,13 +679,21 @@ Chaque objet : {"name":"","nameAr":"","cuisine":"","price":"$|$$|$$$","rating":4
     const text = r.content?.[0]?.text || '[]';
     const clean = text.replace(/```json\n?/g,'').replace(/```\n?/g,'').trim();
     const arr = JSON.parse(clean.startsWith('[') ? clean : '['+clean+']');
+    // Fetch real photos in parallel
+    const photos = [];
+    for (let i = 0; i < arr.length; i += 3) {
+      const chunk = arr.slice(i, i + 3);
+      const p = await Promise.all(chunk.map(x => fetchPlacePhoto(x.name, city.en)));
+      photos.push(...p);
+      if (i + 3 < arr.length) await sleep(700);
+    }
     return arr.map((x,i) => ({
       id: `rst_v2_${city.en}_ai_${i}_${RUN_ID}`,
       name: x.name, nameAr: x.nameAr||x.name, nameEn: x.name,
       city: city.ar, cityEn: city.en, country: _cityFlag(city.en),
       cuisine: x.cuisine, cusines: [x.cuisine],
       rating: x.rating, rv: x.rv, price: x.price,
-      address: x.address, img: _cuisineImg(x.cuisine),
+      address: x.address, img: photos[i] || _cuisineImg(x.cuisine),
       logo: x.logo_domain ? `https://logo.clearbit.com/${x.logo_domain}` : '',
       tags: [x.cuisine], website: x.website||'', phone: x.phone||'',
       hours: '', desc: x.desc, menu_highlights: x.menu_highlights||[],

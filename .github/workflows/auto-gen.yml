@@ -54,6 +54,12 @@ jobs:
           BATCH: "25"
         run: node .github/scripts/bulk-gen-v2.mjs
 
+      - name: "🖼️ Images réelles restaurants (Google Places)"
+        env:
+          GOOGLE_PLACES_KEY: ${{ secrets.GOOGLE_PLACES_KEY }}
+          IMG_BATCH: "300"
+        run: node .github/scripts/fetch-real-images.mjs
+
       - name: "🗺️ Sitemap + robots.txt"
         run: node .github/scripts/gen-sitemap.mjs
 
