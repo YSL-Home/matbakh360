@@ -1997,6 +1997,31 @@ function togIng(el,rowId){
 // ═══════════════════════════════════════════════════
 // VIDEO FEED
 // ═══════════════════════════════════════════════════
+
+// Plateformes disponibles (barre de filtres)
+const PLATS = [
+  { id:'all', cls:'',   ico:'📺', lbl:'الكل'      },
+  { id:'yt',  cls:'yt', ico:'▶️', lbl:'YouTube'   },
+  { id:'tt',  cls:'tt', ico:'🎵', lbl:'TikTok'    },
+  { id:'ig',  cls:'ig', ico:'📷', lbl:'Instagram' },
+  { id:'fb',  cls:'fb', ico:'📘', lbl:'Facebook'  },
+];
+
+// Tags de filtrage rapide
+const VF_TAGS = [
+  { id:'all',         lbl:'🌍 الكل'        },
+  { id:'مغربي',       lbl:'🇲🇦 مغربي'      },
+  { id:'عربي',        lbl:'🌙 عربي'         },
+  { id:'مصري',        lbl:'🇪🇬 مصري'       },
+  { id:'لبناني',      lbl:'🇱🇧 لبناني'     },
+  { id:'تركي',        lbl:'🇹🇷 تركي'       },
+  { id:'إيطالي',      lbl:'🇮🇹 إيطالي'     },
+  { id:'ياباني',      lbl:'🇯🇵 ياباني'     },
+  { id:'هندي',        lbl:'🇮🇳 هندي'       },
+  { id:'حلويات',      lbl:'🍰 حلويات'      },
+  { id:'سريع',        lbl:'⚡ سريع'         },
+];
+
 function initVideos(){
   // Toujours re-render la grille pour prendre en compte les données chargées async
   if(!document.getElementById('plat-bar').innerHTML){
