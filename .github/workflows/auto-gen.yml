@@ -60,6 +60,18 @@ jobs:
           IMG_BATCH: "300"
         run: node .github/scripts/fetch-real-images.mjs
 
+      - name: "📝 Enrichissement steps + tips recettes"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BATCH_SIZE: "100"
+        run: node .github/scripts/enrich-steps.mjs
+
+      - name: "🎬 Génération influenceurs par ville"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          INF_BATCH: "10"
+        run: node .github/scripts/gen-influencers.mjs
+
       - name: "🗺️ Sitemap + robots.txt"
         run: node .github/scripts/gen-sitemap.mjs
 
@@ -67,7 +79,7 @@ jobs:
         run: |
           git config user.name  "Matbakh360 Bot"
           git config user.email "bot@matbakh360.com"
-          git add index.html sitemap.xml robots.txt data/recipes.json data/restos.json data/vids.json
+          git add index.html sitemap.xml robots.txt data/recipes.json data/restos.json data/vids.json data/influencers.json
           if git diff --staged --quiet; then
             echo "ℹ️ Rien à committer"
           else
