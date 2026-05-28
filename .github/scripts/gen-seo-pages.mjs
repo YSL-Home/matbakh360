@@ -13,22 +13,40 @@ const RECIPES_DIR = path.resolve(process.cwd(), 'recipes');
 const DATA_FILE   = path.resolve(process.cwd(), 'data', 'recipes.json');
 const INDEX_FILE  = path.join(RECIPES_DIR, 'index.json');
 
+// ── Détection de texte arabe ──────────────────────────────────────────────
+function isArabic(str) {
+  return /[؀-ۿ]/.test(str);
+}
+
+// ── Translittération arabe → latin ───────────────────────────────────────
+function transliterateArabic(str) {
+  const map = {
+    'ا':'a','أ':'a','إ':'a','آ':'a','ب':'b','ت':'t','ث':'th','ج':'j',
+    'ح':'h','خ':'kh','د':'d','ذ':'dh','ر':'r','ز':'z','س':'s','ش':'sh',
+    'ص':'s','ض':'d','ط':'t','ظ':'z','ع':'a','غ':'gh','ف':'f','ق':'q',
+    'ك':'k','ل':'l','م':'m','ن':'n','ه':'h','و':'w','ي':'y','ى':'a',
+    'ة':'a','ء':'','ئ':'y','ؤ':'w','لا':'la',
+  };
+  return str.replace(/[؀-ۿݐ-ݿ؀-ۿ]/g, c => map[c] || '');
+}
+
 // ── Slugify ───────────────────────────────────────────────────────────────
-function slugify(str) {
-  return str
-    .normalize('NFD')                        // décomposer les accents
+// Priorité : r.ti (titre anglais) si disponible et non-arabe,
+//            sinon translittérer le titre arabe.
+function buildSlug(r) {
+  const tiEnglish = r.ti && !isArabic(r.ti) ? r.ti : null;
+  const source    = tiEnglish || r.ti || `recipe-${r.id}`;
+  return slugifyStr(source);
+}
+
+function slugifyStr(str) {
+  let s = String(str);
+  if (isArabic(s)) {
+    s = transliterateArabic(s);
+  }
+  return s
+    .normalize('NFD')                        // décomposer les accents latins
     .replace(/[̀-ͯ]/g, '')         // supprimer les diacritiques latins
-    .replace(/[؀-ۿݐ-ݿ]/g, c => {
-      // Translittération basique arabe → latin
-      const map = {
-        'ا':'a','أ':'a','إ':'a','آ':'a','ب':'b','ت':'t','ث':'th','ج':'j',
-        'ح':'h','خ':'kh','د':'d','ذ':'dh','ر':'r','ز':'z','س':'s','ش':'sh',
-        'ص':'s','ض':'d','ط':'t','ظ':'z','ع':'a','غ':'gh','ف':'f','ق':'q',
-        'ك':'k','ل':'l','م':'m','ن':'n','ه':'h','و':'w','ي':'y','ى':'a',
-        'ة':'a','ء':'','ئ':'y','ؤ':'w','لا':'la',
-      };
-      return map[c] || '';
-    })
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')            // remplacer tout non-alphanum par tiret
     .replace(/^-+|-+$/g, '')                // trim tirets en début/fin
@@ -44,7 +62,7 @@ function parseCookTime(tm) {
   return 'PT30M';
 }
 
-// ── Template HTML (~3KB) ──────────────────────────────────────────────────
+// ── Template HTML ─────────────────────────────────────────────────────────
 function buildHtml(r, slug) {
   const title       = r.ti  || 'وصفة';
   const description = r.de  || title;
@@ -54,6 +72,10 @@ function buildHtml(r, slug) {
   const yield_      = r.sv  ? String(r.sv) : '4';
   const calories    = r.nut && r.nut.cal ? `${r.nut.cal} cal` : '';
   const canonical   = `${BASE}/recipes/${slug}.html`;
+
+  // Langue : arabe si r.r contient "عربي", sinon anglais
+  const isArabicPage = r.r && r.r.includes('عربي');
+  const htmlLang     = isArabicPage ? 'ar" dir="rtl' : 'en';
 
   const ingredients = Array.isArray(r.ing)
     ? r.ing.map(i => `${i.q || ''} ${i.n || ''}`.trim())
@@ -92,14 +114,17 @@ function buildHtml(r, slug) {
     : description;
 
   return `<!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="${htmlLang}">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${escHtml(title)} | مطبخ 360</title>
 <meta name="description" content="${escAttr(metaDesc)}">
-<meta name="robots" content="index,follow">
+<meta name="robots" content="index, follow">
 <link rel="canonical" href="${canonical}">
+<link rel="alternate" hreflang="ar" href="${canonical}">
+<link rel="alternate" hreflang="fr" href="${BASE}/fr/recipes/${slug}.html">
+<link rel="alternate" hreflang="x-default" href="${canonical}">
 <meta property="og:title" content="${escAttr(title)}">
 <meta property="og:description" content="${escAttr(metaDesc)}">
 <meta property="og:image" content="${escAttr(image)}">
@@ -111,6 +136,9 @@ function buildHtml(r, slug) {
 <h1>${escHtml(title)}</h1>
 <p>${escHtml(description)}</p>
 <script>window.location='/#recipe/${escJs(r.id)}';</script>
+<footer style="margin-top:2rem;padding:1rem 0;border-top:1px solid #eee;text-align:center;font-size:.9rem;">
+  <a href="${BASE}" rel="home">مطبخ 360 — الرئيسية</a>
+</footer>
 </body>
 </html>`;
 }
@@ -167,7 +195,7 @@ for (let i = 0; i < total; i++) {
   const r    = toProcess[i];
   if (!r || !r.id || !r.ti) { skipped++; continue; }
 
-  const slug = slugify(r.ti) || `recipe-${r.id}`;
+  const slug = buildSlug(r) || `recipe-${r.id}`;
   const file = path.join(RECIPES_DIR, `${slug}.html`);
 
   // Skip si déjà généré
