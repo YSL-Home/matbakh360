@@ -3,11 +3,21 @@
 // Stratégie de cache pour une expérience hors-ligne
 // ===================================================
 
-const CACHE_NAME = 'matbakh360-v1';
+const CACHE_VERSION = 'v3';
+const CACHE_NAME = `matbakh360-${CACHE_VERSION}`;
 
 // الملفات التي يتم تخزينها مسبقاً عند التثبيت
 // Fichiers pré-cachés à l'installation
 const PRECACHE_URLS = ['/', '/index.html', '/logo.png', '/manifest.json'];
+
+// JSON data files — stratégie stale-while-revalidate
+// ملفات JSON — استراتيجية: الكاش أولاً مع تحديث في الخلفية
+const JSON_DATA_URLS = [
+  '/data/recipes.json',
+  '/data/restos.json',
+  '/data/vids.json',
+  '/data/influencers.json',
+];
 
 // مدة صلاحية كاش الصور: 7 أيام بالميلي ثانية
 // Durée de validité du cache images : 7 jours
@@ -79,7 +89,15 @@ function addCacheDateHeader(response) {
  * تحديد ما إذا كان الرابط صورة من Unsplash
  */
 function isUnsplashImage(url) {
-  return url.hostname === 'images.unsplash.com' || url.hostname === 'unsplash.com';
+  return url.hostname === 'images.unsplash.com' || url.hostname === 'unsplash.com' || url.hostname === 'source.unsplash.com';
+}
+
+/**
+ * Détermine si l'URL est un fichier JSON de données.
+ * تحديد ما إذا كان الرابط ملف JSON للبيانات
+ */
+function isJsonDataFile(url) {
+  return JSON_DATA_URLS.includes(url.pathname);
 }
 
 // ===================================================
@@ -99,10 +117,12 @@ self.addEventListener('fetch', (event) => {
 
         if (cachedResponse && !isCacheEntryExpired(cachedResponse)) {
           // الصورة في الكاش وصالحة — Image en cache et valide
+          console.log('[SW] CACHE HIT (image Unsplash):', url.pathname);
           return cachedResponse;
         }
 
         // الكاش منتهي أو غير موجود — Cache expiré ou absent, on fetch le réseau
+        console.log('[SW] CACHE MISS (image Unsplash):', url.pathname);
         try {
           const networkResponse = await fetch(event.request);
           if (networkResponse.ok) {
@@ -126,7 +146,44 @@ self.addEventListener('fetch', (event) => {
   }
 
   // -----------------------------------------------
-  // 2. index.html — Network First, Cache Fallback
+  // 2. ملفات JSON — Stale-While-Revalidate
+  // خدمة من الكاش فوراً + تحديث في الخلفية
+  // Servir depuis le cache immédiatement + revalidation en arrière-plan
+  // -----------------------------------------------
+  if (isJsonDataFile(url)) {
+    event.respondWith(
+      caches.open(CACHE_NAME).then(async (cache) => {
+        const cachedResponse = await cache.match(event.request);
+
+        // Lance la revalidation en arrière-plan (sans bloquer la réponse)
+        // تحديث البيانات في الخلفية دون انتظار
+        const fetchPromise = fetch(event.request).then((networkResponse) => {
+          if (networkResponse.ok) {
+            console.log('[SW] JSON revalidated (background):', url.pathname);
+            cache.put(event.request, networkResponse.clone());
+          }
+          return networkResponse;
+        }).catch((err) => {
+          console.warn('[SW] JSON revalidation failed (offline):', url.pathname, err.message);
+        });
+
+        if (cachedResponse) {
+          console.log('[SW] CACHE HIT (JSON stale-while-revalidate):', url.pathname);
+          // Serve depuis le cache, revalidation tourne en arrière-plan
+          event.waitUntil(fetchPromise);
+          return cachedResponse;
+        }
+
+        // Pas de cache — attendre la réponse réseau
+        console.log('[SW] CACHE MISS (JSON, premier chargement):', url.pathname);
+        return fetchPromise;
+      })
+    );
+    return;
+  }
+
+  // -----------------------------------------------
+  // 3. index.html — Network First, Cache Fallback
   // الشبكة أولاً للحصول على أحدث الوصفات، ثم الكاش
   // -----------------------------------------------
   if (url.pathname === '/' || url.pathname === '/index.html') {
@@ -136,10 +193,11 @@ self.addEventListener('fetch', (event) => {
           const networkResponse = await fetch(event.request);
           if (networkResponse.ok) {
             cache.put(event.request, networkResponse.clone());
+            console.log('[SW] index.html fetched from network and cached');
           }
           return networkResponse;
         } catch {
-          console.log('[SW] Network fail pour index.html, fallback cache / فشل الشبكة، استخدام الكاش');
+          console.log('[SW] CACHE HIT (index.html fallback — offline) / فشل الشبكة، استخدام الكاش');
           const cachedResponse = await cache.match(event.request);
           return cachedResponse || new Response('Hors-ligne / غير متصل', {
             status: 503,
@@ -152,7 +210,7 @@ self.addEventListener('fetch', (event) => {
   }
 
   // -----------------------------------------------
-  // 3. كل الطلبات الأخرى — Network First, Cache Fallback
+  // 4. كل الطلبات الأخرى — Network First, Cache Fallback
   // جميع الطلبات الأخرى: الشبكة أولاً ثم الكاش
   // -----------------------------------------------
   event.respondWith(
@@ -166,6 +224,7 @@ self.addEventListener('fetch', (event) => {
       } catch {
         const cachedResponse = await cache.match(event.request);
         if (cachedResponse) {
+          console.log('[SW] CACHE HIT (fallback générique):', url.pathname);
           return cachedResponse;
         }
         return new Response('Ressource indisponible / المورد غير متاح', { status: 503 });
