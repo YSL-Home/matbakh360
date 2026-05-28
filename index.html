@@ -1572,7 +1572,7 @@ async function loadData(){
 // RECIPE TRANSLATIONS (fr + en)
 // ═══════════════════════════════════════════════════
 const RECIPE_TR={
-  r01:{fr:{ti:'Couscous Royal Marocain aux 7 Légumes',de:'Le plat national du Maroc — semoule fine avec 7 légumes et viandes mijotées dans un bouillon parfumé.',err_email_req2:'Entrez votre email',sloc_map_error:'Erreur: bibliothèque de carte non chargée',sloc_loc_error:'Impossible de détecter votre position',sloc_city_not_found:'Cette ville n\'est pas encore dans notre base de données'},en:{ti:'Royal Moroccan Couscous with 7 Vegetables',de:"Morocco's national dish — fine semolina with 7 vegetables and slow-cooked meats in fragrant broth.",err_email_req2:'Enter your email',sloc_map_error:'Error: map library not loaded',sloc_loc_error:'Could not detect location',sloc_city_not_found:'This city is not yet in our database',sloc_influencers:'🎬 City Influencers',sloc_inf_all:'All',sloc_inf_views:'views',sloc_inf_likes:'likes'}},
+  r01:{fr:{ti:'Couscous Royal Marocain aux 7 Légumes',de:'Le plat national du Maroc — semoule fine avec 7 légumes et viandes mijotées dans un bouillon parfumé.',err_email_req2:'Entrez votre email',sloc_map_error:'Erreur: bibliothèque de carte non chargée',sloc_loc_error:'Impossible de détecter votre position',sloc_city_not_found:'Cette ville n\'est pas encore dans notre base de données'},en:{ti:'Royal Moroccan Couscous with 7 Vegetables',de:"Morocco's national dish — fine semolina with 7 vegetables and slow-cooked meats in fragrant broth.",err_email_req2:'Enter your email',sloc_map_error:'Error: map library not loaded',sloc_loc_error:'Could not detect location',sloc_city_not_found:'This city is not yet in our database'}},
   r02:{fr:{ti:'Tajine de Poulet au Citron Confit & Olives',de:'Le tajine classique marocain — équilibre parfait entre acidité et salinité sur feu doux.'},en:{ti:'Chicken Tagine with Preserved Lemon & Olives',de:'The classic Moroccan tagine — a perfect balance of tartness and saltiness over low heat.'}},
   r03:{fr:{ti:'Carbonara Romaine Authentique — Sans Crème',de:'La vraie carbonara : œufs et pecorino uniquement, jamais de crème. La recette de Rome.'},en:{ti:'Authentic Roman Carbonara — No Cream',de:'Real carbonara: eggs and pecorino only, never cream. The original Rome recipe.'}},
   r04:{fr:{ti:'Ramen au Poulet — Bouillon Mijoté 8 Heures',de:'Un vrai ramen japonais avec un bouillon profond et des garnitures soigneusement choisies.'},en:{ti:'Chicken Ramen — 8-Hour Slow Broth',de:'Authentic Japanese ramen with a rich, deep broth and carefully chosen toppings.'}},
@@ -3534,6 +3534,9 @@ function slocLoadCity(cityAr, coords=null){
 
   // Render list with slight delay for smooth transition
   setTimeout(slocRenderList, 80);
+
+  // Load influencers for this city
+  slocLoadInfluencers(cityAr);
 }
 
 // ── Extrait le domaine d'un restaurant depuis son URL website ou son logo favicon ──
@@ -3867,6 +3870,8 @@ function slocGotoNominatim(lat,lng,name){
   document.getElementById('sloc-panel-title').textContent=name;
   const badge=document.getElementById('sloc-badge');
   if(badge) badge.style.display='none';
+  const infSec=document.getElementById('sloc-inf-section');
+  if(infSec) infSec.style.display='none';
 }
 
 function slocSearch(q){
@@ -3882,6 +3887,94 @@ function slocSearch(q){
 function slocCloseSuggest(){
   const s=document.getElementById('sloc-suggest');
   if(s) s.style.display='none';
+}
+
+// ── Influencers section ───────────────────────────────────────────────
+let _slocInfCache=null, _slocInfFilter='all';
+
+async function slocLoadInfluencers(cityAr){
+  const sec=document.getElementById('sloc-inf-section');
+  const listEl=document.getElementById('sloc-inf-list');
+  if(!sec||!listEl) return;
+
+  // Fetch & cache
+  if(!_slocInfCache){
+    try{
+      const res=await fetch('data/influencers.json');
+      _slocInfCache=await res.json();
+    }catch(e){
+      console.warn('influencers.json not loaded',e);
+      _slocInfCache=[];
+    }
+  }
+
+  // Filter by city
+  const cityInf=_slocInfCache.filter(inf=>inf.city===cityAr||inf.cityAr===cityAr);
+  if(!cityInf.length){sec.style.display='none';return;}
+
+  sec.style.display='flex';
+  _slocInfFilter='all';
+
+  // Reset tabs
+  const tabs=document.getElementById('sloc-inf-tabs');
+  if(tabs){
+    tabs.querySelectorAll('button').forEach((btn,i)=>{
+      const isAll=btn.getAttribute('onclick').includes("'all'");
+      btn.style.background=isAll?'var(--s)':'transparent';
+      btn.style.color=isAll?'#fff':'var(--t2)';
+      btn.style.borderColor=isAll?'var(--s)':'var(--b1)';
+    });
+  }
+
+  slocInfRender(cityInf, 'all');
+}
+
+function slocInfFilter(platform, btn){
+  _slocInfFilter=platform;
+  // Update tab styles
+  const tabs=document.getElementById('sloc-inf-tabs');
+  if(tabs){
+    tabs.querySelectorAll('button').forEach(b=>{
+      const isActive=b.getAttribute('onclick').includes("'"+platform+"'");
+      b.style.background=isActive?'var(--s)':'transparent';
+      b.style.color=isActive?'#fff':'var(--t2)';
+      b.style.borderColor=isActive?'var(--s)':'var(--b1)';
+    });
+  }
+  if(!_slocInfCache) return;
+  const cityInf=_slocInfCache.filter(inf=>inf.city===_slocCity||inf.cityAr===_slocCity);
+  slocInfRender(cityInf, platform);
+}
+
+function slocInfRender(all, platform){
+  const listEl=document.getElementById('sloc-inf-list');
+  if(!listEl) return;
+  const list=platform==='all'?all:all.filter(inf=>inf.platform===platform);
+  if(!list.length){listEl.innerHTML='<div style="padding:12px;color:var(--t3);font-size:12px">—</div>';return;}
+
+  const platColors={instagram:'#E1306C',tiktok:'#010101',youtube:'#FF0000'};
+  const platIcons={instagram:'📸',tiktok:'🎵',youtube:'▶'};
+
+  listEl.innerHTML=list.map(inf=>`
+    <div onclick="window.open('${inf.videoUrl}','_blank')" style="flex-shrink:0;width:160px;cursor:pointer;border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--b1);transition:transform .15s,box-shadow .15s;" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 6px 20px rgba(0,0,0,.18)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+      <div style="position:relative;width:160px;height:90px;overflow:hidden;background:var(--card2)">
+        <img src="${inf.thumbnail}" alt="${inf.title}" style="width:100%;height:100%;object-fit:cover" loading="lazy" onerror="this.style.display='none'">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55),transparent)"></div>
+        <div style="position:absolute;bottom:5px;left:7px;font-size:10px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.8)">${inf.views} ${t('sloc_inf_views')}</div>
+        <div style="position:absolute;top:6px;right:6px;background:${platColors[inf.platform]||'#333'};color:#fff;font-size:9px;font-weight:800;padding:2px 6px;border-radius:10px">${platIcons[inf.platform]||'🎬'} ${inf.platform}</div>
+      </div>
+      <div style="padding:7px 8px 8px">
+        <div style="display:flex;align-items:center;gap:5px;margin-bottom:4px">
+          <img src="${inf.avatar}" alt="${inf.name}" style="width:22px;height:22px;border-radius:50%;object-fit:cover;flex-shrink:0" loading="lazy" onerror="this.style.display='none'">
+          <div style="min-width:0">
+            <div style="font-size:10px;font-weight:800;color:var(--t0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${inf.handle}</div>
+            <div style="font-size:9px;color:var(--t3)">${inf.followers}</div>
+          </div>
+        </div>
+        <div style="font-size:10.5px;font-weight:700;color:var(--t1);line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${document.documentElement.dir==='rtl'?inf.titleAr:inf.title}</div>
+        <div style="margin-top:4px;font-size:9px;color:var(--t3)">❤️ ${inf.likes}</div>
+      </div>
+    </div>`).join('');
 }
 
 // ── Update gp() to handle 'local' ────────────────────────────────────
