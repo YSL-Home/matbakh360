@@ -14,7 +14,37 @@
     { "src": "logo.png", "sizes": "512x512", "type": "image/png" },
     { "src": "logo.png", "sizes": "any", "type": "image/png", "purpose": "maskable any" }
   ],
-  "categories": ["food", "lifestyle", "education"],
+  "categories": ["food", "lifestyle", "travel"],
+  "shortcuts": [
+    {
+      "name": "الوصفات",
+      "short_name": "وصفات",
+      "description": "تصفح آلاف الوصفات من مطابخ العالم",
+      "url": "/?page=home",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "المطاعم",
+      "short_name": "مطاعم",
+      "description": "اكتشف أفضل المطاعم القريبة منك",
+      "url": "/?page=local",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "الفيديوهات",
+      "short_name": "فيديو",
+      "description": "شاهد فيديوهات الطبخ من جميع المنصات",
+      "url": "/?page=videos",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "نكهات محلية",
+      "short_name": "محلي",
+      "description": "اكتشف المطابخ والنكهات المحلية حول العالم",
+      "url": "/?page=world",
+      "icons": [{ "src": "logo.png", "sizes": "192x192" }]
+    }
+  ],
   "screenshots": [
     { "src": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=540&q=75", "sizes": "540x720", "type": "image/jpeg" }
   ]
