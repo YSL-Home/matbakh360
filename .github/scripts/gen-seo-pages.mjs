@@ -195,7 +195,12 @@ for (let i = 0; i < total; i++) {
   const r    = toProcess[i];
   if (!r || !r.id || !r.ti) { skipped++; continue; }
 
-  const slug = buildSlug(r) || `recipe-${r.id}`;
+  let slug = buildSlug(r) || `recipe-${r.id}`;
+  // Déduplication globale (existants + générés ce run)
+  if (existingSlugs.has(slug)) slug = `${slug}-${r.cid || r.id.slice(-6)}`;
+  if (existingSlugs.has(slug)) slug = `${slug}-${r.id.slice(-6)}`;
+  if (existingSlugs.has(slug)) slug = `recipe-${r.id}`;
+  existingSlugs.add(slug); // marquer pour éviter doublons intra-run
   const file = path.join(RECIPES_DIR, `${slug}.html`);
 
   // Skip si déjà généré
