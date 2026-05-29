@@ -3,16 +3,18 @@
 // Stratégie de cache pour une expérience hors-ligne
 // ===================================================
 
-const CACHE_VERSION = 'v3';
+const CACHE_VERSION = 'v4';
 const CACHE_NAME = `matbakh360-${CACHE_VERSION}`;
+
+// Base path (handles both root '/' and subdir '/matbakh360/' deploys)
+const BASE_PATH = self.location.pathname.replace(/\/sw\.js$/, '');
 
 // الملفات التي يتم تخزينها مسبقاً عند التثبيت
 // Fichiers pré-cachés à l'installation
-const PRECACHE_URLS = ['/', '/index.html', '/logo.png', '/manifest.json'];
+const PRECACHE_URLS = [BASE_PATH + '/', BASE_PATH + '/index.html'];
 
-// JSON data files — stratégie stale-while-revalidate
-// ملفات JSON — استراتيجية: الكاش أولاً مع تحديث في الخلفية
-const JSON_DATA_URLS = [
+// JSON data files suffixes — stratégie stale-while-revalidate
+const JSON_DATA_SUFFIXES = [
   '/data/recipes.json',
   '/data/restos.json',
   '/data/vids.json',
@@ -97,7 +99,7 @@ function isUnsplashImage(url) {
  * تحديد ما إذا كان الرابط ملف JSON للبيانات
  */
 function isJsonDataFile(url) {
-  return JSON_DATA_URLS.includes(url.pathname);
+  return JSON_DATA_SUFFIXES.some(s => url.pathname.endsWith(s));
 }
 
 // ===================================================

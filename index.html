@@ -1631,9 +1631,9 @@ const INF_VIDS=[];
 async function loadData(){
   try{
     const [recipes,restos,vids]=await Promise.all([
-      fetch('/data/recipes.json').then(r=>r.json()).catch(()=>[]),
-      fetch('/data/restos.json').then(r=>r.json()).catch(()=>[]),
-      fetch('/data/vids.json').then(r=>r.json()).catch(()=>[]),
+      fetch('data/recipes.json').then(r=>r.json()).catch(()=>[]),
+      fetch('data/restos.json').then(r=>r.json()).catch(()=>[]),
+      fetch('data/vids.json').then(r=>r.json()).catch(()=>[]),
     ]);
     RECIPES.push(...recipes);
     RESTAURANTS.push(...restos);
@@ -4395,7 +4395,7 @@ function notifLater(){
 // ── SERVICE WORKER — cache offline + accélération ──────────────────
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('sw.js')
       .then(reg=>{ console.log('✅ SW enregistré:', reg.scope); })
       .catch(err=>{ console.log('SW erreur:', err); });
   });
