@@ -649,7 +649,7 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 .rp-user-badge{font-size:11px;font-weight:800;color:var(--g);background:rgba(74,122,53,.1);border:1px solid rgba(74,122,53,.25);padding:3px 10px;border-radius:var(--pill);}
 
 /* ══════ RECIPE OF THE DAY ══════ */
-.rc-day-badge{position:absolute;top:10px;left:10px;z-index:3;background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;font-size:9.5px;font-weight:900;padding:4px 10px;border-radius:var(--pill);display:flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(245,158,11,.4);}
+.rc-day-badge{position:absolute;bottom:10px;left:10px;z-index:3;background:linear-gradient(135deg,#F59E0B,#D97706);color:#fff;font-size:9.5px;font-weight:900;padding:4px 10px;border-radius:var(--pill);display:flex;align-items:center;gap:4px;box-shadow:0 2px 8px rgba(245,158,11,.4);}
 .rc.day-recipe{border:2px solid #F59E0B !important;box-shadow:0 0 0 4px rgba(245,158,11,.12);}
 .rc.day-recipe:hover{box-shadow:0 6px 28px rgba(245,158,11,.25) !important;}
 
@@ -2002,6 +2002,7 @@ function openRecipe(id,pushUrl=true){
         onclick="this.style.height='auto';this.style.minWidth='100%'">`).join('')}
     </div>`:''}
     <h1 class="rp-h1">${rTr(r,'ti')}</h1>
+    ${renderInteractiveRating(r.id,r.rt,r.rv)}
     <p class="rp-intro">${rTr(r,'de')}</p>
     <div class="rp-meta">
       <div class="rpm"><div class="rpm-v">${r.tm}</div><div class="rpm-l">${t('lbl_time')}</div></div>
@@ -2406,34 +2407,76 @@ function _initPaged(key, recs, gridId){
 }
 
 let _lastSearch='';
+function getSearchHistory(){return JSON.parse(localStorage.getItem('mw360_sh')||'[]');}
+function addSearchHistory(q){let h=getSearchHistory().filter(x=>x!==q);h.unshift(q);localStorage.setItem('mw360_sh',JSON.stringify(h.slice(0,5)));}
+function renderSearchHistoryBar(){const bar=document.getElementById('search-history-bar');if(!bar)return;const h=getSearchHistory();if(!h.length){bar.style.display='none';return;}bar.style.cssText='display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:14px 0 4px;';bar.innerHTML='<span style="font-size:11px;color:var(--t3);font-weight:700">🕐</span>'+h.map(q2=>`<button onclick="doSearch(this.dataset.q)" data-q="${q2.replace(/"/g,'&quot;')}" style="padding:4px 11px;border-radius:100px;font-size:11.5px;font-weight:600;font-family:var(--fn);cursor:pointer;border:1px solid var(--b1);background:var(--card);color:var(--t2);">${q2}</button>`).join('');}
+function hlTerm(str,q){if(!str||!q)return str||'';try{const esc=q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');return str.replace(new RegExp('('+esc+')','gi'),'<mark style="background:rgba(201,74,26,.18);color:var(--s);border-radius:3px;padding:0 2px">$1</mark>');}catch(e){return str;}}
 function doSearch(q,pushHistory=true){
   if(!q||!q.trim()) return;
   q=q.trim();
   _lastSearch=q;
+  addSearchHistory(q);
   const ql=q.toLowerCase();
-  const res=RECIPES.filter(r=>{
-    // Arabic fields
-    if(r.ti.includes(q)||r.de.includes(q)||r.cat.includes(q)||r.r.includes(q)) return true;
+  // Recettes
+  const recipeRes=RECIPES.filter(r=>{
+    if((r.ti||'').includes(q)||(r.de||'').includes(q)||(r.cat||'').includes(q)||(r.r||'').includes(q)) return true;
     if(r.kw&&r.kw.some(k=>k.includes(q))) return true;
-    // Search in all translations (fr, en, es, pt, it)
+    if(r.ing&&r.ing.some(i=>(i.n||'').includes(q))) return true;
     const tr=RECIPE_TR[r.id];
-    if(tr){
-      for(const lang of Object.values(tr)){
-        if(lang.ti&&lang.ti.toLowerCase().includes(ql)) return true;
-        if(lang.de&&lang.de.toLowerCase().includes(ql)) return true;
-      }
-    }
+    if(tr){for(const lang of Object.values(tr)){if((lang.ti||'').toLowerCase().includes(ql)||(lang.de||'').toLowerCase().includes(ql)) return true;}}
     return false;
   });
+  // Restaurants
+  const restoRes=RESTAURANTS.filter(r=>(r.name||'').toLowerCase().includes(ql)||(r.nameAr||'').includes(q)||(r.cuisine||'').toLowerCase().includes(ql)||(r.city||'').includes(q));
+  // Videos
+  const vidRes=[...VIDS,...INF_VIDS].filter(v=>{const ti=(v.titleAr||v.title||'').toLowerCase();const tags=(v.tags||v.cat||[]).join(' ').toLowerCase();return ti.includes(ql)||tags.includes(ql);});
+  const total=recipeRes.length+restoRes.length+vidRes.length;
   if(pushHistory) history.pushState({page:'search',q},'',`/recherche?q=${encodeURIComponent(q)}`);
-  document.getElementById('s-lbl').innerHTML=`<strong>${q}</strong> — ${res.length} ${t('search_count')}`;
-  if(!res.length){
-    document.getElementById('s-grid').innerHTML=`<div class="no-res" style="grid-column:span 4"><div style="font-size:48px;margin-bottom:12px">🔍</div><div>${t('search_no_res_for')} "${q}"</div></div>`;
-  } else {
-    document.getElementById('s-grid').innerHTML='';
-    _initPaged('search', res, 's-grid');
+  document.getElementById('s-lbl').innerHTML=`<strong>${q}</strong> — ${total} ${t('search_count')}`;
+  const sec=document.getElementById('s-sections');
+  if(!sec){gp('search',false);return;}
+  sec.innerHTML='';
+  if(!total){
+    sec.innerHTML=`<div class="no-res" style="padding:60px;text-align:center;color:var(--t2)"><div style="font-size:48px;margin-bottom:12px">🔍</div><div>${t('search_no_res_for')} "${q}"</div></div>`;
+    gp('search',false);renderSearchHistoryBar();return;
+  }
+  // ── Recettes section
+  if(recipeRes.length){
+    const w=document.createElement('div');
+    w.innerHTML=`<div class="sh" style="margin:18px 0 10px"><h2>🍽️ وصفات <span style="font-size:12px;font-weight:600;color:var(--t3)">(${recipeRes.length})</span></h2><div class="rl"></div></div>`;
+    sec.appendChild(w);
+    const gr=document.createElement('div');gr.className='g4';
+    const mkRc=(r)=>{const im=r.img||r.image||'';return `<div class="rc" onclick="openRecipe('${r.id}')">${im?`<img class="rc-img" src="${im}" alt="${(r.ti||'').replace(/"/g,'')}" loading="lazy">`:`<div class="rc-img" style="background:var(--ink2);display:flex;align-items:center;justify-content:center;font-size:32px">${r.em||'🍽️'}</div>`}<div class="rc-body"><div class="rc-title">${hlTerm(r.ti||'',q)}</div><div class="rc-meta"><span>${r.cat||''}</span><span>⭐ ${r.rat||''}</span></div></div></div>`;};
+    gr.innerHTML=recipeRes.slice(0,8).map(mkRc).join('');
+    sec.appendChild(gr);
+    if(recipeRes.length>8){
+      const mw=document.createElement('div');mw.style.cssText='text-align:center;padding:10px 0;';
+      mw.innerHTML=`<button style="background:var(--card);border:1px solid var(--b0);color:var(--s);padding:8px 22px;border-radius:100px;font-family:var(--fn);font-size:12.5px;font-weight:700;cursor:pointer;">+ ${recipeRes.length-8} ${t('load_more')}</button>`;
+      mw.querySelector('button').onclick=function(){gr.innerHTML=recipeRes.map(mkRc).join('');mw.remove();};
+      sec.appendChild(mw);
+    }
+  }
+  // ── Restaurants section
+  if(restoRes.length){
+    const w=document.createElement('div');
+    w.innerHTML=`<div class="sh" style="margin:22px 0 10px"><h2>🌟 مطاعم <span style="font-size:12px;font-weight:600;color:var(--t3)">(${restoRes.length})</span></h2><div class="rl"></div></div>`;
+    sec.appendChild(w);
+    const li=document.createElement('div');li.style.cssText='display:flex;flex-direction:column;gap:8px;margin-bottom:6px;';
+    li.innerHTML=restoRes.slice(0,6).map(r=>`<div onclick="openRestoDtl('${r.id}')" style="cursor:pointer;background:var(--card);border:1px solid var(--b1);border-radius:12px;padding:10px 14px;display:flex;align-items:center;gap:12px;" onmouseover="this.style.boxShadow='0 4px 14px rgba(0,0,0,.1)'" onmouseout="this.style.boxShadow=''">${r.logo?`<img src="${r.logo}" alt="${(r.name||'').replace(/"/g,'')}" style="width:40px;height:40px;border-radius:8px;object-fit:cover;flex-shrink:0" loading="lazy" onerror="this.style.display='none'">`:'<div style="width:40px;height:40px;border-radius:8px;background:var(--ink2);display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0">🍽️</div>'}<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800;color:var(--t0)">${hlTerm(r.nameAr||r.name||'',q)}</div><div style="font-size:11px;color:var(--t3);margin-top:1px">⭐ ${r.rating||''} · ${r.city||''}</div></div></div>`).join('');
+    sec.appendChild(li);
+  }
+  // ── Videos section
+  if(vidRes.length){
+    const w=document.createElement('div');
+    w.innerHTML=`<div class="sh" style="margin:22px 0 10px"><h2>📱 فيديوهات <span style="font-size:12px;font-weight:600;color:var(--t3)">(${vidRes.length})</span></h2><div class="rl"></div></div>`;
+    sec.appendChild(w);
+    const vg=document.createElement('div');vg.className='vf-grid';vg.style.marginBottom='10px';
+    const platI={tt:'🎵',yt:'▶️',ig:'📷',fb:'📘',pin:'📌'};
+    vg.innerHTML=vidRes.slice(0,4).map(v=>{const th=v.thumbnail||v.thumb||'';const ta=v.titleAr||v.title||'';return `<div class="vc" onclick="openVM('${v.id}')"><div class="vt ${v.asp||'landscape'}" style="position:relative;overflow:hidden;">${th?`<img src="${th}" alt="${ta.replace(/"/g,'')}" loading="lazy" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover">`:''}<div class="vt-play" style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);"><div class="vt-tri"></div></div><div class="vt-plat ${v.pl||''}" style="position:absolute;top:6px;right:6px">${platI[v.pl]||'📹'}</div></div><div class="vb"><div class="vc-title">${hlTerm(ta,q)}</div></div></div>`;}).join('');
+    sec.appendChild(vg);
   }
   gp('search',false);
+  renderSearchHistoryBar();
 }
 
 // ═══════════════════════════════════════════════════
@@ -4042,7 +4085,7 @@ async function slocLoadInfluencers(cityAr){
   }
 
   // Filter by city
-  const cityInf=_slocInfCache.filter(inf=>inf.city===cityAr||inf.cityAr===cityAr);
+  const cityInf=_slocInfCache.filter(inf=>inf.city===cityAr||inf.cityAr===cityAr||(inf.cityEn&&inf.cityEn.toLowerCase()===cityAr.toLowerCase()));
   if(!cityInf.length){sec.style.display='none';return;}
 
   sec.style.display='flex';
@@ -4075,7 +4118,7 @@ function slocInfFilter(platform, btn){
     });
   }
   if(!_slocInfCache) return;
-  const cityInf=_slocInfCache.filter(inf=>inf.city===_slocCity||inf.cityAr===_slocCity);
+  const cityInf=_slocInfCache.filter(inf=>inf.city===_slocCity||inf.cityAr===_slocCity||(inf.cityEn&&inf.cityEn.toLowerCase()===(_slocCity||'').toLowerCase()));
   slocInfRender(cityInf, platform);
 }
 
@@ -4135,6 +4178,149 @@ document.addEventListener('click',e=>{
 });
 
 // ═══════════════════════════════════════════════════
+// TÂCHE 1 — SYSTÈME DE RATING INTERACTIF
+// ═══════════════════════════════════════════════════
+function getUserRating(recipeId){
+  const store=JSON.parse(localStorage.getItem('mw360_ratings')||'{}');
+  return store[recipeId]||0;
+}
+function saveUserRating(recipeId,val){
+  const store=JSON.parse(localStorage.getItem('mw360_ratings')||'{}');
+  store[recipeId]=val;
+  localStorage.setItem('mw360_ratings',JSON.stringify(store));
+}
+function renderInteractiveRating(recipeId,rt,rv){
+  const userRating=getUserRating(recipeId);
+  const displayRating=userRating||rt;
+  const stars=[1,2,3,4,5].map(i=>{
+    const filled=i<=Math.round(displayRating);
+    return `<span class="rp-star${filled?' filled':''}" data-val="${i}" onclick="setUserRating('${recipeId}',${i})"
+      onmouseenter="previewRating('${recipeId}',${i})"
+      onmouseleave="resetRatingPreview('${recipeId}')">${filled?'⭐':'☆'}</span>`;
+  }).join('');
+  const badge=userRating?`<span class="rp-user-badge">✓ ${t('rating_saved')}</span>`:'';
+  return `<div class="rp-rating-wrap" id="rp-rating-${recipeId}">
+    <div class="rp-stars">${stars}</div>
+    <span class="rp-rating-info" id="rp-rating-info-${recipeId}">${Number(displayRating).toFixed(1)} (${rv.toLocaleString()} ${t('lbl_rat')})</span>
+    ${badge}
+  </div>`;
+}
+function setUserRating(recipeId,val){
+  saveUserRating(recipeId,val);
+  const wrap=document.getElementById('rp-rating-'+recipeId);
+  if(!wrap) return;
+  const r=RECIPES.find(x=>x.id===recipeId);
+  if(!r) return;
+  const stars=[1,2,3,4,5].map(i=>{
+    const filled=i<=val;
+    return `<span class="rp-star${filled?' filled':''}" data-val="${i}" onclick="setUserRating('${recipeId}',${i})"
+      onmouseenter="previewRating('${recipeId}',${i})"
+      onmouseleave="resetRatingPreview('${recipeId}')">${filled?'⭐':'☆'}</span>`;
+  }).join('');
+  wrap.innerHTML=`<div class="rp-stars">${stars}</div>
+    <span class="rp-rating-info" id="rp-rating-info-${recipeId}">${val}.0 (${r.rv.toLocaleString()} ${t('lbl_rat')})</span>
+    <span class="rp-user-badge">✓ ${t('rating_saved')}</span>`;
+  showToast(t('rating_saved'));
+}
+function previewRating(recipeId,val){
+  const wrap=document.getElementById('rp-rating-'+recipeId);
+  if(!wrap) return;
+  wrap.querySelectorAll('.rp-star').forEach((s,i)=>{
+    const filled=i<val;
+    s.textContent=filled?'⭐':'☆';
+    s.classList.toggle('filled',filled);
+  });
+}
+function resetRatingPreview(recipeId){
+  const stored=getUserRating(recipeId);
+  const r=RECIPES.find(x=>x.id===recipeId);
+  if(!r) return;
+  const display=stored||r.rt;
+  const wrap=document.getElementById('rp-rating-'+recipeId);
+  if(!wrap) return;
+  wrap.querySelectorAll('.rp-star').forEach((s,i)=>{
+    const filled=i<Math.round(display);
+    s.textContent=filled?'⭐':'☆';
+    s.classList.toggle('filled',filled);
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// TÂCHE 2 — RECETTE DU JOUR (déterministe par date)
+// ═══════════════════════════════════════════════════
+function getDayOfYear(){
+  const now=new Date();
+  const start=new Date(now.getFullYear(),0,0);
+  return Math.floor((now-start)/(1000*60*60*24));
+}
+function getRecipeOfDay(){
+  if(!RECIPES.length) return null;
+  return RECIPES[getDayOfYear()%RECIPES.length];
+}
+function highlightRecipeOfDay(){
+  const rod=getRecipeOfDay();
+  if(!rod) return;
+  const topRated=[...RECIPES].sort((a,b)=>b.rt-a.rt||b.rv-a.rv);
+  let featList;
+  if(topRated.slice(0,4).find(r=>r.id===rod.id)){
+    featList=topRated.slice(0,4);
+  } else {
+    featList=[rod,...topRated.slice(0,3)];
+  }
+  const el=document.getElementById('h-feat');
+  if(!el) return;
+  el.innerHTML=featList.map(r=>rcCardWithDayBadge(r,rod.id)).join('');
+}
+function rcCardWithDayBadge(r,rodId){
+  const html=rcCard(r,false);
+  if(r.id!==rodId) return html;
+  return html
+    .replace(/class="rc( feat)?"/,'class="rc$1 day-recipe"')
+    .replace('<div class="bflag">',`<div class="rc-day-badge">⭐ ${t('recipe_of_day')}</div><div class="bflag">`);
+}
+
+// ═══════════════════════════════════════════════════
+// TÂCHE 3 — NOTIFICATION OPT-IN BANNER
+// ═══════════════════════════════════════════════════
+let _notifPageViews=parseInt(localStorage.getItem('mw360_pageviews')||'0');
+function notifShouldShow(){
+  if(typeof Notification==='undefined') return false;
+  if(Notification.permission==='granted') return false;
+  if(localStorage.getItem('notif_dismissed')==='true') return false;
+  const laterTs=parseInt(localStorage.getItem('notif_later_ts')||'0');
+  if(laterTs&&Date.now()<laterTs) return false;
+  return true;
+}
+function notifMaybeShow(){
+  if(!notifShouldShow()) return;
+  _notifPageViews++;
+  localStorage.setItem('mw360_pageviews',String(_notifPageViews));
+  if(_notifPageViews>=2){
+    setTimeout(()=>{if(notifShouldShow())document.getElementById('notif-banner').classList.add('on');},600);
+  } else {
+    setTimeout(()=>{if(notifShouldShow())document.getElementById('notif-banner').classList.add('on');},30000);
+  }
+}
+function notifSubscribe(){
+  document.getElementById('notif-banner').classList.remove('on');
+  if(typeof Notification==='undefined'){showToast(t('notif_denied'));return;}
+  Notification.requestPermission().then(perm=>{
+    if(perm==='granted'){
+      localStorage.setItem('notif_dismissed','true');
+      showToast(t('notif_granted'));
+      try{new Notification('مطبخ 360 🍽️',{body:t('notif_granted').replace('✅ ',''),icon:'/logo.png'});}catch(e){}
+    } else {
+      localStorage.setItem('notif_later_ts',String(Date.now()+7*24*60*60*1000));
+      showToast(t('notif_denied'));
+    }
+  });
+}
+function notifLater(){
+  localStorage.setItem('notif_later_ts',String(Date.now()+7*24*60*60*1000));
+  document.getElementById('notif-banner').classList.remove('on');
+}
+
+// ═══════════════════════════════════════════════════
 // ANTI INSPECT / DEVTOOLS
 // ═══════════════════════════════════════════════════
 (function(){
@@ -4179,12 +4365,16 @@ document.addEventListener('click',e=>{
   initWorldChips('wchips');
   renderHeroCards();
   updateFavCount();
+  // Tâche 2 — Recette du jour
+  highlightRecipeOfDay();
   // Re-render pages qui dépendent des données async (deep link avant loadData)
   if(activePg==='videos') renderVF();
   if(activePg==='resto'){renderRestoGrid('');renderCityInfVids('');}
   if(activePg==='local') document.dispatchEvent(new Event('data-ready'));
-  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVM();closeChef();closeAuth();closeLangDropdown();}});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVM();closeChef();closeAuth();closeLangDropdown();document.getElementById('notif-banner').classList.remove('on');}});
   renderNavAuth();
+  // Tâche 3 — Notification opt-in
+  notifMaybeShow();
 
   // AdSense — push all static slots
   setTimeout(()=>{
