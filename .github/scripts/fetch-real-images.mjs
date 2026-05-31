@@ -29,6 +29,8 @@ const RESTOS_FILE = `${DATA_DIR}/restos.json`;
 // Patterns qui signalent une image générique (à remplacer)
 const GENERIC = [
   'themealdb.com/images/media/meals/',
+  'source.unsplash.com',
+  'unsplash.com/400x300',
   'ssrrrs',
 ];
 const isGeneric = img => !img || img.length < 8 || GENERIC.some(p => img.includes(p));

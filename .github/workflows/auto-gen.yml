@@ -57,7 +57,7 @@ jobs:
       - name: "🖼️ Images réelles restaurants (Google Places)"
         env:
           GOOGLE_PLACES_KEY: ${{ secrets.GOOGLE_PLACES_KEY }}
-          IMG_BATCH: "300"
+          IMG_BATCH: "500"
         run: node .github/scripts/fetch-real-images.mjs
 
       - name: "📝 Enrichissement steps + tips recettes"

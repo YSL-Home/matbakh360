@@ -3213,9 +3213,11 @@ function _restoCardImg(r){
 
 function restoCard(r){
   const stars='⭐'.repeat(Math.floor(r.rating))+(r.rating%1>=0.5?'✨':'');
-  const cardImg=_restoCardImg(r);
-  // Si logo Clearbit disponible : l'afficher en overlay sur l'image
-  const logoOverlay=r.logo?`<img src="${r.logo}" alt="" style="position:absolute;bottom:8px;right:8px;width:36px;height:36px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;box-shadow:0 2px 8px rgba(0,0,0,.2)" onerror="this.style.display='none'">`:'';
+  // Priorité : photo Google réelle → food fallback déterministe
+  const hasReal=r.img&&r.img.includes('googleusercontent.com');
+  const cardImg=hasReal?r.img:_restoCardImg(r);
+  // Logo overlay (Clearbit) si pas de vraie photo
+  const logoOverlay=(!hasReal&&r.logo)?`<img src="${r.logo}" alt="${r.name}" style="position:absolute;bottom:8px;right:8px;width:42px;height:42px;object-fit:contain;background:#fff;border-radius:10px;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,.25)" onerror="this.style.display='none'">`:'' ;
   return `<div class="rc-resto" onclick="openResto('${r.id}')">
     <div style="overflow:hidden;position:relative">
       <img class="rc-resto-img" src="${cardImg}" alt="${r.name}" loading="lazy" onerror="this.src='https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg'">
