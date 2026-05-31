@@ -1637,7 +1637,7 @@ async function loadData(){
     ]);
     RECIPES.push(...recipes);
     RESTAURANTS.push(...restos);
-    INF_VIDS.push(...vids);
+    VIDS.push(...vids);
   }catch(e){console.warn('loadData failed:',e);}
 }
 // ═══════════════════════════════════════════════════
@@ -4320,26 +4320,6 @@ function notifLater(){
   document.getElementById('notif-banner').classList.remove('on');
 }
 
-// ═══════════════════════════════════════════════════
-// ANTI INSPECT / DEVTOOLS
-// ═══════════════════════════════════════════════════
-(function(){
-  // Block right-click
-  document.addEventListener('contextmenu',e=>e.preventDefault());
-  // Block keyboard shortcuts
-  document.addEventListener('keydown',function(e){
-    if(e.key==='F12') e.preventDefault();
-    if((e.ctrlKey||e.metaKey)&&e.shiftKey&&['I','J','C','U'].includes(e.key.toUpperCase())) e.preventDefault();
-    if((e.ctrlKey||e.metaKey)&&e.key.toUpperCase()==='U') e.preventDefault();
-  });
-  // DevTools detection via timing
-  let _dt=false;
-  setInterval(()=>{
-    const s=new Date();
-    debugger;
-    if(new Date()-s>100&&!_dt){_dt=true;document.body.innerHTML='<div style="display:flex;height:100vh;align-items:center;justify-content:center;font-family:Cairo,sans-serif;font-size:22px;color:#C94A1A;background:#FDFAF5">🚫 غير مسموح باستخدام أدوات المطور</div>';}
-  },3000);
-})();
 
 // ═══════════════════════════════════════════════════
 // INIT
