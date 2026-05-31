@@ -3190,7 +3190,7 @@ function _restoCardImg(r){
       if(!_GENERIC_CUI.has(k) && c.includes(k)) return url;
     }
   }
-  // 2. Fallback basé sur le pays du restaurant (déterministe, pas aléatoire)
+  // 2. Fallback basé sur le pays du restaurant (déterministe)
   const countryFallbacks={
     '🇲🇦':CUISINE_IMG_MAP.moroccan,'🇪🇬':CUISINE_IMG_MAP.egyptian,
     '🇸🇦':CUISINE_IMG_MAP.arabic,'🇦🇪':CUISINE_IMG_MAP.arabic,
@@ -3201,10 +3201,14 @@ function _restoCardImg(r){
     '🇹🇷':CUISINE_IMG_MAP.turkish,'🇰🇷':CUISINE_IMG_MAP.korean,
   };
   if(r.country && countryFallbacks[r.country]) return countryFallbacks[r.country];
-  // 3. Rotation parmi 8 images selon l'ID (jamais deux restos consécutifs avec la même image)
+  // 3. Pool de fallback : images des recettes (4000+ photos food variées)
+  const h=[...(r.id||r.name||'')].reduce((a,ch)=>((a<<5)-a+ch.charCodeAt(0))|0,0);
+  const hAbs=Math.abs(h);
+  const pool=RECIPES.filter(rc=>rc.img).map(rc=>rc.img);
+  if(pool.length) return pool[hAbs % pool.length];
+  // 4. Dernier recours : pool TheMealDB
   const imgs=Object.values(CUISINE_IMG_MAP);
-  const h=[...(r.id||'')].reduce((a,c)=>a+c.charCodeAt(0),0);
-  return imgs[h % imgs.length];
+  return imgs[hAbs % imgs.length];
 }
 
 function restoCard(r){
