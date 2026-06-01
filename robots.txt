@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://matbakh360.com/sitemap.xml
+Sitemap: https://ysl-home.github.io/matbakh360/sitemap.xml
