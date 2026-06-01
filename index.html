@@ -345,6 +345,17 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .rp-bread a{color:var(--t2);cursor:pointer;}
 .rp-bread a:hover{color:var(--s);}
 .rp-h1{font-size:28px;font-weight:900;color:var(--t0);line-height:1.3;margin-bottom:12px;}
+.rp-actions{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;}
+.rp-act-btn{flex:1;min-width:120px;padding:10px 8px;border-radius:var(--pill);font-family:var(--fn);font-size:12.5px;font-weight:800;cursor:pointer;border:1px solid var(--b0);background:var(--card);color:var(--t0);transition:background .15s;}
+.rp-act-btn:hover{background:var(--ink2);}
+@media print{
+  .nav-bar,.mob-nav,.rp-side,.rp-actions,.share-box,.chef-btn-mobile,.notif-banner,#page-home,
+  .ad-slot,.hero,.chips-bar{display:none!important;}
+  body{background:#fff;color:#000;}
+  .rp-layout{grid-template-columns:1fr!important;}
+  .rp-h1{font-size:22px;}
+  .box{break-inside:avoid;}
+}
 .rp-intro{font-size:14px;color:var(--t1);line-height:1.85;margin-bottom:20px;}
 .rp-meta{display:flex;background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);overflow:hidden;margin-bottom:20px;}
 .rpm{flex:1;padding:12px 14px;text-align:center;border-right:1px solid var(--b1);}
@@ -1140,6 +1151,11 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 
   <div class="sh"><h2 data-i18n="sh_fast_rec">⚡ سريع وصحي</h2><div class="rl"></div><a onclick="fworld('صحي')" data-i18n="see_all">الكل ←</a></div>
   <div class="g4" id="h-fit"></div>
+
+  <div id="h-trending-wrap" style="display:none">
+    <div class="sh" style="margin-top:28px"><h2>🔥 الأكثر فتحاً هذا الأسبوع</h2><div class="rl"></div></div>
+    <div class="g5" id="h-trending"></div>
+  </div>
 </div>
 <div style="height:50px"></div>
 </div>
@@ -1379,6 +1395,34 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 </div>
 
 <!-- NOTIFICATION BANNER -->
+<!-- SHOPPING LIST MODAL -->
+<div id="shop-modal" style="display:none;position:fixed;inset:0;z-index:6000;background:rgba(0,0,0,.6);align-items:flex-end;justify-content:center" onclick="if(event.target===this)closeShop()">
+  <div style="background:var(--card);border-radius:20px 20px 0 0;width:100%;max-width:600px;max-height:85vh;overflow-y:auto;padding:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:16px;font-weight:900;color:var(--t0)">🛒 قائمة التسوق</div>
+      <button onclick="closeShop()" style="background:var(--ink2);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px">✕</button>
+    </div>
+    <div id="shop-list" style="margin-bottom:16px"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button onclick="copyShopList()" style="flex:1;padding:11px;background:var(--s);color:#fff;border:none;border-radius:var(--pill);font-family:var(--fn);font-size:13px;font-weight:800;cursor:pointer">📋 نسخ القائمة</button>
+      <button onclick="shareShopList()" style="flex:1;padding:11px;background:var(--card);border:1px solid var(--b0);color:var(--s);border-radius:var(--pill);font-family:var(--fn);font-size:13px;font-weight:800;cursor:pointer">📱 مشاركة</button>
+    </div>
+  </div>
+</div>
+<!-- MEAL PLANNER MODAL -->
+<div id="meal-modal" style="display:none;position:fixed;inset:0;z-index:6000;background:rgba(0,0,0,.6);align-items:center;justify-content:center" onclick="if(event.target===this)closeMealPlan()">
+  <div style="background:var(--card);border-radius:16px;width:min(96vw,700px);max-height:88vh;overflow-y:auto;padding:20px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="font-size:16px;font-weight:900;color:var(--t0)">📅 تخطيط الأسبوع</div>
+      <button onclick="closeMealPlan()" style="background:var(--ink2);border:none;border-radius:50%;width:32px;height:32px;cursor:pointer;font-size:16px">✕</button>
+    </div>
+    <div id="meal-grid" style="display:grid;grid-template-columns:repeat(7,1fr);gap:8px;margin-bottom:16px"></div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <button onclick="mealPlanShopList()" style="flex:1;padding:11px;background:var(--s);color:#fff;border:none;border-radius:var(--pill);font-family:var(--fn);font-size:13px;font-weight:800;cursor:pointer">🛒 قائمة تسوق الأسبوع</button>
+      <button onclick="clearMealPlan()" style="padding:11px 16px;background:var(--card);border:1px solid var(--r);color:var(--r);border-radius:var(--pill);font-family:var(--fn);font-size:13px;font-weight:800;cursor:pointer">🗑 مسح</button>
+    </div>
+  </div>
+</div>
 <div class="notif-banner" id="notif-banner">
   <div class="notif-banner-icon">📧</div>
   <div class="notif-banner-text">
@@ -1994,6 +2038,103 @@ function _addRecent(id){
   h=h.filter(x=>x!==id);h.unshift(id);
   localStorage.setItem('mw360_recent',JSON.stringify(h.slice(0,8)));
 }
+
+// ── TRENDING ──────────────────────────────────────────────────────
+function _trackTrend(id){
+  const week=Math.floor(Date.now()/6048e5); // semaine actuelle
+  const key='mw360_trend_'+week;
+  const d=JSON.parse(localStorage.getItem(key)||'{}');
+  d[id]=(d[id]||0)+1;
+  localStorage.setItem(key,JSON.stringify(d));
+  // Nettoyer vieilles semaines
+  for(let k of Object.keys(localStorage)){if(k.startsWith('mw360_trend_')&&k!==key)localStorage.removeItem(k);}
+}
+function renderTrending(){
+  const wrap=document.getElementById('h-trending-wrap');
+  const el=document.getElementById('h-trending');
+  if(!wrap||!el) return;
+  const week=Math.floor(Date.now()/6048e5);
+  const d=JSON.parse(localStorage.getItem('mw360_trend_'+week)||'{}');
+  const top=Object.entries(d).sort((a,b)=>b[1]-a[1]).slice(0,5).map(([id])=>RECIPES.find(r=>r.id===id)).filter(Boolean);
+  if(!top.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  el.innerHTML=top.map(r=>rcCard(r,false)).join('');
+}
+
+// ── SHOPPING LIST ─────────────────────────────────────────────────
+let _shopRecipeId=null;
+function openShop(id){
+  _shopRecipeId=id;
+  const r=RECIPES.find(x=>x.id===id);
+  if(!r) return;
+  const el=document.getElementById('shop-list');
+  if(!el) return;
+  const ings=Array.isArray(r.ing)?r.ing:[];
+  el.innerHTML=`<div style="font-size:13px;font-weight:700;color:var(--t2);margin-bottom:10px">${rTr(r,'ti')}</div>`
+    +ings.map(i=>`<label style="display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--b2);cursor:pointer">
+      <input type="checkbox" style="width:18px;height:18px;cursor:pointer">
+      <span style="font-size:14px;color:var(--t0)">${i.q?`<strong>${i.q}</strong> `:''} ${i.n||''}</span>
+    </label>`).join('');
+  document.getElementById('shop-modal').style.display='flex';
+}
+function closeShop(){document.getElementById('shop-modal').style.display='none';}
+function copyShopList(){
+  const r=RECIPES.find(x=>x.id===_shopRecipeId);
+  if(!r) return;
+  const txt=`🛒 ${rTr(r,'ti')}\n\n`+(r.ing||[]).map(i=>`• ${i.q||''} ${i.n||''}`.trim()).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>showToast(t('copy_done')));
+}
+function shareShopList(){
+  const r=RECIPES.find(x=>x.id===_shopRecipeId);
+  if(!r) return;
+  const txt=`🛒 ${rTr(r,'ti')}\n\n`+(r.ing||[]).map(i=>`• ${i.q||''} ${i.n||''}`.trim()).join('\n');
+  if(navigator.share) navigator.share({title:rTr(r,'ti'),text:txt}).catch(()=>{});
+  else navigator.clipboard.writeText(txt).then(()=>showToast(t('copy_done')));
+}
+
+// ── MEAL PLANNER ──────────────────────────────────────────────────
+const DAYS_AR=['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+function getMealPlan(){return JSON.parse(localStorage.getItem('mw360_meal')||'{}');}
+function saveMealPlan(p){localStorage.setItem('mw360_meal',JSON.stringify(p));}
+function openMealPlan(){renderMealGrid();document.getElementById('meal-modal').style.display='flex';}
+function closeMealPlan(){document.getElementById('meal-modal').style.display='none';}
+function clearMealPlan(){saveMealPlan({});renderMealGrid();}
+function addToMealPlan(id){
+  const plan=getMealPlan();
+  const day=new Date().getDay();
+  if(!plan[day]) plan[day]=[];
+  if(!plan[day].includes(id)){plan[day].push(id);saveMealPlan(plan);}
+  showToast('📅 أضيفت إلى '+DAYS_AR[day]);
+}
+function renderMealGrid(){
+  const el=document.getElementById('meal-grid');
+  if(!el) return;
+  const plan=getMealPlan();
+  el.innerHTML=DAYS_AR.map((d,i)=>{
+    const recs=(plan[i]||[]).map(id=>RECIPES.find(r=>r.id===id)).filter(Boolean);
+    return `<div style="background:var(--card2);border-radius:10px;padding:8px;min-height:80px">
+      <div style="font-size:11px;font-weight:800;color:var(--t3);margin-bottom:6px">${d}</div>
+      ${recs.map(r=>`<div style="font-size:11px;color:var(--t0);padding:3px 0;border-bottom:1px solid var(--b2);display:flex;align-items:center;gap:4px">
+        <span>${r.em||'🍽️'}</span>
+        <span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${r.ti.substring(0,20)}</span>
+        <button onclick="removeMealDay(${i},'${r.id}')" style="background:none;border:none;color:var(--r);cursor:pointer;font-size:12px;margin-right:auto">✕</button>
+      </div>`).join('')}
+      ${!recs.length?`<div style="font-size:11px;color:var(--t3);text-align:center;margin-top:12px">+</div>`:''}
+    </div>`;
+  }).join('');
+}
+function removeMealDay(day,id){
+  const p=getMealPlan();
+  if(p[day]) p[day]=p[day].filter(x=>x!==id);
+  saveMealPlan(p);renderMealGrid();
+}
+function mealPlanShopList(){
+  const p=getMealPlan();
+  const allIds=[...new Set(Object.values(p).flat())];
+  const allIngs=allIds.flatMap(id=>{const r=RECIPES.find(x=>x.id===id);return r?(r.ing||[]).map(i=>`${i.q||''} ${i.n||''}`.trim()):[];});
+  const txt='🛒 قائمة تسوق الأسبوع\n\n'+allIngs.map(i=>`• ${i}`).join('\n');
+  navigator.clipboard.writeText(txt).then(()=>showToast(t('copy_done')));
+}
 function renderRecentlyViewed(){
   const wrap=document.getElementById('h-recent-wrap');
   const el=document.getElementById('h-recent');
@@ -2013,6 +2154,7 @@ function openRecipe(id,pushUrl=true){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
   _addRecent(id);
+  _trackTrend(id);
   if(typeof gtag==='function') gtag('event','view_recipe',{recipe_id:r.id,recipe_name:r.ti});
   updateSEO(r);
   if(pushUrl) history.pushState({recipe:id},rTr(r,'ti'),`/recette/${id}`);
@@ -2037,6 +2179,11 @@ function openRecipe(id,pushUrl=true){
         onclick="this.style.height='auto';this.style.minWidth='100%'">`).join('')}
     </div>`:''}
     <h1 class="rp-h1">${rTr(r,'ti')}</h1>
+    <div class="rp-actions">
+      <button class="rp-act-btn" onclick="openShop('${r.id}')">🛒 قائمة التسوق</button>
+      <button class="rp-act-btn" onclick="addToMealPlan('${r.id}')">📅 أضف للأسبوع</button>
+      <button class="rp-act-btn" onclick="window.print()">🖨 طباعة</button>
+    </div>
     ${renderInteractiveRating(r.id,r.rt,r.rv)}
     <p class="rp-intro">${rTr(r,'de')}</p>
     <div class="rp-meta">
@@ -4393,6 +4540,7 @@ function notifLater(){
 
   initHome();
   renderRecentlyViewed();
+  renderTrending();
   initWorldChips('wchips');
   renderHeroCards();
   updateFavCount();
