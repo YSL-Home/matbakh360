@@ -1683,8 +1683,8 @@ const INF_VIDS=[];
 async function loadData(){
   try{
     const [recipes,vids]=await Promise.all([
-      fetch('data/recipes.json').then(r=>r.json()).catch(()=>[]),
-      fetch('data/vids.json').then(r=>r.json()).catch(()=>[]),
+      fetch('/data/recipes.json').then(r=>r.json()).catch(()=>[]),
+      fetch('/data/vids.json').then(r=>r.json()).catch(()=>[]),
     ]);
     RECIPES.push(...recipes);
     VIDS.push(...vids);
@@ -1695,7 +1695,7 @@ async function loadRestos(){
   if(_restosLoaded) return;
   _restosLoaded=true;
   try{
-    const restos=await fetch('data/restos.json').then(r=>r.json()).catch(()=>[]);
+    const restos=await fetch('/data/restos.json').then(r=>r.json()).catch(()=>[]);
     RESTAURANTS.push(...restos);
   }catch(e){console.warn('loadRestos failed:',e);}
 }
@@ -2344,7 +2344,7 @@ const VF_TAGS = [
 const VID_SORTS=[{id:'trending',ico:'🔥',lbl:'رائج'},{id:'recent',ico:'🆕',lbl:'الأحدث'},{id:'views',ico:'👁',lbl:'الأكثر مشاهدة'}];
 function renderVidSortBar(){const bar=document.getElementById('vid-sort-bar');if(!bar)return;bar.innerHTML='<span style="font-size:11.5px;font-weight:700;color:var(--t3);margin-inline-end:4px">ترتيب:</span>'+VID_SORTS.map(s=>`<button onclick="setVidSort('${s.id}')" style="padding:5px 13px;border-radius:100px;font-size:12px;font-weight:700;font-family:var(--fn);cursor:pointer;border:1.5px solid ${activeVidSort===s.id?'var(--s)':'var(--b1)'};background:${activeVidSort===s.id?'var(--s)':'var(--card)'};color:${activeVidSort===s.id?'#fff':'var(--t2)'};transition:all .18s;">${s.ico} ${s.lbl}</button>`).join('');}
 function setVidSort(id){activeVidSort=id;renderVidSortBar();vfShown=16;renderVF();}
-async function renderLocalInfBanner(){const banner=document.getElementById('vid-local-inf-banner');if(!banner)return;const city=window._slocCity||'';if(!city){banner.style.display='none';return;}if(!window._slocInfCache){try{const r2=await fetch('data/influencers.json');window._slocInfCache=await r2.json();}catch(e){window._slocInfCache=[];}}const local=(window._slocInfCache||[]).filter(inf=>inf.city===city||inf.cityAr===city||(inf.cityEn&&inf.cityEn.toLowerCase()===city.toLowerCase()));if(!local.length){banner.style.display='none';return;}const pick=local[Math.floor(Math.random()*local.length)];banner.style.display='block';banner.innerHTML=`<div onclick="window.open('${pick.videoUrl}','_blank')" style="cursor:pointer;background:linear-gradient(135deg,var(--sg),var(--card));border:1.5px solid var(--b0);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;max-width:600px;"><img src="${pick.thumbnail}" alt="" style="width:72px;height:44px;object-fit:cover;border-radius:8px;flex-shrink:0" loading="lazy" onerror="this.style.display='none'"><div style="flex:1;min-width:0"><div style="font-size:10px;font-weight:800;color:var(--s);margin-bottom:2px">📍 ${t('sloc_influencers')} — ${city}</div><div style="font-size:12.5px;font-weight:700;color:var(--t0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${pick.titleAr||pick.title}</div><div style="font-size:11px;color:var(--t3)">${pick.handle} · ${pick.views} ${t('sloc_inf_views')}</div></div><div style="flex-shrink:0;font-size:20px">▶</div></div>`;}
+async function renderLocalInfBanner(){const banner=document.getElementById('vid-local-inf-banner');if(!banner)return;const city=window._slocCity||'';if(!city){banner.style.display='none';return;}if(!window._slocInfCache){try{const r2=await fetch('/data/influencers.json');window._slocInfCache=await r2.json();}catch(e){window._slocInfCache=[];}}const local=(window._slocInfCache||[]).filter(inf=>inf.city===city||inf.cityAr===city||(inf.cityEn&&inf.cityEn.toLowerCase()===city.toLowerCase()));if(!local.length){banner.style.display='none';return;}const pick=local[Math.floor(Math.random()*local.length)];banner.style.display='block';banner.innerHTML=`<div onclick="window.open('${pick.videoUrl}','_blank')" style="cursor:pointer;background:linear-gradient(135deg,var(--sg),var(--card));border:1.5px solid var(--b0);border-radius:14px;padding:12px 16px;display:flex;align-items:center;gap:12px;max-width:600px;"><img src="${pick.thumbnail}" alt="" style="width:72px;height:44px;object-fit:cover;border-radius:8px;flex-shrink:0" loading="lazy" onerror="this.style.display='none'"><div style="flex:1;min-width:0"><div style="font-size:10px;font-weight:800;color:var(--s);margin-bottom:2px">📍 ${t('sloc_influencers')} — ${city}</div><div style="font-size:12.5px;font-weight:700;color:var(--t0);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${pick.titleAr||pick.title}</div><div style="font-size:11px;color:var(--t3)">${pick.handle} · ${pick.views} ${t('sloc_inf_views')}</div></div><div style="flex-shrink:0;font-size:20px">▶</div></div>`;}
 function initVideos(){renderPlatBar();renderTagBar();renderVidSortBar();renderLocalInfBanner();renderVF();}
 
 function renderPlatBar(){
@@ -4273,7 +4273,7 @@ async function slocLoadInfluencers(cityAr){
   // Fetch & cache
   if(!_slocInfCache){
     try{
-      const res=await fetch('data/influencers.json');
+      const res=await fetch('/data/influencers.json');
       _slocInfCache=await res.json();
     }catch(e){
       console.warn('influencers.json not loaded',e);

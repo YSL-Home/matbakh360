@@ -3,7 +3,7 @@
 // Stratégie de cache pour une expérience hors-ligne
 // ===================================================
 
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `matbakh360-${CACHE_VERSION}`;
 
 // Base path (handles both root '/' and subdir '/matbakh360/' deploys)
