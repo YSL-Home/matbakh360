@@ -1060,7 +1060,7 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   </div>
   <div class="nav-search" onclick="document.querySelector('.nav-search input').focus()">
     <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="cursor:pointer;color:var(--t2)" onclick="event.stopPropagation();doSearch(document.querySelector('.nav-search input').value)"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-    <input placeholder="بحث في مطابخ العالم..." onkeydown="if(event.key==='Enter')doSearch(this.value)" data-i18n-placeholder="search_placeholder">
+    <input placeholder="بحث في مطابخ العالم..." onkeydown="if(event.key==='Enter')doSearch(this.value)" oninput="clearTimeout(window._nst);if(this.value.length>2)window._nst=setTimeout(()=>doSearch(this.value),350)" data-i18n-placeholder="search_placeholder">
   </div>
   <!-- Language switcher -->
   <div class="lang-switch" id="lang-switch">
@@ -1090,7 +1090,7 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
     <p class="hero-sub" data-i18n="hero_sub">من الكسكس المغربي إلى الراميان الياباني والبيتزا الإيطالية — آلاف الوصفات مع صور ومقاطع فيديو.</p>
     <div class="hero-search">
       <span style="font-size:18px;flex-shrink:0;opacity:.6">🔍</span>
-      <input id="hero-q" type="text" placeholder="ابحث: كسكس، تاكو، راميان..." data-i18n-placeholder="hero_search_ph" onkeydown="if(event.key==='Enter'){doSearch(this.value);this.blur()}" autocomplete="off">
+      <input id="hero-q" type="text" placeholder="ابحث: كسكس، تاكو، راميان..." data-i18n-placeholder="hero_search_ph" onkeydown="if(event.key==='Enter'){doSearch(this.value);this.blur()}" oninput="clearTimeout(window._hst);if(this.value.length>2)window._hst=setTimeout(()=>doSearch(this.value),350)" autocomplete="off">
       <button class="hero-search-btn" onclick="doSearch(document.getElementById('hero-q').value)" data-i18n="hero_search_btn">ابحث الآن</button>
     </div>
     <div class="hstats">
@@ -1110,6 +1110,10 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   <!-- AD: after hero -->
   <div class="ad-slot"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6870790039775701" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
 
+  <div id="h-recent-wrap" style="display:none">
+    <div class="sh" style="margin-top:20px"><h2>👁 شاهدتها مؤخراً</h2><div class="rl"></div><button onclick="clearRecent()" style="font-size:11px;color:var(--t3);background:none;border:none;cursor:pointer">مسح</button></div>
+    <div class="g5" id="h-recent"></div>
+  </div>
   <div class="sh" style="margin-top:28px"><h2 data-i18n="sh_latest">🆕 أحدث الوصفات</h2><div class="rl"></div><a onclick="gp('world')" data-i18n="see_all">عرض الكل ←</a></div>
   <div class="g5" id="h-latest"></div>
 
@@ -1630,15 +1634,22 @@ const INF_VIDS=[];
 // ─── Données chargées dynamiquement depuis data/*.json ───
 async function loadData(){
   try{
-    const [recipes,restos,vids]=await Promise.all([
+    const [recipes,vids]=await Promise.all([
       fetch('data/recipes.json').then(r=>r.json()).catch(()=>[]),
-      fetch('data/restos.json').then(r=>r.json()).catch(()=>[]),
       fetch('data/vids.json').then(r=>r.json()).catch(()=>[]),
     ]);
     RECIPES.push(...recipes);
-    RESTAURANTS.push(...restos);
     VIDS.push(...vids);
   }catch(e){console.warn('loadData failed:',e);}
+}
+let _restosLoaded=false;
+async function loadRestos(){
+  if(_restosLoaded) return;
+  _restosLoaded=true;
+  try{
+    const restos=await fetch('data/restos.json').then(r=>r.json()).catch(()=>[]);
+    RESTAURANTS.push(...restos);
+  }catch(e){console.warn('loadRestos failed:',e);}
 }
 // ═══════════════════════════════════════════════════
 // RECIPE TRANSLATIONS (fr + en)
@@ -1975,9 +1986,30 @@ function fworld(cat){
 // RECIPE PAGE
 // ═══════════════════════════════════════════════════
 let srv={};
+function _addRecent(id){
+  let h=JSON.parse(localStorage.getItem('mw360_recent')||'[]');
+  h=h.filter(x=>x!==id);h.unshift(id);
+  localStorage.setItem('mw360_recent',JSON.stringify(h.slice(0,8)));
+}
+function renderRecentlyViewed(){
+  const wrap=document.getElementById('h-recent-wrap');
+  const el=document.getElementById('h-recent');
+  if(!wrap||!el) return;
+  const ids=JSON.parse(localStorage.getItem('mw360_recent')||'[]');
+  const rs=ids.map(id=>RECIPES.find(r=>r.id===id)).filter(Boolean);
+  if(!rs.length){wrap.style.display='none';return;}
+  wrap.style.display='block';
+  el.innerHTML=rs.map(r=>rcCard(r,false)).join('');
+}
+function clearRecent(){
+  localStorage.removeItem('mw360_recent');
+  const wrap=document.getElementById('h-recent-wrap');
+  if(wrap) wrap.style.display='none';
+}
 function openRecipe(id,pushUrl=true){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
+  _addRecent(id);
   if(typeof gtag==='function') gtag('event','view_recipe',{recipe_id:r.id,recipe_name:r.ti});
   updateSEO(r);
   if(pushUrl) history.pushState({recipe:id},rTr(r,'ti'),`/recette/${id}`);
@@ -3026,7 +3058,7 @@ function detectCity(){
     });
 }
 
-let _restoCuisine='', _restoPrice='';
+let _restoCuisine='', _restoPrice='', _restoMinRating=0;
 
 function buildCityTags(){
   const bar=document.getElementById('city-tags-bar');
@@ -3061,20 +3093,26 @@ function buildRestoFilters(){
       <span style="font-size:11px;font-weight:800;color:var(--t3)">${t('rst_price_lbl')}</span>
       <button type="button" class="ctag price-btn${!_restoPrice?' on':''}" data-price="">${t('rst_price_all')}</button>
       ${prices.map(p=>`<button type="button" class="ctag price-btn${_restoPrice===p?' on':''}" data-price="${p}">${p}</button>`).join('')}
+    </div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:8px" id="rating-filter-row">
+      <span style="font-size:11px;font-weight:800;color:var(--t3)">⭐ ${t('sort_rating')}</span>
+      ${[0,3,3.5,4,4.5].map(v=>`<button type="button" class="ctag rating-btn${_restoMinRating===v?' on':''}" data-rating="${v}">${v===0?t('rst_price_all'):'≥'+v+'⭐'}</button>`).join('')}
     </div>`;
   // Event delegation — avoids inline onclick with Arabic strings in attributes
   bar.onclick=function(e){
-    const btn=e.target.closest('button[data-cuisine],button[data-price]');
+    const btn=e.target.closest('button[data-cuisine],button[data-price],button[data-rating]');
     if(!btn) return;
     if(btn.hasAttribute('data-cuisine')){
       _restoCuisine=btn.dataset.cuisine;
       bar.querySelectorAll('.cuisine-btn').forEach(b=>b.classList.toggle('on',b.dataset.cuisine===_restoCuisine));
-      renderRestoGrid(_restoCity);
-    } else {
+    } else if(btn.hasAttribute('data-price')){
       _restoPrice=btn.dataset.price;
       bar.querySelectorAll('.price-btn').forEach(b=>b.classList.toggle('on',b.dataset.price===_restoPrice));
-      renderRestoGrid(_restoCity);
+    } else {
+      _restoMinRating=parseFloat(btn.dataset.rating)||0;
+      bar.querySelectorAll('.rating-btn').forEach(b=>b.classList.toggle('on',parseFloat(b.dataset.rating||0)===_restoMinRating));
     }
+    renderRestoGrid(_restoCity);
   };
 }
 
@@ -3118,8 +3156,9 @@ function renderRestoGrid(city){
   const countEl=document.getElementById('resto-count');
   if(!grid) return;
   let list=city?RESTAURANTS.filter(r=>r.city===city):RESTAURANTS;
-  if(_restoCuisine) list=list.filter(r=>(r.cusines||[]).includes(_restoCuisine)||r.cuisine===_restoCuisine);
-  if(_restoPrice)   list=list.filter(r=>r.price===_restoPrice);
+  if(_restoCuisine)   list=list.filter(r=>(r.cusines||[]).includes(_restoCuisine)||r.cuisine===_restoCuisine);
+  if(_restoPrice)     list=list.filter(r=>r.price===_restoPrice);
+  if(_restoMinRating) list=list.filter(r=>r.rating>=_restoMinRating);
   if(countEl) countEl.textContent=`${list.length} ${t('rst_restaurant')}`;
   if(!list.length){
     grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:40px 0;color:var(--t3);font-size:14px">${t('rst_empty')}</div>`;
@@ -3288,13 +3327,15 @@ function renderCityInfVids(city){
   `).join('');
 }
 
-function initResto(){
+async function initResto(){
+  const grid=document.getElementById('resto-grid');
+  if(grid&&!_restosLoaded) grid.innerHTML=`<div style="grid-column:1/-1;text-align:center;padding:60px;color:var(--t3)"><div style="font-size:32px;margin-bottom:12px">⏳</div>تحميل المطاعم…</div>`;
+  await loadRestos();
   buildCityTags();
   const title=document.getElementById('resto-section-title');
   if(title) title.textContent=t('rst_best');
   renderRestoGrid('');
   renderCityInfVids('');
-  // Detect city asynchronously
   detectCity();
 }
 
@@ -4348,6 +4389,7 @@ function notifLater(){
   renderTimerPresets();
 
   initHome();
+  renderRecentlyViewed();
   initWorldChips('wchips');
   renderHeroCards();
   updateFavCount();
@@ -4355,7 +4397,7 @@ function notifLater(){
   highlightRecipeOfDay();
   // Re-render pages qui dépendent des données async (deep link avant loadData)
   if(activePg==='videos') renderVF();
-  if(activePg==='resto'){renderRestoGrid('');renderCityInfVids('');}
+  if(activePg==='resto') initResto();
   if(activePg==='local') document.dispatchEvent(new Event('data-ready'));
   document.addEventListener('keydown',e=>{if(e.key==='Escape'){closeVM();closeChef();closeAuth();closeLangDropdown();document.getElementById('notif-banner').classList.remove('on');}});
   renderNavAuth();
