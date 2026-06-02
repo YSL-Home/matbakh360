@@ -605,12 +605,12 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 
 .cm-header{position:absolute;top:0;left:0;right:0;padding:16px 24px;
   display:flex;align-items:center;justify-content:space-between;z-index:2;}
-.cm-title{font-size:13px;font-weight:700;color:var(--t3);letter-spacing:1px;text-transform:uppercase;}
+.cm-title{font-size:13px;font-weight:700;color:rgba(255,255,255,.7);letter-spacing:1px;text-transform:uppercase;}
 .cm-close{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);
   color:var(--t2);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;transition:all .18s;}
 .cm-close:hover{background:rgba(255,255,255,.14);color:var(--t0);}
 
-.cm-counter{font-size:11px;font-weight:800;letter-spacing:3px;color:var(--t3);text-transform:uppercase;
+.cm-counter{font-size:11px;font-weight:800;letter-spacing:3px;color:rgba(255,255,255,.55);text-transform:uppercase;
   margin-bottom:18px;display:flex;align-items:center;gap:8px;}
 .cm-counter-bar{flex:1;max-width:200px;height:3px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
 .cm-counter-fill{height:100%;background:var(--s);border-radius:2px;transition:width .4s ease;}
@@ -618,14 +618,15 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 .cm-step-wrap{text-align:center;max-width:700px;width:100%;position:relative;z-index:2;}
 .cm-step-num{font-size:100px;font-weight:900;color:rgba(201,74,26,.08);line-height:1;
   position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);pointer-events:none;font-family:var(--fd);}
-.cm-step-txt{font-size:clamp(20px,3.5vw,30px);font-weight:700;color:var(--t0);line-height:1.7;
-  position:relative;z-index:1;padding:0 20px;}
-.cm-step-tip{margin-top:20px;font-size:15px;color:var(--s);background:rgba(201,74,26,.08);
+.cm-step-txt{font-size:clamp(20px,3.5vw,30px);font-weight:700;color:#FFFFFF;line-height:1.7;
+  position:relative;z-index:1;padding:0 20px;text-shadow:0 2px 12px rgba(0,0,0,.6);}
+.cm-step-tip{margin-top:20px;font-size:15px;color:#ffb88a;background:rgba(201,74,26,.18);
   border-right:3px solid var(--s);padding:10px 18px;border-radius:0 10px 10px 0;
   text-align:right;position:relative;z-index:1;}
+.cm-lang-note{font-size:12px;color:rgba(255,255,255,.4);margin-top:8px;font-style:italic;}
 
 .cm-timer{display:flex;flex-direction:column;align-items:center;gap:10px;margin-top:32px;position:relative;z-index:2;}
-.cm-timer-display{font-size:44px;font-weight:900;color:var(--t0);font-variant-numeric:tabular-nums;
+.cm-timer-display{font-size:44px;font-weight:900;color:#fff;font-variant-numeric:tabular-nums;
   letter-spacing:4px;font-family:monospace;}
 .cm-timer-display.running{color:var(--s);}
 .cm-timer-display.done{color:var(--r);animation:blink .6s infinite;}
@@ -3031,9 +3032,37 @@ function renderCMStep(){
   document.getElementById('cm-finish').style.display=finished?'block':'none';
   if(!finished){
     const s=steps[cur];
-    document.getElementById('cm-step-txt').textContent=s.t;
+    // Language-aware step text: try translated version first
+    const r=RECIPES.find(x=>x.id===_cm.id);
+    let stepTxt=s.t||'';
+    let stepTip=s.tp||'';
+    // If lang is not Arabic, try to get translated steps from RECIPE_TR
+    if(_lang!=='ar'&&r){
+      const tr=RECIPE_TR[r.id];
+      const trLang=tr?.[_lang]||tr?.fr||tr?.en;
+      if(trLang?.steps?.[cur]){
+        stepTxt=trLang.steps[cur].t||stepTxt;
+        stepTip=trLang.steps[cur].tp||stepTip;
+      } else if(trLang?.step_text?.[cur]){
+        stepTxt=trLang.step_text[cur]||stepTxt;
+      }
+    }
+    // Show language note if step is in different language than UI
+    const isArabic=/[؀-ۿ]/.test(stepTxt);
+    const langMismatch=(isArabic&&_lang!=='ar')||(!isArabic&&_lang==='ar');
+    const txtEl=document.getElementById('cm-step-txt');
+    txtEl.textContent=stepTxt;
+    // Show note if steps aren't in selected language
+    let noteEl=document.getElementById('cm-lang-note');
+    if(!noteEl){
+      noteEl=document.createElement('div');
+      noteEl.id='cm-lang-note';
+      noteEl.className='cm-lang-note';
+      txtEl.after(noteEl);
+    }
+    noteEl.textContent=langMismatch?`(الخطوات متاحة باللغة الأصلية فقط)`:'';
     const tipEl=document.getElementById('cm-step-tip');
-    if(s.tp){tipEl.textContent='💡 '+s.tp;tipEl.style.display='block';}
+    if(stepTip){tipEl.textContent='💡 '+stepTip;tipEl.style.display='block';}
     else{tipEl.style.display='none';}
     document.getElementById('cm-prev').disabled=cur===0;
     document.getElementById('cm-next').className=cur===total-1?'cm-navbtn next done':'cm-navbtn next';
