@@ -1887,6 +1887,113 @@ function tCat(cat){if(_lang==='ar')return cat;return(CAT_TR[cat]||{})[_lang]||ca
 function tReg(reg){if(_lang==='ar')return reg;return(REGION_TR[reg]||{})[_lang]||reg;}
 function tDiff(df){const d=DIFF_TR[df]||DIFF_TR.m;return d[_lang]||d.ar;}
 
+// ═══════════════════════════════════════════════════
+// CALORIE ESTIMATOR — calcul depuis les ingrédients
+// ═══════════════════════════════════════════════════
+const KCAL_DB={
+  // Viandes & protéines
+  chicken:165,poulet:165,دجاج:165,'chicken breast':165,'poulet':165,
+  beef:250,boeuf:250,لحم:250,veal:172,veau:172,
+  lamb:294,agneau:294,غنم:294,mouton:294,
+  pork:242,porc:242,خنزير:242,chorizo:455,saucisse:320,sausage:320,
+  turkey:189,dinde:189,
+  fish:84,poisson:84,سمك:84,salmon:208,saumon:208,tuna:132,thon:132,
+  shrimp:85,crevette:85,روبيان:85,seafood:90,
+  egg:143,oeuf:143,بيض:143,
+  // Céréales & féculents
+  flour:364,farine:364,دقيق:364,
+  rice:130,riz:130,أرز:130,couscous:112,كسكس:112,
+  pasta:131,pâte:131,معكرونة:131,noodle:138,
+  bread:265,pain:265,خبز:265,pita:275,
+  potato:77,pomme:80,بطاطس:77,
+  // Légumes
+  onion:40,oignon:40,بصل:40,
+  tomato:18,tomate:18,طماطم:18,
+  garlic:149,ail:149,ثوم:149,
+  carrot:41,carotte:41,جزر:41,
+  eggplant:25,aubergine:25,باذنجان:25,
+  zucchini:17,courgette:17,كوسا:17,
+  pepper:31,poivron:31,فلفل:31,
+  spinach:23,épinard:23,سبانخ:23,
+  chickpea:164,pois:164,حمص:164,
+  lentil:116,lentille:116,عدس:116,
+  bean:127,haricot:127,فول:127,
+  // Produits laitiers
+  butter:717,beurre:717,زبدة:717,
+  cream:345,crème:345,قشدة:345,
+  milk:61,lait:61,حليب:61,
+  cheese:402,fromage:402,جبن:402,yogurt:59,yaourt:59,
+  // Huiles & graisses
+  oil:884,huile:884,زيت:884,'olive oil':884,
+  // Sucres & desserts
+  sugar:387,sucre:387,سكر:387,
+  honey:304,miel:304,عسل:304,
+  chocolate:546,chocolat:546,شوكولاتة:546,
+  almond:579,amande:579,لوز:579,
+  walnut:654,noix:654,جوز:654,
+  // Épices & condiments (kcal marginales par petite quantité)
+  salt:0,sel:0,ملح:0,pepper_s:251,
+  cumin:375,كمون:375,paprika:282,
+  lemon:29,citron:29,ليمون:29,
+  // Divers
+  water:0,eau:0,ماء:0,stock:5,bouillon:5,مرق:5,
+  tomato_paste:82,purée:82,
+};
+
+// Parse quantité → grammes (approximatif)
+function _parseQ(q,ingName){
+  if(!q) return 50; // défaut si pas de quantité
+  const s=String(q).toLowerCase().trim();
+  const num=parseFloat(s)||1;
+  if(s.includes('kg')) return num*1000;
+  if(s.includes('g')&&!s.includes('garlic')) return num;
+  if(s.includes('lb')) return num*453;
+  if(s.includes('oz')) return num*28;
+  if(s.includes('ml')||s.includes('cl')) return num*(s.includes('cl')?10:1);
+  if(s.includes('l ')&&!s.includes('tbl')) return num*1000;
+  if(s.includes('cup')) return num*130; // ~130g generic
+  if(s.includes('tbs')||s.includes('tbsp')||s.includes('tablespoon')) return num*15;
+  if(s.includes('tsp')||s.includes('teaspoon')) return num*5;
+  if(s.includes('pinch')||s.includes('pincée')) return 1;
+  if(s.includes('bunch')||s.includes('botte')) return 30;
+  if(s.includes('slice')||s.includes('tranche')) return 25;
+  if(s.includes('clove')||s.includes('gousse')) return 5;
+  if(s.includes('can')||s.includes('boîte')) return 400;
+  if(!isNaN(parseFloat(s))) return num*80; // nombre seul → ~1 unité ~80g
+  return 40; // fallback
+}
+
+function _matchKcal(ingName){
+  const n=(ingName||'').toLowerCase();
+  // Direct match
+  if(KCAL_DB[n]!==undefined) return KCAL_DB[n];
+  // Partial match
+  for(const [k,v] of Object.entries(KCAL_DB)){
+    if(k.length>2&&n.includes(k)) return v;
+  }
+  return 100; // défaut inconnu ~100 kcal/100g
+}
+
+function calcCalories(r, servings){
+  const sv=servings||r.sv||4;
+  const ings=Array.isArray(r.ing)?r.ing:[];
+  if(!ings.length) return {cal:r.nut?.cal||0,reliable:false};
+  let total=0;
+  for(const i of ings){
+    const g=_parseQ(i.q,i.n);
+    const k=_matchKcal(i.n);
+    total+=(g*k)/100;
+  }
+  const perSrv=Math.round(total/sv);
+  // Sanity check: if result is wildly off from stored value, blend
+  const stored=r.nut?.cal||0;
+  const reliable=ings.length>=4;
+  if(stored&&Math.abs(perSrv-stored)/stored>1.5&&!reliable){
+    return {cal:stored,reliable:false};
+  }
+  return {cal:perSrv||stored||0,reliable};
+}
+
 function rcCard(r,feat=false){
   const ti=rTr(r,'ti');
   const de=rTr(r,'de');
@@ -1910,7 +2017,7 @@ function rcCard(r,feat=false){
       <div class="rd">${de}</div>
       <div class="rf">
         <div class="rstar">⭐ ${r.rt} <span>(${r.rv.toLocaleString()})</span></div>
-        ${r.nut&&r.nut.cal?`<div class="rstar" style="color:var(--t2)">🔥 ${r.nut.cal} <span style="font-size:9px">kcal</span></div>`:''}
+        ${(()=>{const {cal,reliable}=calcCalories(r);return cal?`<div class="rstar" style="color:var(--t2)">🔥 ~${cal} <span style="font-size:9px">kcal${reliable?'':' ±'}</span></div>`:'';})()}
         <div class="rmore" data-i18n="cook_btn">اطبخ ←</div>
       </div>
       <div class="rc-share" onclick="event.stopPropagation()">
@@ -2193,7 +2300,7 @@ function openRecipe(id,pushUrl=true){
       <div class="rpm"><div class="rpm-v">${r.sv}</div><div class="rpm-l">${t('lbl_srv')}</div></div>
       <div class="rpm"><div class="rpm-v">${tDiff(r.df)}</div><div class="rpm-l">${t('lbl_diff')}</div></div>
       <div class="rpm"><div class="rpm-v">⭐ ${r.rt}</div><div class="rpm-l">${r.rv.toLocaleString()} ${t('lbl_rat')}</div></div>
-      <div class="rpm"><div class="rpm-v">${r.nut.cal}</div><div class="rpm-l">${t('lbl_cal')}</div></div>
+      <div class="rpm" id="rpm-cal-${r.id}"><div class="rpm-v">${(()=>{const {cal,reliable}=calcCalories(r,srv[r.id]);return `~${cal}${reliable?'':' ±'}`;})()}</div><div class="rpm-l">${t('lbl_cal')}</div></div>
     </div>
     <div class="box">
       <div class="box-h">${t('lbl_ingr')}
@@ -2230,7 +2337,7 @@ function openRecipe(id,pushUrl=true){
     <div class="box">
       <div class="box-h">${t('lbl_nutr')}</div>
       <div class="nutr-g">
-        <div class="nutr-i"><div class="nutr-v">${r.nut.cal}</div><div class="nutr-l">${t('lbl_cal2')}</div></div>
+        <div class="nutr-i" id="nutr-cal-${r.id}"><div class="nutr-v">${(()=>{const {cal,reliable}=calcCalories(r,srv[r.id]);return `~${cal}`;})()}</div><div class="nutr-l">${t('lbl_cal2')}</div></div>
         <div class="nutr-i"><div class="nutr-v">${r.nut.pro}غ</div><div class="nutr-l">${t('lbl_pro')}</div></div>
         <div class="nutr-i"><div class="nutr-v">${r.nut.carb}غ</div><div class="nutr-l">${t('lbl_carb')}</div></div>
         <div class="nutr-i"><div class="nutr-v">${r.nut.fat}غ</div><div class="nutr-l">${t('lbl_fat')}</div></div>
@@ -2307,7 +2414,20 @@ function openRecipe(id,pushUrl=true){
   gp('recipe');
 }
 
-function chSrv(id,d){srv[id]=Math.max(1,(srv[id]||1)+d);document.getElementById('sv-'+id).textContent=srv[id];}
+function chSrv(id,d){
+  srv[id]=Math.max(1,(srv[id]||1)+d);
+  document.getElementById('sv-'+id).textContent=srv[id];
+  // Recalculate calories for new serving size
+  const r=RECIPES.find(x=>x.id===id);
+  if(r){
+    const {cal,reliable}=calcCalories(r,srv[id]);
+    const txt=`~${cal}${reliable?'':' ±'}`;
+    const rpmEl=document.getElementById('rpm-cal-'+id);
+    const nutrEl=document.getElementById('nutr-cal-'+id);
+    if(rpmEl) rpmEl.querySelector('.rpm-v').textContent=txt;
+    if(nutrEl) nutrEl.querySelector('.nutr-v').textContent=`~${cal}`;
+  }
+}
 function togIng(el,rowId){
   el.classList.toggle('ck');
   const row=document.getElementById(rowId);
