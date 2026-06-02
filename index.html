@@ -3541,20 +3541,22 @@ function restoCard(r){
   // Image zone: Google photo > Clearbit logo on gradient > cuisine image > styled gradient
   let imgZone;
   if(hasGooglePhoto){
-    imgZone=`<img class="rc-resto-img" src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.parentElement.innerHTML=this.parentElement.innerHTML.replace(this.outerHTML,'')">`;
+    // Real Google restaurant photo
+    imgZone=`<img class="rc-resto-img" src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.onerror=null;this.src='';this.parentElement.style.background='#f5f5f5'">`;
   } else if(hasClearbit){
-    imgZone=`<div class="rc-resto-img" style="background:linear-gradient(135deg,#${colors});display:flex;align-items:center;justify-content:center;">
-      <img src="${r.logo}" alt="${r.name}" style="width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))" loading="lazy" onerror="this.style.display='none'">
+    // Real brand logo on white background — clean & authentic
+    imgZone=`<div class="rc-resto-img" style="background:#fff;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--b2)">
+      <img src="${r.logo}" alt="${r.name}" style="max-width:80%;max-height:80%;object-fit:contain" loading="lazy"
+        onerror="this.parentElement.outerHTML='<div class=\\'rc-resto-img\\' style=\\'background:#f9f9f9;display:flex;align-items:center;justify-content:center;font-size:36px\\'>${r.em||'🍽️'}</div>'">
     </div>`;
   } else {
-    // Styled card: emoji + name on gradient — unique, always correct
+    // No logo at all: cuisine emoji large on neutral bg — minimal, honest
     const cuisineEmoji={pizza:'🍕',italian:'🍝',moroccan:'🫕',french:'🥐',japanese:'🍣',sushi:'🍣',burger:'🍔',american:'🍔',indian:'🍛',mexican:'🌮',seafood:'🦞',dessert:'🍰',coffee:'☕',cafe:'☕',turkish:'🥙',arabic:'🥙',korean:'🍜',chinese:'🥡',grill:'🔥',bbq:'🔥',default:'🍽️'};
     const c=(r.cuisine||'').toLowerCase();
-    const emoji=Object.entries(cuisineEmoji).find(([k])=>c.includes(k))?.[1]||'🍽️';
-    const nameShort=(r.nameEn||r.name||'').substring(0,14);
-    imgZone=`<div class="rc-resto-img" style="background:linear-gradient(135deg,${colors});display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
-      <span style="font-size:38px;line-height:1">${emoji}</span>
-      <span style="font-size:10px;font-weight:900;color:rgba(255,255,255,.9);text-align:center;padding:0 8px;line-height:1.2">${nameShort}</span>
+    const emoji=Object.entries(cuisineEmoji).find(([k])=>c.includes(k))?.[1]||cuisineEmoji.default;
+    imgZone=`<div class="rc-resto-img" style="background:#f5f5f5;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px">
+      <span style="font-size:44px;line-height:1">${emoji}</span>
+      <span style="font-size:10px;font-weight:700;color:#888;text-align:center;padding:0 8px">${(r.nameEn||r.name||'').substring(0,16)}</span>
     </div>`;
   }
 
@@ -4772,8 +4774,14 @@ if('serviceWorker' in navigator){
   });
 }
 
-// ── DEEP LINK — restaure la page depuis l'URL au chargement ────────
+// ── DEEP LINK — restaure la page depuis l'URL ou depuis 404 redirect ──
 (function(){
+  // Restore from 404.html redirect
+  const redirectPath=sessionStorage.getItem('spa_redirect');
+  if(redirectPath){
+    sessionStorage.removeItem('spa_redirect');
+    history.replaceState(null,'',redirectPath);
+  }
   const p=location.pathname;
   const m=p.match(/^\/recette\/(.+)/);
   if(m){ const r=RECIPES.find(x=>x.id===m[1]); if(r){gp('recipe',false);openRecipe(r.id,false);} }

@@ -81,6 +81,12 @@ jobs:
       - name: "🗺️ Sitemap + robots.txt"
         run: node .github/scripts/gen-sitemap.mjs
 
+      - name: "🖼️ Images réelles recettes (TheMealDB + Pexels)"
+        env:
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          IMG_BATCH: "150"
+        run: node .github/scripts/fetch-recipe-images.mjs
+
       - name: "📄 Pages SEO statiques recettes"
         env:
           PAGES_BATCH: "500"
