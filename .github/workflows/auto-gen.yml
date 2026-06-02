@@ -87,6 +87,12 @@ jobs:
           IMG_BATCH: "150"
         run: node .github/scripts/fetch-recipe-images.mjs
 
+      - name: "🌍 Traductions multilingues (recettes + restos)"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          TRANSLATE_BATCH: "60"
+        run: node .github/scripts/translate-all.mjs
+
       - name: "📄 Pages SEO statiques recettes"
         env:
           PAGES_BATCH: "500"
@@ -96,7 +102,7 @@ jobs:
         run: |
           git config user.name  "Matbakh360 Bot"
           git config user.email "bot@matbakh360.com"
-          git add index.html sitemap.xml robots.txt data/recipes.json data/restos.json data/vids.json data/influencers.json recipes/ recipes/index.json
+          git add index.html sitemap.xml robots.txt data/recipes.json data/restos.json data/vids.json data/influencers.json data/recipe_translations.json data/resto_translations.json recipes/ recipes/index.json
           if git diff --staged --quiet; then
             echo "ℹ️ Rien à committer"
           else
