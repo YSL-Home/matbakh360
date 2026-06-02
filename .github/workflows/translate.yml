@@ -1,0 +1,45 @@
+name: "🌍 Traduction complète multilingue"
+
+on:
+  workflow_dispatch:
+    inputs:
+      concurrency:
+        description: "Requêtes parallèles (défaut: 8)"
+        required: false
+        default: "8"
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    timeout-minutes: 180
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: "🌍 Traduction ultra-rapide (parallèle)"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          CONCURRENCY: ${{ github.event.inputs.concurrency || '8' }}
+        run: node .github/scripts/translate-fast.mjs
+
+      - name: "📦 Commit & Push"
+        run: |
+          git config user.name "Matbakh360 Bot"
+          git config user.email "bot@matbakh360.com"
+          git add data/recipe_translations.json data/resto_translations.json
+          if git diff --staged --quiet; then
+            echo "ℹ️ Rien à committer"
+          else
+            git commit -m "🌍 Traductions $(date +'%Y-%m-%d %H:%M') — $(node -e "const t=JSON.parse(require('fs').readFileSync('data/recipe_translations.json'));console.log(Object.keys(t).length)") recettes"
+            git pull --rebase -X theirs origin main
+            git push
+          fi
