@@ -1371,6 +1371,7 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
           </select>
         </div>
       </div>
+      <div id="sloc-cuisine-chips" style="display:none;flex-wrap:wrap;gap:5px;padding:6px 12px 8px;border-bottom:1px solid var(--b2)"></div>
       <div class="sloc-list" id="sloc-list">
         <div class="sloc-empty">
           <div class="sloc-empty-ico">🗺️</div>
@@ -2262,6 +2263,7 @@ function clearRecent(){
 function openRecipe(id,pushUrl=true){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
+  _lastOpenedRecipeId=id;
   _addRecent(id);
   _trackTrend(id);
   if(typeof gtag==='function') gtag('event','view_recipe',{recipe_id:r.id,recipe_name:r.ti});
@@ -2710,7 +2712,7 @@ function _initPaged(key, recs, gridId){
   _renderPage(key);
 }
 
-let _lastSearch='';
+let _lastSearch='', _lastOpenedRecipeId='';
 function getSearchHistory(){return JSON.parse(localStorage.getItem('mw360_sh')||'[]');}
 function addSearchHistory(q){let h=getSearchHistory().filter(x=>x!==q);h.unshift(q);localStorage.setItem('mw360_sh',JSON.stringify(h.slice(0,5)));}
 function renderSearchHistoryBar(){const bar=document.getElementById('search-history-bar');if(!bar)return;const h=getSearchHistory();if(!h.length){bar.style.display='none';return;}bar.style.cssText='display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin:14px 0 4px;';bar.innerHTML='<span style="font-size:11px;color:var(--t3);font-weight:700">🕐</span>'+h.map(q2=>`<button onclick="doSearch(this.dataset.q)" data-q="${q2.replace(/"/g,'&quot;')}" style="padding:4px 11px;border-radius:100px;font-size:11.5px;font-weight:600;font-family:var(--fn);cursor:pointer;border:1px solid var(--b1);background:var(--card);color:var(--t2);">${q2}</button>`).join('');}
@@ -3257,11 +3259,13 @@ function setLang(lg){
   // World chips
   initWorldChips('wchips');
   // Re-render la page active avec la nouvelle langue
+  if(activePg==='home'){renderRecentlyViewed();renderTrending();highlightRecipeOfDay();}
   if(activePg==='videos'){renderPlatBar();renderTagBar();renderVF();}
-  if(activePg==='resto'){buildCityTags();buildRestoFilters();renderRestoGrid('');renderCityInfVids('');}
+  if(activePg==='resto'){buildCityTags();buildRestoFilters();renderRestoGrid(_restoCity||'');renderCityInfVids(_restoCity||'');}
   if(activePg==='world') renderWorldPage(null);
   if(activePg==='fav') initFav();
   if(activePg==='local') slocRenderList();
+  if(activePg==='recipe'&&_lastOpenedRecipeId) openRecipe(_lastOpenedRecipeId,false);
   // Re-render search results if visible
   if(activePg==='search'&&_lastSearch) doSearch(_lastSearch,false);
   // Update timer presets labels
@@ -3522,16 +3526,42 @@ function _restoCardImg(r){
   return imgs[hAbs % imgs.length];
 }
 
+// Couleur de fond déterministe par restaurant (dégradé unique)
+function _restoCardColor(r){
+  const colors=['#C94A1A,#8B2500','#1A6BC9,#0A3D7A','#2E7D32,#1B5E20','#7B1FA2,#4A0072','#F57F17,#E65100','#00695C,#004D40','#C62828,#7F0000','#4527A0,#1A0072'];
+  const h=Math.abs([...(r.id||r.name||'')].reduce((a,c)=>((a<<5)-a+c.charCodeAt(0))|0,0));
+  return colors[h%colors.length];
+}
 function restoCard(r){
   const stars='⭐'.repeat(Math.floor(r.rating))+(r.rating%1>=0.5?'✨':'');
-  // Priorité : photo Google réelle → food fallback déterministe
-  const cardImg=(r.img&&!r.img.includes('source.unsplash'))?r.img:_restoCardImg(r);
-  // Logo overlay (Clearbit) si pas de vraie photo
-  const logoOverlay=r.logo?`<img src="${r.logo}" alt="${r.name}" style="position:absolute;bottom:8px;right:8px;width:42px;height:42px;object-fit:contain;background:#fff;border-radius:10px;padding:4px;box-shadow:0 2px 8px rgba(0,0,0,.25)" loading="lazy" onerror="this.style.display='none'">`:'' ;
+  const hasGooglePhoto=r.img&&r.img.includes('googleusercontent.com');
+  const hasClearbit=r.logo&&r.logo.includes('clearbit');
+  const colors=_restoCardColor(r);
+
+  // Image zone: Google photo > Clearbit logo on gradient > cuisine image > styled gradient
+  let imgZone;
+  if(hasGooglePhoto){
+    imgZone=`<img class="rc-resto-img" src="${r.img}" alt="${r.name}" loading="lazy" onerror="this.parentElement.innerHTML=this.parentElement.innerHTML.replace(this.outerHTML,'')">`;
+  } else if(hasClearbit){
+    imgZone=`<div class="rc-resto-img" style="background:linear-gradient(135deg,#${colors});display:flex;align-items:center;justify-content:center;">
+      <img src="${r.logo}" alt="${r.name}" style="width:72px;height:72px;object-fit:contain;filter:drop-shadow(0 4px 12px rgba(0,0,0,.4))" loading="lazy" onerror="this.style.display='none'">
+    </div>`;
+  } else {
+    // Styled card: emoji + name on gradient — unique, always correct
+    const cuisineEmoji={pizza:'🍕',italian:'🍝',moroccan:'🫕',french:'🥐',japanese:'🍣',sushi:'🍣',burger:'🍔',american:'🍔',indian:'🍛',mexican:'🌮',seafood:'🦞',dessert:'🍰',coffee:'☕',cafe:'☕',turkish:'🥙',arabic:'🥙',korean:'🍜',chinese:'🥡',grill:'🔥',bbq:'🔥',default:'🍽️'};
+    const c=(r.cuisine||'').toLowerCase();
+    const emoji=Object.entries(cuisineEmoji).find(([k])=>c.includes(k))?.[1]||'🍽️';
+    const nameShort=(r.nameEn||r.name||'').substring(0,14);
+    imgZone=`<div class="rc-resto-img" style="background:linear-gradient(135deg,${colors});display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;">
+      <span style="font-size:38px;line-height:1">${emoji}</span>
+      <span style="font-size:10px;font-weight:900;color:rgba(255,255,255,.9);text-align:center;padding:0 8px;line-height:1.2">${nameShort}</span>
+    </div>`;
+  }
+
   return `<div class="rc-resto" onclick="openResto('${r.id}')">
     <div style="overflow:hidden;position:relative">
-      <img class="rc-resto-img" src="${cardImg}" alt="${r.name}" loading="lazy" onerror="this.src='https://www.themealdb.com/images/media/meals/9bl20p1763248192.jpg'">
-      ${logoOverlay}
+      ${imgZone}
+      ${hasGooglePhoto&&r.logo?`<img src="${r.logo}" alt="${r.name}" style="position:absolute;bottom:8px;right:8px;width:36px;height:36px;object-fit:contain;background:#fff;border-radius:8px;padding:3px;box-shadow:0 2px 6px rgba(0,0,0,.2)" loading="lazy" onerror="this.style.display='none'">`:'' }
     </div>
     <div class="rc-resto-body">
       <div class="rc-resto-name">${r.country} ${r.nameAr||r.name}</div>
@@ -3982,6 +4012,32 @@ function slocInitMap(){
 }
 
 // ── Build city chips ─────────────────────────────────────────────────
+let _slocCuisineFilter='';
+function slocBuildCuisineChips(){
+  const el=document.getElementById('sloc-cuisine-chips');
+  if(!el) return;
+  _slocCuisineFilter='';
+  const cuisines=[...new Set(_slocRestos.flatMap(r=>[r.cuisine,...(r.cusines||[])].filter(Boolean)))].slice(0,12);
+  if(!cuisines.length){el.style.display='none';return;}
+  el.style.display='flex';
+  const cuiEmoji={pizza:'🍕',italian:'🍝',moroccan:'🫕',french:'🥐',japanese:'🍣',sushi:'🍣',burger:'🍔',american:'🍔',indian:'🍛',mexican:'🌮',seafood:'🦞',dessert:'🍰',cafe:'☕',coffee:'☕',turkish:'🥙',arabic:'🥙',korean:'🍜',chinese:'🥡',default:'🍽️'};
+  const getEmoji=c=>cuiEmoji[c.toLowerCase()]||cuiEmoji.default;
+  el.innerHTML=`<button class="ctag on" data-cui="" style="font-size:11px;padding:3px 10px">🌐 الكل</button>`
+    +cuisines.map(c=>`<button class="ctag" data-cui="${c}" style="font-size:11px;padding:3px 10px">${getEmoji(c)} ${c}</button>`).join('');
+  el.onclick=function(e){
+    const btn=e.target.closest('button[data-cui]');
+    if(!btn) return;
+    _slocCuisineFilter=btn.dataset.cui;
+    el.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.cui===_slocCuisineFilter));
+    if(_slocCuisineFilter){
+      _slocRestos=RESTAURANTS.filter(r=>r.city===_slocCity&&([r.cuisine,...(r.cusines||[])].includes(_slocCuisineFilter)));
+    } else {
+      _slocRestos=RESTAURANTS.filter(r=>r.city===_slocCity);
+    }
+    slocRenderList();
+  };
+}
+
 function slocBuildChips(){
   const el=document.getElementById('sloc-chips');
   if(!el||el.innerHTML) return;
@@ -4032,6 +4088,9 @@ async function slocLoadCity(cityAr, coords=null){
   } else if(_slocMap){
     slocPlacePins({lat:30,lng:15});
   }
+
+  // Build cuisine category chips for this city
+  slocBuildCuisineChips();
 
   // Render list with slight delay for smooth transition
   setTimeout(slocRenderList, 80);
