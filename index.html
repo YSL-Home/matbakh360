@@ -25,6 +25,8 @@
 <!-- TODO: remplacer G-XXXXXXXXXX par le vrai ID GA4 depuis console.analytics.google.com -->
 <!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
+// Apply dark mode ASAP to prevent flash
+(function(){const t=localStorage.getItem('mw360_theme');if(t==='dark'||(t===null&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');})();
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());
@@ -70,6 +72,15 @@ gtag('config','G-XXXXXXXXXX',{page_title:document.title,page_location:window.loc
   --rad:16px;--rads:10px;--pill:100px;
   --fn:'Tajawal',sans-serif;--fd:'El Messiri',serif;
   --sh:0 4px 28px rgba(0,0,0,.09);
+}
+/* ── DARK MODE ─────────────────────────────────── */
+[data-theme="dark"]{
+  --ink:#0F0A07;--ink1:#1A1108;--ink2:#251A0E;--ink3:#2E2012;--ink4:#382816;
+  --card:#1E1409;--card2:#261B0F;--card3:#2E2212;
+  --b0:rgba(201,100,50,.35);--b1:rgba(201,100,50,.15);--b2:rgba(201,100,50,.07);
+  --t0:#F5E8D0;--t1:#D4B896;--t2:#A88060;--t3:#6B5038;
+  --nav-bg:rgba(15,10,7,.97);--sg:rgba(201,74,26,.15);--sg2:rgba(201,74,26,.08);
+  --sh:0 4px 28px rgba(0,0,0,.4);
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{scroll-behavior:smooth;}
@@ -1079,6 +1090,8 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   </div>
   <!-- Language switcher -->
   <div class="lang-switch" id="lang-switch">
+    <button id="dark-toggle" onclick="toggleDark()" style="background:none;border:none;cursor:pointer;font-size:18px;padding:4px;line-height:1" title="Dark mode">🌙</button>
+    <button id="pwa-install-btn" onclick="pwaTriggerInstall()" style="display:none;background:var(--s);color:#fff;border:none;border-radius:var(--pill);padding:5px 12px;font-family:var(--fn);font-size:11.5px;font-weight:800;cursor:pointer">📲 تثبيت</button>
     <button class="lang-btn" onclick="toggleLangDropdown()" id="lang-btn">🌐 AR ▾</button>
     <div class="lang-dropdown" id="lang-dropdown">
       <div class="lang-opt active" onclick="setLang('ar')">🇸🇦 العربية</div>
@@ -1304,6 +1317,23 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
   </div>
 </div>
 <div style="height:50px"></div>
+</div>
+
+<!-- ADMIN DASHBOARD -->
+<div class="page" id="page-admin">
+  <div class="wrap" style="padding:24px 0 60px">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px">
+      <span style="font-size:28px">📊</span>
+      <h1 style="font-size:22px;font-weight:900;color:var(--t0)">Dashboard مطبخ 360</h1>
+    </div>
+    <div id="admin-stats" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;margin-bottom:28px"></div>
+    <div class="sh"><h2>🔥 Trending cette semaine</h2></div>
+    <div id="admin-trending" style="display:flex;flex-direction:column;gap:8px;margin-bottom:24px"></div>
+    <div class="sh"><h2>🔍 Dernières recherches</h2></div>
+    <div id="admin-searches" style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px"></div>
+    <div class="sh"><h2>🌍 Langues utilisées</h2></div>
+    <div id="admin-langs" style="display:flex;flex-wrap:wrap;gap:8px"></div>
+  </div>
 </div>
 
 <!-- SAVEURS LOCALES -->
@@ -1796,7 +1826,7 @@ function gp(id,pushUrl=true){
   if(id==='local'&&typeof gtag==='function') gtag('event','open_local_flavors');
   // Update URL for shareable deep links
   if(pushUrl){
-    const urlMap={home:'/',world:'/cuisines',videos:'/videos',resto:'/restaurants',fav:'/favoris',search:'/recherche',local:'/saveurs-locales'};
+    const urlMap={home:'/',world:'/cuisines',videos:'/videos',resto:'/restaurants',fav:'/favoris',search:'/recherche',local:'/saveurs-locales',admin:'/admin'};
     const url=urlMap[id]||('/'+id);
     history.pushState({page:id},'',url);
   }
@@ -2293,6 +2323,7 @@ function openRecipe(id,pushUrl=true){
     <div class="rp-actions">
       <button class="rp-act-btn" onclick="openShop('${r.id}')">🛒 قائمة التسوق</button>
       <button class="rp-act-btn" onclick="addToMealPlan('${r.id}')">📅 أضف للأسبوع</button>
+      <button class="rp-act-btn" onclick="orderIngredients('${r.id}')">🛍️ اطلب المكونات</button>
       <button class="rp-act-btn" onclick="window.print()">🖨 طباعة</button>
     </div>
     ${renderInteractiveRating(r.id,r.rt,r.rv)}
@@ -3260,6 +3291,7 @@ function setLang(lg){
   initWorldChips('wchips');
   // Re-render la page active avec la nouvelle langue
   if(activePg==='home'){renderRecentlyViewed();renderTrending();highlightRecipeOfDay();}
+  if(activePg==='admin') renderAdmin();
   if(activePg==='videos'){renderPlatBar();renderTagBar();renderVF();}
   if(activePg==='resto'){buildCityTags();buildRestoFilters();renderRestoGrid(_restoCity||'');renderCityInfVids(_restoCity||'');}
   if(activePg==='world') renderWorldPage(null);
@@ -3842,6 +3874,9 @@ function renderRestoDetail(r){
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
         ${t('rst_directions')}
       </a>
+      <button onclick="bookResto(r)" style="display:flex;align-items:center;justify-content:center;gap:8px;width:100%;background:linear-gradient(135deg,var(--g),#1e4a25);color:#fff;border:none;padding:12px 20px;border-radius:var(--rads);font-family:var(--fn);font-size:13px;font-weight:900;cursor:pointer;margin-bottom:10px">
+        🍴 احجز طاولة — TheFork
+      </button>
       <a href="${googleUrl}" target="_blank" rel="noopener"
          style="display:flex;align-items:center;justify-content:center;gap:8px;text-align:center;background:#fff;color:#1a73e8;border:2px solid #1a73e8;padding:11px 20px;border-radius:var(--rads);font-family:var(--fn);font-size:13px;font-weight:900;text-decoration:none;margin-bottom:10px">
         ${t('rst_google_read')}
@@ -4765,6 +4800,158 @@ function notifLater(){
   },{passive:true});
 })();
 
+// ═══════════════════════════════════════════════════
+// DARK MODE
+// ═══════════════════════════════════════════════════
+(function(){
+  const saved=localStorage.getItem('mw360_theme');
+  const prefersDark=window.matchMedia('(prefers-color-scheme:dark)').matches;
+  if(saved==='dark'||(saved===null&&prefersDark)){
+    document.documentElement.setAttribute('data-theme','dark');
+    const btn=document.getElementById('dark-toggle');
+    if(btn) btn.textContent='☀️';
+  }
+})();
+function toggleDark(){
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  document.documentElement.setAttribute('data-theme',isDark?'light':'dark');
+  localStorage.setItem('mw360_theme',isDark?'light':'dark');
+  const btn=document.getElementById('dark-toggle');
+  if(btn) btn.textContent=isDark?'🌙':'☀️';
+}
+
+// ═══════════════════════════════════════════════════
+// PWA INSTALL
+// ═══════════════════════════════════════════════════
+let _deferredPrompt=null;
+window.addEventListener('beforeinstallprompt',e=>{
+  e.preventDefault();
+  _deferredPrompt=e;
+  const btn=document.getElementById('pwa-install-btn');
+  if(btn) btn.style.display='block';
+});
+function pwaTriggerInstall(){
+  if(!_deferredPrompt) return;
+  _deferredPrompt.prompt();
+  _deferredPrompt.userChoice.then(r=>{
+    if(r.outcome==='accepted') document.getElementById('pwa-install-btn').style.display='none';
+    _deferredPrompt=null;
+  });
+}
+window.addEventListener('appinstalled',()=>{
+  const btn=document.getElementById('pwa-install-btn');
+  if(btn) btn.style.display='none';
+  showToast('✅ مطبخ 360 تم تثبيته على جهازك!');
+});
+
+// ═══════════════════════════════════════════════════
+// SWIPE BETWEEN RECIPES
+// ═══════════════════════════════════════════════════
+(function(){
+  let _sx=0,_sy=0;
+  document.addEventListener('touchstart',e=>{
+    if(activePg!=='recipe') return;
+    _sx=e.touches[0].clientX;
+    _sy=e.touches[0].clientY;
+  },{passive:true});
+  document.addEventListener('touchend',e=>{
+    if(activePg!=='recipe'||!_lastOpenedRecipeId) return;
+    const dx=e.changedTouches[0].clientX-_sx;
+    const dy=e.changedTouches[0].clientY-_sy;
+    if(Math.abs(dx)<60||Math.abs(dy)>Math.abs(dx)) return;
+    const cur=RECIPES.find(r=>r.id===_lastOpenedRecipeId);
+    if(!cur) return;
+    const samecat=RECIPES.filter(r=>r.cid===cur.cid||r.cat===cur.cat);
+    const idx=samecat.findIndex(r=>r.id===cur.id);
+    const next=dx<0?samecat[idx+1]:samecat[idx-1];
+    if(next) openRecipe(next.id);
+  },{passive:true});
+})();
+
+// ═══════════════════════════════════════════════════
+// ORDER INGREDIENTS (Amazon / Jumia)
+// ═══════════════════════════════════════════════════
+function orderIngredients(id){
+  const r=RECIPES.find(x=>x.id===id);
+  if(!r||!r.ing) return;
+  const items=(r.ing||[]).map(i=>`${i.q||''} ${i.n||''}`.trim()).filter(Boolean);
+  // Try to detect region from language
+  const isAr=_lang==='ar';
+  const query=encodeURIComponent(items.slice(0,5).join('+'));
+  const url=isAr
+    ?`https://www.jumia.com.eg/catalog/?q=${query}`
+    :`https://www.amazon.fr/s?k=${query}`;
+  window.open(url,'_blank','noopener');
+  if(typeof gtag==='function') gtag('event','order_ingredients',{recipe_id:id});
+}
+
+// ═══════════════════════════════════════════════════
+// RESTAURANT BOOKING (TheFork / Google Maps)
+// ═══════════════════════════════════════════════════
+function bookResto(r){
+  const q=encodeURIComponent(`${r.nameEn||r.name} ${r.cityEn||r.city||''}`);
+  const url=`https://www.thefork.com/search#cityName=${encodeURIComponent(r.cityEn||r.city||'')}&query=${encodeURIComponent(r.nameEn||r.name||'')}`;
+  window.open(url,'_blank','noopener');
+  if(typeof gtag==='function') gtag('event','book_restaurant',{resto_id:r.id});
+}
+
+// ═══════════════════════════════════════════════════
+// ADMIN DASHBOARD
+// ═══════════════════════════════════════════════════
+function renderAdmin(){
+  // Stats cards
+  const week=Math.floor(Date.now()/6048e5);
+  const trending=JSON.parse(localStorage.getItem('mw360_trend_'+week)||'{}');
+  const searches=JSON.parse(localStorage.getItem('mw360_sh')||'[]');
+  const recent=JSON.parse(localStorage.getItem('mw360_recent')||'[]');
+  const ratings=JSON.parse(localStorage.getItem('mw360_ratings')||'{}');
+  const favs=JSON.parse(localStorage.getItem('mw360_favs')||'[]');
+  const mealPlan=JSON.parse(localStorage.getItem('mw360_meal')||'{}');
+  const mealDays=Object.values(mealPlan).flat().length;
+
+  const stats=[
+    {ico:'🍽️',lbl:'Recettes',val:RECIPES.length.toLocaleString()},
+    {ico:'🌟',lbl:'Restaurants',val:RESTAURANTS.length.toLocaleString()},
+    {ico:'📱',lbl:'Vidéos',val:(VIDS.length+INF_VIDS.length).toLocaleString()},
+    {ico:'🔥',lbl:'Vues cette semaine',val:Object.values(trending).reduce((a,b)=>a+b,0).toLocaleString()},
+    {ico:'❤️',lbl:'Recettes sauvegardées',val:favs.length},
+    {ico:'⭐',lbl:'Recettes notées',val:Object.keys(ratings).length},
+    {ico:'📅',lbl:'Repas planifiés',val:mealDays},
+    {ico:'👁',lbl:'Récemment vus',val:recent.length},
+  ];
+  const statsEl=document.getElementById('admin-stats');
+  if(statsEl) statsEl.innerHTML=stats.map(s=>`
+    <div style="background:var(--card);border:1px solid var(--b1);border-radius:var(--rad);padding:16px;text-align:center">
+      <div style="font-size:28px;margin-bottom:6px">${s.ico}</div>
+      <div style="font-size:22px;font-weight:900;color:var(--s)">${s.val}</div>
+      <div style="font-size:11px;color:var(--t3);margin-top:2px">${s.lbl}</div>
+    </div>`).join('');
+
+  // Trending recipes
+  const trendEl=document.getElementById('admin-trending');
+  if(trendEl){
+    const top=Object.entries(trending).sort((a,b)=>b[1]-a[1]).slice(0,10);
+    trendEl.innerHTML=top.map(([id,views])=>{
+      const r=RECIPES.find(x=>x.id===id);
+      if(!r) return '';
+      return `<div style="display:flex;align-items:center;gap:10px;background:var(--card);border:1px solid var(--b1);border-radius:10px;padding:10px 14px;cursor:pointer" onclick="openRecipe('${id}')">
+        <span style="font-size:20px">${r.em||'🍽️'}</span>
+        <div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:800;color:var(--t0)">${r.ti||''}</div><div style="font-size:11px;color:var(--t3)">${r.cat||''}</div></div>
+        <span style="background:var(--sg);color:var(--s);font-size:11px;font-weight:900;padding:2px 10px;border-radius:var(--pill)">👁 ${views}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // Recent searches
+  const searchEl=document.getElementById('admin-searches');
+  if(searchEl) searchEl.innerHTML=searches.map(q=>`<span style="background:var(--card);border:1px solid var(--b1);border-radius:var(--pill);padding:5px 14px;font-size:12px;cursor:pointer" onclick="doSearch('${q.replace(/'/g,"\\'")}')">🔍 ${q}</span>`).join('');
+
+  // Languages used
+  const langEl=document.getElementById('admin-langs');
+  const flags={ar:'🇸🇦 العربية',fr:'🇫🇷 Français',en:'🇬🇧 English',es:'🇪🇸 Español',pt:'🇵🇹 Português',it:'🇮🇹 Italiano',zh:'🇨🇳 中文',ja:'🇯🇵 日本語'};
+  if(langEl) langEl.innerHTML=`<span style="background:var(--s);color:#fff;border-radius:var(--pill);padding:6px 16px;font-size:13px;font-weight:800">${flags[_lang]||_lang} — Actuel</span>`;
+}
+
 // ── SERVICE WORKER — cache offline + accélération ──────────────────
 if('serviceWorker' in navigator){
   window.addEventListener('load',()=>{
@@ -4790,6 +4977,7 @@ if('serviceWorker' in navigator){
   else if(p.startsWith('/videos')) gp('videos',false);
   else if(p.startsWith('/favoris')) gp('fav',false);
   else if(p.startsWith('/saveurs-locales')) gp('local',false);
+  else if(p.startsWith('/admin')) gp('admin',false);
   // restore search query
   const sq=new URLSearchParams(location.search).get('q');
   if(sq) setTimeout(()=>doSearch(sq),200);
