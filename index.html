@@ -184,7 +184,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .rmore{font-size:11px;font-weight:800;color:var(--s);min-height:36px;display:flex;align-items:center;}
 
 /* HERO */
-.hero{padding:54px 0 36px;text-align:center;position:relative;overflow:hidden;}
+.hero{padding:22px 0 16px;text-align:center;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;inset:-60px;pointer-events:none;
   background:
     radial-gradient(ellipse 70% 60% at 15% 40%,rgba(201,74,26,.13) 0%,transparent 60%),
@@ -194,13 +194,13 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
   border:1.5px solid var(--b0);border-radius:var(--pill);padding:6px 16px;
   font-size:11px;font-weight:800;color:var(--s);letter-spacing:.8px;margin-bottom:22px;
   box-shadow:0 2px 12px rgba(201,74,26,.1);}
-.hero h1{font-size:56px;font-weight:900;line-height:1.1;margin-bottom:14px;
+.hero h1{font-size:36px;font-weight:900;line-height:1.15;margin-bottom:10px;
   letter-spacing:-.5px;color:var(--t0);font-family:var(--fd);}
 .hero h1 em{font-style:italic;color:var(--s);font-family:var(--fd);}
 .hero h1 span.h1-muted{color:var(--t2);font-weight:700;font-size:.75em;}
-.hero-sub{font-size:14.5px;color:var(--t2);max-width:520px;margin:0 auto 26px;line-height:1.75;}
+.hero-sub{font-size:13px;color:var(--t2);max-width:520px;margin:0 auto 14px;line-height:1.5;}
 /* Hero search bar */
-.hero-search{display:flex;align-items:center;max-width:480px;margin:0 auto 28px;
+.hero-search{display:flex;align-items:center;max-width:480px;margin:0 auto 14px;
   background:var(--card);border:1.5px solid var(--b0);border-radius:var(--pill);
   padding:9px 9px 9px 18px;gap:8px;box-shadow:0 4px 24px rgba(0,0,0,.07);
   transition:border-color .2s,box-shadow .2s;}
@@ -213,7 +213,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
   transition:background .18s;white-space:nowrap;flex-shrink:0;}
 .hero-search-btn:hover{background:var(--r);}
 /* Stats pills */
-.hstats{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px;}
+.hstats{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:10px;}
 .hst{display:flex;align-items:center;gap:7px;background:var(--card);border:1px solid var(--b1);
   border-radius:var(--pill);padding:8px 18px;box-shadow:0 2px 10px rgba(0,0,0,.05);}
 .hst .n{font-size:18px;font-weight:900;color:var(--s);font-family:var(--fd);}
@@ -239,7 +239,7 @@ body::after{content:'';position:fixed;inset:0;pointer-events:none;z-index:0;opac
 .hc-flag{position:absolute;top:10px;right:10px;font-size:22px;
   filter:drop-shadow(0 1px 4px rgba(0,0,0,.5));}
 @media(max-width:900px){.hero-cards{grid-template-columns:1fr 1fr;}.hc-main{grid-column:span 2;}}
-@media(max-width:600px){.hero-cards{grid-template-columns:1fr;}.hc-main{grid-column:span 1;}.hero h1{font-size:30px;}}
+@media(max-width:600px){.hero h1{font-size:24px;}}
 
 /* WORLD CHIPS */
 .chips-bar{padding:14px 0;border-bottom:1px solid var(--b1);overflow:hidden;}
@@ -1115,22 +1115,18 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 <div class="page on" id="page-home">
 <div class="wrap">
   <div class="hero">
-    <div class="hero-badge" data-i18n="hero_badge">🍽️ موسوعة الطهي العالمية</div>
-    <h1 data-i18n="hero_title">كل مطابخ العالم<br>في <em>مطبخ 360</em></h1>
-    <p class="hero-sub" data-i18n="hero_sub">من الكسكس المغربي إلى الراميان الياباني والبيتزا الإيطالية — آلاف الوصفات مع صور ومقاطع فيديو.</p>
+    <h1 data-i18n="hero_title">مطابخ العالم في <em>زاوية واحدة</em></h1>
     <div class="hero-search">
-      <span style="font-size:18px;flex-shrink:0;opacity:.6">🔍</span>
+      <span style="font-size:17px;flex-shrink:0;opacity:.55">🔍</span>
       <input id="hero-q" type="text" placeholder="ابحث: كسكس، تاكو، راميان..." data-i18n-placeholder="hero_search_ph" onkeydown="if(event.key==='Enter'){doSearch(this.value);this.blur()}" oninput="clearTimeout(window._hst);if(this.value.length>2)window._hst=setTimeout(()=>doSearch(this.value),350)" autocomplete="off">
-      <button class="hero-search-btn" onclick="doSearch(document.getElementById('hero-q').value)" data-i18n="hero_search_btn">ابحث الآن</button>
+      <button class="hero-search-btn" onclick="doSearch(document.getElementById('hero-q').value)" data-i18n="hero_search_btn">ابحث</button>
     </div>
-    <div class="hstats">
-      <div class="hst"><div class="n">12,400+</div><div class="l" data-i18n="stat_recipes">وصفة</div></div>
-      <div class="hst"><div class="n">80+</div><div class="l" data-i18n="stat_cuisines">مطبخ</div></div>
-      <div class="hst"><div class="n">5,200+</div><div class="l" data-i18n="stat_videos">فيديو</div></div>
+    <div class="hstats" id="hstats-bar">
+      <div class="hst"><div class="n" id="stat-r">—</div><div class="l" data-i18n="stat_recipes">وصفة</div></div>
+      <div class="hst"><div class="n" id="stat-c">68+</div><div class="l" data-i18n="stat_cuisines">مطبخ</div></div>
+      <div class="hst"><div class="n" id="stat-v">—</div><div class="l" data-i18n="stat_videos">فيديو</div></div>
       <div class="hst"><div class="n">8</div><div class="l" data-i18n="stat_langs">لغات</div></div>
     </div>
-    <!-- Featured recipe cards — populated by JS -->
-    <div class="hero-cards" id="hero-cards"></div>
   </div>
   <div class="chips-bar"><div class="chips-scroll" id="hchips"></div></div>
 
@@ -4882,6 +4878,11 @@ function notifLater(){
   document.querySelectorAll('[data-i18n-placeholder]').forEach(el=>{const k=el.getAttribute('data-i18n-placeholder');if(_d0[k]!==undefined)el.placeholder=_d0[k];});
   renderTimerPresets();
 
+  // Update real stats
+  const sr=document.getElementById('stat-r');
+  const sv=document.getElementById('stat-v');
+  if(sr) sr.textContent=(RECIPES.length>1000?Math.floor(RECIPES.length/100)*100+'+':RECIPES.length).toLocaleString();
+  if(sv) sv.textContent=(VIDS.length+INF_VIDS.length>100?Math.floor((VIDS.length+INF_VIDS.length)/100)*100+'+':VIDS.length+INF_VIDS.length).toLocaleString();
   initHome();
   renderRecentlyViewed();
   renderTrending();
