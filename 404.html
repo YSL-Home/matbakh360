@@ -7,11 +7,13 @@
 // Store the path and redirect to index.html
 var path = window.location.pathname + window.location.search;
 // Don't redirect for actual missing files
-if (path.endsWith('.html') || path.endsWith('.js') || path.endsWith('.json') || path.endsWith('.css')) {
-  document.write('<h1>404 - Page not found</h1>');
-} else {
-  sessionStorage.setItem('spa_redirect', path);
-  window.location.replace('/matbakh360/');
+var skip=['.html','.js','.json','.css','.png','.jpg','.ico','.xml','.txt','.mjs','.webp'];
+if(skip.some(function(e){return path.endsWith(e);})){
+  document.write('<h1>404 - Not found</h1>');
+}else{
+  sessionStorage.setItem('spa_redirect',path+window.location.search);
+  var base=window.location.hostname.includes('github.io')?'/matbakh360/':'/';
+  window.location.replace(base);
 }
 </script>
 </head>

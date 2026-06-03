@@ -1880,6 +1880,8 @@ function gp(id,pushUrl=true){
 window.addEventListener('popstate',e=>{
   const s=e.state;
   if(s&&s.recipe) openRecipe(s.recipe,false);
+  else if(s&&s.resto){const r=RESTAURANTS.find(x=>x.id===s.resto);if(r){gp('restodtl',false);renderRestoDetail(r);}}
+  else if(s&&s.video) openVM(s.video);
   else if(s&&s.page) gp(s.page,false);
   else gp('home',false);
 });
@@ -2324,6 +2326,22 @@ function clearRecent(){
   const wrap=document.getElementById('h-recent-wrap');
   if(wrap) wrap.style.display='none';
 }
+// ── URL slugifier ──────────────────────────────────────────────────
+const _arMap={'ا':'a','أ':'a','إ':'a','آ':'a','ب':'b','ت':'t','ث':'th','ج':'j','ح':'h','خ':'kh','د':'d','ذ':'dh','ر':'r','ز':'z','س':'s','ش':'sh','ص':'s','ض':'d','ط':'t','ظ':'z','ع':'a','غ':'gh','ف':'f','ق':'q','ك':'k','ل':'l','م':'m','ن':'n','ه':'h','و':'w','ي':'y','ى':'a','ة':'a','ء':'','ئ':'y','ؤ':'w','لا':'la',' ':'-'};
+function _slug(s){
+  if(!s) return 'item';
+  let r=String(s).toLowerCase();
+  // Transliterate Arabic
+  r=r.replace(/[؀-ۿ]/g,c=>_arMap[c]||'');
+  // Normalize accents
+  r=r.normalize('NFD').replace(/[̀-ͯ]/g,'');
+  // Replace non-alphanumeric with hyphen
+  r=r.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').substring(0,50);
+  return r||'item';
+}
+function _catSlug(cat){return _slug(cat||'cuisine');}
+function _citySlug(city){return _slug(city||'city');}
+
 function openRecipe(id,pushUrl=true){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
@@ -2332,7 +2350,11 @@ function openRecipe(id,pushUrl=true){
   _trackTrend(id);
   if(typeof gtag==='function') gtag('event','view_recipe',{recipe_id:r.id,recipe_name:r.ti});
   updateSEO(r);
-  if(pushUrl) history.pushState({recipe:id},rTr(r,'ti'),`/recette/${id}`);
+  if(pushUrl){
+    const cat=_catSlug(r.cat||r.r);
+    const title=_slug(rTr(r,'ti')||r.ti);
+    history.pushState({recipe:id},rTr(r,'ti'),`/recipe/${cat}/${title}--${id}`);
+  }
   srv[id]=r.sv;
   const related=RECIPES.filter(x=>x.cid===r.cid&&x.id!==r.id).slice(0,4);
   document.getElementById('rp-content').innerHTML=`
@@ -2668,6 +2690,11 @@ function _extractYtid(v){
 }
 function openVM(id){
   const v=[...VIDS,...INF_VIDS].find(x=>x.id===id);
+  if(v){
+    const plat=v.pl||'video';
+    const title=_slug(v.titleAr||v.title||'video');
+    history.pushState({video:id},v.titleAr||v.title,`/video/${plat}/${title}--${id}`);
+  }
   if(!v) return;
   if(!v.ytid && v.pl==='yt') v.ytid=_extractYtid(v)||'';
   const canEmbed=!!(v.ytid||v.ttid||v.fbid||v.igid);
@@ -3180,7 +3207,9 @@ function showToast(msg){
 function cardShare(id,plt){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
-  const url=`https://matbakh360.com/recette/${id}`;
+  const cat=_catSlug(r.cat||r.r);
+  const title=_slug(rTr(r,'ti')||r.ti);
+  const url=`https://matbakh360.com/recipe/${cat}/${title}--${id}`;
   const txt=`${rTr(r,'ti')} 🍽️ ${url}`;
   if(plt==='wa') window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
   else if(plt==='fb') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,'_blank');
@@ -3739,7 +3768,10 @@ async function initResto(){
 function openResto(id){
   const r=RESTAURANTS.find(x=>x.id===id);
   if(!r) return;
-  gp('restodtl');
+  const city=_citySlug(r.cityEn||r.city);
+  const name=_slug(r.nameEn||r.nameAr||r.name);
+  history.pushState({resto:id},r.nameEn||r.name,`/restaurant/${city}/${name}--${id}`);
+  gp('restodtl',false);
   renderRestoDetail(r);
 }
 
@@ -5032,8 +5064,25 @@ if('serviceWorker' in navigator){
     history.replaceState(null,'',redirectPath);
   }
   const p=location.pathname;
-  const m=p.match(/^\/recette\/(.+)/);
-  if(m){ const r=RECIPES.find(x=>x.id===m[1]); if(r){gp('recipe',false);openRecipe(r.id,false);} }
+  // New clean URLs: extract ID from last segment (after --)
+  const extractId=seg=>{const m=seg.match(/--([^/]+)$/);return m?m[1]:seg;};
+  const segs=p.split('/').filter(Boolean);
+
+  if(segs[0]==='recipe'&&segs[2]){
+    const id=extractId(segs[2]);
+    setTimeout(()=>{const r=RECIPES.find(x=>x.id===id);if(r){gp('recipe',false);openRecipe(r.id,false);}},100);
+  }else if(segs[0]==='restaurant'&&segs[2]){
+    const id=extractId(segs[2]);
+    setTimeout(async()=>{await loadRestos();const r=RESTAURANTS.find(x=>x.id===id);if(r){gp('restodtl',false);renderRestoDetail(r);}},100);
+  }else if(segs[0]==='video'&&segs[2]){
+    const id=extractId(segs[2]);
+    setTimeout(()=>{gp('videos',false);openVM(id);},300);
+  }else if(segs[0]==='influencer'&&segs[2]){
+    const handle=extractId(segs[2]);
+    gp('local',false);
+  }
+  // Legacy URLs
+  else if(p.match(/^\/recette\/(.+)/)){const id=p.split('/')[2];setTimeout(()=>{const r=RECIPES.find(x=>x.id===id);if(r){gp('recipe',false);openRecipe(r.id,false);}},100);}
   else if(p.startsWith('/cuisines')) gp('world',false);
   else if(p.startsWith('/restaurants')) gp('resto',false);
   else if(p.startsWith('/videos')) gp('videos',false);
