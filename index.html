@@ -2328,20 +2328,34 @@ function clearRecent(){
   if(wrap) wrap.style.display='none';
 }
 // ── URL slugifier ──────────────────────────────────────────────────
-const _arMap={'ا':'a','أ':'a','إ':'a','آ':'a','ب':'b','ت':'t','ث':'th','ج':'j','ح':'h','خ':'kh','د':'d','ذ':'dh','ر':'r','ز':'z','س':'s','ش':'sh','ص':'s','ض':'d','ط':'t','ظ':'z','ع':'a','غ':'gh','ف':'f','ق':'q','ك':'k','ل':'l','م':'m','ن':'n','ه':'h','و':'w','ي':'y','ى':'a','ة':'a','ء':'','ئ':'y','ؤ':'w','لا':'la',' ':'-'};
+const _arMap={'ا':'a','أ':'a','إ':'a','آ':'a','ب':'b','ت':'t','ث':'th','ج':'j','ح':'h','خ':'kh','د':'d','ذ':'dh','ر':'r','ز':'z','س':'s','ش':'sh','ص':'s','ض':'d','ط':'t','ظ':'z','ع':'a','غ':'gh','ف':'f','ق':'q','ك':'k','ل':'l','م':'m','ن':'n','ه':'h','و':'w','ي':'y','ى':'a','ة':'a','ء':'','ئ':'y','ؤ':'w','لا':'la'};
 function _slug(s){
   if(!s) return 'item';
   let r=String(s).toLowerCase();
-  // Transliterate Arabic
   r=r.replace(/[؀-ۿ]/g,c=>_arMap[c]||'');
-  // Normalize accents
   r=r.normalize('NFD').replace(/[̀-ͯ]/g,'');
-  // Replace non-alphanumeric with hyphen
   r=r.replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').substring(0,50);
   return r||'item';
 }
-function _catSlug(cat){return _slug(cat||'cuisine');}
-function _citySlug(city){return _slug(city||'city');}
+// Short unique ID — last 8 chars of ID (avoids rbulk_timestamp_index ugliness)
+function _shortId(id){
+  if(!id) return 'x';
+  const s=String(id);
+  // Use last segment after last _ or last 8 chars
+  const m=s.match(/_(\d+)$/);
+  if(m) return m[1]; // e.g. rbulk_xxx_42 → 42
+  return s.replace(/[^a-z0-9]/gi,'').slice(-8).toLowerCase();
+}
+// Category in English — always readable
+function _catSlug(cat){
+  const en=(CAT_TR[cat]||REGION_TR[cat]||{}).en;
+  if(en) return _slug(en);
+  return _slug(cat||'cuisine');
+}
+function _citySlug(city){
+  // cityEn is already in English for most restos
+  return _slug(city||'city');
+}
 
 function openRecipe(id,pushUrl=true){
   const r=RECIPES.find(x=>x.id===id);
@@ -2353,8 +2367,11 @@ function openRecipe(id,pushUrl=true){
   updateSEO(r);
   if(pushUrl){
     const cat=_catSlug(r.cat||r.r);
-    const title=_slug(rTr(r,'ti')||r.ti);
-    history.pushState({recipe:id},rTr(r,'ti'),`/recipe/${cat}/${title}--${id}`);
+    // Use English title if available, else transliterate Arabic
+    const enTitle=RECIPE_TR_EXT[id]?.en?.ti||RECIPE_TR[id]?.en?.ti||r.ti||'';
+    const title=_slug(enTitle);
+    const sid=_shortId(id);
+    history.pushState({recipe:id},rTr(r,'ti'),`/recipe/${cat}/${title}-${sid}`);
   }
   srv[id]=r.sv;
   const related=RECIPES.filter(x=>x.cid===r.cid&&x.id!==r.id).slice(0,4);
@@ -2693,8 +2710,9 @@ function openVM(id){
   const v=[...VIDS,...INF_VIDS].find(x=>x.id===id);
   if(v){
     const plat=v.pl||'video';
-    const title=_slug(v.titleAr||v.title||'video');
-    history.pushState({video:id},v.titleAr||v.title,`/video/${plat}/${title}--${id}`);
+    const title=_slug(v.title||v.titleAr||'video');
+    const sid=_shortId(id);
+    history.pushState({video:id},v.title||v.titleAr,`/video/${plat}/${title}-${sid}`);
   }
   if(!v) return;
   if(!v.ytid && v.pl==='yt') v.ytid=_extractYtid(v)||'';
@@ -3209,8 +3227,9 @@ function cardShare(id,plt){
   const r=RECIPES.find(x=>x.id===id);
   if(!r) return;
   const cat=_catSlug(r.cat||r.r);
-  const title=_slug(rTr(r,'ti')||r.ti);
-  const url=`https://matbakh360.com/recipe/${cat}/${title}--${id}`;
+  const enTitle=RECIPE_TR_EXT[id]?.en?.ti||RECIPE_TR[id]?.en?.ti||r.ti||'';
+  const title=_slug(enTitle);
+  const url=`https://matbakh360.com/recipe/${cat}/${title}-${_shortId(id)}`;
   const txt=`${rTr(r,'ti')} 🍽️ ${url}`;
   if(plt==='wa') window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
   else if(plt==='fb') window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,'_blank');
@@ -3770,8 +3789,9 @@ function openResto(id){
   const r=RESTAURANTS.find(x=>x.id===id);
   if(!r) return;
   const city=_citySlug(r.cityEn||r.city);
-  const name=_slug(r.nameEn||r.nameAr||r.name);
-  history.pushState({resto:id},r.nameEn||r.name,`/restaurant/${city}/${name}--${id}`);
+  const name=_slug(r.nameEn||r.name||r.nameAr);
+  const sid=_shortId(id);
+  history.pushState({resto:id},r.nameEn||r.name,`/restaurant/${city}/${name}-${sid}`);
   gp('restodtl',false);
   renderRestoDetail(r);
 }
@@ -5066,7 +5086,24 @@ if('serviceWorker' in navigator){
   }
   const p=location.pathname;
   // New clean URLs: extract ID from last segment (after --)
-  const extractId=seg=>{const m=seg.match(/--([^/]+)$/);return m?m[1]:seg;};
+  // ID is the last numeric/short segment after final hyphen
+  const extractId=seg=>{
+    // Try rbulk short id: last numeric segment → rebuild full ID
+    const shortM=seg.match(/-(\d+)$/);
+    if(shortM){
+      const sid=shortM[1];
+      // Find recipe/resto/video with matching short ID
+      const fromRec=RECIPES.find(r=>_shortId(r.id)===sid);
+      if(fromRec) return fromRec.id;
+      const fromRst=RESTAURANTS.find(r=>_shortId(r.id)===sid);
+      if(fromRst) return fromRst.id;
+      const allV=[...VIDS,...INF_VIDS];
+      const fromVid=allV.find(v=>_shortId(v.id)===sid);
+      if(fromVid) return fromVid.id;
+      return sid;
+    }
+    return seg;
+  };
   const segs=p.split('/').filter(Boolean);
 
   if(segs[0]==='recipe'&&segs[2]){
