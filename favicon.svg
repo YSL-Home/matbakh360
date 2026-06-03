@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#C94A1A"/>
+  <!-- Inner warm cream circle -->
+  <circle cx="256" cy="256" r="230" fill="#FDFAF5"/>
+  <!-- Decorative ring -->
+  <circle cx="256" cy="256" r="218" fill="none" stroke="#C94A1A" stroke-width="6" stroke-dasharray="18 8" opacity="0.35"/>
+
+  <!-- Fork left -->
+  <g transform="translate(100,140)" fill="#C94A1A">
+    <rect x="18" y="0" width="8" height="80" rx="4"/>
+    <rect x="30" y="0" width="8" height="50" rx="4"/>
+    <rect x="6" y="0" width="8" height="50" rx="4"/>
+    <rect x="6" y="50" width="32" height="8" rx="4"/>
+    <rect x="18" y="58" width="8" height="165" rx="4"/>
+  </g>
+
+  <!-- Spoon right -->
+  <g transform="translate(374,140)" fill="#C94A1A">
+    <ellipse cx="18" cy="30" rx="16" ry="28"/>
+    <rect x="14" y="56" width="8" height="170" rx="4"/>
+  </g>
+
+  <!-- Arabic text مطبخ -->
+  <text x="256" y="250" text-anchor="middle" fill="#C94A1A"
+    font-size="106" font-weight="900"
+    font-family="Tajawal, Arial, sans-serif"
+    letter-spacing="-2">مطبخ</text>
+
+  <!-- 360 text -->
+  <text x="256" y="345" text-anchor="middle" fill="#1A0D05"
+    font-size="110" font-weight="900"
+    font-family="Arial Black, Arial, sans-serif"
+    letter-spacing="-4">360</text>
+</svg>
