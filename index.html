@@ -22,16 +22,20 @@
 <script type="application/ld+json" id="schema-site">{"@context":"https://schema.org","@type":"WebSite","name":"مطبخ 360","url":"https://matbakh360.com","description":"منصة وصفات عالمية من 68 مطبخاً حول العالم","potentialAction":{"@type":"SearchAction","target":"https://matbakh360.com/?q={search_term_string}","query-input":"required name=search_term_string"},"inLanguage":"ar"}</script>
 <script type="application/ld+json" id="schema-recipe"></script>
 <!-- Google Analytics 4 -->
-<!-- TODO: remplacer G-XXXXXXXXXX par le vrai ID GA4 depuis console.analytics.google.com -->
-<!-- <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<!-- Google Analytics 4 — remplacer G-XXXXXXXXXX par votre ID réel -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
 // Apply dark mode ASAP to prevent flash
 (function(){const t=localStorage.getItem('mw360_theme');if(t==='dark'||(t===null&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');})();
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
 gtag('js',new Date());
-gtag('config','G-XXXXXXXXXX',{page_title:document.title,page_location:window.location.href});
-</script> -->
+gtag('config','G-XXXXXXXXXX',{page_title:document.title,page_location:window.location.href,send_page_view:true});
+// SPA: track virtual pageviews on route change
+window.addEventListener('popstate',()=>gtag('event','page_view',{page_path:location.pathname,page_location:location.href}));
+const _origPush=history.pushState;
+history.pushState=function(){_origPush.apply(this,arguments);gtag('event','page_view',{page_path:location.pathname,page_location:location.href});};
+</script>
 <!-- Favicon — logo مطبخ 360 dans l'onglet navigateur -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="icon" href="/favicon.svg" sizes="any">
@@ -2514,7 +2518,7 @@ function openRecipe(id,pushUrl=true){
     })()}
     <div class="ad-slot" style="margin-top:8px"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-6870790039775701" data-ad-slot="" data-ad-format="auto" data-full-width-responsive="true"></ins></div>
   </aside>`;
-  gp('recipe');
+  gp('recipe',false);
 }
 
 function chSrv(id,d){
@@ -4177,12 +4181,17 @@ function slocBuildCuisineChips(){
     if(!btn) return;
     _slocCuisineFilter=btn.dataset.cui;
     el.querySelectorAll('button').forEach(b=>b.classList.toggle('on',b.dataset.cui===_slocCuisineFilter));
+    const allCity=RESTAURANTS.filter(r=>r.city===_slocCity);
     if(_slocCuisineFilter){
-      _slocRestos=RESTAURANTS.filter(r=>r.city===_slocCity&&([r.cuisine,...(r.cusines||[])].includes(_slocCuisineFilter)));
+      _slocRestos=allCity.filter(r=>[r.cuisine,...(r.cusines||[])].includes(_slocCuisineFilter));
     } else {
-      _slocRestos=RESTAURANTS.filter(r=>r.city===_slocCity);
+      _slocRestos=[...allCity];
     }
+    _slocFilteredRestos=[..._slocRestos];
     slocRenderList();
+    // Refresh map pins to show only filtered restos
+    const c=CITY_COORDS[_slocCity];
+    if(c) slocPlacePins({lat:c.lat,lng:c.lng});
   };
 }
 
@@ -4249,16 +4258,19 @@ async function slocLoadCity(cityAr, coords=null){
 
 // ── Extrait le domaine d'un restaurant depuis son URL website ou son logo favicon ──
 function _restoDomain(r){
+  // 1. Website direct
   if(r.website){
     try{
       const u=r.website.startsWith('http')?r.website:'https://'+r.website;
       return new URL(u).hostname.replace(/^www\./,'');
     }catch(e){}
   }
-  // Extraire depuis l'URL Google Favicon stockée dans r.logo
+  // 2. logo.clearbit.com/{domain} format
   if(r.logo){
-    const m=r.logo.match(/domain=([^&]+)/);
-    if(m) return m[1];
+    const cb=r.logo.match(/logo\.clearbit\.com\/([^/?]+)/);
+    if(cb) return cb[1];
+    const gf=r.logo.match(/domain=([^&]+)/);
+    if(gf) return gf[1];
   }
   return null;
 }
@@ -4268,17 +4280,21 @@ function _restoPinInner(r){
   const domain=_restoDomain(r);
   const initial=(r.nameAr||r.name||'?')[0];
   const eid=r.id.replace(/['"]/g,'');
+  const h=[...(eid||'')].reduce((a,c)=>a+c.charCodeAt(0),0);
+  const hue=h%360,sat=45+h%25,lig=32+h%18;
+  // Avatar always rendered as base — logo overlays on top if it loads
+  const avatar=`<div class="mp-avatar" style="background:hsl(${hue},${sat}%,${lig}%);position:absolute;inset:0;z-index:1">${initial}</div>`;
 
   if(domain){
-    // Clearbit logo (SVG/PNG HD) → fallback Google Favicon 128px → fallback avatar
     const clearbit=`https://logo.clearbit.com/${domain}`;
     const favicon=`https://www.google.com/s2/favicons?domain=${domain}&sz=128`;
-    return `<img class="mp-photo" src="${clearbit}" alt="" loading="lazy"
+    return avatar+`<img class="mp-photo" src="${clearbit}" alt="" loading="lazy"
+      style="position:absolute;inset:11%;z-index:2;width:78%;height:78%;object-fit:contain"
       data-fb="${favicon}" data-init="${initial}" data-rid="${eid}"
       onload="this.closest('.mp-bubble').classList.add('has-logo')"
       onerror="_pinLogoFallback(this)">`;
   }
-  return _restoAvatar(initial, eid);
+  return avatar;
 }
 
 // ── Fallback chaîné : Clearbit échoue → Google Favicon → Avatar ──
@@ -4286,16 +4302,11 @@ function _pinLogoFallback(img){
   const fb=img.dataset.fb;
   if(fb && img.src!==fb){
     img.src=fb;
-    img.onerror=function(){
-      img.closest('.mp-bubble').classList.remove('has-logo');
-      img.outerHTML=_restoAvatar(img.dataset.init, img.dataset.rid);
-    };
-    img.onload=function(){
-      img.closest('.mp-bubble').classList.add('has-logo');
-    };
+    img.onerror=function(){img.remove();};
+    img.onload=function(){img.closest('.mp-bubble').classList.add('has-logo');};
   } else {
-    img.closest('.mp-bubble').classList.remove('has-logo');
-    img.outerHTML=_restoAvatar(img.dataset.init, img.dataset.rid);
+    // Logo failed — hide it, the avatar underneath remains visible
+    img.remove();
   }
 }
 
