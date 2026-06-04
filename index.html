@@ -22,19 +22,23 @@
 <script type="application/ld+json" id="schema-site">{"@context":"https://schema.org","@type":"WebSite","name":"مطبخ 360","url":"https://matbakh360.com","description":"منصة وصفات عالمية من 68 مطبخاً حول العالم","potentialAction":{"@type":"SearchAction","target":"https://matbakh360.com/?q={search_term_string}","query-input":"required name=search_term_string"},"inLanguage":"ar"}</script>
 <script type="application/ld+json" id="schema-recipe"></script>
 <!-- Google Analytics 4 -->
-<!-- Google Analytics 4 — remplacer G-XXXXXXXXXX par votre ID réel -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-NTM6B493');</script>
+<!-- End Google Tag Manager -->
 <script>
 // Apply dark mode ASAP to prevent flash
 (function(){const t=localStorage.getItem('mw360_theme');if(t==='dark'||(t===null&&window.matchMedia('(prefers-color-scheme:dark)').matches))document.documentElement.setAttribute('data-theme','dark');})();
+// gtag compat shim — events still work, sent via dataLayer to GTM
 window.dataLayer=window.dataLayer||[];
 function gtag(){dataLayer.push(arguments);}
-gtag('js',new Date());
-gtag('config','G-XXXXXXXXXX',{page_title:document.title,page_location:window.location.href,send_page_view:true});
 // SPA: track virtual pageviews on route change
-window.addEventListener('popstate',()=>gtag('event','page_view',{page_path:location.pathname,page_location:location.href}));
+window.addEventListener('popstate',()=>dataLayer.push({event:'page_view',page_path:location.pathname,page_location:location.href}));
 const _origPush=history.pushState;
-history.pushState=function(){_origPush.apply(this,arguments);gtag('event','page_view',{page_path:location.pathname,page_location:location.href});};
+history.pushState=function(){_origPush.apply(this,arguments);dataLayer.push({event:'page_view',page_path:location.pathname,page_location:location.href});};
 </script>
 <!-- Favicon — logo مطبخ 360 dans l'onglet navigateur -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
@@ -1036,6 +1040,10 @@ footer{margin-top:56px;border-top:1px solid var(--b1);background:var(--ink1);pad
 </style>
 </head>
 <body>
+<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTM6B493"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
 
 <!-- NAV -->
 <nav class="nav">
