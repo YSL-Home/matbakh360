@@ -62,15 +62,28 @@ function parseCookTime(tm) {
   return 'PT30M';
 }
 
+// ── Carte cuisine → label arabe ───────────────────────────────────────────
+const CUISINE_LABELS = {
+  'esp':'إسبانية','fra':'فرنسية','ita':'إيطالية','jpn':'يابانية',
+  'chn':'صينية','ind':'هندية','mex':'مكسيكية','grk':'يونانية',
+  'tur':'تركية','mar':'مغربية','egy':'مصرية','tun':'تونسية',
+  'lbn':'لبنانية','sau':'سعودية','ira':'إيرانية','tha':'تايلاندية',
+};
+
 // ── Template HTML ─────────────────────────────────────────────────────────
-function buildHtml(r, slug) {
-  const title       = r.ti  || 'وصفة';
-  const description = r.de  || title;
-  const image       = r.img || `${BASE}/icons/icon-512.png`;
+function buildHtml(r, slug, titleSuffix) {
+  // Titre unique : ajouter suffixe cuisine si doublon détecté
+  const title       = titleSuffix ? `${r.ti || 'وصفة'} — ${titleSuffix}` : (r.ti || 'وصفة');
+  const description = r.seo_desc && r.seo_desc.length >= 50
+    ? r.seo_desc
+    : r.de
+      ? `${r.de} — وصفة ${r.cat || ''} ${CUISINE_LABELS[r.cid] || ''}`.trim()
+      : title;
+  // image: utiliser r.img (themealdb CDN stable) plutôt que unsplash dynamique
+  const image       = r.img && r.img.startsWith('http') ? r.img : `${BASE}/icons/icon-512.png`;
   const category    = r.cat || '';
   const cookTime    = parseCookTime(r.tm);
   const yield_      = r.sv  ? String(r.sv) : '4';
-  const calories    = r.nut && r.nut.cal ? `${r.nut.cal} cal` : '';
   const canonical   = `${BASE}/recipes/${slug}.html`;
 
   // Langue : arabe si r.r contient "عربي", sinon anglais
@@ -89,6 +102,26 @@ function buildHtml(r, slug) {
       }))
     : [];
 
+  // Nutrition complète depuis r.nut
+  const nutritionObj = r.nut ? {
+    '@type': 'NutritionInformation',
+    ...(r.nut.cal  ? { calories:           `${r.nut.cal} cal` }  : {}),
+    ...(r.nut.pro  ? { proteinContent:     `${r.nut.pro} g` }    : {}),
+    ...(r.nut.carb ? { carbohydrateContent:`${r.nut.carb} g` }   : {}),
+    ...(r.nut.fat  ? { fatContent:         `${r.nut.fat} g` }    : {}),
+  } : undefined;
+
+  // VideoObject si YouTube disponible
+  const videoObj = r.youtube ? {
+    '@type': 'VideoObject',
+    name: `طريقة تحضير ${title}`,
+    description,
+    thumbnailUrl: `https://img.youtube.com/vi/${r.youtube.split('v=')[1]?.split('&')[0]}/maxresdefault.jpg`,
+    contentUrl: r.youtube,
+    embedUrl: r.youtube.replace('watch?v=', 'embed/'),
+    uploadDate: new Date().toISOString().split('T')[0],
+  } : undefined;
+
   const schema = {
     '@context': 'https://schema.org',
     '@type': 'Recipe',
@@ -98,17 +131,20 @@ function buildHtml(r, slug) {
     recipeCategory: category,
     cookTime,
     recipeYield: yield_,
-    nutrition: {
-      '@type': 'NutritionInformation',
-      calories,
-    },
+    ...(nutritionObj ? { nutrition: nutritionObj } : {}),
+    ...(videoObj     ? { video: videoObj }         : {}),
     recipeIngredient: ingredients,
     recipeInstructions: instructions,
   };
 
   const schemaStr = JSON.stringify(schema);
 
-  // Tronquer la description meta à 160 chars
+  // seo_title enrichi avec temps + cuisine si disponibles
+  const seoTitle = r.seo_title && r.seo_title.length > 10
+    ? r.seo_title
+    : `طريقة عمل ${title}${r.tm ? ` — ${r.tm}` : ''} | مطبخ 360`;
+
+  // Meta description ≥ 120 chars
   const metaDesc = description.length > 160
     ? description.substring(0, 157) + '...'
     : description;
@@ -118,7 +154,7 @@ function buildHtml(r, slug) {
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${escHtml(title)} | مطبخ 360</title>
+<title>${escHtml(seoTitle)}</title>
 <meta name="description" content="${escAttr(metaDesc)}">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="${canonical}">
@@ -135,7 +171,8 @@ function buildHtml(r, slug) {
 <body>
 <h1>${escHtml(title)}</h1>
 <p>${escHtml(description)}</p>
-<script>window.location='/#recipe/${escJs(r.id)}';</script>
+<script>window.location.replace('/#recipe/'+'${escJs(r.id)}');</script>
+<noscript><meta http-equiv="refresh" content="0;url=/#recipe/${escJs(r.id)}"></noscript>
 <footer style="margin-top:2rem;padding:1rem 0;border-top:1px solid #eee;text-align:center;font-size:.9rem;">
   <a href="${BASE}" rel="home">مطبخ 360 — الرئيسية</a>
 </footer>
@@ -184,6 +221,13 @@ if (fs.existsSync(INDEX_FILE)) {
 }
 const existingSlugs = new Set(existingIndex.map(e => e.slug));
 
+// Détecter les titres dupliqués sur l'ensemble des recettes
+const titleCounts = {};
+for (const r of recipes) {
+  const t = (r.ti || '').toLowerCase().trim();
+  if (t) titleCounts[t] = (titleCounts[t] || 0) + 1;
+}
+
 // Limiter au batch
 const toProcess = recipes.slice(0, BATCH);
 const total     = toProcess.length;
@@ -194,6 +238,10 @@ const newEntries = [];
 for (let i = 0; i < total; i++) {
   const r    = toProcess[i];
   if (!r || !r.id || !r.ti) { skipped++; continue; }
+
+  // Suffixe cuisine pour titres dupliqués
+  const isDup = titleCounts[(r.ti || '').toLowerCase().trim()] > 1;
+  const titleSuffix = isDup ? (CUISINE_LABELS[r.cid] || r.cid || '') : '';
 
   let slug = buildSlug(r) || `recipe-${r.id}`;
   // Déduplication globale (existants + générés ce run)
@@ -209,7 +257,7 @@ for (let i = 0; i < total; i++) {
     continue;
   }
 
-  const html = buildHtml(r, slug);
+  const html = buildHtml(r, slug, titleSuffix);
   fs.writeFileSync(file, html, 'utf8');
 
   newEntries.push({ id: r.id, slug, title: r.ti });

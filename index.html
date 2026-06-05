@@ -5126,6 +5126,37 @@ if('serviceWorker' in navigator){
   };
   const segs=p.split('/').filter(Boolean);
 
+  // Hash route: /#recipe/<id> (legacy/static-SEO redirects)
+  const h=location.hash||'';
+  const hm=h.match(/^#(recipe|restaurant|video)\/(.+)$/);
+  if(hm){
+    const kind=hm[1], rawId=decodeURIComponent(hm[2]).split(/[?&]/)[0];
+    const resolveId=raw=>{
+      if(kind==='recipe'){
+        if(RECIPES.find(x=>x.id===raw)) return raw;
+        const byShort=RECIPES.find(x=>_shortId(x.id)===raw);
+        return byShort?byShort.id:null;
+      }
+      if(kind==='restaurant'){
+        if(RESTAURANTS.find(x=>x.id===raw)) return raw;
+        const byShort=RESTAURANTS.find(x=>_shortId(x.id)===raw);
+        return byShort?byShort.id:null;
+      }
+      const allV=[...VIDS,...INF_VIDS];
+      if(allV.find(x=>x.id===raw)) return raw;
+      const byShort=allV.find(x=>_shortId(x.id)===raw);
+      return byShort?byShort.id:null;
+    };
+    setTimeout(()=>{
+      const id=resolveId(rawId);
+      if(!id) return;
+      if(kind==='recipe'){const r=RECIPES.find(x=>x.id===id);if(r){gp('recipe',false);openRecipe(r.id,true);}}
+      else if(kind==='restaurant'){(async()=>{await loadRestos();const r=RESTAURANTS.find(x=>x.id===id);if(r){gp('restodtl',false);renderRestoDetail(r);}})();}
+      else {gp('videos',false);openVM(id);}
+    },100);
+    return;
+  }
+
   if(segs[0]==='recipe'&&segs[2]){
     const id=extractId(segs[2]);
     setTimeout(()=>{const r=RECIPES.find(x=>x.id===id);if(r){gp('recipe',false);openRecipe(r.id,false);}},100);
