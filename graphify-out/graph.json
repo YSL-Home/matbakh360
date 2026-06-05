@@ -1,0 +1,4512 @@
+{
+  "directed": false,
+  "multigraph": false,
+  "graph": {},
+  "nodes": [
+    {
+      "label": "launch.json",
+      "file_type": "code",
+      "source_file": ".claude/launch.json",
+      "source_location": "L1",
+      "id": "claude_launch",
+      "community": 18,
+      "norm_label": "launch.json"
+    },
+    {
+      "label": "version",
+      "file_type": "code",
+      "source_file": ".claude/launch.json",
+      "source_location": "L2",
+      "id": "claude_launch_version",
+      "community": 18,
+      "norm_label": "version"
+    },
+    {
+      "label": "configurations",
+      "file_type": "code",
+      "source_file": ".claude/launch.json",
+      "source_location": "L3",
+      "id": "claude_launch_configurations",
+      "community": 18,
+      "norm_label": "configurations"
+    },
+    {
+      "label": "bulk-gen-v2.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L1",
+      "id": "scripts_bulk_gen_v2",
+      "community": 0,
+      "norm_label": "bulk-gen-v2.mjs"
+    },
+    {
+      "label": "INDEX_HTML",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L26",
+      "id": "scripts_bulk_gen_v2_index_html",
+      "community": 0,
+      "norm_label": "index_html"
+    },
+    {
+      "label": "RUN_ID",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L27",
+      "id": "scripts_bulk_gen_v2_run_id",
+      "community": 0,
+      "norm_label": "run_id"
+    },
+    {
+      "label": "RECIPES_PER_RUN",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L29",
+      "id": "scripts_bulk_gen_v2_recipes_per_run",
+      "community": 0,
+      "norm_label": "recipes_per_run"
+    },
+    {
+      "label": "RESTOS_PER_RUN",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L30",
+      "id": "scripts_bulk_gen_v2_restos_per_run",
+      "community": 0,
+      "norm_label": "restos_per_run"
+    },
+    {
+      "label": "VIDEOS_PER_RUN",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L31",
+      "id": "scripts_bulk_gen_v2_videos_per_run",
+      "community": 0,
+      "norm_label": "videos_per_run"
+    },
+    {
+      "label": "BATCH_CLAUDE",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L32",
+      "id": "scripts_bulk_gen_v2_batch_claude",
+      "community": 0,
+      "norm_label": "batch_claude"
+    },
+    {
+      "label": "AREA_MAP",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L42",
+      "id": "scripts_bulk_gen_v2_area_map",
+      "community": 0,
+      "norm_label": "area_map"
+    },
+    {
+      "label": "_DESSERT",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L67",
+      "id": "scripts_bulk_gen_v2_dessert",
+      "community": 0,
+      "norm_label": "_dessert"
+    },
+    {
+      "label": "_SEAFOOD",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L75",
+      "id": "scripts_bulk_gen_v2_seafood",
+      "community": 0,
+      "norm_label": "_seafood"
+    },
+    {
+      "label": "_BREAD",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L80",
+      "id": "scripts_bulk_gen_v2_bread",
+      "community": 0,
+      "norm_label": "_bread"
+    },
+    {
+      "label": "_HEALTHY",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L83",
+      "id": "scripts_bulk_gen_v2_healthy",
+      "community": 0,
+      "norm_label": "_healthy"
+    },
+    {
+      "label": "_RAMADAN",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L86",
+      "id": "scripts_bulk_gen_v2_ramadan",
+      "community": 0,
+      "norm_label": "_ramadan"
+    },
+    {
+      "label": "detectCat()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L89",
+      "id": "scripts_bulk_gen_v2_detectcat",
+      "community": 0,
+      "norm_label": "detectcat()"
+    },
+    {
+      "label": "CITIES",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L100",
+      "id": "scripts_bulk_gen_v2_cities",
+      "community": 0,
+      "norm_label": "cities"
+    },
+    {
+      "label": "httpGet()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L116",
+      "id": "scripts_bulk_gen_v2_httpget",
+      "community": 0,
+      "norm_label": "httpget()"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L132",
+      "id": "scripts_bulk_gen_v2_sleep",
+      "community": 0,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "httpGetRedirect()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L135",
+      "id": "scripts_bulk_gen_v2_httpgetredirect",
+      "community": 0,
+      "norm_label": "httpgetredirect()"
+    },
+    {
+      "label": "fetchPlacePhoto()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L146",
+      "id": "scripts_bulk_gen_v2_fetchplacephoto",
+      "community": 0,
+      "norm_label": "fetchplacephoto()"
+    },
+    {
+      "label": "wikiImgCache",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L161",
+      "id": "scripts_bulk_gen_v2_wikiimgcache",
+      "community": 0,
+      "norm_label": "wikiimgcache"
+    },
+    {
+      "label": "getWikipediaImg()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L162",
+      "id": "scripts_bulk_gen_v2_getwikipediaimg",
+      "community": 0,
+      "norm_label": "getwikipediaimg()"
+    },
+    {
+      "label": "fetchMealsByArea()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L185",
+      "id": "scripts_bulk_gen_v2_fetchmealsbyarea",
+      "community": 0,
+      "norm_label": "fetchmealsbyarea()"
+    },
+    {
+      "label": "fetchMealDetail()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L192",
+      "id": "scripts_bulk_gen_v2_fetchmealdetail",
+      "community": 0,
+      "norm_label": "fetchmealdetail()"
+    },
+    {
+      "label": "extractIngredients()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L200",
+      "id": "scripts_bulk_gen_v2_extractingredients",
+      "community": 0,
+      "norm_label": "extractingredients()"
+    },
+    {
+      "label": "claudeBatch()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L211",
+      "id": "scripts_bulk_gen_v2_claudebatch",
+      "community": 0,
+      "norm_label": "claudebatch()"
+    },
+    {
+      "label": "generateRecipes()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L279",
+      "id": "scripts_bulk_gen_v2_generaterecipes",
+      "community": 0,
+      "norm_label": "generaterecipes()"
+    },
+    {
+      "label": "generateExtraRecipesWithWikiImg()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L406",
+      "id": "scripts_bulk_gen_v2_generateextrarecipeswithwikiimg",
+      "community": 0,
+      "norm_label": "generateextrarecipeswithwikiimg()"
+    },
+    {
+      "label": "OVERPASS_MIRRORS",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L491",
+      "id": "scripts_bulk_gen_v2_overpass_mirrors",
+      "community": 0,
+      "norm_label": "overpass_mirrors"
+    },
+    {
+      "label": "fetchOSMRestos()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L497",
+      "id": "scripts_bulk_gen_v2_fetchosmrestos",
+      "community": 0,
+      "norm_label": "fetchosmrestos()"
+    },
+    {
+      "label": "enrichRestoClaude()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L531",
+      "id": "scripts_bulk_gen_v2_enrichrestoclaude",
+      "community": 0,
+      "norm_label": "enrichrestoclaude()"
+    },
+    {
+      "label": "generateRestaurants()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L583",
+      "id": "scripts_bulk_gen_v2_generaterestaurants",
+      "community": 0,
+      "norm_label": "generaterestaurants()"
+    },
+    {
+      "label": "generateFakeRestos()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L661",
+      "id": "scripts_bulk_gen_v2_generatefakerestos",
+      "community": 0,
+      "norm_label": "generatefakerestos()"
+    },
+    {
+      "label": "FOOD_SEARCHES_AR",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L709",
+      "id": "scripts_bulk_gen_v2_food_searches_ar",
+      "community": 0,
+      "norm_label": "food_searches_ar"
+    },
+    {
+      "label": "generateVideos()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L717",
+      "id": "scripts_bulk_gen_v2_generatevideos",
+      "community": 0,
+      "norm_label": "generatevideos()"
+    },
+    {
+      "label": "generateCuratedVideos()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L765",
+      "id": "scripts_bulk_gen_v2_generatecuratedvideos",
+      "community": 0,
+      "norm_label": "generatecuratedvideos()"
+    },
+    {
+      "label": "_cityFlag()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L789",
+      "id": "scripts_bulk_gen_v2_cityflag",
+      "community": 0,
+      "norm_label": "_cityflag()"
+    },
+    {
+      "label": "CUISINE_FALLBACK_IMGS",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L797",
+      "id": "scripts_bulk_gen_v2_cuisine_fallback_imgs",
+      "community": 0,
+      "norm_label": "cuisine_fallback_imgs"
+    },
+    {
+      "label": "_cuisineImg()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L810",
+      "id": "scripts_bulk_gen_v2_cuisineimg",
+      "community": 0,
+      "norm_label": "_cuisineimg()"
+    },
+    {
+      "label": "DATA_DIR",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L819",
+      "id": "scripts_bulk_gen_v2_data_dir",
+      "community": 0,
+      "norm_label": "data_dir"
+    },
+    {
+      "label": "mergeIntoJson()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L821",
+      "id": "scripts_bulk_gen_v2_mergeintojson",
+      "community": 0,
+      "norm_label": "mergeintojson()"
+    },
+    {
+      "label": "injectData()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L833",
+      "id": "scripts_bulk_gen_v2_injectdata",
+      "community": 0,
+      "norm_label": "injectdata()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L853",
+      "id": "scripts_bulk_gen_v2_main",
+      "community": 0,
+      "norm_label": "main()"
+    },
+    {
+      "label": "bulk-gen.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L1",
+      "id": "scripts_bulk_gen",
+      "community": 3,
+      "norm_label": "bulk-gen.mjs"
+    },
+    {
+      "label": "ALL_CITIES",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L14",
+      "id": "scripts_bulk_gen_all_cities",
+      "community": 3,
+      "norm_label": "all_cities"
+    },
+    {
+      "label": "CUISINE_PHOTO",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L33",
+      "id": "scripts_bulk_gen_cuisine_photo",
+      "community": 3,
+      "norm_label": "cuisine_photo"
+    },
+    {
+      "label": "getCuisinePhoto()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L46",
+      "id": "scripts_bulk_gen_getcuisinephoto",
+      "community": 3,
+      "norm_label": "getcuisinephoto()"
+    },
+    {
+      "label": "getLogo()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L52",
+      "id": "scripts_bulk_gen_getlogo",
+      "community": 3,
+      "norm_label": "getlogo()"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L61",
+      "id": "scripts_bulk_gen_sleep",
+      "community": 3,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "OVERPASS_MIRRORS",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L65",
+      "id": "scripts_bulk_gen_overpass_mirrors",
+      "community": 3,
+      "norm_label": "overpass_mirrors"
+    },
+    {
+      "label": "fetchOSMRestaurants()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L73",
+      "id": "scripts_bulk_gen_fetchosmrestaurants",
+      "community": 3,
+      "norm_label": "fetchosmrestaurants()"
+    },
+    {
+      "label": "generateRestaurantsClaude()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L127",
+      "id": "scripts_bulk_gen_generaterestaurantsclaude",
+      "community": 3,
+      "norm_label": "generaterestaurantsclaude()"
+    },
+    {
+      "label": "callClaude()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L189",
+      "id": "scripts_bulk_gen_callclaude",
+      "community": 3,
+      "norm_label": "callclaude()"
+    },
+    {
+      "label": "safeJSON()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L200",
+      "id": "scripts_bulk_gen_safejson",
+      "community": 3,
+      "norm_label": "safejson()"
+    },
+    {
+      "label": "enrichArabic()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L202",
+      "id": "scripts_bulk_gen_enricharabic",
+      "community": 3,
+      "norm_label": "enricharabic()"
+    },
+    {
+      "label": "osmToResto()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L235",
+      "id": "scripts_bulk_gen_osmtoresto",
+      "community": 3,
+      "norm_label": "osmtoresto()"
+    },
+    {
+      "label": "html",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L281",
+      "id": "scripts_bulk_gen_html",
+      "community": 3,
+      "norm_label": "html"
+    },
+    {
+      "label": "bulk-recipes.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L1",
+      "id": "scripts_bulk_recipes",
+      "community": 5,
+      "norm_label": "bulk-recipes.mjs"
+    },
+    {
+      "label": "ALL_REGIONS",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L15",
+      "id": "scripts_bulk_recipes_all_regions",
+      "community": 5,
+      "norm_label": "all_regions"
+    },
+    {
+      "label": "DIFF_OPTS",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L76",
+      "id": "scripts_bulk_recipes_diff_opts",
+      "community": 5,
+      "norm_label": "diff_opts"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L78",
+      "id": "scripts_bulk_recipes_sleep",
+      "community": 5,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "callClaude()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L80",
+      "id": "scripts_bulk_recipes_callclaude",
+      "community": 5,
+      "norm_label": "callclaude()"
+    },
+    {
+      "label": "safeJSON()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L92",
+      "id": "scripts_bulk_recipes_safejson",
+      "community": 5,
+      "norm_label": "safejson()"
+    },
+    {
+      "label": "CAT_IMGS",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L97",
+      "id": "scripts_bulk_recipes_cat_imgs",
+      "community": 5,
+      "norm_label": "cat_imgs"
+    },
+    {
+      "label": "getImg()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L137",
+      "id": "scripts_bulk_recipes_getimg",
+      "community": 5,
+      "norm_label": "getimg()"
+    },
+    {
+      "label": "generateBatch()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L144",
+      "id": "scripts_bulk_recipes_generatebatch",
+      "community": 5,
+      "norm_label": "generatebatch()"
+    },
+    {
+      "label": "inject()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L175",
+      "id": "scripts_bulk_recipes_inject",
+      "community": 5,
+      "norm_label": "inject()"
+    },
+    {
+      "label": "html",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L183",
+      "id": "scripts_bulk_recipes_html",
+      "community": 5,
+      "norm_label": "html"
+    },
+    {
+      "label": "recipeIdx",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L186",
+      "id": "scripts_bulk_recipes_recipeidx",
+      "community": 5,
+      "norm_label": "recipeidx"
+    },
+    {
+      "label": "bulk-videos.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L1",
+      "id": "scripts_bulk_videos",
+      "community": 7,
+      "norm_label": "bulk-videos.mjs"
+    },
+    {
+      "label": "ALL_CITIES",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L11",
+      "id": "scripts_bulk_videos_all_cities",
+      "community": 7,
+      "norm_label": "all_cities"
+    },
+    {
+      "label": "REAL_YT_IDS",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L45",
+      "id": "scripts_bulk_videos_real_yt_ids",
+      "community": 7,
+      "norm_label": "real_yt_ids"
+    },
+    {
+      "label": "REAL_TT_IDS",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L57",
+      "id": "scripts_bulk_videos_real_tt_ids",
+      "community": 7,
+      "norm_label": "real_tt_ids"
+    },
+    {
+      "label": "THUMBS",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L65",
+      "id": "scripts_bulk_videos_thumbs",
+      "community": 7,
+      "norm_label": "thumbs"
+    },
+    {
+      "label": "rndFrom()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L78",
+      "id": "scripts_bulk_videos_rndfrom",
+      "community": 7,
+      "norm_label": "rndfrom()"
+    },
+    {
+      "label": "thumb()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L79",
+      "id": "scripts_bulk_videos_thumb",
+      "community": 7,
+      "norm_label": "thumb()"
+    },
+    {
+      "label": "callClaude()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L87",
+      "id": "scripts_bulk_videos_callclaude",
+      "community": 7,
+      "norm_label": "callclaude()"
+    },
+    {
+      "label": "safeJSON()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L106",
+      "id": "scripts_bulk_videos_safejson",
+      "community": 7,
+      "norm_label": "safejson()"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L111",
+      "id": "scripts_bulk_videos_sleep",
+      "community": 7,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "html",
+      "file_type": "code",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L113",
+      "id": "scripts_bulk_videos_html",
+      "community": 7,
+      "norm_label": "html"
+    },
+    {
+      "label": "enrich-restos.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L1",
+      "id": "scripts_enrich_restos",
+      "community": 10,
+      "norm_label": "enrich-restos.mjs"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L7",
+      "id": "scripts_enrich_restos_sleep",
+      "community": 10,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "BATCH_SIZE",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L11",
+      "id": "scripts_enrich_restos_batch_size",
+      "community": 10,
+      "norm_label": "batch_size"
+    },
+    {
+      "label": "callClaude()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L19",
+      "id": "scripts_enrich_restos_callclaude",
+      "community": 10,
+      "norm_label": "callclaude()"
+    },
+    {
+      "label": "buildPrompt()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L61",
+      "id": "scripts_enrich_restos_buildprompt",
+      "community": 10,
+      "norm_label": "buildprompt()"
+    },
+    {
+      "label": "parseResponse()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L65",
+      "id": "scripts_enrich_restos_parseresponse",
+      "community": 10,
+      "norm_label": "parseresponse()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L71",
+      "id": "scripts_enrich_restos_main",
+      "community": 10,
+      "norm_label": "main()"
+    },
+    {
+      "label": "enrich-steps.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L1",
+      "id": "scripts_enrich_steps",
+      "community": 11,
+      "norm_label": "enrich-steps.mjs"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L7",
+      "id": "scripts_enrich_steps_sleep",
+      "community": 11,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "BATCH_SIZE",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L11",
+      "id": "scripts_enrich_steps_batch_size",
+      "community": 11,
+      "norm_label": "batch_size"
+    },
+    {
+      "label": "callClaude()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L19",
+      "id": "scripts_enrich_steps_callclaude",
+      "community": 11,
+      "norm_label": "callclaude()"
+    },
+    {
+      "label": "buildPrompt()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L61",
+      "id": "scripts_enrich_steps_buildprompt",
+      "community": 11,
+      "norm_label": "buildprompt()"
+    },
+    {
+      "label": "parseResponse()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L69",
+      "id": "scripts_enrich_steps_parseresponse",
+      "community": 11,
+      "norm_label": "parseresponse()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L76",
+      "id": "scripts_enrich_steps_main",
+      "community": 11,
+      "norm_label": "main()"
+    },
+    {
+      "label": "extract-to-json.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L1",
+      "id": "scripts_extract_to_json",
+      "community": 12,
+      "norm_label": "extract-to-json.mjs"
+    },
+    {
+      "label": "HTML",
+      "file_type": "code",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L8",
+      "id": "scripts_extract_to_json_html",
+      "community": 12,
+      "norm_label": "html"
+    },
+    {
+      "label": "DATA_DIR",
+      "file_type": "code",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L9",
+      "id": "scripts_extract_to_json_data_dir",
+      "community": 12,
+      "norm_label": "data_dir"
+    },
+    {
+      "label": "extractJsonObjects()",
+      "file_type": "code",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L16",
+      "id": "scripts_extract_to_json_extractjsonobjects",
+      "community": 12,
+      "norm_label": "extractjsonobjects()"
+    },
+    {
+      "label": "clearSection()",
+      "file_type": "code",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L34",
+      "id": "scripts_extract_to_json_clearsection",
+      "community": 12,
+      "norm_label": "clearsection()"
+    },
+    {
+      "label": "datasets",
+      "file_type": "code",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L45",
+      "id": "scripts_extract_to_json_datasets",
+      "community": 12,
+      "norm_label": "datasets"
+    },
+    {
+      "label": "vidsIdx",
+      "file_type": "code",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L64",
+      "id": "scripts_extract_to_json_vidsidx",
+      "community": 12,
+      "norm_label": "vidsidx"
+    },
+    {
+      "label": "fetch-real-images.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L1",
+      "id": "scripts_fetch_real_images",
+      "community": 4,
+      "norm_label": "fetch-real-images.mjs"
+    },
+    {
+      "label": "DATA_DIR",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L25",
+      "id": "scripts_fetch_real_images_data_dir",
+      "community": 4,
+      "norm_label": "data_dir"
+    },
+    {
+      "label": "MAX_PER_RUN",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L26",
+      "id": "scripts_fetch_real_images_max_per_run",
+      "community": 4,
+      "norm_label": "max_per_run"
+    },
+    {
+      "label": "GENERIC",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L30",
+      "id": "scripts_fetch_real_images_generic",
+      "community": 4,
+      "norm_label": "generic"
+    },
+    {
+      "label": "isGeneric()",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L36",
+      "id": "scripts_fetch_real_images_isgeneric",
+      "community": 4,
+      "norm_label": "isgeneric()"
+    },
+    {
+      "label": "getJSON()",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L39",
+      "id": "scripts_fetch_real_images_getjson",
+      "community": 4,
+      "norm_label": "getjson()"
+    },
+    {
+      "label": "followRedirect()",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L52",
+      "id": "scripts_fetch_real_images_followredirect",
+      "community": 4,
+      "norm_label": "followredirect()"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L64",
+      "id": "scripts_fetch_real_images_sleep",
+      "community": 4,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "fetchPlacePhoto()",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L67",
+      "id": "scripts_fetch_real_images_fetchplacephoto",
+      "community": 4,
+      "norm_label": "fetchplacephoto()"
+    },
+    {
+      "label": "restos",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L91",
+      "id": "scripts_fetch_real_images_restos",
+      "community": 4,
+      "norm_label": "restos"
+    },
+    {
+      "label": "targets",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L92",
+      "id": "scripts_fetch_real_images_targets",
+      "community": 4,
+      "norm_label": "targets"
+    },
+    {
+      "label": "batch",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L93",
+      "id": "scripts_fetch_real_images_batch",
+      "community": 4,
+      "norm_label": "batch"
+    },
+    {
+      "label": "idxMap",
+      "file_type": "code",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L97",
+      "id": "scripts_fetch_real_images_idxmap",
+      "community": 4,
+      "norm_label": "idxmap"
+    },
+    {
+      "label": "fix-arabic-titles-v2.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-arabic-titles-v2.mjs",
+      "source_location": "L1",
+      "id": "scripts_fix_arabic_titles_v2",
+      "community": 16,
+      "norm_label": "fix-arabic-titles-v2.mjs"
+    },
+    {
+      "label": "TRANS",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-arabic-titles-v2.mjs",
+      "source_location": "L7",
+      "id": "scripts_fix_arabic_titles_v2_trans",
+      "community": 16,
+      "norm_label": "trans"
+    },
+    {
+      "label": "HTML_PATH",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-arabic-titles-v2.mjs",
+      "source_location": "L369",
+      "id": "scripts_fix_arabic_titles_v2_html_path",
+      "community": 16,
+      "norm_label": "html_path"
+    },
+    {
+      "label": "html",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-arabic-titles-v2.mjs",
+      "source_location": "L370",
+      "id": "scripts_fix_arabic_titles_v2_html",
+      "community": 16,
+      "norm_label": "html"
+    },
+    {
+      "label": "fix-arabic-titles.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-arabic-titles.mjs",
+      "source_location": "L1",
+      "id": "scripts_fix_arabic_titles",
+      "community": 15,
+      "norm_label": "fix-arabic-titles.mjs"
+    },
+    {
+      "label": "TRANS",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-arabic-titles.mjs",
+      "source_location": "L10",
+      "id": "scripts_fix_arabic_titles_trans",
+      "community": 15,
+      "norm_label": "trans"
+    },
+    {
+      "label": "HTML_PATH",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-arabic-titles.mjs",
+      "source_location": "L186",
+      "id": "scripts_fix_arabic_titles_html_path",
+      "community": 15,
+      "norm_label": "html_path"
+    },
+    {
+      "label": "html",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-arabic-titles.mjs",
+      "source_location": "L187",
+      "id": "scripts_fix_arabic_titles_html",
+      "community": 15,
+      "norm_label": "html"
+    },
+    {
+      "label": "fix-descriptions.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-descriptions.mjs",
+      "source_location": "L1",
+      "id": "scripts_fix_descriptions",
+      "community": 17,
+      "norm_label": "fix-descriptions.mjs"
+    },
+    {
+      "label": "HTML_PATH",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-descriptions.mjs",
+      "source_location": "L9",
+      "id": "scripts_fix_descriptions_html_path",
+      "community": 17,
+      "norm_label": "html_path"
+    },
+    {
+      "label": "html",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-descriptions.mjs",
+      "source_location": "L10",
+      "id": "scripts_fix_descriptions_html",
+      "community": 17,
+      "norm_label": "html"
+    },
+    {
+      "label": "AREA_DESC",
+      "file_type": "code",
+      "source_file": ".github/scripts/fix-descriptions.mjs",
+      "source_location": "L13",
+      "id": "scripts_fix_descriptions_area_desc",
+      "community": 17,
+      "norm_label": "area_desc"
+    },
+    {
+      "label": "gen-influencers.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L1",
+      "id": "scripts_gen_influencers",
+      "community": 6,
+      "norm_label": "gen-influencers.mjs"
+    },
+    {
+      "label": "INF_BATCH",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L18",
+      "id": "scripts_gen_influencers_inf_batch",
+      "community": 6,
+      "norm_label": "inf_batch"
+    },
+    {
+      "label": "DATA_DIR",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L20",
+      "id": "scripts_gen_influencers_data_dir",
+      "community": 6,
+      "norm_label": "data_dir"
+    },
+    {
+      "label": "RESTOS_PATH",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L21",
+      "id": "scripts_gen_influencers_restos_path",
+      "community": 6,
+      "norm_label": "restos_path"
+    },
+    {
+      "label": "INFLUENCERS_PATH",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L22",
+      "id": "scripts_gen_influencers_influencers_path",
+      "community": 6,
+      "norm_label": "influencers_path"
+    },
+    {
+      "label": "sleep()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L30",
+      "id": "scripts_gen_influencers_sleep",
+      "community": 6,
+      "norm_label": "sleep()"
+    },
+    {
+      "label": "claudeRequest()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L32",
+      "id": "scripts_gen_influencers_clauderequest",
+      "community": 6,
+      "norm_label": "clauderequest()"
+    },
+    {
+      "label": "parseJsonResponse()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L67",
+      "id": "scripts_gen_influencers_parsejsonresponse",
+      "community": 6,
+      "norm_label": "parsejsonresponse()"
+    },
+    {
+      "label": "generateInfluencersForCity()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L80",
+      "id": "scripts_gen_influencers_generateinfluencersforcity",
+      "community": 6,
+      "norm_label": "generateinfluencersforcity()"
+    },
+    {
+      "label": "readJsonFile()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L131",
+      "id": "scripts_gen_influencers_readjsonfile",
+      "community": 6,
+      "norm_label": "readjsonfile()"
+    },
+    {
+      "label": "extractUniqueCities()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L141",
+      "id": "scripts_gen_influencers_extractuniquecities",
+      "community": 6,
+      "norm_label": "extractuniquecities()"
+    },
+    {
+      "label": "main()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L152",
+      "id": "scripts_gen_influencers_main",
+      "community": 6,
+      "norm_label": "main()"
+    },
+    {
+      "label": "gen-seo-pages.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L1",
+      "id": "scripts_gen_seo_pages",
+      "community": 1,
+      "norm_label": "gen-seo-pages.mjs"
+    },
+    {
+      "label": "RECIPES_DIR",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L12",
+      "id": "scripts_gen_seo_pages_recipes_dir",
+      "community": 1,
+      "norm_label": "recipes_dir"
+    },
+    {
+      "label": "DATA_FILE",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L13",
+      "id": "scripts_gen_seo_pages_data_file",
+      "community": 1,
+      "norm_label": "data_file"
+    },
+    {
+      "label": "INDEX_FILE",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L14",
+      "id": "scripts_gen_seo_pages_index_file",
+      "community": 1,
+      "norm_label": "index_file"
+    },
+    {
+      "label": "isArabic()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L17",
+      "id": "scripts_gen_seo_pages_isarabic",
+      "community": 1,
+      "norm_label": "isarabic()"
+    },
+    {
+      "label": "transliterateArabic()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L22",
+      "id": "scripts_gen_seo_pages_transliteratearabic",
+      "community": 1,
+      "norm_label": "transliteratearabic()"
+    },
+    {
+      "label": "buildSlug()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L36",
+      "id": "scripts_gen_seo_pages_buildslug",
+      "community": 1,
+      "norm_label": "buildslug()"
+    },
+    {
+      "label": "slugifyStr()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L42",
+      "id": "scripts_gen_seo_pages_slugifystr",
+      "community": 1,
+      "norm_label": "slugifystr()"
+    },
+    {
+      "label": "parseCookTime()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L57",
+      "id": "scripts_gen_seo_pages_parsecooktime",
+      "community": 1,
+      "norm_label": "parsecooktime()"
+    },
+    {
+      "label": "buildHtml()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L66",
+      "id": "scripts_gen_seo_pages_buildhtml",
+      "community": 1,
+      "norm_label": "buildhtml()"
+    },
+    {
+      "label": "escHtml()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L147",
+      "id": "scripts_gen_seo_pages_eschtml",
+      "community": 1,
+      "norm_label": "eschtml()"
+    },
+    {
+      "label": "escAttr()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L153",
+      "id": "scripts_gen_seo_pages_escattr",
+      "community": 1,
+      "norm_label": "escattr()"
+    },
+    {
+      "label": "escJs()",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L156",
+      "id": "scripts_gen_seo_pages_escjs",
+      "community": 1,
+      "norm_label": "escjs()"
+    },
+    {
+      "label": "recipes",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L166",
+      "id": "scripts_gen_seo_pages_recipes",
+      "community": 1,
+      "norm_label": "recipes"
+    },
+    {
+      "label": "existingIndex",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L177",
+      "id": "scripts_gen_seo_pages_existingindex",
+      "community": 1,
+      "norm_label": "existingindex"
+    },
+    {
+      "label": "existingSlugs",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L185",
+      "id": "scripts_gen_seo_pages_existingslugs",
+      "community": 1,
+      "norm_label": "existingslugs"
+    },
+    {
+      "label": "toProcess",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L188",
+      "id": "scripts_gen_seo_pages_toprocess",
+      "community": 1,
+      "norm_label": "toprocess"
+    },
+    {
+      "label": "newEntries",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L192",
+      "id": "scripts_gen_seo_pages_newentries",
+      "community": 1,
+      "norm_label": "newentries"
+    },
+    {
+      "label": "mergedIndex",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L221",
+      "id": "scripts_gen_seo_pages_mergedindex",
+      "community": 1,
+      "norm_label": "mergedindex"
+    },
+    {
+      "label": "gen-sitemap.mjs",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L1",
+      "id": "scripts_gen_sitemap",
+      "community": 13,
+      "norm_label": "gen-sitemap.mjs"
+    },
+    {
+      "label": "html",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L11",
+      "id": "scripts_gen_sitemap_html",
+      "community": 13,
+      "norm_label": "html"
+    },
+    {
+      "label": "RECIPE_INDEX_FILE",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L14",
+      "id": "scripts_gen_sitemap_recipe_index_file",
+      "community": 13,
+      "norm_label": "recipe_index_file"
+    },
+    {
+      "label": "recipeIds",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L20",
+      "id": "scripts_gen_sitemap_recipeids",
+      "community": 13,
+      "norm_label": "recipeids"
+    },
+    {
+      "label": "restoIds",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L21",
+      "id": "scripts_gen_sitemap_restoids",
+      "community": 13,
+      "norm_label": "restoids"
+    },
+    {
+      "label": "staticPages",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L24",
+      "id": "scripts_gen_sitemap_staticpages",
+      "community": 13,
+      "norm_label": "staticpages"
+    },
+    {
+      "label": "urls",
+      "file_type": "code",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L32",
+      "id": "scripts_gen_sitemap_urls",
+      "community": 13,
+      "norm_label": "urls"
+    },
+    {
+      "label": "influencers.json",
+      "file_type": "code",
+      "source_file": "data/influencers.json",
+      "source_location": "L1",
+      "id": "data_influencers",
+      "community": 21,
+      "norm_label": "influencers.json"
+    },
+    {
+      "label": "fix-i18n-r3.mjs",
+      "file_type": "code",
+      "source_file": "fix-i18n-r3.mjs",
+      "source_location": "L1",
+      "id": "fix_i18n_r3",
+      "community": 14,
+      "norm_label": "fix-i18n-r3.mjs"
+    },
+    {
+      "label": "html",
+      "file_type": "code",
+      "source_file": "fix-i18n-r3.mjs",
+      "source_location": "L6",
+      "id": "fix_i18n_r3_html",
+      "community": 14,
+      "norm_label": "html"
+    },
+    {
+      "label": "NEW_KEYS",
+      "file_type": "code",
+      "source_file": "fix-i18n-r3.mjs",
+      "source_location": "L9",
+      "id": "fix_i18n_r3_new_keys",
+      "community": 14,
+      "norm_label": "new_keys"
+    },
+    {
+      "label": "match",
+      "file_type": "code",
+      "source_file": "fix-i18n-r3.mjs",
+      "source_location": "L198",
+      "id": "fix_i18n_r3_match",
+      "community": 14,
+      "norm_label": "match"
+    },
+    {
+      "label": "fix-recipe-images.mjs",
+      "file_type": "code",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L1",
+      "id": "fix_recipe_images",
+      "community": 8,
+      "norm_label": "fix-recipe-images.mjs"
+    },
+    {
+      "label": "__dir",
+      "file_type": "code",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L13",
+      "id": "fix_recipe_images_dir",
+      "community": 8,
+      "norm_label": "__dir"
+    },
+    {
+      "label": "RECIPES_PATH",
+      "file_type": "code",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L14",
+      "id": "fix_recipe_images_recipes_path",
+      "community": 8,
+      "norm_label": "recipes_path"
+    },
+    {
+      "label": "STOPWORDS",
+      "file_type": "code",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L17",
+      "id": "fix_recipe_images_stopwords",
+      "community": 8,
+      "norm_label": "stopwords"
+    },
+    {
+      "label": "buildUnsplashQuery()",
+      "file_type": "code",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L27",
+      "id": "fix_recipe_images_buildunsplashquery",
+      "community": 8,
+      "norm_label": "buildunsplashquery()"
+    },
+    {
+      "label": "buildUnsplashUrl()",
+      "file_type": "code",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L45",
+      "id": "fix_recipe_images_buildunsplashurl",
+      "community": 8,
+      "norm_label": "buildunsplashurl()"
+    },
+    {
+      "label": "raw",
+      "file_type": "code",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L52",
+      "id": "fix_recipe_images_raw",
+      "community": 8,
+      "norm_label": "raw"
+    },
+    {
+      "label": "recipes",
+      "file_type": "code",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L53",
+      "id": "fix_recipe_images_recipes",
+      "community": 8,
+      "norm_label": "recipes"
+    },
+    {
+      "label": "sample",
+      "file_type": "code",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L80",
+      "id": "fix_recipe_images_sample",
+      "community": 8,
+      "norm_label": "sample"
+    },
+    {
+      "label": "manifest.json",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L1",
+      "id": "manifest",
+      "community": 2,
+      "norm_label": "manifest.json"
+    },
+    {
+      "label": "name",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L2",
+      "id": "manifest_name",
+      "community": 2,
+      "norm_label": "name"
+    },
+    {
+      "label": "short_name",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L3",
+      "id": "manifest_short_name",
+      "community": 2,
+      "norm_label": "short_name"
+    },
+    {
+      "label": "description",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L4",
+      "id": "manifest_description",
+      "community": 2,
+      "norm_label": "description"
+    },
+    {
+      "label": "start_url",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L5",
+      "id": "manifest_start_url",
+      "community": 2,
+      "norm_label": "start_url"
+    },
+    {
+      "label": "display",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L6",
+      "id": "manifest_display",
+      "community": 2,
+      "norm_label": "display"
+    },
+    {
+      "label": "background_color",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L7",
+      "id": "manifest_background_color",
+      "community": 2,
+      "norm_label": "background_color"
+    },
+    {
+      "label": "theme_color",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L8",
+      "id": "manifest_theme_color",
+      "community": 2,
+      "norm_label": "theme_color"
+    },
+    {
+      "label": "lang",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L9",
+      "id": "manifest_lang",
+      "community": 2,
+      "norm_label": "lang"
+    },
+    {
+      "label": "dir",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L10",
+      "id": "manifest_dir",
+      "community": 2,
+      "norm_label": "dir"
+    },
+    {
+      "label": "orientation",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L11",
+      "id": "manifest_orientation",
+      "community": 2,
+      "norm_label": "orientation"
+    },
+    {
+      "label": "icons",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L12",
+      "id": "manifest_icons",
+      "community": 2,
+      "norm_label": "icons"
+    },
+    {
+      "label": "categories",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L17",
+      "id": "manifest_categories",
+      "community": 2,
+      "norm_label": "categories"
+    },
+    {
+      "label": "shortcuts",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L18",
+      "id": "manifest_shortcuts",
+      "community": 2,
+      "norm_label": "shortcuts"
+    },
+    {
+      "label": "screenshots",
+      "file_type": "code",
+      "source_file": "manifest.json",
+      "source_location": "L48",
+      "id": "manifest_screenshots",
+      "community": 2,
+      "norm_label": "screenshots"
+    },
+    {
+      "label": "index.json",
+      "file_type": "code",
+      "source_file": "recipes/index.json",
+      "source_location": "L1",
+      "id": "recipes_index",
+      "community": 22,
+      "norm_label": "index.json"
+    },
+    {
+      "label": "recipes_european_part1.js",
+      "file_type": "code",
+      "source_file": "recipes_european_part1.js",
+      "source_location": "L1",
+      "id": "recipes_european_part1",
+      "community": 20,
+      "norm_label": "recipes_european_part1.js"
+    },
+    {
+      "label": "recipesEU_part1",
+      "file_type": "code",
+      "source_file": "recipes_european_part1.js",
+      "source_location": "L2",
+      "id": "recipes_european_part1_recipeseu_part1",
+      "community": 20,
+      "norm_label": "recipeseu_part1"
+    },
+    {
+      "label": "run-seo.sh",
+      "file_type": "code",
+      "source_file": "run-seo.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "file"
+      },
+      "id": "run_seo",
+      "community": 19,
+      "norm_label": "run-seo.sh"
+    },
+    {
+      "label": "run-seo.sh script",
+      "file_type": "code",
+      "source_file": "run-seo.sh",
+      "source_location": "L1",
+      "metadata": {
+        "language": "bash",
+        "kind": "bash_entrypoint"
+      },
+      "id": "users_yousseflahlou_desktop_ia_ss1_matbakh360_run_seo_sh__entry",
+      "community": 19,
+      "norm_label": "run-seo.sh script"
+    },
+    {
+      "label": "PAGES_BATCH",
+      "file_type": "code",
+      "source_file": "run-seo.sh",
+      "source_location": "L5",
+      "metadata": {
+        "language": "bash",
+        "kind": "code"
+      },
+      "id": "run_seo_pages_batch",
+      "community": 19,
+      "norm_label": "pages_batch"
+    },
+    {
+      "label": "sw.js",
+      "file_type": "code",
+      "source_file": "sw.js",
+      "source_location": "L1",
+      "id": "sw",
+      "community": 9,
+      "norm_label": "sw.js"
+    },
+    {
+      "label": "BASE_PATH",
+      "file_type": "code",
+      "source_file": "sw.js",
+      "source_location": "L10",
+      "id": "sw_base_path",
+      "community": 9,
+      "norm_label": "base_path"
+    },
+    {
+      "label": "PRECACHE_URLS",
+      "file_type": "code",
+      "source_file": "sw.js",
+      "source_location": "L14",
+      "id": "sw_precache_urls",
+      "community": 9,
+      "norm_label": "precache_urls"
+    },
+    {
+      "label": "JSON_DATA_SUFFIXES",
+      "file_type": "code",
+      "source_file": "sw.js",
+      "source_location": "L17",
+      "id": "sw_json_data_suffixes",
+      "community": 9,
+      "norm_label": "json_data_suffixes"
+    },
+    {
+      "label": "isCacheEntryExpired()",
+      "file_type": "code",
+      "source_file": "sw.js",
+      "source_location": "L67",
+      "id": "sw_iscacheentryexpired",
+      "community": 9,
+      "norm_label": "iscacheentryexpired()"
+    },
+    {
+      "label": "addCacheDateHeader()",
+      "file_type": "code",
+      "source_file": "sw.js",
+      "source_location": "L79",
+      "id": "sw_addcachedateheader",
+      "community": 9,
+      "norm_label": "addcachedateheader()"
+    },
+    {
+      "label": "isUnsplashImage()",
+      "file_type": "code",
+      "source_file": "sw.js",
+      "source_location": "L93",
+      "id": "sw_isunsplashimage",
+      "community": 9,
+      "norm_label": "isunsplashimage()"
+    },
+    {
+      "label": "isJsonDataFile()",
+      "file_type": "code",
+      "source_file": "sw.js",
+      "source_location": "L101",
+      "id": "sw_isjsondatafile",
+      "community": 9,
+      "norm_label": "isjsondatafile()"
+    }
+  ],
+  "links": [
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/launch.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "claude_launch",
+      "target": "claude_launch_configurations",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".claude/launch.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "claude_launch",
+      "target": "claude_launch_version",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_area_map",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_batch_claude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_bread",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L100",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_cities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L789",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_cityflag",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L211",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_claudebatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L797",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_cuisine_fallback_imgs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L810",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_cuisineimg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L819",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_data_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_dessert",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L89",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_detectcat",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L531",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_enrichrestoclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L200",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_extractingredients",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L192",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_fetchmealdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L185",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_fetchmealsbyarea",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L497",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_fetchosmrestos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L146",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_fetchplacephoto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L709",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_food_searches_ar",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L765",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_generatecuratedvideos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L406",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_generateextrarecipeswithwikiimg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L661",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_generatefakerestos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L279",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_generaterecipes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L583",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_generaterestaurants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L717",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_generatevideos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L162",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_getwikipediaimg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L83",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_healthy",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_httpget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L135",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_httpgetredirect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_index_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L833",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_injectdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L853",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L821",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_mergeintojson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L491",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_overpass_mirrors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L86",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_ramadan",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L29",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_recipes_per_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_restos_per_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_run_id",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L75",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_seafood",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L132",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L31",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_videos_per_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L161",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2",
+      "target": "scripts_bulk_gen_v2_wikiimgcache",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L194",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_fetchmealdetail",
+      "target": "scripts_bulk_gen_v2_httpget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L187",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_fetchmealsbyarea",
+      "target": "scripts_bulk_gen_v2_httpget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L150",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_fetchplacephoto",
+      "target": "scripts_bulk_gen_v2_httpget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L451",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generateextrarecipeswithwikiimg",
+      "target": "scripts_bulk_gen_v2_httpget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L728",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generatevideos",
+      "target": "scripts_bulk_gen_v2_httpget",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L272",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_claudebatch",
+      "target": "scripts_bulk_gen_v2_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L526",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_fetchosmrestos",
+      "target": "scripts_bulk_gen_v2_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L446",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generateextrarecipeswithwikiimg",
+      "target": "scripts_bulk_gen_v2_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L688",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generatefakerestos",
+      "target": "scripts_bulk_gen_v2_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L292",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generaterecipes",
+      "target": "scripts_bulk_gen_v2_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L598",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generaterestaurants",
+      "target": "scripts_bulk_gen_v2_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L752",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generatevideos",
+      "target": "scripts_bulk_gen_v2_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L153",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_fetchplacephoto",
+      "target": "scripts_bulk_gen_v2_httpgetredirect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L445",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generateextrarecipeswithwikiimg",
+      "target": "scripts_bulk_gen_v2_getwikipediaimg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L289",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generaterecipes",
+      "target": "scripts_bulk_gen_v2_fetchmealsbyarea",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L303",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generaterecipes",
+      "target": "scripts_bulk_gen_v2_fetchmealdetail",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L334",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generaterecipes",
+      "target": "scripts_bulk_gen_v2_claudebatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L323",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generaterecipes",
+      "target": "scripts_bulk_gen_v2_generateextrarecipeswithwikiimg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L858",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_main",
+      "target": "scripts_bulk_gen_v2_generaterecipes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L458",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generateextrarecipeswithwikiimg",
+      "target": "scripts_bulk_gen_v2_cuisineimg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L591",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generaterestaurants",
+      "target": "scripts_bulk_gen_v2_fetchosmrestos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L603",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generaterestaurants",
+      "target": "scripts_bulk_gen_v2_enrichrestoclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L596",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generaterestaurants",
+      "target": "scripts_bulk_gen_v2_generatefakerestos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L859",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_main",
+      "target": "scripts_bulk_gen_v2_generaterestaurants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L758",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_generatevideos",
+      "target": "scripts_bulk_gen_v2_generatecuratedvideos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L860",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_main",
+      "target": "scripts_bulk_gen_v2_generatevideos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L836",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_injectdata",
+      "target": "scripts_bulk_gen_v2_mergeintojson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen-v2.mjs",
+      "source_location": "L862",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_v2_main",
+      "target": "scripts_bulk_gen_v2_injectdata",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_all_cities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L189",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L33",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_cuisine_photo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L202",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_enricharabic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L73",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_fetchosmrestaurants",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L127",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_generaterestaurantsclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_getcuisinephoto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_getlogo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L281",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L235",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_osmtoresto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_overpass_mirrors",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L200",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_safejson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen",
+      "target": "scripts_bulk_gen_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L246",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_osmtoresto",
+      "target": "scripts_bulk_gen_getcuisinephoto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L247",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_osmtoresto",
+      "target": "scripts_bulk_gen_getlogo",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L229",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_enricharabic",
+      "target": "scripts_bulk_gen_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_fetchosmrestaurants",
+      "target": "scripts_bulk_gen_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L183",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_generaterestaurantsclaude",
+      "target": "scripts_bulk_gen_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L136",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_generaterestaurantsclaude",
+      "target": "scripts_bulk_gen_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L154",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_generaterestaurantsclaude",
+      "target": "scripts_bulk_gen_safejson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L212",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_enricharabic",
+      "target": "scripts_bulk_gen_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-gen.mjs",
+      "source_location": "L219",
+      "weight": 1.0,
+      "source": "scripts_bulk_gen_enricharabic",
+      "target": "scripts_bulk_gen_safejson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L15",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_all_regions",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_cat_imgs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_diff_opts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L144",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_generatebatch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L137",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_getimg",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L183",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L175",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_inject",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L186",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_recipeidx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_safejson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes",
+      "target": "scripts_bulk_recipes_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L146",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes_generatebatch",
+      "target": "scripts_bulk_recipes_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-recipes.mjs",
+      "source_location": "L169",
+      "weight": 1.0,
+      "source": "scripts_bulk_recipes_generatebatch",
+      "target": "scripts_bulk_recipes_safejson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_all_cities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L87",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L113",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_real_tt_ids",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_real_yt_ids",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L78",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_rndfrom",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L106",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_safejson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L111",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_thumb",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos",
+      "target": "scripts_bulk_videos_thumbs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/bulk-videos.mjs",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "scripts_bulk_videos_thumb",
+      "target": "scripts_bulk_videos_rndfrom",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos",
+      "target": "scripts_enrich_restos_batch_size",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos",
+      "target": "scripts_enrich_restos_buildprompt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos",
+      "target": "scripts_enrich_restos_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos",
+      "target": "scripts_enrich_restos_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L65",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos",
+      "target": "scripts_enrich_restos_parseresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos",
+      "target": "scripts_enrich_restos_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L116",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos_main",
+      "target": "scripts_enrich_restos_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos_main",
+      "target": "scripts_enrich_restos_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L90",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos_main",
+      "target": "scripts_enrich_restos_buildprompt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-restos.mjs",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "scripts_enrich_restos_main",
+      "target": "scripts_enrich_restos_parseresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps",
+      "target": "scripts_enrich_steps_batch_size",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L61",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps",
+      "target": "scripts_enrich_steps_buildprompt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L19",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps",
+      "target": "scripts_enrich_steps_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L76",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps",
+      "target": "scripts_enrich_steps_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L69",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps",
+      "target": "scripts_enrich_steps_parseresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps",
+      "target": "scripts_enrich_steps_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L113",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps_main",
+      "target": "scripts_enrich_steps_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L94",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps_main",
+      "target": "scripts_enrich_steps_callclaude",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps_main",
+      "target": "scripts_enrich_steps_buildprompt",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/enrich-steps.mjs",
+      "source_location": "L95",
+      "weight": 1.0,
+      "source": "scripts_enrich_steps_main",
+      "target": "scripts_enrich_steps_parseresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L34",
+      "weight": 1.0,
+      "source": "scripts_extract_to_json",
+      "target": "scripts_extract_to_json_clearsection",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "scripts_extract_to_json",
+      "target": "scripts_extract_to_json_data_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "scripts_extract_to_json",
+      "target": "scripts_extract_to_json_datasets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L16",
+      "weight": 1.0,
+      "source": "scripts_extract_to_json",
+      "target": "scripts_extract_to_json_extractjsonobjects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "scripts_extract_to_json",
+      "target": "scripts_extract_to_json_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "scripts_extract_to_json",
+      "target": "scripts_extract_to_json_vidsidx",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/extract-to-json.mjs",
+      "source_location": "L40",
+      "weight": 1.0,
+      "source": "scripts_extract_to_json_clearsection",
+      "target": "scripts_extract_to_json_extractjsonobjects",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_batch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L25",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_data_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_fetchplacephoto",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_followredirect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_generic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_getjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L97",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_idxmap",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_isgeneric",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L26",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_max_per_run",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L91",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_restos",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L64",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L92",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images",
+      "target": "scripts_fetch_real_images_targets",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L72",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images_fetchplacephoto",
+      "target": "scripts_fetch_real_images_getjson",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fetch-real-images.mjs",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "scripts_fetch_real_images_fetchplacephoto",
+      "target": "scripts_fetch_real_images_followredirect",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fix-arabic-titles-v2.mjs",
+      "source_location": "L370",
+      "weight": 1.0,
+      "source": "scripts_fix_arabic_titles_v2",
+      "target": "scripts_fix_arabic_titles_v2_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fix-arabic-titles-v2.mjs",
+      "source_location": "L369",
+      "weight": 1.0,
+      "source": "scripts_fix_arabic_titles_v2",
+      "target": "scripts_fix_arabic_titles_v2_html_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fix-arabic-titles-v2.mjs",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "scripts_fix_arabic_titles_v2",
+      "target": "scripts_fix_arabic_titles_v2_trans",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fix-arabic-titles.mjs",
+      "source_location": "L187",
+      "weight": 1.0,
+      "source": "scripts_fix_arabic_titles",
+      "target": "scripts_fix_arabic_titles_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fix-arabic-titles.mjs",
+      "source_location": "L186",
+      "weight": 1.0,
+      "source": "scripts_fix_arabic_titles",
+      "target": "scripts_fix_arabic_titles_html_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fix-arabic-titles.mjs",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "scripts_fix_arabic_titles",
+      "target": "scripts_fix_arabic_titles_trans",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fix-descriptions.mjs",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "scripts_fix_descriptions",
+      "target": "scripts_fix_descriptions_area_desc",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fix-descriptions.mjs",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "scripts_fix_descriptions",
+      "target": "scripts_fix_descriptions_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/fix-descriptions.mjs",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "scripts_fix_descriptions",
+      "target": "scripts_fix_descriptions_html_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_clauderequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_data_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L141",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_extractuniquecities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_generateinfluencersforcity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_inf_batch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_influencers_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L152",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_main",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_parsejsonresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L131",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_readjsonfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_restos_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L30",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers",
+      "target": "scripts_gen_influencers_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L123",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers_generateinfluencersforcity",
+      "target": "scripts_gen_influencers_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L193",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers_main",
+      "target": "scripts_gen_influencers_sleep",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L112",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers_generateinfluencersforcity",
+      "target": "scripts_gen_influencers_clauderequest",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L114",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers_generateinfluencersforcity",
+      "target": "scripts_gen_influencers_parsejsonresponse",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L185",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers_main",
+      "target": "scripts_gen_influencers_generateinfluencersforcity",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L157",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers_main",
+      "target": "scripts_gen_influencers_readjsonfile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-influencers.mjs",
+      "source_location": "L164",
+      "weight": 1.0,
+      "source": "scripts_gen_influencers_main",
+      "target": "scripts_gen_influencers_extractuniquecities",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L66",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_buildhtml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L36",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_buildslug",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_data_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L153",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_escattr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L147",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_eschtml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L156",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_escjs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L177",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_existingindex",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L185",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_existingslugs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_index_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_isarabic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L221",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_mergedindex",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L192",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_newentries",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L57",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_parsecooktime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L166",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_recipes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_recipes_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L42",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_slugifystr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L188",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_toprocess",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L22",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages",
+      "target": "scripts_gen_seo_pages_transliteratearabic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L37",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages_buildslug",
+      "target": "scripts_gen_seo_pages_isarabic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L44",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages_slugifystr",
+      "target": "scripts_gen_seo_pages_isarabic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages_slugifystr",
+      "target": "scripts_gen_seo_pages_transliteratearabic",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L39",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages_buildslug",
+      "target": "scripts_gen_seo_pages_slugifystr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L71",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages_buildhtml",
+      "target": "scripts_gen_seo_pages_parsecooktime",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L122",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages_buildhtml",
+      "target": "scripts_gen_seo_pages_escattr",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L121",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages_buildhtml",
+      "target": "scripts_gen_seo_pages_eschtml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L138",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages_buildhtml",
+      "target": "scripts_gen_seo_pages_escjs",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-seo-pages.mjs",
+      "source_location": "L154",
+      "weight": 1.0,
+      "source": "scripts_gen_seo_pages_escattr",
+      "target": "scripts_gen_seo_pages_eschtml",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "scripts_gen_sitemap",
+      "target": "scripts_gen_sitemap_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "scripts_gen_sitemap",
+      "target": "scripts_gen_sitemap_recipe_index_file",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L20",
+      "weight": 1.0,
+      "source": "scripts_gen_sitemap",
+      "target": "scripts_gen_sitemap_recipeids",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L21",
+      "weight": 1.0,
+      "source": "scripts_gen_sitemap",
+      "target": "scripts_gen_sitemap_restoids",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L24",
+      "weight": 1.0,
+      "source": "scripts_gen_sitemap",
+      "target": "scripts_gen_sitemap_staticpages",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": ".github/scripts/gen-sitemap.mjs",
+      "source_location": "L32",
+      "weight": 1.0,
+      "source": "scripts_gen_sitemap",
+      "target": "scripts_gen_sitemap_urls",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-i18n-r3.mjs",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "fix_i18n_r3",
+      "target": "fix_i18n_r3_html",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-i18n-r3.mjs",
+      "source_location": "L198",
+      "weight": 1.0,
+      "source": "fix_i18n_r3",
+      "target": "fix_i18n_r3_match",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-i18n-r3.mjs",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "fix_i18n_r3",
+      "target": "fix_i18n_r3_new_keys",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L27",
+      "weight": 1.0,
+      "source": "fix_recipe_images",
+      "target": "fix_recipe_images_buildunsplashquery",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L45",
+      "weight": 1.0,
+      "source": "fix_recipe_images",
+      "target": "fix_recipe_images_buildunsplashurl",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L13",
+      "weight": 1.0,
+      "source": "fix_recipe_images",
+      "target": "fix_recipe_images_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L52",
+      "weight": 1.0,
+      "source": "fix_recipe_images",
+      "target": "fix_recipe_images_raw",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L53",
+      "weight": 1.0,
+      "source": "fix_recipe_images",
+      "target": "fix_recipe_images_recipes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "fix_recipe_images",
+      "target": "fix_recipe_images_recipes_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L80",
+      "weight": 1.0,
+      "source": "fix_recipe_images",
+      "target": "fix_recipe_images_sample",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "fix_recipe_images",
+      "target": "fix_recipe_images_stopwords",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "context": "call",
+      "confidence": "EXTRACTED",
+      "source_file": "fix-recipe-images.mjs",
+      "source_location": "L46",
+      "weight": 1.0,
+      "source": "fix_recipe_images_buildunsplashurl",
+      "target": "fix_recipe_images_buildunsplashquery",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L7",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_background_color",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_categories",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L4",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_description",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_dir",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L6",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_display",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L12",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_icons",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L9",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_lang",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L11",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_orientation",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L48",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_screenshots",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L3",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_short_name",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L18",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_shortcuts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_start_url",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "manifest.json",
+      "source_location": "L8",
+      "weight": 1.0,
+      "source": "manifest",
+      "target": "manifest_theme_color",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "recipes_european_part1.js",
+      "source_location": "L2",
+      "weight": 1.0,
+      "source": "recipes_european_part1",
+      "target": "recipes_european_part1_recipeseu_part1",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "defines",
+      "confidence": "EXTRACTED",
+      "source_file": "run-seo.sh",
+      "source_location": "L5",
+      "weight": 1.0,
+      "source": "run_seo",
+      "target": "run_seo_pages_batch",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "run-seo.sh",
+      "source_location": "L1",
+      "weight": 1.0,
+      "source": "run_seo",
+      "target": "users_yousseflahlou_desktop_ia_ss1_matbakh360_run_seo_sh__entry",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sw.js",
+      "source_location": "L79",
+      "weight": 1.0,
+      "source": "sw",
+      "target": "sw_addcachedateheader",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sw.js",
+      "source_location": "L10",
+      "weight": 1.0,
+      "source": "sw",
+      "target": "sw_base_path",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sw.js",
+      "source_location": "L67",
+      "weight": 1.0,
+      "source": "sw",
+      "target": "sw_iscacheentryexpired",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sw.js",
+      "source_location": "L101",
+      "weight": 1.0,
+      "source": "sw",
+      "target": "sw_isjsondatafile",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sw.js",
+      "source_location": "L93",
+      "weight": 1.0,
+      "source": "sw",
+      "target": "sw_isunsplashimage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sw.js",
+      "source_location": "L17",
+      "weight": 1.0,
+      "source": "sw",
+      "target": "sw_json_data_suffixes",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "sw.js",
+      "source_location": "L14",
+      "weight": 1.0,
+      "source": "sw",
+      "target": "sw_precache_urls",
+      "confidence_score": 1.0
+    }
+  ],
+  "hyperedges": [],
+  "built_at_commit": "310510943c4e8d9c6bc6e166f58ccfefe4956888"
+}

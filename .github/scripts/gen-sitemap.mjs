@@ -15,6 +15,10 @@ const RECIPE_INDEX_FILE = path.resolve(process.cwd(), 'recipes', 'index.json');
 const seoRecipes = fs.existsSync(RECIPE_INDEX_FILE)
   ? JSON.parse(fs.readFileSync(RECIPE_INDEX_FILE, 'utf8'))
   : [];
+const RESTO_INDEX_FILE = path.resolve(process.cwd(), 'restaurants', 'index.json');
+const seoRestos = fs.existsSync(RESTO_INDEX_FILE)
+  ? JSON.parse(fs.readFileSync(RESTO_INDEX_FILE, 'utf8'))
+  : [];
 
 // Extraire les IDs de recettes
 const recipeIds = [...html.matchAll(/"id":"(r[^"]+)"/g)].map(m => m[1]);
@@ -61,6 +65,14 @@ const urls = [
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>`),
+
+  ...seoRestos.map(({ slug }) => `
+  <url>
+    <loc>${BASE}/restaurants/${slug}.html</loc>
+    <lastmod>${today}</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`),
 ];
 
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
@@ -77,5 +89,5 @@ Sitemap: ${BASE}/sitemap.xml
 fs.writeFileSync(path.resolve(process.cwd(), 'sitemap.xml'), sitemap);
 fs.writeFileSync(path.resolve(process.cwd(), 'robots.txt'), robots);
 
-console.log(`✅ sitemap.xml — ${recipeIds.length} recettes SPA + ${restoIds.length} restos + ${seoRecipes.length} pages SEO statiques + ${staticPages.length} pages statiques`);
+console.log(`✅ sitemap.xml — ${recipeIds.length} recettes SPA + ${restoIds.length} restos SPA + ${seoRecipes.length} recettes SEO + ${seoRestos.length} restos SEO + ${staticPages.length} pages statiques`);
 console.log('✅ robots.txt');
