@@ -1,30 +1,23 @@
 /**
  * gen-sitemap.mjs
- * Génère sitemap.xml + robots.txt depuis les données de index.html
- * Usage : node .github/scripts/gen-sitemap.mjs
+ * Génère sitemap-index + sitemaps fragmentés (limite Google = 50k URLs/fichier).
  */
 import fs from 'fs';
 import path from 'path';
 
 const BASE = 'https://matbakh360.com';
 const today = new Date().toISOString().split('T')[0];
+const CHUNK = 40000; // marge sous la limite 50k
 const html = fs.readFileSync(path.resolve(process.cwd(), 'index.html'), 'utf8');
 
-// Charger l'index des pages SEO statiques si disponible
-const RECIPE_INDEX_FILE = path.resolve(process.cwd(), 'recipes', 'index.json');
-const seoRecipes = fs.existsSync(RECIPE_INDEX_FILE)
-  ? JSON.parse(fs.readFileSync(RECIPE_INDEX_FILE, 'utf8'))
-  : [];
-const RESTO_INDEX_FILE = path.resolve(process.cwd(), 'restaurants', 'index.json');
-const seoRestos = fs.existsSync(RESTO_INDEX_FILE)
-  ? JSON.parse(fs.readFileSync(RESTO_INDEX_FILE, 'utf8'))
-  : [];
+const load = (p) => fs.existsSync(p) ? JSON.parse(fs.readFileSync(p,'utf8')) : [];
+const seoRecipes = load(path.resolve('recipes','index.json'));
+const seoRestos  = load(path.resolve('restaurants','index.json'));
+const seoVids    = load(path.resolve('videos','index.json'));
 
-// Extraire les IDs de recettes
 const recipeIds = [...html.matchAll(/"id":"(r[^"]+)"/g)].map(m => m[1]);
 const restoIds  = [...html.matchAll(/"id":"(rst_[^"]+)"/g)].map(m => m[1]);
 
-// Pages statiques
 const staticPages = [
   { url: BASE+'/',               pri:'1.0', freq:'daily'  },
   { url: BASE+'/?page=restos',   pri:'0.9', freq:'daily'  },
@@ -32,53 +25,39 @@ const staticPages = [
   { url: BASE+'/?page=map',      pri:'0.7', freq:'weekly' },
 ];
 
-// Construire le sitemap
-const urls = [
-  ...staticPages.map(p => `
-  <url>
-    <loc>${p.url}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>${p.freq}</changefreq>
-    <priority>${p.pri}</priority>
-  </url>`),
+const urlEntry = (loc, freq='monthly', pri='0.7') =>
+  `\n  <url><loc>${loc}</loc><lastmod>${today}</lastmod><changefreq>${freq}</changefreq><priority>${pri}</priority></url>`;
 
-  ...recipeIds.map(id => `
-  <url>
-    <loc>${BASE}/?recipe=${id}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>`),
-
-  ...restoIds.map(id => `
-  <url>
-    <loc>${BASE}/?resto=${id}</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.7</priority>
-  </url>`),
-
-  ...seoRecipes.map(({ slug }) => `
-  <url>
-    <loc>${BASE}/recipes/${slug}.html</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>`),
-
-  ...seoRestos.map(({ slug }) => `
-  <url>
-    <loc>${BASE}/restaurants/${slug}.html</loc>
-    <lastmod>${today}</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`),
+const allUrls = [
+  ...staticPages.map(p => urlEntry(p.url, p.freq, p.pri)),
+  ...recipeIds.map(id => urlEntry(`${BASE}/?recipe=${id}`,'monthly','0.6')),
+  ...restoIds.map(id  => urlEntry(`${BASE}/?resto=${id}`,'weekly','0.7')),
+  ...seoRecipes.map(({slug}) => urlEntry(`${BASE}/recipes/${slug}.html`,'monthly','0.8')),
+  ...seoRestos.map(({slug})  => urlEntry(`${BASE}/restaurants/${slug}.html`,'weekly','0.8')),
+  ...seoVids.map(({slug})    => urlEntry(`${BASE}/videos/${slug}.html`,'weekly','0.7')),
 ];
 
-const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${urls.join('')}
-</urlset>`;
+// Chunk en fichiers de CHUNK URLs
+const chunks = [];
+for (let i = 0; i < allUrls.length; i += CHUNK) chunks.push(allUrls.slice(i, i + CHUNK));
+
+// Cleanup anciens sitemap-N
+for (const f of fs.readdirSync('.').filter(f => /^sitemap-\d+\.xml$/.test(f))) fs.unlinkSync(f);
+
+const sitemapFiles = [];
+chunks.forEach((urls, i) => {
+  const name = `sitemap-${i+1}.xml`;
+  const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls.join('')}\n</urlset>`;
+  fs.writeFileSync(name, xml);
+  sitemapFiles.push(name);
+});
+
+// sitemap.xml = sitemap-index
+const index = `<?xml version="1.0" encoding="UTF-8"?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapFiles.map(f => `  <sitemap><loc>${BASE}/${f}</loc><lastmod>${today}</lastmod></sitemap>`).join('\n')}
+</sitemapindex>`;
+fs.writeFileSync('sitemap.xml', index);
 
 const robots = `User-agent: *
 Allow: /
@@ -94,9 +73,8 @@ Allow: /
 
 Sitemap: ${BASE}/sitemap.xml
 `;
+fs.writeFileSync('robots.txt', robots);
 
-fs.writeFileSync(path.resolve(process.cwd(), 'sitemap.xml'), sitemap);
-fs.writeFileSync(path.resolve(process.cwd(), 'robots.txt'), robots);
-
-console.log(`✅ sitemap.xml — ${recipeIds.length} recettes SPA + ${restoIds.length} restos SPA + ${seoRecipes.length} recettes SEO + ${seoRestos.length} restos SEO + ${staticPages.length} pages statiques`);
+console.log(`✅ sitemap-index → ${sitemapFiles.length} fichiers (${allUrls.length} URLs)`);
+console.log(`   recettes SPA:${recipeIds.length}  restos SPA:${restoIds.length}  recettes SEO:${seoRecipes.length}  restos SEO:${seoRestos.length}  vidéos SEO:${seoVids.length}  statiques:${staticPages.length}`);
 console.log('✅ robots.txt');
