@@ -13,11 +13,13 @@
 <meta property="og:locale" content="ar_MA">
 <meta property="og:title" id="og-title" content="مطبخ 360 | كل وصفات العالم">
 <meta property="og:description" id="og-desc" content="آلاف الوصفات من 68 مطبخاً عالمياً مع فيديوهات ووصفات خطوة بخطوة">
-<meta property="og:image" id="og-img" content="https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg">
+<meta property="og:image" id="og-img" content="https://matbakh360.com/favicon.svg">
+<meta property="og:image:alt" content="مطبخ 360 — Logo">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content="@matbakh360">
 <meta name="twitter:title" id="tw-title" content="مطبخ 360 | كل وصفات العالم">
 <meta name="twitter:description" id="tw-desc" content="آلاف الوصفات من 68 مطبخاً عالمياً">
+<meta name="twitter:image" id="tw-img" content="https://matbakh360.com/favicon.svg">
 <link rel="canonical" id="canonical-url" href="https://matbakh360.com/">
 <script type="application/ld+json" id="schema-site">{"@context":"https://schema.org","@type":"WebSite","name":"مطبخ 360","url":"https://matbakh360.com","description":"منصة وصفات عالمية من 68 مطبخاً حول العالم","potentialAction":{"@type":"SearchAction","target":"https://matbakh360.com/?q={search_term_string}","query-input":"required name=search_term_string"},"inLanguage":"ar"}</script>
 <script type="application/ld+json" id="schema-recipe"></script>
@@ -1879,7 +1881,8 @@ function gp(id,pushUrl=true){
     const set=(elId,val)=>{const el=document.getElementById(elId);if(el)el.setAttribute('content',val);};
     set('og-title','مطبخ 360 | كل وصفات العالم');
     set('og-desc','آلاف الوصفات من 68 مطبخاً عالمياً مع فيديوهات ووصفات خطوة بخطوة');
-    set('og-img','https://www.themealdb.com/images/media/meals/qxytrx1511304021.jpg');
+    set('og-img','https://matbakh360.com/favicon.svg');
+    set('tw-img','https://matbakh360.com/favicon.svg');
     const canon=document.getElementById('canonical-url');
     if(canon) canon.setAttribute('href','https://matbakh360.com/');
   }
@@ -3041,7 +3044,7 @@ function updateSEO(r){
   const set=(id,val)=>{const el=document.getElementById(id);if(el)el.setAttribute('content',val);};
   set('og-title',title); set('og-desc',desc);
   set('tw-title',title); set('tw-desc',desc);
-  if(r.img) set('og-img',r.img);
+  if(r.img){set('og-img',r.img);set('tw-img',r.img);}
   const canon=document.getElementById('canonical-url');
   if(canon) canon.setAttribute('href',`https://matbakh360.com/?recipe=${r.id}`);
   const schema={
