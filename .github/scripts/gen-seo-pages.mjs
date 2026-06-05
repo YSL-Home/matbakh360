@@ -157,6 +157,8 @@ function buildHtml(r, slug, titleSuffix) {
 <title>${escHtml(seoTitle)}</title>
 <meta name="description" content="${escAttr(metaDesc)}">
 <meta name="robots" content="index, follow">
+<link rel="icon" type="image/svg+xml" href="${BASE}/favicon.svg">
+<link rel="apple-touch-icon" href="${BASE}/favicon.svg">
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="ar" href="${canonical}">
 <link rel="alternate" hreflang="fr" href="${BASE}/fr/recipes/${slug}.html">
