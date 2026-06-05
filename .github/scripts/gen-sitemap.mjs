@@ -83,6 +83,15 @@ ${urls.join('')}
 const robots = `User-agent: *
 Allow: /
 
+User-agent: Mediapartners-Google
+Allow: /
+
+User-agent: AdsBot-Google
+Allow: /
+
+User-agent: AdsBot-Google-Mobile
+Allow: /
+
 Sitemap: ${BASE}/sitemap.xml
 `;
 
