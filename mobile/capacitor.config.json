@@ -1,0 +1,55 @@
+{
+  "appId": "com.matbakh360.app",
+  "appName": "Matbakh 360",
+  "webDir": "www",
+  "server": {
+    "androidScheme": "https",
+    "iosScheme": "https",
+    "url": "https://matbakh360.com",
+    "cleartext": false,
+    "allowNavigation": [
+      "matbakh360.com",
+      "*.matbakh360.com",
+      "*.google.com",
+      "*.googleapis.com",
+      "*.gstatic.com",
+      "*.youtube.com",
+      "*.ytimg.com",
+      "*.themealdb.com",
+      "*.pexels.com",
+      "*.unsplash.com",
+      "*.ipapi.co",
+      "*.googletagmanager.com",
+      "*.google-analytics.com",
+      "*.googlesyndication.com",
+      "*.doubleclick.net"
+    ]
+  },
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#FFFFFF",
+    "scheme": "Matbakh360"
+  },
+  "android": {
+    "backgroundColor": "#FFFFFF",
+    "allowMixedContent": false,
+    "captureInput": true,
+    "webContentsDebuggingEnabled": false
+  },
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 1500,
+      "launchAutoHide": true,
+      "backgroundColor": "#C2410C",
+      "androidScaleType": "CENTER_CROP",
+      "showSpinner": false,
+      "splashFullScreen": true,
+      "splashImmersive": true
+    },
+    "StatusBar": {
+      "style": "DARK",
+      "backgroundColor": "#C2410C",
+      "overlaysWebView": false
+    }
+  }
+}

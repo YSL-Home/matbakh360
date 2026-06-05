@@ -1,0 +1,31 @@
+# Node
+node_modules/
+npm-debug.log*
+
+# iOS
+ios/App/Pods/
+ios/App/App.xcworkspace/xcuserdata/
+ios/App/App.xcodeproj/xcuserdata/
+ios/App/build/
+ios/App/DerivedData/
+ios/.DS_Store
+*.xcuserstate
+
+# Android
+android/.gradle/
+android/build/
+android/app/build/
+android/app/release/
+android/.idea/
+android/local.properties
+android/captures/
+android/keystore.properties
+*.jks
+*.keystore
+
+# Capacitor
+.capacitor/
+
+# Système
+.DS_Store
+Thumbs.db

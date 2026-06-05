@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>مطبخ 360</title>
+<style>
+  html,body{margin:0;padding:0;height:100%;background:linear-gradient(135deg,#C2410C 0%,#E86A30 100%);
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#fff;}
+  .splash{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;text-align:center;padding:24px;}
+  .logo{font-size:64px;margin-bottom:18px;}
+  h1{font-size:28px;font-weight:900;margin:0 0 8px;letter-spacing:-.5px;}
+  p{font-size:14px;opacity:.85;margin:0 0 24px;}
+  .spin{width:38px;height:38px;border:3px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:s 1s linear infinite;}
+  @keyframes s{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="splash">
+  <div class="logo">🍽️</div>
+  <h1>مطبخ 360</h1>
+  <p>كل وصفات العالم في زاوية واحدة</p>
+  <div class="spin"></div>
+</div>
+<script>
+  // Fallback si server.url ne charge pas — redirige vers le site live
+  setTimeout(function(){
+    if(!window._loaded) window.location.href='https://matbakh360.com';
+  }, 3000);
+</script>
+</body>
+</html>
