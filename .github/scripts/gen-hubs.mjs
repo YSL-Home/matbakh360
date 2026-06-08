@@ -37,7 +37,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="google-adsense-account" content="ca-pub-6870790039775701">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(desc)}">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="icon" type="image/svg+xml" href="${BASE}/favicon.svg">
 <link rel="canonical" href="${canonical}">
 <meta property="og:title" content="${esc(title)}">

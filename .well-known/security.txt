@@ -1,0 +1,4 @@
+Contact: mailto:contact@matbakh360.com
+Expires: 2027-12-31T23:59:59.000Z
+Preferred-Languages: ar, fr, en
+Canonical: https://matbakh360.com/.well-known/security.txt

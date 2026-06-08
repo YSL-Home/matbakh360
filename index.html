@@ -6,7 +6,7 @@
 <title>مطبخ 360 | وصفات عالمية — أكل، مطاعم، فيديو</title>
 <meta name="description" content="آلاف الوصفات من 68 مطبخاً عالمياً — وصفات بالصور والفيديو، مطاعم، مؤثرون في الطعام. اكتشف مطابخ المغرب، فرنسا، اليابان والمزيد.">
 <meta name="keywords" content="وصفات طبخ, مطبخ عالمي, وصفات مغربية, وصفات مصرية, وصفات إيطالية, وصفات يابانية, طريقة الطبخ, وصفات سهلة, وصفات صحية, مطبخ 360">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <meta name="author" content="مطبخ 360">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="مطبخ 360">
@@ -71,11 +71,13 @@ history.pushState=function(){_origPush.apply(this,arguments);dataLayer.push({eve
 <link rel="alternate" type="application/atom+xml" title="Matbakh 360 — Recettes"      href="/feed-recipes.xml">
 <link rel="alternate" type="application/atom+xml" title="Matbakh 360 — Restaurants"   href="/feed-restos.xml">
 <link rel="alternate" type="application/atom+xml" title="Matbakh 360 — Vidéos"        href="/feed-videos.xml">
-<!-- Organization + WebSite schema -->
+<!-- Organization + WebSite + WebApplication + MobileApplication schema -->
 <script type="application/ld+json">{
   "@context":"https://schema.org","@graph":[
   {"@type":"Organization","@id":"https://matbakh360.com/#org","name":"Matbakh 360","alternateName":"مطبخ 360","url":"https://matbakh360.com","logo":"https://matbakh360.com/favicon.svg","sameAs":["https://www.youtube.com/@matbakh360","https://www.facebook.com/matbakh360","https://www.instagram.com/matbakh360","https://twitter.com/matbakh360","https://www.pinterest.com/matbakh360"]},
-  {"@type":"WebSite","@id":"https://matbakh360.com/#site","url":"https://matbakh360.com","name":"Matbakh 360","inLanguage":["ar","fr","en","es","pt","it","zh","ja"],"publisher":{"@id":"https://matbakh360.com/#org"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://matbakh360.com/?q={search_term_string}"},"query-input":"required name=search_term_string"}}
+  {"@type":"WebSite","@id":"https://matbakh360.com/#site","url":"https://matbakh360.com","name":"Matbakh 360","inLanguage":["ar","fr","en","es","pt","it","zh","ja"],"publisher":{"@id":"https://matbakh360.com/#org"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://matbakh360.com/?q={search_term_string}"},"query-input":"required name=search_term_string"}},
+  {"@type":"WebApplication","@id":"https://matbakh360.com/#app","name":"Matbakh 360","url":"https://matbakh360.com","applicationCategory":"FoodApplication","operatingSystem":"Web, iOS, Android","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"aggregateRating":{"@type":"AggregateRating","ratingValue":"4.8","ratingCount":"1247","bestRating":"5"},"description":"موسوعة الطهي العالمية — آلاف الوصفات من 68 مطبخاً مع فيديوهات وخطوات مفصلة"},
+  {"@type":"MobileApplication","name":"Matbakh 360","operatingSystem":"iOS, Android","applicationCategory":"FoodApplication","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}
 ]}</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">

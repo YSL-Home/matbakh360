@@ -166,7 +166,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta name="google-adsense-account" content="ca-pub-6870790039775701">
 <title>${escHtml(seoTitle)}</title>
 <meta name="description" content="${escAttr(metaDesc)}">
-<meta name="robots" content="index, follow">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="icon" type="image/svg+xml" href="${BASE}/favicon.svg">
 <link rel="apple-touch-icon" href="${BASE}/favicon.svg">
 <link rel="canonical" href="${canonical}">

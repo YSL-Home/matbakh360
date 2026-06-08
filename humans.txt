@@ -1,0 +1,20 @@
+/* TEAM */
+Founder / Developer: Youssef Lahlou
+Contact: contact [at] matbakh360.com
+Location: Maroc / France
+
+/* SITE */
+Site: مطبخ 360 — Matbakh 360
+Language: AR, FR, EN, ES, PT, IT, ZH, JA
+Tagline: مطابخ العالم في زاوية واحدة
+URL: https://matbakh360.com
+Repository: https://github.com/YSL-Home/matbakh360
+
+/* TECH */
+Stack: Vanilla JS SPA, GitHub Pages, Cloudflare CDN
+PWA: yes
+Search engines: Google, Bing, Yandex
+Analytics: Google Analytics 4 + Google Tag Manager
+Ads: Google AdSense
+Recipes data: TheMealDB
+Mobile apps: Capacitor (iOS + Android)
