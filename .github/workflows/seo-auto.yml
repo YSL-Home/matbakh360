@@ -1,0 +1,55 @@
+name: SEO Auto-régen + IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/**'
+      - 'index.html'
+      - '.github/scripts/gen-*.mjs'
+      - '.github/scripts/indexnow-ping.mjs'
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * *'   # tous les jours 6h UTC
+
+permissions:
+  contents: write
+
+jobs:
+  regen-and-ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Régénération hubs + feeds + sitemaps
+        run: |
+          node .github/scripts/gen-hubs.mjs
+          node .github/scripts/gen-feeds.mjs
+          node .github/scripts/gen-sitemap-media.mjs
+          node .github/scripts/gen-sitemap.mjs
+
+      - name: Commit changes (si diff)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add hubs/ feed*.xml sitemap*.xml robots.txt 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "🤖 auto-regen SEO: hubs + feeds + sitemaps"
+            git push
+          else
+            echo "Pas de changement"
+          fi
+
+      - name: Attendre 90s (propagation GitHub Pages)
+        run: sleep 90
+
+      - name: Ping IndexNow (Bing + Yandex)
+        run: node .github/scripts/indexnow-ping.mjs
+        continue-on-error: true

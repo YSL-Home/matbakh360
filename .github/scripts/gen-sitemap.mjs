@@ -14,6 +14,7 @@ const load = (p) => fs.existsSync(p) ? JSON.parse(fs.readFileSync(p,'utf8')) : [
 const seoRecipes = load(path.resolve('recipes','index.json'));
 const seoRestos  = load(path.resolve('restaurants','index.json'));
 const seoVids    = load(path.resolve('videos','index.json'));
+const seoHubs    = load(path.resolve('hubs','index.json'));
 
 const recipeIds = [...html.matchAll(/"id":"(r[^"]+)"/g)].map(m => m[1]);
 const restoIds  = [...html.matchAll(/"id":"(rst_[^"]+)"/g)].map(m => m[1]);
@@ -35,6 +36,7 @@ const allUrls = [
   ...seoRecipes.map(({slug}) => urlEntry(`${BASE}/recipes/${slug}.html`,'monthly','0.8')),
   ...seoRestos.map(({slug})  => urlEntry(`${BASE}/restaurants/${slug}.html`,'weekly','0.8')),
   ...seoVids.map(({slug})    => urlEntry(`${BASE}/videos/${slug}.html`,'weekly','0.7')),
+  ...seoHubs.map(({url})     => urlEntry(url,'weekly','0.9')),
 ];
 
 // Chunk en fichiers de CHUNK URLs
@@ -52,10 +54,14 @@ chunks.forEach((urls, i) => {
   sitemapFiles.push(name);
 });
 
-// sitemap.xml = sitemap-index
+// sitemap.xml = sitemap-index (inclut aussi les sitemaps média si présents)
+const mediaSitemaps = [];
+if (fs.existsSync('sitemap-images.xml')) mediaSitemaps.push('sitemap-images.xml');
+if (fs.existsSync('sitemap-videos.xml')) mediaSitemaps.push('sitemap-videos.xml');
+const allSitemaps = [...sitemapFiles, ...mediaSitemaps];
 const index = `<?xml version="1.0" encoding="UTF-8"?>
 <sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${sitemapFiles.map(f => `  <sitemap><loc>${BASE}/${f}</loc><lastmod>${today}</lastmod></sitemap>`).join('\n')}
+${allSitemaps.map(f => `  <sitemap><loc>${BASE}/${f}</loc><lastmod>${today}</lastmod></sitemap>`).join('\n')}
 </sitemapindex>`;
 fs.writeFileSync('sitemap.xml', index);
 
@@ -76,5 +82,5 @@ Sitemap: ${BASE}/sitemap.xml
 fs.writeFileSync('robots.txt', robots);
 
 console.log(`✅ sitemap-index → ${sitemapFiles.length} fichiers (${allUrls.length} URLs)`);
-console.log(`   recettes SPA:${recipeIds.length}  restos SPA:${restoIds.length}  recettes SEO:${seoRecipes.length}  restos SEO:${seoRestos.length}  vidéos SEO:${seoVids.length}  statiques:${staticPages.length}`);
+console.log(`   recettes SPA:${recipeIds.length}  restos SPA:${restoIds.length}  recettes SEO:${seoRecipes.length}  restos SEO:${seoRestos.length}  vidéos SEO:${seoVids.length}  hubs:${seoHubs.length}  statiques:${staticPages.length}`);
 console.log('✅ robots.txt');

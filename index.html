@@ -64,6 +64,17 @@ history.pushState=function(){_origPush.apply(this,arguments);dataLayer.push({eve
 <!-- Google AdSense -->
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6870790039775701" crossorigin="anonymous"></script>
 <meta name="google-adsense-account" content="ca-pub-6870790039775701">
+<!-- RSS / Atom feeds -->
+<link rel="alternate" type="application/atom+xml" title="Matbakh 360 — Tout"          href="/feed.xml">
+<link rel="alternate" type="application/atom+xml" title="Matbakh 360 — Recettes"      href="/feed-recipes.xml">
+<link rel="alternate" type="application/atom+xml" title="Matbakh 360 — Restaurants"   href="/feed-restos.xml">
+<link rel="alternate" type="application/atom+xml" title="Matbakh 360 — Vidéos"        href="/feed-videos.xml">
+<!-- Organization + WebSite schema -->
+<script type="application/ld+json">{
+  "@context":"https://schema.org","@graph":[
+  {"@type":"Organization","@id":"https://matbakh360.com/#org","name":"Matbakh 360","alternateName":"مطبخ 360","url":"https://matbakh360.com","logo":"https://matbakh360.com/favicon.svg","sameAs":["https://www.youtube.com/@matbakh360","https://www.facebook.com/matbakh360","https://www.instagram.com/matbakh360","https://twitter.com/matbakh360","https://www.pinterest.com/matbakh360"]},
+  {"@type":"WebSite","@id":"https://matbakh360.com/#site","url":"https://matbakh360.com","name":"Matbakh 360","inLanguage":["ar","fr","en","es","pt","it","zh","ja"],"publisher":{"@id":"https://matbakh360.com/#org"},"potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://matbakh360.com/?q={search_term_string}"},"query-input":"required name=search_term_string"}}
+]}</script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
