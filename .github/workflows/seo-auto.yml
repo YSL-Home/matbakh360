@@ -31,6 +31,8 @@ jobs:
       - name: Régénération hubs + feeds + sitemaps
         run: |
           node .github/scripts/gen-hubs.mjs
+          node .github/scripts/gen-hubs-multilang.mjs
+          node .github/scripts/gen-top10.mjs
           node .github/scripts/gen-feeds.mjs
           node .github/scripts/gen-sitemap-media.mjs
           node .github/scripts/gen-sitemap.mjs

@@ -197,6 +197,10 @@ const indexHtml = HEAD('Tous les hubs SEO — Matbakh 360', `Index complet des $
 <p class="lead">${hubIndex.length} pages thématiques : ${cuisHubs} cuisines, ${cityHubs} villes, ${catHubs} catégories.</p>
 <div class="grid">${indexCards}</div>` + FOOT;
 fs.writeFileSync('hubs/index.html', indexHtml);
-fs.writeFileSync('hubs/index.json', JSON.stringify(hubIndex));
+// Merge: préserve les entrées multilang (lang) et top10 gérées par d'autres scripts
+let prevIdx = [];
+try { prevIdx = JSON.parse(fs.readFileSync('hubs/index.json','utf8')); } catch {}
+const preserved = prevIdx.filter(h => h.lang || h.type === 'top10');
+fs.writeFileSync('hubs/index.json', JSON.stringify([...hubIndex, ...preserved]));
 
 console.log(`✅ ${cuisHubs} hubs cuisine + ${cityHubs} hubs ville + ${catHubs} hubs catégorie = ${hubIndex.length} pages hub`);

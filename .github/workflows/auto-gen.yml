@@ -1,9 +1,8 @@
 name: "🍽️ Matbakh360 — Auto-Gen toutes les 3h"
 
 on:
-  # DISABLED — uncomment to re-enable
-  # schedule:
-  #   - cron: '0 3 * * *'
+  schedule:
+    - cron: '0 3 * * *'   # quotidien 3h UTC — fraîcheur contenu
   workflow_dispatch:
     inputs:
       recipes_count:
