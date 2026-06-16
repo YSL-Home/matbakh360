@@ -15,6 +15,8 @@ const seoRecipes = load(path.resolve('recipes','index.json'));
 const seoRestos  = load(path.resolve('restaurants','index.json'));
 const seoVids    = load(path.resolve('videos','index.json'));
 const seoHubs    = load(path.resolve('hubs','index.json'));
+const seoEnRec   = load(path.resolve('en','recipes','index.json'));
+const seoFrRec   = load(path.resolve('fr','recipes','index.json'));
 
 const recipeIds = [...html.matchAll(/"id":"(r[^"]+)"/g)].map(m => m[1]);
 const restoIds  = [...html.matchAll(/"id":"(rst_[^"]+)"/g)].map(m => m[1]);
@@ -36,6 +38,8 @@ const allUrls = [
   ...seoRecipes.map(({slug}) => urlEntry(`${BASE}/recipes/${slug}.html`,'monthly','0.8')),
   ...seoRestos.map(({slug})  => urlEntry(`${BASE}/restaurants/${slug}.html`,'weekly','0.8')),
   ...seoVids.map(({slug})    => urlEntry(`${BASE}/videos/${slug}.html`,'weekly','0.7')),
+  ...seoEnRec.map(({slug})   => urlEntry(`${BASE}/en/recipes/${slug}.html`,'monthly','0.8')),
+  ...seoFrRec.map(({slug})   => urlEntry(`${BASE}/fr/recipes/${slug}.html`,'monthly','0.8')),
   ...seoHubs.map(({url})     => urlEntry(url,'weekly','0.9')),
 ];
 
@@ -82,5 +86,5 @@ Sitemap: ${BASE}/sitemap.xml
 fs.writeFileSync('robots.txt', robots);
 
 console.log(`✅ sitemap-index → ${sitemapFiles.length} fichiers (${allUrls.length} URLs)`);
-console.log(`   recettes SPA:${recipeIds.length}  restos SPA:${restoIds.length}  recettes SEO:${seoRecipes.length}  restos SEO:${seoRestos.length}  vidéos SEO:${seoVids.length}  hubs:${seoHubs.length}  statiques:${staticPages.length}`);
+console.log(`   recettes SPA:${recipeIds.length}  restos SPA:${restoIds.length}  recettes SEO:${seoRecipes.length}  EN:${seoEnRec.length}  FR:${seoFrRec.length}  restos SEO:${seoRestos.length}  vidéos SEO:${seoVids.length}  hubs:${seoHubs.length}  statiques:${staticPages.length}`);
 console.log('✅ robots.txt');
