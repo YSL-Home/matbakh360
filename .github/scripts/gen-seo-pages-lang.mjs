@@ -8,7 +8,7 @@ import fs from 'fs';
 import path from 'path';
 
 const BASE = 'https://matbakh360.com';
-const LANGS = (process.env.LANGS || 'en,fr').split(',');
+const LANGS = (process.env.LANGS || 'en,fr,es,pt,it,zh,ja').split(',');
 
 const recipes = JSON.parse(fs.readFileSync('data/recipes.json','utf8'));
 const recById = Object.fromEntries(recipes.map(r => [r.id, r]));
