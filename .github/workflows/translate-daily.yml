@@ -1,0 +1,45 @@
+name: Traduction quotidienne (MyMemory gratuit)
+
+on:
+  schedule:
+    - cron: '30 4 * * *'   # 4h30 UTC, avant le SEO de 6h
+  workflow_dispatch:
+    inputs:
+      word_budget:
+        description: 'Mots à traduire ce run'
+        required: false
+        default: '20000'
+
+permissions:
+  contents: write
+
+jobs:
+  translate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - name: EN depuis source (idempotent)
+        run: node .github/scripts/translate-en-mealdb.mjs
+        continue-on-error: true
+      - name: Traduction FR/ES/PT/IT/ZH/JA (MyMemory)
+        env:
+          WORD_BUDGET: ${{ github.event.inputs.word_budget || '20000' }}
+          MM_EMAIL: lahucef@gmail.com
+        run: node .github/scripts/translate-mymemory.mjs
+        continue-on-error: true
+      - name: Commit traductions
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/recipe_translations.json
+          if ! git diff --cached --quiet; then
+            git commit -m "🌐 auto-trad: nouvelles traductions du jour (MyMemory)"
+            git push
+          else
+            echo "Pas de nouvelle traduction"
+          fi
