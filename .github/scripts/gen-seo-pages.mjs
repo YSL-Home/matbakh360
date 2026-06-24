@@ -70,6 +70,8 @@ const CUISINE_LABELS = {
   'lbn':'لبنانية','sau':'سعودية','ira':'إيرانية','tha':'تايلاندية',
 };
 
+const DIFF_AR = { e:'سهل', m:'متوسط', h:'صعب' };
+
 // ── Template HTML ─────────────────────────────────────────────────────────
 function buildHtml(r, slug, titleSuffix) {
   // Titre unique : ajouter suffixe cuisine si doublon détecté
@@ -184,12 +186,34 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTM6B493" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<h1>${escHtml(title)}</h1>
-<p>${escHtml(description)}</p>
-<script>window.location.replace('/#recipe/'+'${escJs(r.id)}');</script>
-<noscript><meta http-equiv="refresh" content="0;url=/#recipe/${escJs(r.id)}"></noscript>
-<footer style="margin-top:2rem;padding:1rem 0;border-top:1px solid #eee;text-align:center;font-size:.9rem;">
-  <a href="${BASE}" rel="home">مطبخ 360 — الرئيسية</a>
+<main style="max-width:760px;margin:0 auto;padding:20px;font-family:'Tajawal',-apple-system,system-ui,sans-serif;line-height:1.7;color:#1a1a1a">
+<nav style="font-size:13px;color:#888;margin-bottom:14px"><a href="${BASE}" style="color:#C2410C;text-decoration:none">مطبخ 360</a> › ${escHtml(category)} › ${escHtml(title)}</nav>
+<h1 style="font-size:28px;color:#C2410C;margin:0 0 10px">${escHtml(title)}</h1>
+<img src="${escAttr(image)}" alt="${escAttr(title)}" style="width:100%;max-height:420px;object-fit:cover;border-radius:14px;margin:8px 0" loading="lazy">
+<p style="font-size:16px">${escHtml(description)}</p>
+<div style="display:flex;flex-wrap:wrap;gap:14px;background:#fff7f2;border:1px solid #f0d9cc;border-radius:12px;padding:14px;margin:18px 0;font-size:14px">
+  ${r.tm?`<span>⏱ <b>${escHtml(r.tm)}</b></span>`:''}
+  ${r.sv?`<span>👥 <b>${escHtml(String(r.sv))}</b> أشخاص</span>`:''}
+  ${r.df?`<span>📊 <b>${escHtml(DIFF_AR[r.df]||'متوسط')}</b></span>`:''}
+  ${r.rt?`<span>⭐ <b>${escHtml(String(r.rt))}</b> (${escHtml(String(r.rv||0))} تقييم)</span>`:''}
+  ${r.nut?.cal?`<span>🔥 <b>${escHtml(String(r.nut.cal))}</b> سعرة</span>`:''}
+</div>
+${ingredients.length?`<h2 style="font-size:20px;color:#C2410C;border-bottom:2px solid #f0d9cc;padding-bottom:6px">🧺 المكونات</h2>
+<ul style="padding-${isArabicPage?'right':'left'}:22px">${ingredients.map(i=>`<li>${escHtml(i)}</li>`).join('')}</ul>`:''}
+${instructions.length?`<h2 style="font-size:20px;color:#C2410C;border-bottom:2px solid #f0d9cc;padding-bottom:6px">👨‍🍳 طريقة التحضير</h2>
+<ol style="padding-${isArabicPage?'right':'left'}:22px">${instructions.map(s=>`<li style="margin-bottom:10px">${escHtml(s.text)}</li>`).join('')}</ol>`:''}
+${Array.isArray(r.tips)&&r.tips.length?`<h2 style="font-size:20px;color:#C2410C;border-bottom:2px solid #f0d9cc;padding-bottom:6px">✨ نصائح الشيف</h2>
+<ul style="padding-${isArabicPage?'right':'left'}:22px">${r.tips.map(t=>`<li>${escHtml(typeof t==='string'?t:t.t||'')}</li>`).join('')}</ul>`:''}
+${r.nut?`<h2 style="font-size:20px;color:#C2410C;border-bottom:2px solid #f0d9cc;padding-bottom:6px">📊 القيمة الغذائية (لكل حصة)</h2>
+<ul style="padding-${isArabicPage?'right':'left'}:22px">${r.nut.cal?`<li>السعرات: ${escHtml(String(r.nut.cal))} سعرة</li>`:''}${r.nut.pro?`<li>البروتين: ${escHtml(String(r.nut.pro))} غ</li>`:''}${r.nut.carb?`<li>الكربوهيدرات: ${escHtml(String(r.nut.carb))} غ</li>`:''}${r.nut.fat?`<li>الدهون: ${escHtml(String(r.nut.fat))} غ</li>`:''}</ul>`:''}
+<p style="margin-top:24px"><a href="${BASE}/#recipe/${escJs(r.id)}" style="display:inline-block;background:#C2410C;color:#fff;padding:11px 22px;border-radius:24px;text-decoration:none;font-weight:700">▶ افتح في التطبيق التفاعلي</a></p>
+</main>
+<footer style="margin-top:2rem;padding:20px;border-top:1px solid #eee;text-align:center;font-size:13px;color:#888;font-family:sans-serif">
+  <a href="${BASE}" rel="home" style="color:#C2410C">مطبخ 360</a> ·
+  <a href="${BASE}/about.html" style="color:#888">من نحن</a> ·
+  <a href="${BASE}/contact.html" style="color:#888">اتصل بنا</a> ·
+  <a href="${BASE}/privacy.html" style="color:#888">سياسة الخصوصية</a> ·
+  <a href="${BASE}/terms.html" style="color:#888">الشروط</a>
 </footer>
 </body>
 </html>`;
@@ -235,6 +259,8 @@ if (fs.existsSync(INDEX_FILE)) {
   }
 }
 const existingSlugs = new Set(existingIndex.map(e => e.slug));
+const slugById = Object.fromEntries(existingIndex.map(e => [e.id, e.slug]));
+const FORCE = process.env.FORCE_REGEN === '1';
 
 // Détecter les titres dupliqués sur l'ensemble des recettes
 const titleCounts = {};
@@ -258,19 +284,19 @@ for (let i = 0; i < total; i++) {
   const isDup = titleCounts[(r.ti || '').toLowerCase().trim()] > 1;
   const titleSuffix = isDup ? (CUISINE_LABELS[r.cid] || r.cid || '') : '';
 
-  let slug = buildSlug(r) || `recipe-${r.id}`;
-  // Déduplication globale (existants + générés ce run)
-  if (existingSlugs.has(slug)) slug = `${slug}-${r.cid || r.id.slice(-6)}`;
-  if (existingSlugs.has(slug)) slug = `${slug}-${r.id.slice(-6)}`;
-  if (existingSlugs.has(slug)) slug = `recipe-${r.id}`;
-  existingSlugs.add(slug); // marquer pour éviter doublons intra-run
+  // Réutiliser le slug existant de l'index (cohérence hreflang /en/ /fr/)
+  let slug = slugById[r.id];
+  if (!slug) {
+    slug = buildSlug(r) || `recipe-${r.id}`;
+    if (existingSlugs.has(slug)) slug = `${slug}-${r.cid || r.id.slice(-6)}`;
+    if (existingSlugs.has(slug)) slug = `${slug}-${r.id.slice(-6)}`;
+    if (existingSlugs.has(slug)) slug = `recipe-${r.id}`;
+  }
+  existingSlugs.add(slug);
   const file = path.join(RECIPES_DIR, `${slug}.html`);
 
-  // Skip si déjà généré
-  if (existingSlugs.has(slug) && fs.existsSync(file)) {
-    skipped++;
-    continue;
-  }
+  // Skip si déjà généré (sauf FORCE_REGEN=1)
+  if (!FORCE && fs.existsSync(file)) { skipped++; continue; }
 
   const html = buildHtml(r, slug, titleSuffix);
   fs.writeFileSync(file, html, 'utf8');

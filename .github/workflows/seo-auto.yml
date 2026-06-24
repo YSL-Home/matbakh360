@@ -34,6 +34,7 @@ jobs:
           node .github/scripts/gen-hubs-multilang.mjs
           node .github/scripts/gen-top10.mjs
           node .github/scripts/gen-seo-pages-lang.mjs
+          node .github/scripts/gen-legal-pages.mjs
           node .github/scripts/gen-feeds.mjs
           node .github/scripts/gen-sitemap-media.mjs
           node .github/scripts/gen-sitemap.mjs

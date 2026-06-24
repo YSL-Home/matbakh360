@@ -28,6 +28,10 @@ const staticPages = [
   { url: BASE+'/?page=restos',   pri:'0.9', freq:'daily'  },
   { url: BASE+'/?page=videos',   pri:'0.8', freq:'daily'  },
   { url: BASE+'/?page=map',      pri:'0.7', freq:'weekly' },
+  { url: BASE+'/about.html',     pri:'0.5', freq:'monthly' },
+  { url: BASE+'/contact.html',   pri:'0.5', freq:'monthly' },
+  { url: BASE+'/privacy.html',   pri:'0.4', freq:'yearly' },
+  { url: BASE+'/terms.html',     pri:'0.4', freq:'yearly' },
 ];
 
 const urlEntry = (loc, freq='monthly', pri='0.7') =>
