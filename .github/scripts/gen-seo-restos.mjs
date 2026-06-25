@@ -142,12 +142,36 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NTM6B493" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
-<h1>${escHtml(title)}</h1>
-<p>${escHtml(baseDesc)}</p>
-<script>window.location.replace('/#restaurant/'+'${escJs(r.id)}');</script>
-<noscript><meta http-equiv="refresh" content="0;url=/#restaurant/${escJs(r.id)}"></noscript>
-<footer style="margin-top:2rem;padding:1rem 0;border-top:1px solid #eee;text-align:center;font-size:.9rem;">
-  <a href="${BASE}" rel="home">مطبخ 360 — الرئيسية</a>
+<main style="max-width:720px;margin:0 auto;padding:20px;font-family:'Tajawal',-apple-system,system-ui,sans-serif;line-height:1.8;color:#1a1a1a">
+<nav style="font-size:13px;color:#888;margin-bottom:12px"><a href="${BASE}" style="color:#C2410C;text-decoration:none">مطبخ 360</a> › <a href="${BASE}/?page=restos" style="color:#C2410C;text-decoration:none">المطاعم</a> › ${escHtml(cityAr)}</nav>
+<h1 style="font-size:26px;color:#C2410C;margin:0 0 8px">${escHtml(title)}</h1>
+${r.img&&/^https?:/.test(r.img)?`<img src="${escAttr(r.img)}" alt="${escAttr(nameAr)}" style="width:100%;max-height:360px;object-fit:cover;border-radius:14px;margin:8px 0" loading="lazy">`:''}
+<p style="font-size:16px">${escHtml(baseDesc)}</p>
+<div style="display:flex;flex-wrap:wrap;gap:14px;background:#fff7f2;border:1px solid #f0d9cc;border-radius:12px;padding:14px;margin:16px 0;font-size:14px">
+  ${cuisAr?`<span>🍽️ المطبخ: <b>${escHtml(cuisAr)}</b></span>`:''}
+  ${r.rating?`<span>⭐ التقييم: <b>${escHtml(String(r.rating))}/5</b></span>`:''}
+  ${r.rv?`<span>💬 <b>${escHtml(String(r.rv))}</b> مراجعة</span>`:''}
+  ${priceRange(r.price)?`<span>💰 السعر: <b>${escHtml(r.price)}</b></span>`:''}
+</div>
+<h2 style="font-size:19px;color:#C2410C;border-bottom:2px solid #f0d9cc;padding-bottom:6px">📍 الموقع والتواصل</h2>
+<ul style="padding-right:22px">
+  <li>المدينة: ${escHtml(cityAr)}</li>
+  ${r.address?`<li>العنوان: ${escHtml(r.address)}</li>`:''}
+  ${r.phone?`<li>الهاتف: ${escHtml(r.phone)}</li>`:''}
+  ${r.hours?`<li>ساعات العمل: ${escHtml(r.hours)}</li>`:''}
+  ${r.website?`<li>الموقع: <a href="${escAttr(r.website)}" rel="nofollow noopener" target="_blank">${escHtml(r.website)}</a></li>`:''}
+</ul>
+<p style="margin-top:20px">
+  <a href="https://www.google.com/maps/search/${encodeURIComponent((nameEn||nameAr)+' '+cityEn)}" rel="nofollow noopener" target="_blank" style="display:inline-block;background:#C2410C;color:#fff;padding:10px 20px;border-radius:24px;text-decoration:none;font-weight:700;margin-${'left'}:8px">🗺️ عرض على الخريطة</a>
+  <a href="${BASE}/#restaurant/${escJs(r.id)}" style="display:inline-block;background:#fff;color:#C2410C;border:1px solid #C2410C;padding:10px 20px;border-radius:24px;text-decoration:none;font-weight:700">التفاصيل في التطبيق</a>
+</p>
+</main>
+<footer style="margin-top:2rem;padding:20px;border-top:1px solid #eee;text-align:center;font-size:13px;color:#888;font-family:sans-serif">
+  <a href="${BASE}" rel="home" style="color:#C2410C">مطبخ 360</a> ·
+  <a href="${BASE}/about.html" style="color:#888">من نحن</a> ·
+  <a href="${BASE}/contact.html" style="color:#888">اتصل بنا</a> ·
+  <a href="${BASE}/privacy.html" style="color:#888">الخصوصية</a> ·
+  <a href="${BASE}/terms.html" style="color:#888">الشروط</a>
 </footer>
 </body>
 </html>`;
