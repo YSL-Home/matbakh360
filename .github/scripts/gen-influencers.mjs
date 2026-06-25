@@ -155,7 +155,7 @@ async function main() {
 
   // 1. Lire influencers existants
   const existing      = readJsonFile(INFLUENCERS_PATH, []);
-  const coveredCities = new Set(existing.map(inf => inf.city));
+  const coveredCities = new Set(existing.map(inf => (inf.cityEn || inf.city || '').toLowerCase()));
   console.log(`   Influenceurs existants: ${existing.length} (${coveredCities.size} villes couvertes)`);
 
   // 2. Lire restos et extraire les villes uniques
@@ -165,7 +165,7 @@ async function main() {
   console.log(`   Villes dans restos.json: ${allCities.length}`);
 
   // 3. Filtrer les villes non encore couvertes
-  const pendingCities = allCities.filter(c => !coveredCities.has(c.en));
+  const pendingCities = allCities.filter(c => !coveredCities.has(c.en.toLowerCase()));
   console.log(`   Villes restantes à traiter: ${pendingCities.length}`);
 
   if (pendingCities.length === 0) {

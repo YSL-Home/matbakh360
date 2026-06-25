@@ -15,6 +15,7 @@ const seoRecipes = load(path.resolve('recipes','index.json'));
 const seoRestos  = load(path.resolve('restaurants','index.json'));
 const seoVids    = load(path.resolve('videos','index.json'));
 const seoHubs    = load(path.resolve('hubs','index.json'));
+const infPages   = fs.existsSync('influencers') ? fs.readdirSync('influencers').filter(f => f.endsWith('.html') && f !== 'index.html').map(f => f.replace('.html','')) : [];
 const LANG_DIRS = ['en','fr','es','pt','it','zh','ja'];
 const seoLangRec = LANG_DIRS.flatMap(l =>
   load(path.resolve(l,'recipes','index.json')).map(e => ({ ...e, lang:l }))
@@ -46,6 +47,8 @@ const allUrls = [
   ...seoVids.map(({slug})    => urlEntry(`${BASE}/videos/${slug}.html`,'weekly','0.7')),
   ...seoLangRec.map(({slug,lang}) => urlEntry(`${BASE}/${lang}/recipes/${slug}.html`,'monthly','0.8')),
   ...seoHubs.map(({url})     => urlEntry(url,'weekly','0.9')),
+  ...(fs.existsSync('influencers/index.html') ? [urlEntry(`${BASE}/influencers/`,'weekly','0.8')] : []),
+  ...infPages.map(slug => urlEntry(`${BASE}/influencers/${slug}.html`,'monthly','0.7')),
 ];
 
 // Chunk en fichiers de CHUNK URLs
