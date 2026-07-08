@@ -97,11 +97,18 @@ jobs:
           PAGES_BATCH: "500"
         run: node .github/scripts/gen-seo-pages.mjs
 
+      - name: "📄 Pages SEO restos + vidéos + influenceurs"
+        run: |
+          node .github/scripts/gen-seo-restos.mjs
+          node .github/scripts/gen-seo-vids.mjs
+          node .github/scripts/gen-influencer-pages.mjs
+
       - name: "📦 Commit & Push"
         run: |
           git config user.name  "Matbakh360 Bot"
           git config user.email "bot@matbakh360.com"
-          git add index.html sitemap.xml robots.txt data/recipes.json data/restos.json data/vids.json data/influencers.json data/recipe_translations.json data/resto_translations.json recipes/ recipes/index.json
+          # Stage tout ce qui est généré
+          git add -A
           if git diff --staged --quiet; then
             echo "ℹ️ Rien à committer"
           else
