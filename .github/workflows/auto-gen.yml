@@ -114,6 +114,9 @@ jobs:
           else
             DATE=$(date +'%Y-%m-%d %H:%M')
             git commit -m "🤖 Auto-gen ${DATE} — recettes+restos+vidéos+sitemap"
+            # Stash les éventuels fichiers résiduels avant le rebase
+            git stash push -u -m "bot-residual" 2>/dev/null || true
             git pull --rebase -X theirs origin main
+            git stash pop 2>/dev/null || true
             git push
           fi
