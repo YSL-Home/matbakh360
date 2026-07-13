@@ -25,6 +25,14 @@ const GTM = `<!-- Google Tag Manager -->
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
   gtag('config', 'G-TLBQXXRBG6');
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-6R811G3SE7"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-6R811G3SE7');
+</script>
 </script>`;
 
 const GTM_NS = `<!-- Google Tag Manager (noscript) -->
