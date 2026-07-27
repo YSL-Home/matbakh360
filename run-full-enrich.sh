@@ -12,8 +12,11 @@ warn() { echo -e "${YELLOW}⚠️  $1${NC}"; }
 fail() { echo -e "${RED}❌ $1${NC}"; exit 1; }
 
 # ── 0. Vérifications ──────────────────────────────────────────────
-[ -z "$ANTHROPIC_API_KEY" ] && fail "ANTHROPIC_API_KEY manquant. Usage : ANTHROPIC_API_KEY='sk-ant-...' bash run-full-enrich.sh"
 [ ! -f "data/recipes.json" ] && fail "Lancer depuis la racine du projet matbakh360"
+
+# Mode local si pas de clé API
+USE_LOCAL=false
+[ -z "$ANTHROPIC_API_KEY" ] && USE_LOCAL=true && warn "Pas d'ANTHROPIC_API_KEY — mode enrichissement local (sans API)"
 
 export ANTHROPIC_API_KEY
 
@@ -50,7 +53,11 @@ while true; do
   [ "$REMAINING" = "0" ] && ok "Toutes les recettes enrichies !" && break
 
   log "  Run $RUN — $REMAINING recettes restantes..."
-  BATCH_SIZE=$BATCH_SIZE node .github/scripts/enrich-steps.mjs 2>&1 | tail -2
+  if [ "$USE_LOCAL" = "true" ]; then
+    BATCH_SIZE=1847 node .github/scripts/enrich-steps-local.mjs 2>&1 | tail -2
+  else
+    BATCH_SIZE=$BATCH_SIZE node .github/scripts/enrich-steps.mjs 2>&1 | tail -2
+  fi
   sleep 2
 done
 
