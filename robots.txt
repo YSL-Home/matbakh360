@@ -1,13 +1,6 @@
 User-agent: *
 Allow: /
 
-# Google
-User-agent: Googlebot
-Allow: /
-
-User-agent: Google-Extended
-Allow: /
-
 User-agent: Mediapartners-Google
 Allow: /
 
@@ -17,49 +10,4 @@ Allow: /
 User-agent: AdsBot-Google-Mobile
 Allow: /
 
-# OpenAI / ChatGPT
-User-agent: GPTBot
-Allow: /
-
-User-agent: ChatGPT-User
-Allow: /
-
-User-agent: OAI-SearchBot
-Allow: /
-
-# Anthropic / Claude
-User-agent: ClaudeBot
-Allow: /
-
-User-agent: anthropic-ai
-Allow: /
-
-# Perplexity
-User-agent: PerplexityBot
-Allow: /
-
-# Microsoft Copilot / Bing
-User-agent: Bingbot
-Allow: /
-
-User-agent: BingPreview
-Allow: /
-
-# Meta AI
-User-agent: FacebookBot
-Allow: /
-
-# Apple
-User-agent: Applebot
-Allow: /
-
-User-agent: Applebot-Extended
-Allow: /
-
-# Common Crawl (training only — allow for citation purposes)
-User-agent: CCBot
-Allow: /
-
 Sitemap: https://matbakh360.com/sitemap.xml
-Sitemap: https://matbakh360.com/sitemap-1.xml
-Sitemap: https://matbakh360.com/sitemap-2.xml
