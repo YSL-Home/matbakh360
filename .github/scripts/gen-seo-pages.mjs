@@ -100,9 +100,24 @@ function buildHtml(r, slug, titleSuffix) {
     ? r.steps.map((s, idx) => ({
         '@type': 'HowToStep',
         position: idx + 1,
-        text: s.t || '',
+        text: (typeof s === 'string' ? s : (s.tp || s.t || '')),
       }))
     : [];
+
+  // FAQPage schema depuis les tips
+  const today = new Date().toISOString().split('T')[0];
+  const faqSchema = Array.isArray(r.tips) && r.tips.length > 0 ? {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: r.tips.slice(0, 5).map((tip, idx) => ({
+      '@type': 'Question',
+      name: `نصيحة ${idx + 1} لوصفة ${title}`,
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: typeof tip === 'string' ? tip : (tip.t || String(tip)),
+      },
+    })),
+  } : null;
 
   // Nutrition complète depuis r.nut
   const nutritionObj = r.nut ? {
@@ -133,6 +148,22 @@ function buildHtml(r, slug, titleSuffix) {
     recipeCategory: category,
     cookTime,
     recipeYield: yield_,
+    datePublished: '2024-01-01',
+    dateModified: today,
+    author: {
+      '@type': 'Organization',
+      name: 'مطبخ 360',
+      url: 'https://matbakh360.com',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'مطبخ 360',
+      url: 'https://matbakh360.com',
+      logo: {
+        '@type': 'ImageObject',
+        url: 'https://matbakh360.com/favicon.svg',
+      },
+    },
     ...(nutritionObj ? { nutrition: nutritionObj } : {}),
     ...(videoObj     ? { video: videoObj }         : {}),
     recipeIngredient: ingredients,
@@ -140,6 +171,7 @@ function buildHtml(r, slug, titleSuffix) {
   };
 
   const schemaStr = JSON.stringify(schema);
+  const faqSchemaStr = faqSchema ? JSON.stringify(faqSchema) : null;
 
   // seo_title enrichi avec temps + cuisine si disponibles
   const seoTitle = r.seo_title && r.seo_title.length > 10
@@ -190,6 +222,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <meta property="og:url" content="${canonical}">
 <meta property="og:type" content="article">
 <script type="application/ld+json">${schemaStr}</script>
+${faqSchemaStr ? `<script type="application/ld+json">${faqSchemaStr}</script>` : ''}
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -199,7 +232,9 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <nav style="font-size:13px;color:#888;margin-bottom:14px"><a href="${BASE}" style="color:#C2410C;text-decoration:none">مطبخ 360</a> › ${escHtml(category)} › ${escHtml(title)}</nav>
 <h1 style="font-size:28px;color:#C2410C;margin:0 0 10px">${escHtml(title)}</h1>
 <img src="${escAttr(image)}" alt="${escAttr(title)}" style="width:100%;max-height:420px;object-fit:cover;border-radius:14px;margin:8px 0" loading="lazy">
-<p style="font-size:16px">${escHtml(description)}</p>
+<article itemscope itemtype="https://schema.org/Recipe">
+<p style="font-size:16px;line-height:1.8" itemprop="description">${escHtml(description)}</p>
+<p style="font-size:13px;color:#aaa;margin:0">آخر تحديث: <time datetime="${today}">${today}</time> · المصدر: <a href="https://matbakh360.com" style="color:#C2410C">مطبخ 360</a></p>
 <div style="display:flex;flex-wrap:wrap;gap:14px;background:#fff7f2;border:1px solid #f0d9cc;border-radius:12px;padding:14px;margin:18px 0;font-size:14px">
   ${r.tm?`<span>⏱ <b>${escHtml(r.tm)}</b></span>`:''}
   ${r.sv?`<span>👥 <b>${escHtml(String(r.sv))}</b> أشخاص</span>`:''}
@@ -212,10 +247,16 @@ ${ingredients.length?`<h2 style="font-size:20px;color:#C2410C;border-bottom:2px 
 ${instructions.length?`<h2 style="font-size:20px;color:#C2410C;border-bottom:2px solid #f0d9cc;padding-bottom:6px">👨‍🍳 طريقة التحضير</h2>
 <ol style="padding-${isArabicPage?'right':'left'}:22px">${instructions.map(s=>`<li style="margin-bottom:10px">${escHtml(s.text)}</li>`).join('')}</ol>`:''}
 ${Array.isArray(r.tips)&&r.tips.length?`<h2 style="font-size:20px;color:#C2410C;border-bottom:2px solid #f0d9cc;padding-bottom:6px">✨ نصائح الشيف</h2>
-<ul style="padding-${isArabicPage?'right':'left'}:22px">${r.tips.map(t=>`<li>${escHtml(typeof t==='string'?t:t.t||'')}</li>`).join('')}</ul>`:''}
+<div itemscope itemtype="https://schema.org/FAQPage">
+${r.tips.map((t,idx)=>{const tipText=typeof t==='string'?t:(t.t||String(t));return `<div itemprop="mainEntity" itemscope itemtype="https://schema.org/Question" style="margin-bottom:12px;padding:12px;background:#fff7f2;border-right:3px solid #C2410C;border-radius:6px">
+<h3 itemprop="name" style="font-size:15px;font-weight:700;margin:0 0 4px;color:#333">نصيحة ${idx+1}: ${escHtml(tipText.substring(0,50))}...</h3>
+<div itemprop="acceptedAnswer" itemscope itemtype="https://schema.org/Answer"><p itemprop="text" style="margin:0;font-size:14px;color:#555">${escHtml(tipText)}</p></div>
+</div>`;}).join('')}
+</div>`:''}
 ${r.nut?`<h2 style="font-size:20px;color:#C2410C;border-bottom:2px solid #f0d9cc;padding-bottom:6px">📊 القيمة الغذائية (لكل حصة)</h2>
 <ul style="padding-${isArabicPage?'right':'left'}:22px">${r.nut.cal?`<li>السعرات: ${escHtml(String(r.nut.cal))} سعرة</li>`:''}${r.nut.pro?`<li>البروتين: ${escHtml(String(r.nut.pro))} غ</li>`:''}${r.nut.carb?`<li>الكربوهيدرات: ${escHtml(String(r.nut.carb))} غ</li>`:''}${r.nut.fat?`<li>الدهون: ${escHtml(String(r.nut.fat))} غ</li>`:''}</ul>`:''}
 <p style="margin-top:24px"><a href="${BASE}/#recipe/${escJs(r.id)}" style="display:inline-block;background:#C2410C;color:#fff;padding:11px 22px;border-radius:24px;text-decoration:none;font-weight:700">▶ افتح في التطبيق التفاعلي</a></p>
+</article>
 </main>
 <footer style="margin-top:2rem;padding:20px;border-top:1px solid #eee;text-align:center;font-size:13px;color:#888;font-family:sans-serif">
   <a href="${BASE}" rel="home" style="color:#C2410C">مطبخ 360</a> ·

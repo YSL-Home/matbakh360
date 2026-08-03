@@ -1,0 +1,64 @@
+# Matbakh360 — مطبخ 360
+
+> Matbakh360 (مطبخ 360) is an Arabic-language food platform offering 5,000+ traditional and international recipes, restaurant guides, cooking videos, and food influencer profiles from 157 cities worldwide.
+
+## About
+
+Matbakh360 is a comprehensive Arabic recipe and food discovery platform. It provides:
+- **5,179 recipes** from Arab, Mediterranean, Turkish, Indian, Chinese, Italian, Mexican, Japanese, French, and other world cuisines
+- **41,000+ restaurant profiles** across Arab cities and major world cities
+- **3,600+ cooking video guides**
+- **125 food influencer profiles** across 15+ cities
+- Nutritional information (calories, protein, carbs, fat) per serving
+- Step-by-step cooking instructions in Arabic
+- Difficulty ratings, prep time, and serving sizes
+
+## Key Content
+
+### Recipes by Cuisine
+- Arabic/Middle Eastern: مجبوس, كبسة, منسف, شاورما, فلافل, حمص, تبولة
+- Turkish: عداني كباب, دولمة, بقلاوة, كنافة
+- Moroccan: كسكس, طاجين, بسطيلة
+- Egyptian: كشري, ملوخية, فول مدمس
+- Lebanese: كبة, سيخ كباب, لبنة
+- International: بيتزا, سوشي, برجر, باستا
+
+### Structured Data Available
+- Recipe schema (schema.org/Recipe) with full metadata
+- HowTo schema for cooking steps
+- FAQPage schema for cooking tips
+- NutritionInformation per serving
+- VideoObject for YouTube content
+- Person schema for food influencers
+
+## Sitemap
+- https://matbakh360.com/sitemap.xml (52,889 URLs)
+- https://matbakh360.com/sitemap-1.xml
+- https://matbakh360.com/sitemap-2.xml
+
+## Key Pages
+- https://matbakh360.com/ (home, interactive app with search)
+- https://matbakh360.com/recipes/ (recipe index)
+- https://matbakh360.com/influencers/ (food influencer directory)
+- https://matbakh360.com/hubs/ (cuisine and category hubs)
+
+## Language & Region
+- Primary language: Arabic (ar)
+- Direction: RTL (right-to-left)
+- Target audience: Arabic-speaking users worldwide, particularly MENA region
+- Secondary content: French translations available for recipes
+
+## Platform Facts
+- Domain: matbakh360.com
+- Publisher: Matbakh360
+- Content type: Recipe, Restaurant, Video, Influencer profiles
+- Last updated: 2026-08-03
+- Recipes: 5,179
+- Restaurants: 41,006
+- Videos: 3,674
+- Influencers: 125
+
+## Optional (extended content)
+- https://matbakh360.com/about.html
+- https://matbakh360.com/contact.html
+- https://matbakh360.com/privacy.html
