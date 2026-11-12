@@ -310,6 +310,18 @@ if (fs.existsSync(INDEX_FILE)) {
 }
 const existingSlugs = new Set(existingIndex.map(e => e.slug));
 const slugById = Object.fromEntries(existingIndex.map(e => [e.id, e.slug]));
+// Titre → slug déjà publié. Le pipeline de bulk-import (bulk-gen-v2.mjs) ré-insère
+// chaque jour les mêmes recettes avec un nouvel `id` ("rbulk_<RUN_ID>_<i>"), donc
+// `slugById` ne matche jamais ces ré-imports : sans ce fallback par titre, chaque
+// exécution quotidienne créait une NOUVELLE page HTML en doublon pour une recette
+// déjà publiée (ex: "Sukuma Wiki" dupliquée sur 21+ pages distinctes, chacune avec
+// un <link rel="canonical"> auto-référencé → contenu dupliqué massif signalé par
+// Google AdSense). On réutilise désormais la page existante au lieu d'en créer une.
+const slugByTitle = Object.fromEntries(
+  existingIndex
+    .filter(e => e.title)
+    .map(e => [e.title.toLowerCase().trim(), e.slug])
+);
 const FORCE = process.env.FORCE_REGEN === '1';
 
 // Détecter les titres dupliqués sur l'ensemble des recettes
@@ -336,6 +348,11 @@ for (let i = 0; i < total; i++) {
 
   // Réutiliser le slug existant de l'index (cohérence hreflang /en/ /fr/)
   let slug = slugById[r.id];
+
+  // Même recette déjà publiée sous un autre `id` (ré-import quotidien) →
+  // réutiliser sa page au lieu d'en créer une en double.
+  if (!slug) slug = slugByTitle[(r.ti || '').toLowerCase().trim()];
+
   if (!slug) {
     slug = buildSlug(r) || `recipe-${r.id}`;
     if (existingSlugs.has(slug)) slug = `${slug}-${r.cid || r.id.slice(-6)}`;
@@ -345,7 +362,8 @@ for (let i = 0; i < total; i++) {
   existingSlugs.add(slug);
   const file = path.join(RECIPES_DIR, `${slug}.html`);
 
-  // Skip si déjà généré (sauf FORCE_REGEN=1)
+  // Skip si déjà généré (sauf FORCE_REGEN=1) — couvre aussi le cas "même titre,
+  // nouvel id" ci-dessus, qui pointe déjà vers une page existante.
   if (!FORCE && fs.existsSync(file)) { skipped++; continue; }
 
   const html = buildHtml(r, slug, titleSuffix);

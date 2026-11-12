@@ -136,6 +136,13 @@ if(fs.existsSync(INDEX_FILE)){
   try{existingIndex=JSON.parse(fs.readFileSync(INDEX_FILE,'utf8'));}catch{existingIndex=[];}
 }
 const existingSlugs = new Set(existingIndex.map(e=>e.slug));
+// Titre → slug déjà publié. bulk-videos.mjs ré-insère les mêmes vidéos chaque
+// run avec un nouvel `id`, donc sans ce fallback chaque run créait une NOUVELLE
+// page en double pour une vidéo déjà publiée (3674 entrées d'index pour 445
+// titres uniques). On réutilise la page existante au lieu d'en créer une.
+const slugByTitle = Object.fromEntries(
+  existingIndex.filter(e => e.title).map(e => [e.title.toLowerCase().trim(), e.slug])
+);
 
 const toProcess = vids.slice(0, BATCH);
 let generated=0, skipped=0;
@@ -144,10 +151,14 @@ const newEntries=[];
 for(let i=0;i<toProcess.length;i++){
   const v = toProcess[i];
   if(!v || !v.id || !(v.title || v.titleAr)){ skipped++; continue; }
-  let slug = buildSlug(v);
-  if(!slug) slug = `video-${v.vid_id||v.id}`;
-  if(existingSlugs.has(slug)) slug = `${slug}-${(v.vid_id||v.id).slice(-8)}`;
-  if(existingSlugs.has(slug)) slug = `video-${v.id}`;
+  const titleKey = (v.title || v.titleAr || '').toLowerCase().trim();
+  let slug = slugByTitle[titleKey];
+  if (!slug) {
+    slug = buildSlug(v);
+    if(!slug) slug = `video-${v.vid_id||v.id}`;
+    if(existingSlugs.has(slug)) slug = `${slug}-${(v.vid_id||v.id).slice(-8)}`;
+    if(existingSlugs.has(slug)) slug = `video-${v.id}`;
+  }
   existingSlugs.add(slug);
 
   const file = path.join(OUT_DIR, `${slug}.html`);

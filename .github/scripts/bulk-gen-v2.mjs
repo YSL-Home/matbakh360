@@ -824,7 +824,23 @@ function mergeIntoJson(file, newItems) {
   const filePath = `${DATA_DIR}/${file}`;
   const existing = fs.existsSync(filePath) ? JSON.parse(fs.readFileSync(filePath, 'utf8')) : [];
   const existingIds = new Set(existing.map(x => x.id));
-  const fresh = newItems.filter(x => x.id && !existingIds.has(x.id));
+  // `id` est toujours unique (préfixé par RUN_ID, cf. ligne ~344) donc ce check
+  // ne filtrait jamais rien d'un run à l'autre : chaque exécution quotidienne
+  // ré-insérait les mêmes recettes/restos/vidéos sous un nouvel `id`, ce qui a
+  // produit ~5000 pages de recettes en double (même titre, pages distinctes)
+  // signalées par Google AdSense comme contenu dupliqué. `src_id` (l'identifiant
+  // stable de la source : idMeal TheMealDB, place id OSM, video id YouTube) est
+  // lui constant d'un run à l'autre — on déduplique dessus en plus de `id`.
+  const existingSrcIds = new Set(existing.map(x => x.src_id).filter(Boolean));
+  // Boucle (pas .filter) pour aussi écarter les doublons internes au même run.
+  const fresh = [];
+  for (const x of newItems) {
+    if (!x.id || existingIds.has(x.id)) continue;
+    if (x.src_id && existingSrcIds.has(x.src_id)) continue;
+    existingIds.add(x.id);
+    if (x.src_id) existingSrcIds.add(x.src_id);
+    fresh.push(x);
+  }
   if (!fresh.length) return 0;
   fs.writeFileSync(filePath, JSON.stringify([...existing, ...fresh]));
   return fresh.length;
